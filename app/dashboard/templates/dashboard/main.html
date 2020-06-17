@@ -1,5 +1,6 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
     <div id="app"></div>
@@ -8,6 +9,7 @@
 {% block extra_js %}
     <script>
         const USER_FULL_NAME="{{ user_full_name }}";
+        const LANGUAGE_CODE="{{ LANGUAGE_CODE }}"
         const ROUTES = {
             account: {
                 login: "{% url 'account_login' %}",

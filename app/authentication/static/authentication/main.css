@@ -1,15 +1,13 @@
-body{
-    background-color:#5286F3;
+body {
+    background-color: #e8e8e8;
 }
-
-
 
 .auth-container {
     width: 600px;
     margin: 50px auto;
 }
 
-.auth-container h1  {
+.auth-container h1 {
     margin-bottom: 40px;
 }
 
