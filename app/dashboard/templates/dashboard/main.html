@@ -1,0 +1,20 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div id="app"></div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        const USER_FULL_NAME="{{ user_full_name }}";
+        const ROUTES = {
+            account: {
+                login: "{% url 'account_login' %}",
+                logout: "{% url 'account_logout' %}",
+                set_password: "{% url 'account_set_password' %}",
+            },
+        }
+    </script>
+    <script src="{% static 'dashboard/dashboard.js' %}"></script>
+{% endblock %}

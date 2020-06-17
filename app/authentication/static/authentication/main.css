@@ -1,0 +1,31 @@
+body{
+    background-color:#5286F3;
+}
+
+
+
+.auth-container {
+    width: 600px;
+    margin: 50px auto;
+}
+
+.auth-container h1  {
+    margin-bottom: 40px;
+}
+
+.socialaccount_providers {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.socialaccount_providers a.socialaccount_provider {
+    font-size: medium;
+}
+
+.socialaccount_providers a.socialaccount_provider.google {
+    background-color: #DE4931;
+}
+
+.socialaccount_providers a.socialaccount_provider.facebook {
+    background-color: #395697;
+}

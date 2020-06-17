@@ -1,10 +1,11 @@
 module.exports = {
     entry: {
-        homepage: './app/frontend/src/Homepage.js'
+        '/frontend/static/frontend/homepage': './app/frontend/src/Homepage.js',
+        '/dashboard/static/dashboard/dashboard': './app/dashboard/src/Dashboard.js',
     },
     output:{
         filename: '[name].js',
-        path: __dirname +'/app/frontend/static/frontend/'
+        path: __dirname +'/app/'
     },
     module: {
         rules: [

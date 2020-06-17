@@ -1,0 +1,10 @@
+*.pyc
+*.swp
+*.sqlite3
+.idea/
+*/migrations/*
+static_col/*
+*.log
+.env
+venv/
+node_modules/

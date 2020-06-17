@@ -1,0 +1,11 @@
+{% load socialaccount %}
+{% load static %}
+{% get_providers as socialaccount_providers %}
+
+{% for provider in socialaccount_providers %}
+  <a class="socialaccount_provider {{ provider.id }} btn btn-primary btn-block" title="{{provider.name}}" class="{{provider.id}}"
+     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+     <i class="fab fa-{{ provider.id }} fa-lg" aria-hidden="true"> </i>
+      Sign up using {{ provider.name }}
+  </a>
+{% endfor %}
