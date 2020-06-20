@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <html>
 <head>
     <meta charset="UTF-8">
@@ -12,6 +13,25 @@
 </head>
 <body>
 {% block content %}{% endblock %}
+<script>
+    const LANGUAGE_CODE="{{ LANGUAGE_CODE }}"
+    let _langs = [];
+    {% for lang in LANGUAGES %}
+        _langs.push(
+                {
+                    'id': '{{ lang.0 }}',
+                    'text': '{{ lang.1 }}'
+                }
+            )
+    {% endfor %}
+    const LANGUAGES = JSON.parse(JSON.stringify(_langs));
+    const ROUTES = {
+        account: {
+            login: "{% url 'account_login' %}",
+            logout: "{% url 'account_logout' %}",
+        },
+    }
+</script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>
