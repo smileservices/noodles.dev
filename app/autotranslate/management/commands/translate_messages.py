@@ -184,7 +184,12 @@ def restore_placeholders(msgid, translation):
             translation)
     except IndexError:
         # sometimes there appears more placeholders inside the translated text...
-        logger.error(f'Error while restoring placeholders to \n{msgid} \nfrom \n{translation}.\nPlaceholders are:\n{placehoders}')
+        logger.error(30*'=')
+        logger.error(f'Error while restoring placeholders. Probably the translation has errors in resulting placeholders.')
+        logger.error(msgid)
+        logger.error(f'{10*"*"}translation{10*"*"}')
+        logger.error(translation)
+        logger.error(30*'=')
         restored=""
     return restored
 

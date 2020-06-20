@@ -78,11 +78,20 @@ class GoogleAPITranslatorService(BaseTranslatorService):
 
     def send_request(self, text, source, target):
         target = self.map_language_code(target)
+        translation = False
+        logger.info(f'{30*"="}')
+        logger.info(f'Sending google api request for {len(text)} items for translation')
+        logger.info(f'From {source} to {target}')
+        logger.info(text)
         if self.request_type == 'api_key_request':
             response = self.api_key_request(text, source, target)
-            return self.get_list_from_response(response)
+            translation = self.get_list_from_response(response)
         if self.request_type == 'service_account_key_request':
-            return self.service_account_key_request(text, source, target)
+            translation = self.service_account_key_request(text, source, target)
+        logger.info(f'{10*"-"} Received translation {10*"-"}')
+        logger.info(translation)
+        logger.info(f'{30*"="}')
+        return translation
 
     def translate_string(self, text, target_language, source_language='en'):
         assert isinstance(text, six.string_types), '`text` should a string literal'
@@ -120,8 +129,7 @@ class AzureAPITranslatorService(BaseTranslatorService):
 
     def __init__(self, max_segments=256):
         self.azure_translator_secret_key = getattr(settings, 'AZURE_TRANSLATOR_SECRET_KEY', None)
-        assert self.azure_translator_secret_key, (
-            '`AZURE_TRANSLATOR_SECRET_KEY` is not configured, it is required by `Azure Translator`')
+        assert self.azure_translator_secret_key, ('`AZURE_TRANSLATOR_SECRET_KEY` is not configured, it is required by `Azure Translator`')
 
         self.max_segments = max_segments
 
