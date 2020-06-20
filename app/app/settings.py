@@ -121,16 +121,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 LANGUAGES = [
-    ('en', _('English')),
-    ('vn', _('Tiếng Việt')),
-    ('de', _('Deutsch')),
-    ('fr', _('Française')),
+    ('en', 'English'),
+    ('vn', 'Tiếng việt'),
+    ('de', 'Deutsch'),
+    ('fr', 'Française'),
 ]
 LOCALE_PATHS = [ os.path.join(BASE_DIR, "locale"), ]
 AUTOTRANSLATE_TRANSLATOR_SERVICE = 'autotranslate.services.GoogleWebTranslatorService'
