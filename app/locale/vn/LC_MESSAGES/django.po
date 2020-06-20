@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-18 16:00+0000\n"
+"POT-Creation-Date: 2020-06-20 13:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,104 +17,104 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: allauth/account/forms.py:61 allauth/account/forms.py:398
+#: allauth/account/forms.py:65 allauth/account/forms.py:402
 msgid "You must type the same password each time."
 msgstr "Bạn phải nhập cùng một mật khẩu mỗi lần."
 
-#: allauth/account/forms.py:91 allauth/account/forms.py:365
-#: allauth/account/forms.py:476
+#: allauth/account/forms.py:95 allauth/account/forms.py:369
+#: allauth/account/forms.py:480
 msgid "Password"
 msgstr "Mật khẩu"
 
-#: allauth/account/forms.py:92
+#: allauth/account/forms.py:96
 msgid "Remember Me"
 msgstr "Nhớ tôi"
 
-#: allauth/account/forms.py:98
+#: allauth/account/forms.py:102
 msgid "This account is currently inactive."
 msgstr "Tài khoản này hiện không hoạt động."
 
-#: allauth/account/forms.py:101
+#: allauth/account/forms.py:105
 msgid "The e-mail address and/or password you specified are not correct."
 msgstr "Địa chỉ e-mail và / hoặc mật khẩu bạn chỉ định không chính xác."
 
-#: allauth/account/forms.py:104
+#: allauth/account/forms.py:108
 msgid "The username and/or password you specified are not correct."
 msgstr "Tên người dùng và / hoặc mật khẩu bạn chỉ định không chính xác."
 
-#: allauth/account/forms.py:113 allauth/account/forms.py:268
-#: allauth/account/forms.py:426 allauth/account/forms.py:495
+#: allauth/account/forms.py:117 allauth/account/forms.py:272
+#: allauth/account/forms.py:430 allauth/account/forms.py:499
 msgid "E-mail address"
 msgstr "Địa chỉ email"
 
-#: allauth/account/forms.py:115 allauth/account/forms.py:301
-#: allauth/account/forms.py:421 allauth/account/forms.py:490
+#: allauth/account/forms.py:119 allauth/account/forms.py:305
+#: allauth/account/forms.py:425 allauth/account/forms.py:494
 msgid "E-mail"
 msgstr "E-mail"
 
-#: allauth/account/forms.py:120 allauth/account/forms.py:123
-#: allauth/account/forms.py:260 allauth/account/forms.py:264
+#: allauth/account/forms.py:124 allauth/account/forms.py:127
+#: allauth/account/forms.py:264 allauth/account/forms.py:268
 msgid "Username"
 msgstr "tên tài khoản"
 
-#: allauth/account/forms.py:130
+#: allauth/account/forms.py:134
 msgid "Username or e-mail"
 msgstr "Tên người dùng hoặc email"
 
-#: allauth/account/forms.py:133
+#: allauth/account/forms.py:137
 msgctxt "field label"
 msgid "Login"
 msgstr "Đăng nhập"
 
-#: allauth/account/forms.py:292
+#: allauth/account/forms.py:296
 msgid "E-mail (again)"
 msgstr "E-mail (một lần nữa)"
 
-#: allauth/account/forms.py:296
+#: allauth/account/forms.py:300
 msgid "E-mail address confirmation"
 msgstr "Xác nhận địa chỉ email"
 
-#: allauth/account/forms.py:304
+#: allauth/account/forms.py:308
 msgid "E-mail (optional)"
 msgstr "E-mail (tùy chọn)"
 
-#: allauth/account/forms.py:345
+#: allauth/account/forms.py:349
 msgid "You must type the same email each time."
 msgstr "Bạn phải gõ cùng một email mỗi lần."
 
-#: allauth/account/forms.py:368 allauth/account/forms.py:477
+#: allauth/account/forms.py:372 allauth/account/forms.py:481
 msgid "Password (again)"
 msgstr "Nhập lại mật khẩu)"
 
-#: allauth/account/forms.py:432
+#: allauth/account/forms.py:436
 msgid "This e-mail address is already associated with this account."
 msgstr "Địa chỉ email này đã được liên kết với tài khoản này."
 
-#: allauth/account/forms.py:434
+#: allauth/account/forms.py:438
 msgid "This e-mail address is already associated with another account."
 msgstr "Địa chỉ email này đã được liên kết với một tài khoản khác."
 
-#: allauth/account/forms.py:456
+#: allauth/account/forms.py:460
 msgid "Current Password"
 msgstr "Mật khẩu hiện tại"
 
-#: allauth/account/forms.py:457 allauth/account/forms.py:546
+#: allauth/account/forms.py:461 allauth/account/forms.py:550
 msgid "New Password"
 msgstr "mật khẩu mới"
 
-#: allauth/account/forms.py:458 allauth/account/forms.py:547
+#: allauth/account/forms.py:462 allauth/account/forms.py:551
 msgid "New Password (again)"
 msgstr "Mật khẩu mới (một lần nữa)"
 
-#: allauth/account/forms.py:466
+#: allauth/account/forms.py:470
 msgid "Please type your current password."
 msgstr "Vui lòng nhập mật khẩu hiện tại của bạn."
 
-#: allauth/account/forms.py:504
+#: allauth/account/forms.py:508
 msgid "The e-mail address is not assigned to any user account"
 msgstr "Địa chỉ email không được gán cho bất kỳ tài khoản người dùng nào"
 
-#: allauth/account/forms.py:568
+#: allauth/account/forms.py:572
 msgid "The password reset token was invalid."
 msgstr "Mã thông báo đặt lại mật khẩu không hợp lệ."
 
@@ -186,6 +186,64 @@ msgstr "Thêm thư điện tử"
 msgid "Do you really want to remove the selected e-mail address?"
 msgstr "Bạn có thực sự muốn xóa địa chỉ e-mail đã chọn không?"
 
+#: authentication/templates/allauth/account/email/email_confirmation_message.txt:1
+#, python-format
+msgid ""
+"Hello from %(site_name)s!\n"
+"\n"
+"You're receiving this e-mail because user %(user_display)s has given yours as an e-mail address to connect their account.\n"
+"\n"
+"To confirm this is correct, go to %(activate_url)s\n"
+msgstr ""
+"Xin chào từ %(activate_url)s! Bạn đang nhận e-mail này vì người dùng "
+"%(user_display)s đã cung cấp cho bạn dưới dạng địa chỉ e-mail để kết nối tài"
+" khoản của họ. Để xác nhận điều này là chính xác, hãy truy cập "
+"%(site_name)s\n"
+
+#: authentication/templates/allauth/account/email/email_confirmation_message.txt:7
+#, python-format
+msgid ""
+"Thank you from %(site_name)s!\n"
+"%(site_domain)s"
+msgstr "Cảm ơn bạn từ %(site_domain)s! %(site_name)s"
+
+#: authentication/templates/allauth/account/email/email_confirmation_subject.txt:3
+#, fuzzy
+#| msgid "Confirm E-mail Address"
+msgid "Please Confirm Your E-mail Address"
+msgstr "Vui lòng xác nhận địa chỉ email của bạn"
+
+#: authentication/templates/allauth/account/email/password_reset_key_message.txt:1
+#, python-format
+msgid ""
+"Hello from %(site_name)s!\n"
+"\n"
+"You're receiving this e-mail because you or someone else has requested a password for your user account.\n"
+"It can be safely ignored if you did not request a password reset. Click the link below to reset your password."
+msgstr ""
+"Xin chào từ %(site_name)s! Bạn đang nhận được e-mail này vì bạn hoặc người "
+"khác đã yêu cầu mật khẩu cho tài khoản người dùng của bạn. Nó có thể được bỏ"
+" qua một cách an toàn nếu bạn không yêu cầu đặt lại mật khẩu. Nhấp vào liên "
+"kết dưới đây để thiết lập lại mật khẩu của bạn."
+
+#: authentication/templates/allauth/account/email/password_reset_key_message.txt:8
+#, python-format
+msgid "In case you forgot, your username is %(username)s."
+msgstr "Trong trường hợp bạn quên, tên người dùng của bạn là %(username)s."
+
+#: authentication/templates/allauth/account/email/password_reset_key_message.txt:10
+#, python-format
+msgid ""
+"Thank you for using %(site_name)s!\n"
+"%(site_domain)s"
+msgstr "Cảm ơn bạn đã sử dụng %(site_domain)s! %(site_name)s"
+
+#: authentication/templates/allauth/account/email/password_reset_key_subject.txt:3
+#, fuzzy
+#| msgid "Password Reset"
+msgid "Password Reset E-mail"
+msgstr "Đặt lại mật khẩu E-mail"
+
 #: authentication/templates/allauth/account/email_confirm.html:6
 #: authentication/templates/allauth/account/email_confirm.html:10
 msgid "Confirm E-mail Address"
@@ -250,6 +308,57 @@ msgstr "Đăng xuất"
 #: authentication/templates/allauth/account/logout.html:10
 msgid "Are you sure you want to sign out?"
 msgstr "bạn có chắc chắn muốn đăng xuất không?"
+
+#: authentication/templates/allauth/account/messages/cannot_delete_primary_email.txt:2
+#, python-format
+msgid "You cannot remove your primary e-mail address (%(email)s)."
+msgstr "Bạn không thể xóa địa chỉ email chính của mình (%(email)s)."
+
+#: authentication/templates/allauth/account/messages/email_confirmation_sent.txt:2
+#, python-format
+msgid "Confirmation e-mail sent to %(email)s."
+msgstr "Email xác nhận được gửi tới %(email)s."
+
+#: authentication/templates/allauth/account/messages/email_confirmed.txt:2
+#, python-format
+msgid "You have confirmed %(email)s."
+msgstr "Bạn đã xác nhận %(email)s."
+
+#: authentication/templates/allauth/account/messages/email_deleted.txt:2
+#, python-format
+msgid "Removed e-mail address %(email)s."
+msgstr "Đã xóa địa chỉ email %(email)s."
+
+#: authentication/templates/allauth/account/messages/logged_in.txt:4
+#, python-format
+msgid "Successfully signed in as %(name)s."
+msgstr "Đăng nhập thành công với tên %(name)s."
+
+#: authentication/templates/allauth/account/messages/logged_out.txt:2
+msgid "You have signed out."
+msgstr "Bạn đã đăng xuất."
+
+#: authentication/templates/allauth/account/messages/password_changed.txt:2
+#, fuzzy
+#| msgid "Your password is now changed."
+msgid "Password successfully changed."
+msgstr "Mật khẩu đã được thay đổi thành công."
+
+#: authentication/templates/allauth/account/messages/password_set.txt:2
+#, fuzzy
+#| msgid "Password Reset"
+msgid "Password successfully set."
+msgstr "Mật khẩu được đặt thành công."
+
+#: authentication/templates/allauth/account/messages/primary_email_set.txt:2
+#, fuzzy
+#| msgid "E-mail address"
+msgid "Primary e-mail address set."
+msgstr "Địa chỉ e-mail chính được đặt."
+
+#: authentication/templates/allauth/account/messages/unverified_primary_email.txt:2
+msgid "Your primary e-mail address must be verified."
+msgstr "Địa chỉ e-mail chính của bạn phải được xác minh."
 
 #: authentication/templates/allauth/account/password_change.html:7
 #: authentication/templates/allauth/account/password_change.html:10
@@ -457,6 +566,25 @@ msgstr ""
 "Bạn đã quyết định hủy đăng nhập vào trang web của chúng tôi bằng một trong "
 "những tài khoản hiện có của bạn. Nếu đây là một lỗi, xin vui lòng tiến hành "
 "<a href=\"%(login_url)s\">đăng nhập</a> ."
+
+#: authentication/templates/allauth/socialaccount/messages/account_connected.txt:2
+#, fuzzy
+#| msgid "This account is inactive."
+msgid "The social account has been connected."
+msgstr "Các tài khoản xã hội đã được kết nối."
+
+#: authentication/templates/allauth/socialaccount/messages/account_connected_other.txt:2
+#, fuzzy
+#| msgid ""
+#| "You currently have no social network accounts connected to this account."
+msgid "The social account is already connected to a different account."
+msgstr "Tài khoản xã hội đã được kết nối với một tài khoản khác."
+
+#: authentication/templates/allauth/socialaccount/messages/account_disconnected.txt:2
+#, fuzzy
+#| msgid "This account is inactive."
+msgid "The social account has been disconnected."
+msgstr "Các tài khoản xã hội đã bị ngắt kết nối."
 
 #: authentication/templates/allauth/socialaccount/signup.html:11
 #, python-format

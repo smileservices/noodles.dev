@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-18 16:00+0000\n"
+"POT-Creation-Date: 2020-06-20 13:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,108 +18,108 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: allauth/account/forms.py:61 allauth/account/forms.py:398
+#: allauth/account/forms.py:65 allauth/account/forms.py:402
 msgid "You must type the same password each time."
 msgstr "Sie müssen jedes Mal dasselbe Passwort eingeben."
 
-#: allauth/account/forms.py:91 allauth/account/forms.py:365
-#: allauth/account/forms.py:476
+#: allauth/account/forms.py:95 allauth/account/forms.py:369
+#: allauth/account/forms.py:480
 msgid "Password"
 msgstr "Passwort"
 
-#: allauth/account/forms.py:92
+#: allauth/account/forms.py:96
 msgid "Remember Me"
 msgstr "Erinnere dich an mich"
 
-#: allauth/account/forms.py:98
+#: allauth/account/forms.py:102
 msgid "This account is currently inactive."
 msgstr "Dieses Konto ist derzeit inaktiv."
 
-#: allauth/account/forms.py:101
+#: allauth/account/forms.py:105
 msgid "The e-mail address and/or password you specified are not correct."
 msgstr ""
 "Die von Ihnen angegebene E-Mail-Adresse und / oder das Passwort sind nicht "
 "korrekt."
 
-#: allauth/account/forms.py:104
+#: allauth/account/forms.py:108
 msgid "The username and/or password you specified are not correct."
 msgstr ""
 "Der von Ihnen angegebene Benutzername und / oder das Passwort sind nicht "
 "korrekt."
 
-#: allauth/account/forms.py:113 allauth/account/forms.py:268
-#: allauth/account/forms.py:426 allauth/account/forms.py:495
+#: allauth/account/forms.py:117 allauth/account/forms.py:272
+#: allauth/account/forms.py:430 allauth/account/forms.py:499
 msgid "E-mail address"
 msgstr "E-Mail-Addresse"
 
-#: allauth/account/forms.py:115 allauth/account/forms.py:301
-#: allauth/account/forms.py:421 allauth/account/forms.py:490
+#: allauth/account/forms.py:119 allauth/account/forms.py:305
+#: allauth/account/forms.py:425 allauth/account/forms.py:494
 msgid "E-mail"
 msgstr "Email"
 
-#: allauth/account/forms.py:120 allauth/account/forms.py:123
-#: allauth/account/forms.py:260 allauth/account/forms.py:264
+#: allauth/account/forms.py:124 allauth/account/forms.py:127
+#: allauth/account/forms.py:264 allauth/account/forms.py:268
 msgid "Username"
 msgstr "Nutzername"
 
-#: allauth/account/forms.py:130
+#: allauth/account/forms.py:134
 msgid "Username or e-mail"
 msgstr "Benutzername oder E-Mail-Adresse"
 
-#: allauth/account/forms.py:133
+#: allauth/account/forms.py:137
 msgctxt "field label"
 msgid "Login"
 msgstr "Anmeldung"
 
-#: allauth/account/forms.py:292
+#: allauth/account/forms.py:296
 msgid "E-mail (again)"
 msgstr "E-Mail (wieder)"
 
-#: allauth/account/forms.py:296
+#: allauth/account/forms.py:300
 msgid "E-mail address confirmation"
 msgstr "Bestätigung der E-Mail-Adresse"
 
-#: allauth/account/forms.py:304
+#: allauth/account/forms.py:308
 msgid "E-mail (optional)"
 msgstr "E-Mail optional)"
 
-#: allauth/account/forms.py:345
+#: allauth/account/forms.py:349
 msgid "You must type the same email each time."
 msgstr "Sie müssen jedes Mal dieselbe E-Mail-Adresse eingeben."
 
-#: allauth/account/forms.py:368 allauth/account/forms.py:477
+#: allauth/account/forms.py:372 allauth/account/forms.py:481
 msgid "Password (again)"
 msgstr "Passwort erneut)"
 
-#: allauth/account/forms.py:432
+#: allauth/account/forms.py:436
 msgid "This e-mail address is already associated with this account."
 msgstr "Diese E-Mail-Adresse ist bereits mit diesem Konto verknüpft."
 
-#: allauth/account/forms.py:434
+#: allauth/account/forms.py:438
 msgid "This e-mail address is already associated with another account."
 msgstr "Diese E-Mail-Adresse ist bereits einem anderen Konto zugeordnet."
 
-#: allauth/account/forms.py:456
+#: allauth/account/forms.py:460
 msgid "Current Password"
 msgstr "derzeitiges Passwort"
 
-#: allauth/account/forms.py:457 allauth/account/forms.py:546
+#: allauth/account/forms.py:461 allauth/account/forms.py:550
 msgid "New Password"
 msgstr "Neues Kennwort"
 
-#: allauth/account/forms.py:458 allauth/account/forms.py:547
+#: allauth/account/forms.py:462 allauth/account/forms.py:551
 msgid "New Password (again)"
 msgstr "Neues Passwort nochmal)"
 
-#: allauth/account/forms.py:466
+#: allauth/account/forms.py:470
 msgid "Please type your current password."
 msgstr "Bitte geben Sie Ihr aktuelles Passwort ein."
 
-#: allauth/account/forms.py:504
+#: allauth/account/forms.py:508
 msgid "The e-mail address is not assigned to any user account"
 msgstr "Die E-Mail-Adresse ist keinem Benutzerkonto zugeordnet"
 
-#: allauth/account/forms.py:568
+#: allauth/account/forms.py:572
 msgid "The password reset token was invalid."
 msgstr "Das Token zum Zurücksetzen des Passworts war ungültig."
 
@@ -192,6 +192,64 @@ msgstr "E-Mail hinzufügen"
 msgid "Do you really want to remove the selected e-mail address?"
 msgstr "Möchten Sie die ausgewählte E-Mail-Adresse wirklich entfernen?"
 
+#: authentication/templates/allauth/account/email/email_confirmation_message.txt:1
+#, python-format
+msgid ""
+"Hello from %(site_name)s!\n"
+"\n"
+"You're receiving this e-mail because user %(user_display)s has given yours as an e-mail address to connect their account.\n"
+"\n"
+"To confirm this is correct, go to %(activate_url)s\n"
+msgstr ""
+"Hallo von %(activate_url)s! Sie erhalten diese E-Mail, weil der Benutzer "
+"%(user_display)s Ihre als E-Mail-Adresse angegeben hat, um sein Konto zu "
+"verbinden. Um zu bestätigen, dass dies korrekt ist, gehen Sie zu "
+"%(site_name)s\n"
+
+#: authentication/templates/allauth/account/email/email_confirmation_message.txt:7
+#, python-format
+msgid ""
+"Thank you from %(site_name)s!\n"
+"%(site_domain)s"
+msgstr "Vielen Dank von %(site_domain)s! %(site_name)s"
+
+#: authentication/templates/allauth/account/email/email_confirmation_subject.txt:3
+#, fuzzy
+#| msgid "Confirm E-mail Address"
+msgid "Please Confirm Your E-mail Address"
+msgstr "Bitte bestätigen Sie Ihre E-Mail-Adresse"
+
+#: authentication/templates/allauth/account/email/password_reset_key_message.txt:1
+#, python-format
+msgid ""
+"Hello from %(site_name)s!\n"
+"\n"
+"You're receiving this e-mail because you or someone else has requested a password for your user account.\n"
+"It can be safely ignored if you did not request a password reset. Click the link below to reset your password."
+msgstr ""
+"Hallo von %(site_name)s! Sie erhalten diese E-Mail, weil Sie oder eine "
+"andere Person ein Kennwort für Ihr Benutzerkonto angefordert haben. Es kann "
+"ignoriert werden, wenn Sie kein Zurücksetzen des Passworts angefordert "
+"haben. Klicken Sie auf den Link unten, um Ihr Passwort zurückzusetzen."
+
+#: authentication/templates/allauth/account/email/password_reset_key_message.txt:8
+#, python-format
+msgid "In case you forgot, your username is %(username)s."
+msgstr "Falls Sie es vergessen haben, lautet Ihr Benutzername %(username)s."
+
+#: authentication/templates/allauth/account/email/password_reset_key_message.txt:10
+#, python-format
+msgid ""
+"Thank you for using %(site_name)s!\n"
+"%(site_domain)s"
+msgstr "Vielen Dank, dass Sie %(site_domain)s verwenden! %(site_name)s"
+
+#: authentication/templates/allauth/account/email/password_reset_key_subject.txt:3
+#, fuzzy
+#| msgid "Password Reset"
+msgid "Password Reset E-mail"
+msgstr "E-Mail zum Zurücksetzen des Passworts"
+
 #: authentication/templates/allauth/account/email_confirm.html:6
 #: authentication/templates/allauth/account/email_confirm.html:10
 msgid "Confirm E-mail Address"
@@ -256,6 +314,57 @@ msgstr "Ausloggen"
 #: authentication/templates/allauth/account/logout.html:10
 msgid "Are you sure you want to sign out?"
 msgstr "Sind Sie sicher, dass Sie sich abmelden möchten?"
+
+#: authentication/templates/allauth/account/messages/cannot_delete_primary_email.txt:2
+#, python-format
+msgid "You cannot remove your primary e-mail address (%(email)s)."
+msgstr "Sie können Ihre primäre E-Mail-Adresse (%(email)s) nicht entfernen."
+
+#: authentication/templates/allauth/account/messages/email_confirmation_sent.txt:2
+#, python-format
+msgid "Confirmation e-mail sent to %(email)s."
+msgstr "Bestätigungs-E-Mail an %(email)s gesendet."
+
+#: authentication/templates/allauth/account/messages/email_confirmed.txt:2
+#, python-format
+msgid "You have confirmed %(email)s."
+msgstr "Sie haben %(email)s bestätigt."
+
+#: authentication/templates/allauth/account/messages/email_deleted.txt:2
+#, python-format
+msgid "Removed e-mail address %(email)s."
+msgstr "E-Mail-Adresse %(email)s entfernt."
+
+#: authentication/templates/allauth/account/messages/logged_in.txt:4
+#, python-format
+msgid "Successfully signed in as %(name)s."
+msgstr "Erfolgreich als %(name)s angemeldet."
+
+#: authentication/templates/allauth/account/messages/logged_out.txt:2
+msgid "You have signed out."
+msgstr "Sie haben sich abgemeldet."
+
+#: authentication/templates/allauth/account/messages/password_changed.txt:2
+#, fuzzy
+#| msgid "Your password is now changed."
+msgid "Password successfully changed."
+msgstr "Passwort erfolgreich geändert."
+
+#: authentication/templates/allauth/account/messages/password_set.txt:2
+#, fuzzy
+#| msgid "Password Reset"
+msgid "Password successfully set."
+msgstr "Passwort erfolgreich gesetzt."
+
+#: authentication/templates/allauth/account/messages/primary_email_set.txt:2
+#, fuzzy
+#| msgid "E-mail address"
+msgid "Primary e-mail address set."
+msgstr "Primäre E-Mail-Adresse festgelegt."
+
+#: authentication/templates/allauth/account/messages/unverified_primary_email.txt:2
+msgid "Your primary e-mail address must be verified."
+msgstr "Ihre primäre E-Mail-Adresse muss überprüft werden."
 
 #: authentication/templates/allauth/account/password_change.html:7
 #: authentication/templates/allauth/account/password_change.html:10
@@ -459,6 +568,25 @@ msgid ""
 "accounts. If this was a mistake, please proceed to <a "
 "href=\"%(login_url)s\">sign in</a>."
 msgstr ""
+
+#: authentication/templates/allauth/socialaccount/messages/account_connected.txt:2
+#, fuzzy
+#| msgid "This account is inactive."
+msgid "The social account has been connected."
+msgstr "Das soziale Konto wurde verbunden."
+
+#: authentication/templates/allauth/socialaccount/messages/account_connected_other.txt:2
+#, fuzzy
+#| msgid ""
+#| "You currently have no social network accounts connected to this account."
+msgid "The social account is already connected to a different account."
+msgstr "Das soziale Konto ist bereits mit einem anderen Konto verbunden."
+
+#: authentication/templates/allauth/socialaccount/messages/account_disconnected.txt:2
+#, fuzzy
+#| msgid "This account is inactive."
+msgid "The social account has been disconnected."
+msgstr "Das soziale Konto wurde getrennt."
 
 #: authentication/templates/allauth/socialaccount/signup.html:11
 #, python-format
