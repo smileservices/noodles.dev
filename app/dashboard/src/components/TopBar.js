@@ -3,8 +3,10 @@ import ReactDOM from "react-dom";
 import {makeId} from "../utils";
 import {logout} from "../account";
 import AccountDropdownMenu from "./AccountDropdownMenu";
+import SelectLanguageDropdown from "./SelectLanguageDropdown";
 
-export default function TopBar() {
+export default function TopBar(props) {
+
     return (
         <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
             <a className="navbar-brand" href="#">Top navbar</a>
@@ -25,7 +27,8 @@ export default function TopBar() {
                     </li>
                 </ul>
                 <ul className="navbar-nav">
-                    <AccountDropdownMenu logout={logout}/>
+                    <SelectLanguageDropdown key={makeId(7)}/>
+                    <AccountDropdownMenu key={makeId(7)} logout={logout}/>
                 </ul>
             </div>
         </nav>

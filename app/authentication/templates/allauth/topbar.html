@@ -26,7 +26,7 @@
 {% block extra_js %}
     <script>
         document.getElementById("set_language").addEventListener('change', (event)=>{
-            document.cookie = "django_language="+event.target.value;
+            document.cookie = "django_language="+event.target.value+";path='/';max-age="+60*60*24*365;
             document.location.reload();
         });
     </script>
