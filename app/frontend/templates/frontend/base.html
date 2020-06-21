@@ -11,9 +11,17 @@
     <link rel="stylesheet" href="{% static 'frontend/main.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="d-flex flex-column h-100">
 {% block content %}{% endblock %}
+
+<footer class="footer mt-auto py-3">
+  <div class="container">
+    <span class="text-muted">Place sticky footer content here.</span>
+  </div>
+</footer>
+
 <script>
+    const USER_AUTH={% if user.is_authenticated %}true{% else %}false{% endif %};
     const LANGUAGE_CODE="{{ LANGUAGE_CODE }}"
     let _langs = [];
     {% for lang in LANGUAGES %}
@@ -32,6 +40,7 @@
         },
     }
 </script>
+<script type="application/javascript" src="{% url 'javascript-catalog' %}"></script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>

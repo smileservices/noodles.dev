@@ -8,7 +8,6 @@ function SelectLanguageDropdown(props) {
 
     SelectLanguageDropdown.handleClickOutside = () => {
         setExpanded(false);
-        setLogoutForm(false);
     }
 
     const changeLanguage = (languageId) => {
@@ -22,9 +21,9 @@ function SelectLanguageDropdown(props) {
                 event.preventDefault();
                 setExpanded(!expanded);
             }}>
-                Language
+                {gettext('Language')}
             </a>
-            <div className={expanded ? "dropdown-menu show" : "dropdown-menu"}>
+            <div className={expanded ? "dropdown-menu dropdown-menu-language show" : "dropdown-menu"}>
                 { LANGUAGES.map(language=>(
                     <a className={language.id===LANGUAGE_CODE ? "dropdown-item selected" : "dropdown-item"} onClick={event => {
                         event.preventDefault();

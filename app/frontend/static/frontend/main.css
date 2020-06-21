@@ -3,3 +3,22 @@
     right: .1rem;
     min-width: 5rem;
 }
+
+.dropdown-menu-language {
+    left: auto;
+    right: .1rem;
+    min-width: 5rem;
+}
+
+.dropdown-menu a:hover {
+    background: #eeecec;
+    cursor: pointer;
+}
+
+.dropdown-menu .selected {
+    background: #dedede;
+}
+
+.footer {
+    background-color: #f5f5f5;
+}

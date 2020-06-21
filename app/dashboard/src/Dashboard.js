@@ -25,14 +25,3 @@ function App() {
 
 const wrapper = document.getElementById("app");
 wrapper ? ReactDOM.render(<App/>, wrapper) : null;
-
-// <div className="container-fluid">
-//     <div className="row">
-//         <div key={makeId(8)}>
-{/*<SideBar />*/
-}
-{/*<MainContent />*/
-}
-// </div>
-// </div>
-// </div>

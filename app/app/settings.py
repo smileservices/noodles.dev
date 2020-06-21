@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import environ
-from django.utils.translation import gettext_lazy as _
 
 env = environ.Env(
     DEBUG=(bool, False),
@@ -132,7 +131,7 @@ LANGUAGES = [
     ('de', 'Deutsch'),
     ('fr', 'Française'),
 ]
-LOCALE_PATHS = [ os.path.join(BASE_DIR, "locale"), ]
+LOCALE_PATHS = [ os.path.join(BASE_DIR, "locale"), os.path.join(BASE_DIR, "dashboard")]
 AUTOTRANSLATE_TRANSLATOR_SERVICE = 'autotranslate.services.GoogleWebTranslatorService'
 
 # Static files (CSS, JavaScript, Images)

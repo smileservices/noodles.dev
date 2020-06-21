@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import {makeId} from "../utils";
-import {logout} from "../account";
-import AccountDropdownMenu from "./AccountDropdownMenu";
-import SelectLanguageDropdown from "./SelectLanguageDropdown";
+import AccountDropdownMenu from "../../../dashboard/src/components/AccountDropdownMenu";
+import SelectLanguageDropdown from "../../../dashboard/src/components/SelectLanguageDropdown";
+import {logout} from "../../../dashboard/src/account";
 
 export default function TopBar(props) {
 
@@ -28,7 +28,10 @@ export default function TopBar(props) {
                 </ul>
                 <ul className="navbar-nav">
                     <SelectLanguageDropdown key={makeId(7)}/>
-                    <AccountDropdownMenu key={makeId(7)} logout={logout}/>
+                    {props.userData.is_authenticated
+                        ? <AccountDropdownMenu key={makeId(7)} logout={logout}/>
+                        : <li className="nav-item"><a className="nav-link" href={ROUTES.account.login}>{gettext('Login')}</a></li>
+                    }
                 </ul>
             </div>
         </nav>
