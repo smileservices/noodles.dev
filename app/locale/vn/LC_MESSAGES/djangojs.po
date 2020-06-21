@@ -16,30 +16,11 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: dashboard/src/components/AccountDropdownMenu.js:20
-msgid "Account"
-msgstr "Konto"
-
-#: dashboard/src/components/AccountDropdownMenu.js:23
-msgid "Profile"
-msgstr "Profil"
-
-#: dashboard/src/components/AccountDropdownMenu.js:24
-msgid "Settings"
-msgstr "die Einstellungen"
-
-#: dashboard/src/components/AccountDropdownMenu.js:25
-msgid "Logout"
-msgstr "Ausloggen"
-
-#: dashboard/src/components/TopBar.js:20
+#: frontend/src/components/TopBar.js:20
 msgid "Home"
-msgstr "Zuhause"
+msgstr "Trang Chủ"
 
-#~ msgid "Language"
-#~ msgstr "Sprache"
-
-#~ msgid "Translate this text"
-#~ msgstr "breah breah breah"
+#: frontend/src/components/TopBar.js:33
+msgid "Login"
+msgstr "Đăng nhập"

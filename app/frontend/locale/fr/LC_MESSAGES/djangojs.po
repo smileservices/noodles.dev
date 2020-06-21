@@ -18,28 +18,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: dashboard/src/components/AccountDropdownMenu.js:20
-msgid "Account"
-msgstr "Compte"
-
-#: dashboard/src/components/AccountDropdownMenu.js:23
-msgid "Profile"
-msgstr "Profil"
-
-#: dashboard/src/components/AccountDropdownMenu.js:24
-msgid "Settings"
-msgstr "Paramètres"
-
-#: dashboard/src/components/AccountDropdownMenu.js:25
-msgid "Logout"
-msgstr "Se déconnecter"
-
-#: dashboard/src/components/TopBar.js:20
+#: frontend/src/components/TopBar.js:20
 msgid "Home"
 msgstr "Accueil"
 
-#~ msgid "Language"
-#~ msgstr "Langue"
-
-#~ msgid "Translate this text"
-#~ msgstr "en francais"
+#: frontend/src/components/TopBar.js:33
+msgid "Login"
+msgstr "S`identifier"

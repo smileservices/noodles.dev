@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-21 10:26+0000\n"
+"POT-Creation-Date: 2020-06-21 12:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,9 +17,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: dashboard/src/components/SelectLanguageDropdown.js:24
-msgid "Language"
-msgstr "Tien"
+#: dashboard/src/components/AccountDropdownMenu.js:20
+msgid "Account"
+msgstr "Tài khoản"
+
+#: dashboard/src/components/AccountDropdownMenu.js:23
+msgid "Profile"
+msgstr "Hồ sơ"
+
+#: dashboard/src/components/AccountDropdownMenu.js:24
+msgid "Settings"
+msgstr "Cài đặt"
+
+#: dashboard/src/components/AccountDropdownMenu.js:25
+msgid "Logout"
+msgstr "Đăng xuất"
+
+#: dashboard/src/components/TopBar.js:20
+msgid "Home"
+msgstr "Trang Chủ"
 
 #~ msgid "Translate this text"
 #~ msgstr "vietnamese"
