@@ -8,7 +8,7 @@ import {logout} from "../../../dashboard/src/account";
 export default function TopBar(props) {
 
     return (
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark">
             <a className="navbar-brand" href="#">Top navbar</a>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">

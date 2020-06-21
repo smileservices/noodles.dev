@@ -21,7 +21,7 @@ function SelectLanguageDropdown(props) {
                 event.preventDefault();
                 setExpanded(!expanded);
             }}>
-                {gettext('Language')}
+                Language
             </a>
             <div className={expanded ? "dropdown-menu dropdown-menu-language show" : "dropdown-menu"}>
                 { LANGUAGES.map(language=>(
