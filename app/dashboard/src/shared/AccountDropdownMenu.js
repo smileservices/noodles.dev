@@ -20,8 +20,7 @@ function AccountDropdownMenu(props) {
                 {gettext('Account')}
             </a>
             <div className={expanded ? "dropdown-menu dropdown-menu-account show" : "dropdown-menu"}>
-                <a className="dropdown-item" href="#">{gettext('Profile')}</a>
-                <a className="dropdown-item" href="#">{gettext('Settings')}</a>
+                <a className="dropdown-item" href={ROUTES.account.settings}>{gettext('Settings')}</a>
                 <a className="dropdown-item" href="#" onClick={() => props.logout()}>{gettext('Logout')}</a>
             </div>
         </li>

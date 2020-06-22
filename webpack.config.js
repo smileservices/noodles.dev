@@ -1,7 +1,8 @@
 module.exports = {
     entry: {
-        '/frontend/static/frontend/homepage': './app/frontend/src/Homepage.js',
-        '/dashboard/static/dashboard/dashboard': './app/dashboard/src/Dashboard.js',
+        '/frontend/static/frontend/homepage': './app/frontend/src/homepage/Homepage.js',
+        '/dashboard/static/dashboard/dashboard': './app/dashboard/src/dashboard/Dashboard.js',
+        '/dashboard/static/dashboard/account_settings': './app/dashboard/src/account/Settings.js',
     },
     output:{
         filename: '[name].js',

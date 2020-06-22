@@ -1,18 +1,24 @@
 import React, {useState} from "react";
 import ReactDOM from "react-dom";
-import {makeId} from "./utils";
-import TopBar from "./components/TopBar";
+import {makeId} from "../utils";
+import TopBar from "../shared/TopBar";
+import SideBar from "../shared/SideBar";
 import MainContent from "./components/MainContent";
 
 const USER_DATA = {
-    'is_authenticated': USER_AUTH
+    'user_full_name': USER_FULL_NAME
 }
 
 function App() {
     return (
         <div key={makeId(8)}>
             <TopBar userData={USER_DATA}/>
-            <MainContent />
+            <div className="container-fluid">
+                <div className="row">
+                        <SideBar />
+                        <MainContent />
+                </div>
+            </div>
         </div>
     )
 }

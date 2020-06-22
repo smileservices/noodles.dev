@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import ReactDOM from "react-dom";
-import {makeId} from "./utils";
-import TopBar from "./components/TopBar";
-import SideBar from "./components/SideBar";
+import {makeId} from "../utils";
+import TopBar from "../shared/TopBar";
+import SideBar from "../shared/SideBar";
 import MainContent from "./components/MainContent";
 
 const USER_DATA = {

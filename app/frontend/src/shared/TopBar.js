@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import {makeId} from "../utils";
-import AccountDropdownMenu from "../../../dashboard/src/components/AccountDropdownMenu";
-import SelectLanguageDropdown from "../../../dashboard/src/components/SelectLanguageDropdown";
+import AccountDropdownMenu from "../../../dashboard/src/shared/AccountDropdownMenu";
+import SelectLanguageDropdown from "../../../dashboard/src/shared/SelectLanguageDropdown";
 import {logout} from "../../../dashboard/src/account";
 
 export default function TopBar(props) {
