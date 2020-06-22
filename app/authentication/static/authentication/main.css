@@ -27,3 +27,20 @@ body {
 .socialaccount_providers a.socialaccount_provider.facebook {
     background-color: #395697;
 }
+
+.email_list span {
+    margin-left: 15px;
+}
+
+.email_list span.verified {
+    color: darkgreen;
+}
+
+.email_list span.unverified {
+    color: darkred;
+}
+
+.email_list span.primary {
+    font-weight: bold;
+    color: green;
+}
