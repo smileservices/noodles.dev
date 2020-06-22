@@ -11,7 +11,7 @@ function SelectLanguageDropdown(props) {
     }
 
     const changeLanguage = (languageId) => {
-        document.cookie="django_language="+languageId+";path='/';max-age="+60*60*24*365;
+        document.cookie="django_language="+languageId+";path=/;max-age="+60*60*24*365;
         document.location.reload();
     }
 
