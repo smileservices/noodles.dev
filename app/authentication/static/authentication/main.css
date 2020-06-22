@@ -44,3 +44,10 @@ body {
     font-weight: bold;
     color: green;
 }
+
+
+.user-social-accounts span.socialaccount_provider {
+    font-weight: bold;
+    color: darkblue;
+    margin-right: 30px;
+}
