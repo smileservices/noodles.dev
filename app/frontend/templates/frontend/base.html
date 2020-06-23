@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block head_title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/min.css' %}">
+    <link rel="stylesheet" href="{% static "fontawesome/css/all.min.css"%}">
     <link rel="stylesheet" href="{% static 'frontend/main.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
@@ -20,26 +21,7 @@
   </div>
 </footer>
 
-<script>
-    const USER_AUTH={% if user.is_authenticated %}true{% else %}false{% endif %};
-    const LANGUAGE_CODE="{{ LANGUAGE_CODE }}"
-    let _langs = [];
-    {% for lang in LANGUAGES %}
-        _langs.push(
-                {
-                    'id': '{{ lang.0 }}',
-                    'text': '{{ lang.1 }}'
-                }
-            )
-    {% endfor %}
-    const LANGUAGES = JSON.parse(JSON.stringify(_langs));
-    const ROUTES = {
-        account: {
-            login: "{% url 'account_login' %}",
-            logout: "{% url 'account_logout' %}",
-        },
-    }
-</script>
+{% include 'globals.html' %}
 <script type="application/javascript" src="{% url 'javascript-catalog' %}"></script>
 <script type="application/javascript" src="{% static 'js/react-bundle.js' %}"></script>
 {% block extra_js %}{% endblock %}

@@ -78,7 +78,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['authentication/templates/allauth/'],
+        'DIRS': ['authentication/templates/allauth/', 'shared_templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,14 +1,17 @@
 import React, {useState} from "react";
-import ReactDOM from "react-dom";
 import {makeId} from "../../utils";
 
 export default function MainContent(attrs) {
     return (
-        <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-            <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 className="h2">Account</h1>
-                <h2>Settings</h2>
+        <div className="card">
+            <div className="card-header">
+            <h1 className="h2">{gettext('Account Settings')}</h1>
+                </div>
+            <div className="card-body">
+            <p><a className="btn btn-outline-primary" href={ROUTES.account.account_email}>change email </a></p>
+            <p><a className="btn btn-outline-primary" href={ROUTES.account.change_password}>change password</a></p>
+            <p><a className="btn btn-outline-primary" href={ROUTES.account.socialaccount_connections}>change social accounts</a></p>
             </div>
-        </main>
+        </div>
     )
 }

@@ -17,7 +17,7 @@ function AccountDropdownMenu(props) {
                 setExpanded(!expanded);
                 setLogoutForm(false);
             }}>
-                {gettext('Account')}
+                <i className="fas fa-user-circle" aria-hidden="true"></i>
             </a>
             <div className={expanded ? "dropdown-menu dropdown-menu-account show" : "dropdown-menu"}>
                 <a className="dropdown-item" href={ROUTES.account.settings}>{gettext('Settings')}</a>

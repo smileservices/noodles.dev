@@ -4,6 +4,6 @@ from django.views.i18n import JavaScriptCatalog, JSONCatalog
 
 urlpatterns = [
     path('jsi18n/', JavaScriptCatalog.as_view(packages=['dashboard']), name='javascript-catalog'),
-    path('account/settings/', views.accountSettings, name='account_settings'),
+    path('account/settings/', views.account_settings, name='account_settings'),
     path('', views.dashboard, name='dashboard')
 ]

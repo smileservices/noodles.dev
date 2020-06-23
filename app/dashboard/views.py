@@ -1,17 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-import json
 
 
 @login_required
 def dashboard(request):
-    data = {
-        'user_full_name': request.user.get_full_name()
-    }
-    return render(request, 'dashboard/main.html', data)
+    return render(request, 'dashboard/main.html')
 
-def accountSettings(request):
-    data = {
-        'user_full_name': request.user.get_full_name()
-    }
-    return render(request, 'dashboard/settings.html', data)
+
+@login_required
+def account_settings(request):
+    return render(request, 'dashboard/settings.html')

@@ -1,4 +1,36 @@
+/*
+https://prium.github.io/falcon/v2.5.0/default/home/dashboard-alt.html
+
+bg lgray : #edf2f9
+color lgray : #5e6e82
+color dgray: #344050
+color vlgray: #b6c1d2
+color blue: #2c7be5
+ */
+
+body {
+    background-color: #edf2f9;
+}
+
+a {
+    color: #2c7be5;
+}
+
+.navbar-light {
+    color: #344050!important;
+}
+
+.bg-light {
+    background-color: #edf2f9!important;
+}
+
 .dropdown-menu-account {
+    left: auto;
+    right: .1rem;
+    min-width: 5rem;
+}
+
+.dropdown-menu-language {
     left: auto;
     right: .1rem;
     min-width: 5rem;
@@ -11,4 +43,9 @@
 
 .dropdown-menu .selected {
     background: #dedede;
+}
+
+.navbar-brand img {
+    width: 40px;
+    margin-right: 40px;
 }

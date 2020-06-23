@@ -15,28 +15,7 @@
 </head>
 <body>
 {% block content %}{% endblock %}
-<script>
-    const USER_FULL_NAME="{{ user_full_name }}";
-    const LANGUAGE_CODE="{{ LANGUAGE_CODE }}"
-    let _langs = [];
-    {% for lang in LANGUAGES %}
-        _langs.push(
-                {
-                    'id': '{{ lang.0 }}',
-                    'text': '{{ lang.1 }}'
-                }
-            )
-    {% endfor %}
-    const LANGUAGES = JSON.parse(JSON.stringify(_langs));
-    const ROUTES = {
-        account: {
-            login: "{% url 'account_login' %}",
-            logout: "{% url 'account_logout' %}",
-            settings: "{% url 'account_settings' %}",
-            set_password: "{% url 'account_set_password' %}",
-        },
-    }
-</script>
+{% include 'globals.html' %}
 <script type="application/javascript" src="{% url 'javascript-catalog' %}"></script>
 <script type="application/javascript" src="{% static 'js/react-bundle.js' %}"></script>
 {% block extra_js %}{% endblock %}
