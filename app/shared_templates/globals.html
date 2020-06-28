@@ -14,7 +14,13 @@
     const LANGUAGES = JSON.parse(JSON.stringify(_langs));
     const ROUTES = {
         homepage: "{% url 'homepage' %}",
-        dashboard: "{% url 'dashboard' %}",
+        dashboard: {
+            'main': "{% url 'dashboard' %}",
+            'sidebar_links': [
+                {"url" : "{% url 'simplecrud-admin' %}",
+                "text": "Simple CRUD"}
+            ]
+        },
         account: {
             login: "{% url 'account_login' %}",
             logout: "{% url 'account_logout' %}",

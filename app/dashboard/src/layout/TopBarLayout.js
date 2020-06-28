@@ -1,11 +1,10 @@
 import React, {useState} from "react";
-import ReactDOM from "react-dom";
-import {makeId} from "../utils";
-import {logout} from "../account";
-import AccountDropdownMenu from "./AccountDropdownMenu";
-import SelectLanguageDropdown from "./SelectLanguageDropdown";
+import {makeId} from "../../../src/shared/utils";
+import {logout} from "../../../src/shared/account";
+import SelectLanguageDropdown from "../../../src/shared/SelectLanguageDropdown";
+import AccountDropdownMenu from "../../../src/shared/AccountDropdownMenu";
 
-export default function TopBar(props) {
+export default function TopBarLayout(props) {
 
     return (
         <nav className="navbar navbar-expand-md navbar-light bg-light">

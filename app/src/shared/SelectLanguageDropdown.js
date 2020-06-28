@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import ReactDOM from "react-dom";
-import {makeId} from "../utils";
+import {makeId} from "./utils";
 import onClickOutside from "react-onclickoutside";
 
 function SelectLanguageDropdown(props) {

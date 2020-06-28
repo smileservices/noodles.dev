@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import {makeId} from "./utils";
-import TopBar from "./shared/TopBar";
-import SideBar from "./shared/SideBar";
+import {makeId} from "../../../src/shared/utils";
+import SideBarLayout from "./SideBarLayout";
+import TopBarLayout from "./TopBarLayout";
 import ContentLayout from "./ContentLayout";
 
-export default function (props) {
+export default function AppLayout(props) {
     const [sidebarCollapsed, sidebarCollapse] = useState(false);
     const sidebarToggle = e => {
         sidebarCollapse(!sidebarCollapsed);
@@ -12,10 +12,10 @@ export default function (props) {
 
     return (
         <div key={makeId(8)}>
-            <TopBar sidebarToggle={sidebarToggle} sidebarCollapsed={sidebarCollapsed}/>
+            <TopBarLayout sidebarToggle={sidebarToggle} sidebarCollapsed={sidebarCollapsed}/>
             <div className="container-fluid">
                 <div className="row">
-                    <SideBar collapsed={sidebarCollapsed}/>
+                    <SideBarLayout collapsed={sidebarCollapsed} links={ROUTES.dashboard.sidebar_links}/>
                     <ContentLayout sidebarCollapsed={sidebarCollapsed} content={props.content}/>
                 </div>
             </div>

@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import {makeId} from "../utils";
-import AccountDropdownMenu from "../../../dashboard/src/shared/AccountDropdownMenu";
-import SelectLanguageDropdown from "../../../dashboard/src/shared/SelectLanguageDropdown";
-import {logout} from "../../../dashboard/src/account";
+import {makeId} from "../../../src/shared/utils";
+import AccountDropdownMenu from "../../../src/shared/AccountDropdownMenu";
+import SelectLanguageDropdown from "../../../src/shared/SelectLanguageDropdown";
+import {logout} from "../../../src/shared/account";
 
-export default function TopBar(props) {
+export default function TopBarLayout(props) {
 
     return (
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
@@ -16,7 +16,7 @@ export default function TopBar(props) {
             <div className="collapse navbar-collapse" id="navbarCollapse">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item">
-                        <a className="nav-link" href={ROUTES.dashboard}>{gettext('Dashboard')}</a>
+                        <a className="nav-link" href={ROUTES.dashboard.main}>{gettext('Dashboard')}</a>
                     </li>
                 </ul>
                 <ul className="navbar-nav">

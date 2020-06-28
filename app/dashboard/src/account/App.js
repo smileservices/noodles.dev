@@ -1,7 +1,8 @@
 import React, {useState} from "react";
-import {makeId} from "../../utils";
+import ReactDOM from "react-dom";
+import AppLayout from "../layout/AppLayout";
 
-export default function MainContent(attrs) {
+function Content() {
     return (
         <div className="card">
             <div className="card-header">
@@ -15,3 +16,6 @@ export default function MainContent(attrs) {
         </div>
     )
 }
+
+const wrapper = document.getElementById("app");
+wrapper ? ReactDOM.render(<AppLayout content={Content} />, wrapper) : null;
