@@ -17,6 +17,7 @@
 {% block content %}{% endblock %}
 {% include 'globals.html' %}
 {% include 'dashboard/routes.html' %}
+{% block extra_routes %}{% endblock %}
 <script type="application/javascript" src="{% url 'javascript-catalog' %}"></script>
 <script type="application/javascript" src="{% static 'js/react-bundle.js' %}"></script>
 {% block extra_js %}{% endblock %}
