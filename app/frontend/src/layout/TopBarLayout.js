@@ -16,7 +16,7 @@ export default function TopBarLayout(props) {
             <div className="collapse navbar-collapse" id="navbarCollapse">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item">
-                        <a className="nav-link" href={ROUTES.dashboard.main}>{gettext('Dashboard')}</a>
+                        <a className="nav-link" href={ROUTES.dashboard}>{gettext('Dashboard')}</a>
                     </li>
                 </ul>
                 <ul className="navbar-nav">

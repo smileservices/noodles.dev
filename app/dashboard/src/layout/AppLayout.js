@@ -15,7 +15,7 @@ export default function AppLayout(props) {
             <TopBarLayout sidebarToggle={sidebarToggle} sidebarCollapsed={sidebarCollapsed}/>
             <div className="container-fluid">
                 <div className="row">
-                    <SideBarLayout collapsed={sidebarCollapsed} links={ROUTES.dashboard.sidebar_links}/>
+                    <SideBarLayout collapsed={sidebarCollapsed} links={SIDEBAR_LINKS}/>
                     <ContentLayout sidebarCollapsed={sidebarCollapsed} content={props.content}/>
                 </div>
             </div>
