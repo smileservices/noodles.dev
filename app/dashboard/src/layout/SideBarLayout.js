@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {makeId} from "../../../src/shared/utils";
+import {makeId} from "../../../src/components/utils";
 
 function SideBarLink({url, text}) {
     return (

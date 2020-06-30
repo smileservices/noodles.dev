@@ -17,11 +17,11 @@ a {
 }
 
 .navbar-light {
-    color: #344050!important;
+    color: #344050 !important;
 }
 
 .bg-light {
-    background-color: #edf2f9!important;
+    background-color: #edf2f9 !important;
 }
 
 .dropdown-menu-account {
@@ -48,4 +48,42 @@ a {
 .navbar-brand img {
     width: 40px;
     margin-right: 40px;
+}
+
+.waiting-container {
+    color: #a3c4f1;
+    text-align: center;
+}
+
+.waiting-container p.text {
+    font-size: 18px;
+}
+
+.waiting-container .spinning {
+    font-size: 65px;
+}
+
+.waiting-container .spinning {
+    -webkit-animation: spin 4s linear infinite;
+    -moz-animation: spin 4s linear infinite;
+    animation: spin 4s linear infinite;
+}
+
+@-moz-keyframes spin {
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }

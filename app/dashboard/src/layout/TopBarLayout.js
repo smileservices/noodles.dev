@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import {makeId} from "../../../src/shared/utils";
-import {logout} from "../../../src/shared/account";
-import SelectLanguageDropdown from "../../../src/shared/SelectLanguageDropdown";
-import AccountDropdownMenu from "../../../src/shared/AccountDropdownMenu";
+import {makeId} from "../../../src/components/utils";
+import {logout} from "../../../src/components/account";
+import SelectLanguageDropdown from "../../../src/components/SelectLanguageDropdown";
+import AccountDropdownMenu from "../../../src/components/AccountDropdownMenu";
 
 export default function TopBarLayout(props) {
 

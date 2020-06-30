@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from .serializers import PeopleSerializer
 from .models import People
 
@@ -12,4 +12,4 @@ def AdminApp(request):
 class PeopleAdminViewset(ModelViewSet):
     serializer_class = PeopleSerializer
     queryset = PeopleSerializer.queryset.all()
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticatedOrReadOnly]

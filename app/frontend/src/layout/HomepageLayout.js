@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import ReactDOM from "react-dom";
-import {makeId} from "../../../src/shared/utils";
+import {makeId} from "../../../src/components/utils";
 import TopBarLayout from "./TopBarLayout";
 import ContentLayout from "./ContentLayout";
 import Header from "../homepage/Header";
