@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     # our app
     'rest_framework',
+    'django_filters',
     'authentication',
     'dashboard',
     'frontend',
@@ -81,7 +82,7 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
-    ],
+    ]
 }
 
 ROOT_URLCONF = 'app.urls'

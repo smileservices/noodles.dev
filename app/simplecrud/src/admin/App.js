@@ -9,6 +9,7 @@ import {PersonEditForm} from "./components/PersonEditForm";
 
 function Content() {
     const [peopleListContent, setPeopleListContent] = useState({});
+    const [query, setQuery] = useState({});
     const [alert, setAlert] = useState({});
 
     const [personEdit, setPersonEdit] = useState(false);
@@ -30,6 +31,7 @@ function Content() {
                                             editAction={person => setPersonEdit(person)} deleteAction={deletePerson}/>}
                 />
             ),
+            query,
         )
     }, []);
 

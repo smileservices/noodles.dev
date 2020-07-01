@@ -5,15 +5,20 @@ export function list(
     list_endpoint,
     dataName,
     setContent,
-    displayData
+    displayData,
+    query={}
 ) {
-
     setContent({
         display: <Waiting text={'Retrieving ' + dataName + ' list ...'}/>,
         data: false
     })
 
-    fetch(list_endpoint, {
+    const url = (() => {
+        console.log(query);
+        return list_endpoint;
+    })();
+
+    fetch(url, {
         method: "GET"
     }).then(result => {
         if (result.ok) {

@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from simplecrud.views import AdminApp, PeopleAdminViewset
 
 router = DefaultRouter()
-router.register('api', PeopleAdminViewset, basename='simplecrud-admin-api')
+router.register('api/people', PeopleAdminViewset, basename='simplecrud-admin-api')
 urlpatterns = [
     path('', AdminApp, name='simplecrud-admin')
 ]
