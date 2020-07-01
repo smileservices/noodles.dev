@@ -5,7 +5,7 @@ export function list(
     list_endpoint,
     dataName,
     setContent,
-    mapForDisplay
+    displayData
 ) {
 
     setContent({
@@ -26,7 +26,7 @@ export function list(
         }
     }).then(data => {
         setContent({
-            display: mapForDisplay(data),
+            display: displayData(data),
             data: data
         })
     })

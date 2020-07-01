@@ -7,4 +7,4 @@ class PeopleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = People
-        fields = ['name', 'age', 'nationality']
+        fields = ['id','name', 'age', 'nationality']

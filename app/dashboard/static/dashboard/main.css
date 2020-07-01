@@ -1,89 +1,9 @@
-/*
-https://prium.github.io/falcon/v2.5.0/default/home/dashboard-alt.html
-
-bg lgray : #edf2f9
-color lgray : #5e6e82
-color dgray: #344050
-color vlgray: #b6c1d2
-color blue: #2c7be5
- */
-
-body {
-    background-color: #edf2f9;
-}
-
-a {
-    color: #2c7be5;
-}
-
-.navbar-light {
-    color: #344050 !important;
-}
-
-.bg-light {
-    background-color: #edf2f9 !important;
-}
-
-.dropdown-menu-account {
-    left: auto;
-    right: .1rem;
-    min-width: 5rem;
-}
-
-.dropdown-menu-language {
-    left: auto;
-    right: .1rem;
-    min-width: 5rem;
-}
-
-.dropdown-menu a:hover {
-    background: #eeecec;
-    cursor: pointer;
+.header-nav .header-nav-brand img, #menubar .navbar-brand img {
+    max-height: 30px;
 }
 
 .dropdown-menu .selected {
-    background: #dedede;
-}
-
-.navbar-brand img {
-    width: 40px;
-    margin-right: 40px;
-}
-
-.waiting-container {
-    color: #a3c4f1;
-    text-align: center;
-}
-
-.waiting-container p.text {
-    font-size: 18px;
-}
-
-.waiting-container .spinning {
-    font-size: 65px;
-}
-
-.waiting-container .spinning {
-    -webkit-animation: spin 4s linear infinite;
-    -moz-animation: spin 4s linear infinite;
-    animation: spin 4s linear infinite;
-}
-
-@-moz-keyframes spin {
-    100% {
-        -moz-transform: rotate(360deg);
-    }
-}
-
-@-webkit-keyframes spin {
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
-}
-
-@keyframes spin {
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+    text-decoration: none;
+    color: #252727;
+    background-color: #f5f5f5;
 }

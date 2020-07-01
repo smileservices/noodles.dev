@@ -4,14 +4,23 @@ import AppLayout from "../layout/AppLayout";
 
 function Content() {
     return (
-        <div className="card">
-            <div className="card-header">
-                <h2>Welcome to the dashboard</h2>
-            </div>
-            <div className="card-body">
-                <h2>The main dashboard view</h2>
+        <section>
+        <div className="section-body contain-lg">
+            <div className="col-md-8">
+                <div className="card card-bordered style-primary">
+                    <div className="card-head">
+                        <header>Welcome to the dashboard</header>
+                        <div className="tools">
+                            <a className="btn btn-icon-toggle btn-close"><i className="md md-close"> </i></a>
+                        </div>
+                    </div>
+                    <div className="card-body">
+                        The main dashboard view
+                    </div>
+                </div>
             </div>
         </div>
+        </section>
     )
 }
 

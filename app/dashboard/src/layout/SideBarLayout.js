@@ -3,20 +3,32 @@ import {makeId} from "../../../src/components/utils";
 
 function SideBarLink({url, text}) {
     return (
-        <li className="nav-item">
-            <a className="nav-link active" href={url}>{gettext(text)}</a>
+        <li>
+            <a href={url}><span className="title">{gettext(text)}</span></a>
         </li>
     );
 }
 
-export default function SideBarLayout({collapsed, links}) {
+export default function SideBarLayout({links}) {
     return (
-        <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-            <div className={collapsed ? "sidebar-sticky pt-3 d-none" : "sidebar-sticky pt-3"}>
-                <ul className="nav flex-column">
+        <div id="menubar">
+
+            <div className="menubar-fixed-panel">
+                <div>
+                    <a className="btn btn-icon-toggle menubar-toggle" data-toggle="menubar"
+                       href="javascript:void(0);">
+                        <i className="fa fa-bars"> </i>
+                    </a>
+                </div>
+                <div className="expanded">
+                    <a className="navbar-brand" href={ROUTES.homepage}><img src="/static/imgs/rocket.svg" alt=""/></a>
+                </div>
+            </div>
+            <div className="menubar-scroll-panel">
+                <ul id="main-menu" className="gui-controls">
                     {links.map(link => <SideBarLink url={link.url} text={link.text} key={makeId(5)}/>)}
                 </ul>
             </div>
-        </nav>
+        </div>
     )
 }

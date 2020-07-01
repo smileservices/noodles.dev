@@ -8,18 +8,27 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block head_title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/min.css' %}">
-    <link rel="stylesheet" href="{% static "fontawesome/css/all.min.css"%}">
+    <link rel="stylesheet" href="{% static 'materialadmin/css/theme-default/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'materialadmin/css/theme-default/materialadmin.css' %}" />
+    <link rel="stylesheet" href="{% static 'materialadmin/css/theme-default/font-awesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'materialadmin/css/theme-default/material-design-iconic-font.min.css' %}" />
     <link rel="stylesheet" href="{% static 'dashboard/main.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+
+<body class="menubar-hoverable menubar-pin menubar-first">
 {% block content %}{% endblock %}
 {% include 'globals.html' %}
 {% include 'dashboard/routes.html' %}
 {% block extra_routes %}{% endblock %}
 <script type="application/javascript" src="{% url 'javascript-catalog' %}"></script>
 <script type="application/javascript" src="{% static 'js/react-bundle.js' %}"></script>
+<script type="application/javascript" src="{% static 'materialadmin/js/libs/jquery/jquery-1.11.2.min.js' %}"></script>
+<script type="application/javascript" src="{% static 'materialadmin/js/libs/jquery/jquery-migrate-1.2.1.min.js' %}"></script>
+<script type="application/javascript" src="{% static 'materialadmin/js/libs/bootstrap/bootstrap.min.js' %}"></script>
+<script type="application/javascript" src="{% static 'materialadmin/js/libs/nanoscroller/jquery.nanoscroller.min.js' %}"></script>
+<script type="application/javascript" src="{% static 'materialadmin/js/core/source/App.min.js' %}"></script>
 {% block extra_js %}{% endblock %}
 </body>
+
 </html>

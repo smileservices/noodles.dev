@@ -4,31 +4,21 @@ import {makeId} from "./utils";
 import onClickOutside from "react-onclickoutside";
 
 function AccountDropdownMenu(props) {
-    const [expanded, setExpanded] = useState(false);
-    const [logoutForm, setLogoutForm] = useState(false);
-    AccountDropdownMenu.handleClickOutside = () => {
-        setExpanded(false);
-        setLogoutForm(false);
-    }
 
     return (
-        <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" onClick={event => {
-                setExpanded(!expanded);
-                setLogoutForm(false);
-            }}>
-                <i className="fas fa-user-circle" aria-hidden="true"></i>
+        <li className="dropdown">
+            <a href="javascript:void(0);" className="dropdown-toggle ink-reaction" data-toggle="dropdown">
+                <i className="fa fa-user" aria-hidden="true"> </i> {gettext('Account')}
             </a>
-            <div className={expanded ? "dropdown-menu dropdown-menu-account show" : "dropdown-menu"}>
-                <a className="dropdown-item" href={ROUTES.account.settings}>{gettext('Settings')}</a>
-                <a className="dropdown-item" href="#" onClick={() => props.logout()}>{gettext('Logout')}</a>
-            </div>
+            <ul className="dropdown-menu animation-dock">
+                <li className="dropdown-header">{gettext('Account')}</li>
+                <li><a href={ROUTES.account.settings}>{gettext('Settings')}</a></li>
+                <li><a href="#" onClick={() => props.logout()}><i
+                    className="fa fa-fw fa-power-off text-danger"> </i> {gettext('Logout')}</a></li>
+            </ul>
         </li>
     )
 }
 
-const clickOutsideConfig = {
-    handleClickOutside: () => AccountDropdownMenu.handleClickOutside
-};
 
-export default onClickOutside(AccountDropdownMenu, clickOutsideConfig);
+export default AccountDropdownMenu;
