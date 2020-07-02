@@ -6,7 +6,6 @@ import {PeopleListing} from "./components/PeopleListing";
 import {list} from "../../../src/api_interface/list";
 import {TablePaginationLayout} from "../../../src/components/TablePaginationLayout";
 import {PersonEditForm} from "./components/PersonEditForm";
-import {PaginationDropdown, PaginationElement} from "../../../src/components/pagination";
 import {makeId} from "../../../src/components/utils";
 
 function Content() {
