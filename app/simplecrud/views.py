@@ -10,7 +10,6 @@ from .models import People
 def AdminApp(request):
     return render(request, 'simplecrud/admin/main.html')
 
-
 class PeopleAdminViewset(ModelViewSet):
     serializer_class = PeopleSerializer
     queryset = PeopleSerializer.queryset.all()

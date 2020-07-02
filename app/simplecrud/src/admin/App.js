@@ -4,36 +4,44 @@ import AppLayout from "../../../dashboard/src/layout/AppLayout";
 import {Alert} from "../../../src/components/Alert";
 import {PeopleListing} from "./components/PeopleListing";
 import {list} from "../../../src/api_interface/list";
-import {TableFilterLayout} from "../../../src/components/TableFilterLayout";
+import {TablePaginationLayout} from "../../../src/components/TablePaginationLayout";
 import {PersonEditForm} from "./components/PersonEditForm";
+import {PaginationDropdown, PaginationElement} from "../../../src/components/pagination";
+import {makeId} from "../../../src/components/utils";
 
 function Content() {
-    const [peopleListContent, setPeopleListContent] = useState({});
+    const [content, setContent] = useState({});
     const [query, setQuery] = useState({});
+    const [pagination, setPagination] = useState({
+        options: [2,4,5,10],
+        resultsPerPage: 5,
+        current: 1,
+        offset: 0
+    });
     const [alert, setAlert] = useState({});
 
     const [personEdit, setPersonEdit] = useState(false);
 
-    console.log('rendered content');
-
-    useEffect(async () => {
+    useEffect(() => {
         list(
             SIMPLECRUD_ADMIN.api_endpoint,
             'peoples',
-            setPeopleListContent,
+            setContent,
             data => (
-                <TableFilterLayout
+                <TablePaginationLayout
                     key="table-people"
                     data={data}
-                    filterBy={["name", "age", "nationality"]}
                     header={["ID", "name", "age", "nationality", "", ""]}
+                    setPagination={setPagination}
+                    pagination={pagination}
                     mapFunction={(person, idx) => <PeopleListing key={"person-list-" + person.id} person={person}
-                                            editAction={person => setPersonEdit(person)} deleteAction={deletePerson}/>}
+                                                                 editAction={person => setPersonEdit(person)}
+                                                                 deleteAction={deletePerson}/>}
                 />
             ),
-            query,
+            pagination,
         )
-    }, []);
+    }, [pagination]);
 
     function updatePerson(person) {
         console.log('Edit Person', person)
@@ -50,26 +58,28 @@ function Content() {
     return (
         <section>
             <div className="section-body contain-lg">
-            {alert ? <Alert text={alert.text} type={alert.type}/> : ""}
-            <div className="card">
-                <div className="card-header">
+                {alert ? <Alert text={alert.text} type={alert.type}/> : ""}
+                <div className="card">
+                    <div className="card-header">
 
-                </div>
-                <div className="card-body">
-                    {peopleListContent.display}
-                </div>
-            </div>
-            {personEdit
-                ?
-                <div className="card card-underline">
-                    <div className="card-head"><header>Edit Person {personEdit.name}</header></div>
+                    </div>
                     <div className="card-body">
-                        <PersonEditForm person={personEdit} />
-                        <a className="btn btn-outline-primary" onClick={e => setPersonEdit(false)}>cancel</a>
+                        {content.display}
                     </div>
                 </div>
-                : ''
-            }
+                {personEdit
+                    ?
+                    <div className="card card-underline">
+                        <div className="card-head">
+                            <header>Edit Person {personEdit.name}</header>
+                        </div>
+                        <div className="card-body">
+                            <PersonEditForm person={personEdit}/>
+                            <a className="btn btn-outline-primary" onClick={e => setPersonEdit(false)}>cancel</a>
+                        </div>
+                    </div>
+                    : ''
+                }
             </div>
         </section>
     )

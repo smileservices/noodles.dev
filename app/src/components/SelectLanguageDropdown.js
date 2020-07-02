@@ -10,16 +10,16 @@ function SelectLanguageDropdown(props) {
 
     return (
         <li className="dropdown">
-            <a href="javascript:void(0);" className="dropdown-toggle ink-reaction" data-toggle="dropdown">
+            <a className="dropdown-toggle ink-reaction" data-toggle="dropdown">
                 <i className="fa fa-language" aria-hidden="true"> </i> {gettext('Language')}
             </a>
             <ul className="dropdown-menu animation-dock">
                 <li className="dropdown-header">{gettext('Select language')}</li>
                  { LANGUAGES.map(language=>(
-                    <li><a className={language.id===LANGUAGE_CODE ? "selected" : ""} onClick={event => {
+                    <li key={makeId(7)}><a className={language.id===LANGUAGE_CODE ? "selected" : ""} onClick={event => {
                         event.preventDefault();
                         changeLanguage(language.id)
-                    }} key={makeId(7)}>{language.text}</a></li>
+                    }}>{language.text}</a></li>
                 ))}
             </ul>
         </li>

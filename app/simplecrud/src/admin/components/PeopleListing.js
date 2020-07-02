@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {ConfirmComponent} from "../../../../src/components/form";
 
 export const PeopleListing = ({person, editAction, deleteAction}) => {
-
     return (
         <tr>
             <td>{person.id}</td>

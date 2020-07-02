@@ -16,7 +16,7 @@ export default function SideBarLayout({links}) {
             <div className="menubar-fixed-panel">
                 <div>
                     <a className="btn btn-icon-toggle menubar-toggle" data-toggle="menubar"
-                       href="javascript:void(0);">
+                       href="#">
                         <i className="fa fa-bars"> </i>
                     </a>
                 </div>

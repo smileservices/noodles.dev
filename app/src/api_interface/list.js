@@ -1,24 +1,22 @@
 import {Waiting} from "../components/Waiting";
 import {Alert} from "../components/Alert";
 
-export function list(
+export async function list(
     list_endpoint,
     dataName,
     setContent,
     displayData,
-    query={}
+    pagination,
 ) {
     setContent({
         display: <Waiting text={'Retrieving ' + dataName + ' list ...'}/>,
         data: false
     })
 
-    const url = (() => {
-        console.log(query);
-        return list_endpoint;
-    })();
+    let url = list_endpoint;
+    url += '?limit='+pagination.resultsPerPage+'&offset='+pagination.offset;
 
-    fetch(url, {
+    await fetch(url, {
         method: "GET"
     }).then(result => {
         if (result.ok) {

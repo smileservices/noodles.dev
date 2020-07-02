@@ -7,7 +7,7 @@ function AccountDropdownMenu(props) {
 
     return (
         <li className="dropdown">
-            <a href="javascript:void(0);" className="dropdown-toggle ink-reaction" data-toggle="dropdown">
+            <a className="dropdown-toggle ink-reaction" data-toggle="dropdown">
                 <i className="fa fa-user" aria-hidden="true"> </i> {gettext('Account')}
             </a>
             <ul className="dropdown-menu animation-dock">
