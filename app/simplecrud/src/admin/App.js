@@ -39,6 +39,7 @@ function Content() {
                 />
             ),
             pagination,
+            query
         )
     }, [pagination]);
 
@@ -66,19 +67,6 @@ function Content() {
                         {content.display}
                     </div>
                 </div>
-                {personEdit
-                    ?
-                    <div className="card card-underline">
-                        <div className="card-head">
-                            <header>Edit Person {personEdit.name}</header>
-                        </div>
-                        <div className="card-body">
-                            <PersonEditForm person={personEdit}/>
-                            <a className="btn btn-outline-primary" onClick={e => setPersonEdit(false)}>cancel</a>
-                        </div>
-                    </div>
-                    : ''
-                }
             </div>
         </section>
     )

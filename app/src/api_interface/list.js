@@ -7,6 +7,7 @@ export async function list(
     setContent,
     displayData,
     pagination,
+    query
 ) {
     setContent({
         display: <Waiting text={'Retrieving ' + dataName + ' list ...'}/>,

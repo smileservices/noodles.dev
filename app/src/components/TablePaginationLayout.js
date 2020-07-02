@@ -65,7 +65,7 @@ export const TablePaginationLayout = ({data, mapFunction, header, pagination, se
                 </tr>
                 </thead>
                 <tbody>
-                {data['results'].map((item, idx) => mapFunction(item, idx))}
+                    {data['results'].map((item, idx) => mapFunction(item, idx))}
                 </tbody>
             </table>
             <div className="pull-left">
