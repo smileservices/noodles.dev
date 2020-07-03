@@ -77,7 +77,9 @@ function Content() {
                     <TableLayout
                         key="table-people"
                         data={data.results}
-                        header={["ID", "name", "age", "nationality", "", ""]}
+                        header={[{id: "ID"}, {name: "name"}, {age: "age"}, {nationality: "nationality"}, "edit", "delete"]}
+                        querySort={querySort}
+                        setQuerySort={setQuerySort}
                         mapFunction={
                             (person, idx) => <PeopleListing key={"person-list-" + person.id}
                                                             person={person}

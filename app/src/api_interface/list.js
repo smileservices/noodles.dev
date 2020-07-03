@@ -12,6 +12,16 @@ export async function list(
     Object.keys(queryFilter).map(key => {
         url += '&'+key+'='+queryFilter[key]
     })
+    // parse sort query
+    if (Object.keys(querySort).length > 0) {
+        url += '&ordering=';
+        let orderArr = []
+        Object.keys(querySort).map(key => {
+            const direction = querySort[key];
+            orderArr.push(direction + key);
+        })
+        url += orderArr.join(',');
+    }
     await fetch(url, {
         method: "GET"
     }).then(result => {

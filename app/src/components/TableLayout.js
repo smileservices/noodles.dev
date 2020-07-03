@@ -1,68 +1,40 @@
 import React from 'react';
 import {makeId} from "./utils";
-import {PaginationDropdown, PaginationElement} from "./pagination";
-
-const FilterModal = ({query, apply}) => {
-    return (
-        <div className="modal fade" id="filterModal" role="dialog" aria-labelledby="myModalLabel">
-            <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                        <h4 className="modal-title" id="myModalLabel">Modal title</h4>
-                    </div>
-                    <div className="modal-body">
-                        ...
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Filter</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-const SortModal = ({query, apply}) => {
-    return (
-        <div className="modal fade" id="sortModal" role="dialog" aria-labelledby="myModalLabel">
-            <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                        <h4 className="modal-title" id="myModalLabel">Modal title</h4>
-                    </div>
-                    <div className="modal-body">
-                        ...
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Sort</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
+import {SortComponent} from "./SortComponent";
 
 
-export const TableLayout = ({data, mapFunction, header, pagination, setPagination}) => {
+export const TableLayout = ({data, mapFunction, header, querySort, setQuerySort}) => {
 
     return (
-            <table className="table table-striped">
-                <thead>
-                <tr>
-                    {header.map(columnName => (
-                        <th key={makeId(4)}>{columnName}</th>
-                    ))}
-                </tr>
-                </thead>
-                <tbody>
-                    {data.map((item, idx) => mapFunction(item, idx))}
-                </tbody>
-            </table>
+        <table className="table table-striped">
+            <thead>
+            <tr>
+                {header.map(column => {
+                        //if column is object, then make the row sortable
+                        if (typeof column === 'object') {
+                            const name = Object.keys(column);
+                            const displayName = column[name];
+                            return (
+                                <th key={"column-head-" + displayName}>
+                                    {displayName}
+                                    <div className="pull-right">
+                                        <SortComponent name={name}
+                                                       querySort={querySort}
+                                                       setQuerySort={setQuerySort}
+                                        />
+                                    </div>
+                                </th>
+                            );
+                        } else {
+                            return (<th key={"column-head-" + column}>{column}</th>);
+                        }
+                    }
+                )}
+            </tr>
+            </thead>
+            <tbody>
+            {data.map((item, idx) => mapFunction(item, idx))}
+            </tbody>
+        </table>
     )
 }
