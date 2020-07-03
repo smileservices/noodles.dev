@@ -35,6 +35,7 @@ export const PaginationElement = ({pagination, resultsCount, setPagination}) => 
         e.preventDefault();
         setPagination({...pagination, offset: pagination.resultsPerPage*(page-1), current: page});
     }
+    if (resultsCount === 0) return '';
     return (
         <ul className="pagination">
             {pagination.current !== 1 ?

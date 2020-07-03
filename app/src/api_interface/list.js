@@ -2,13 +2,16 @@ export async function list(
     list_endpoint,
     pagination,
     setData,
-    setWaiting,
-    setError,
-    query
+    setWaiting, setError,
+    queryFilter, querySort, querySearch
 ) {
     setWaiting('Retrieving data');
     let url = list_endpoint;
     url += '?limit='+pagination.resultsPerPage+'&offset='+pagination.offset;
+    // parse filter query
+    Object.keys(queryFilter).map(key => {
+        url += '&'+key+'='+queryFilter[key]
+    })
     await fetch(url, {
         method: "GET"
     }).then(result => {

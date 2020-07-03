@@ -4,37 +4,59 @@ import AppLayout from "../../../dashboard/src/layout/AppLayout";
 import {PeopleListing} from "./components/PeopleListing";
 import {list} from "../../../src/api_interface/list";
 import {TableLayout} from "../../../src/components/TableLayout";
-import {PersonEditForm} from "./components/PersonEditForm";
 import {makeId} from "../../../src/components/utils";
 import {PaginationDropdown, PaginationElement} from "../../../src/components/pagination";
 import {Waiting} from "../../../src/components/Waiting";
 import {Alert} from "../../../src/components/Alert";
+import {FilterComponent} from "../../../src/components/FilterComponent";
 
 function Content() {
     const [data, setData] = useState({});
     const [waiting, setWaiting] = useState('');
     const [hasError, setError] = useState('');
-    const [query, setQuery] = useState({});
+    const [alert, setAlert] = useState({});
+
     const [pagination, setPagination] = useState({
         options: [2, 4, 5, 10],
         resultsPerPage: 5,
         current: 1,
         offset: 0
     });
-    const [alert, setAlert] = useState({});
+
+    const [queryFilter, setQueryFilter] = useState({});
+    const [querySort, setQuerySort] = useState({});
+    const [querySearch, setQuerySearch] = useState({});
 
     const [personEdit, setPersonEdit] = useState(false);
+
+    const filterFields = {
+        nationality: {
+            text: 'Nationality',
+            options: {
+                ro: 'Romanian',
+                au: 'Austrian',
+                en: 'Endlish',
+            }
+        },
+        age: {
+            text: 'Age',
+            options: {
+                15: '15',
+                12: '12',
+                13: '13',
+            }
+        }
+    }
 
     useEffect(() => {
         list(
             SIMPLECRUD_ADMIN.api_endpoint,
             pagination,
             setData,
-            setWaiting,
-            setError,
-            query
+            setWaiting, setError,
+            queryFilter, querySort, querySearch
         )
-    }, [pagination]);
+    }, [pagination, queryFilter, querySort, querySearch]);
 
     function updatePerson(person) {
         console.log('Edit Person', person)
@@ -50,7 +72,7 @@ function Content() {
 
     const DisplayContent = () => {
         function Table() {
-            if (data.results) {
+            if (data.results && data.results.length > 0) {
                 return (
                     <TableLayout
                         key="table-people"
@@ -109,9 +131,11 @@ function Content() {
             <div className="section-body contain-lg">
                 {alert ? <Alert text={alert.text} type={alert.type}/> : ""}
                 <div className="card">
-                    <div className="card-head">
-                        <header>Peoples Table</header>
+                    <div className="card-body">
+                        <FilterComponent fields={filterFields} queryFilter={queryFilter} setQueryFilter={setQueryFilter}/>
                     </div>
+                </div>
+                <div className="card">
                     {DisplayContent()}
                 </div>
             </div>
