@@ -1,37 +1,24 @@
-import {Waiting} from "../components/Waiting";
-import {Alert} from "../components/Alert";
-
 export async function list(
     list_endpoint,
-    dataName,
-    setContent,
-    displayData,
     pagination,
+    setData,
+    setWaiting,
+    setError,
     query
 ) {
-    setContent({
-        display: <Waiting text={'Retrieving ' + dataName + ' list ...'}/>,
-        data: false
-    })
-
+    setWaiting('Retrieving data');
     let url = list_endpoint;
     url += '?limit='+pagination.resultsPerPage+'&offset='+pagination.offset;
-
     await fetch(url, {
         method: "GET"
     }).then(result => {
+        setWaiting('');
         if (result.ok) {
             return result.json();
         } else {
-            setContent({
-                display: <Alert text={'Could not read ' + dataName + ' data: ' + result.statusText} type="danger"/>,
-                data: false
-            })
+            setError('Could not read data: ' + result.statusText)
         }
     }).then(data => {
-        setContent({
-            display: displayData(data),
-            data: data
-        })
+        setData(data);
     })
 }

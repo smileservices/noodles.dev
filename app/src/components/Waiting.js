@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function Waiting({text}) {
     return (
         <div className="waiting-container">

@@ -13,7 +13,7 @@ export const PaginationDropdown = ({pagination, setPagination}) => {
                     no => <li key={"pagination" + no} className={no === pagination.resultsPerPage ? 'selected' : ''}><a
                         onClick={e => {
                             e.preventDefault();
-                            setPagination({...pagination, resultsPerPage: no});
+                            setPagination({...pagination, current: 1, resultsPerPage: no, offset: 0});
                         }}>{no}</a></li>
                 )}
             </ul>

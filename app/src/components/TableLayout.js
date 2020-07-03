@@ -49,13 +49,9 @@ const SortModal = ({query, apply}) => {
 }
 
 
-export const TablePaginationLayout = ({data, mapFunction, header, pagination, setPagination}) => {
+export const TableLayout = ({data, mapFunction, header, pagination, setPagination}) => {
 
     return (
-        <div>
-            <div className="pull-right">
-                <PaginationDropdown key={makeId(5)} pagination={pagination} setPagination={setPagination}/>
-            </div>
             <table className="table table-striped">
                 <thead>
                 <tr>
@@ -65,12 +61,8 @@ export const TablePaginationLayout = ({data, mapFunction, header, pagination, se
                 </tr>
                 </thead>
                 <tbody>
-                    {data['results'].map((item, idx) => mapFunction(item, idx))}
+                    {data.map((item, idx) => mapFunction(item, idx))}
                 </tbody>
             </table>
-            <div className="pull-left">
-                <PaginationElement pagination={pagination} resultsCount={data.count} setPagination={setPagination}/>
-            </div>
-        </div>
     )
 }
