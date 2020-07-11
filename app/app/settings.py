@@ -53,11 +53,16 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
     # our app
+    'core',
     'rest_framework',
     'django_filters',
     'authentication',
     'dashboard',
     'frontend',
+    # users
+    'users',
+    'merchant',
+    # crud example
     'simplecrud',
 ]
 
@@ -219,6 +224,8 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 SITE_ID = 1
+AUTH_USER_MODEL = 'users.CustomUser'
+
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
