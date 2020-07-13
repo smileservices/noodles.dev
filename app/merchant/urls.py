@@ -1,10 +1,16 @@
+from django.urls import path
 from rest_framework.routers import DefaultRouter
-from .views import MerchantViewset
+from merchant import views
 
 router = DefaultRouter()
 router.register(
-    'api', MerchantViewset, basename='admin_merchant'
+    'api', views.MerchantViewset, basename='admin_merchant',
+)
+router.register(
+    'profile/api', views.MerchantProfileViewset, basename='profile_merchant_api',
 )
 
-urlpatterns = []
+urlpatterns = [
+    path('profile/', views.profile, name='profile_merchant')
+]
 urlpatterns += router.urls

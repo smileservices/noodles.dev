@@ -10,6 +10,7 @@ module.exports = {
         '/frontend/static/frontend/homepage': './app/frontend/src/homepage/App.js',
         '/dashboard/static/dashboard/dashboard': './app/dashboard/src/dashboard/App.js',
         '/dashboard/static/dashboard/account_settings': './app/dashboard/src/account/App.js',
+        '/merchant/static/merchant/dashboard_profile': './app/merchant/src/dashboard/Profile.js',
         '/simplecrud/static/simplecrud/simplecrud-admin': './app/simplecrud/src/admin/App.js',
     },
     output:{

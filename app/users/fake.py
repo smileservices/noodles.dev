@@ -14,5 +14,8 @@ def create_user(locale=False):
         email=email
     )
     new_user.save()
-    new_user.set_password('123')
+    password = '123'
+    new_user.set_password(password)
+    new_user.save()
+    print(f'created user {new_user.email} with password {password}')
     return new_user

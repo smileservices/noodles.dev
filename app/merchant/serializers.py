@@ -13,9 +13,17 @@ class MerchantNoteSerializer(serializers.ModelSerializer):
 
 class MerchantSerializer(serializers.ModelSerializer):
     queryset = MerchantModel.objects.all()
-    user = UserSerializer()
-    notes = MerchantNoteSerializer(many=True)
+    user = UserSerializer(read_only=True)
+    notes = MerchantNoteSerializer(many=True, required=False)
 
     class Meta:
         model = MerchantModel
         fields = ['id', 'name', 'active', 'date_created', 'notes', 'user']
+
+
+class MerchantProfileSerializer(serializers.ModelSerializer):
+    queryset = MerchantModel.objects.filter()
+
+    class Meta:
+        model = MerchantModel
+        fields = ['id', 'name', 'active', 'date_created']

@@ -7,7 +7,8 @@ from django.db import connection
 
 from users.models import CustomUser
 from merchant.fake import create_merchant, create_merchant_notes
-from simplecrud.fake import create_people
+from simplecrud.fake import create_person
+from users.fake import create_user
 
 
 class Command(BaseCommand):
@@ -55,8 +56,12 @@ class Command(BaseCommand):
             msg = self.create_superuser(credentials)
             self.stdout.write(msg)
 
+        # create users
+        for i in range(5):
+            create_user()
         # create people
-        create_people(25)
+        for i in range(15):
+            create_person()
         # create merchants
         for i in range(15):
             create_merchant()
