@@ -21,11 +21,4 @@ LOGGING = {
     },
 }
 
-LANGUAGES = [
-    ('en', 'English'),
-    ('vn', 'Tiếng việt'),
-    ('de', 'Deutsch'),
-    ('fr', 'Française'),
-]
-
 AUTOTRANSLATE_TRANSLATOR_SERVICE = 'autotranslate.services.GoogleAPITranslatorService'

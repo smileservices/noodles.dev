@@ -20,7 +20,7 @@ env = environ.Env(
 environ.Env.read_env("../.env")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # autotranslate app
-    'autotranslate',
     # authentication
     'django.contrib.sites',  # make sure sites is included
     'crispy_forms',
@@ -65,9 +63,6 @@ INSTALLED_APPS = [
     # crud example
     'simplecrud',
 ]
-
-if DEBUG:
-    INSTALLED_APPS.append('django_extensions')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -113,35 +108,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'app_file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': env.str('LOG_FILE_PATH'),
-        },
-        'autotranslate_file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': env.str('LOG_AUTOTRANSLATE_FILE_PATH'),
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['app_file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'autotranslate': {
-            'handlers': ['autotranslate_file'],
-            'level': 'INFO',
-            'propagate': True,
-        },
-    },
-}
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -176,17 +142,15 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale"), os.path.join(BASE_DIR, "dashboard")]
+
 LANGUAGES = [
     ('en', 'English'),
     ('vn', 'Tiếng việt'),
     ('de', 'Deutsch'),
     ('fr', 'Française'),
 ]
-
-LOCALE_PATHS = [os.path.join(BASE_DIR, "locale"), os.path.join(BASE_DIR, "dashboard")]
-AUTOTRANSLATE_TRANSLATOR_SERVICE = 'autotranslate.services.GoogleAPITranslatorService'
-GOOGLE_TRANSLATE_KEY = env.str('GOOG_TRANSLATE_KEY')
-GOOGLE_APPLICATION_CREDENTIALS = env.str('GOOGLE_APPLICATION_CREDENTIALS')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/

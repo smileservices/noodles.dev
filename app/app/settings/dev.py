@@ -8,7 +8,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'app_file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': os.path.join(os.path.abspath('/home/vldmr/dev/play/social_auth_implem'), 'app.log'),
         },
@@ -21,7 +21,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['app_file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'autotranslate': {
@@ -32,11 +32,6 @@ LOGGING = {
     },
 }
 
-LANGUAGES = [
-    ('en', 'English'),
-    ('vn', 'Tiếng việt'),
-    ('de', 'Deutsch'),
-    ('fr', 'Française'),
-]
-
 AUTOTRANSLATE_TRANSLATOR_SERVICE = 'autotranslate.services.GoogleAPITranslatorService'
+GOOGLE_TRANSLATE_KEY = env.str('GOOG_TRANSLATE_KEY')
+GOOGLE_APPLICATION_CREDENTIALS = env.str('GOOGLE_APPLICATION_CREDENTIALS')
