@@ -61,3 +61,8 @@ section.content {
   color: darkblue;
   margin-right: 30px;
 }
+
+ul.errorlist li {
+  margin: 0.5rem 0;
+  color: var(--color-error);
+}

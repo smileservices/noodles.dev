@@ -12,19 +12,29 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-{% include "frontend/navbar.html" %}
+
+{% if request.user.is_authenticated %}
+    {% include "dashboard/navbar.html" %}
+    {% include "dashboard/sidebar.html" %}
+{% else %}
+    {% include "frontend/navbar.html" %}
+{% endif %}
 
 <main>
-{% block content %}{% endblock %}
+    {% block content %}{% endblock %}
 </main>
 
 <footer class="footer mt-auto py-3">
-  <div class="container">
-    <span class="text-muted">Place sticky footer content here.</span>
-  </div>
+    <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+    </div>
 </footer>
 
 <script>
+    function toggle_sidebar() {
+        document.querySelector('aside').classList.toggle('hidden');
+    }
+
     function setLanguage(languageId) {
         document.cookie = "django_language=" + languageId + ";path=/;max-age=" + 60 * 60 * 24 * 365;
         document.location.reload();
