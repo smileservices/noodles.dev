@@ -1,0 +1,20 @@
+form {
+  margin: 1rem 0;
+}
+
+form .form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+form .form-group input {
+  flex-grow: 1;
+}
+
+form .btn.submit {
+  float: right;
+  color: var(--form-submit-button-color);
+  background-color: var(--form-submit-button-bg);
+}

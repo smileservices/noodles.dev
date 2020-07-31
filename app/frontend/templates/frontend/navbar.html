@@ -2,7 +2,7 @@
 
 <nav>
     <div class="left-side">
-        <a href="#">Logo</a>
+        <a href="{% url "homepage" %}">Logo</a>
     </div>
 
     <div class="right-side collapsible">
@@ -16,6 +16,7 @@
                     {% endfor %}
                 </div>
             </div>
+            <a href="{% url "account_login" %}">Sign In</a>
         </div>
     </div>
 </nav>

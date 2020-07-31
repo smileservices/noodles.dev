@@ -2,9 +2,18 @@
 {% load static %}
 
 {% block content %}
-    <div id="app"></div>
+    <p>
+        Remove the space from wrapped rows or columns
+        The align-content property gives you options for distributing the space around wrapped rows or columns.
+        The
+        options are flex-start, flex-end, space-between, space-around and stretch. To simply remove the space
+        around
+        wrapped columns, set align-content to center.
+    </p>
 {% endblock %}
 
+{# use this if you have a react app #}
 {% block extra_js %}
-    <script src="{% static 'frontend/homepage.js' %}"></script>
+    <script type="application/javascript" src="{% url 'javascript-catalog' %}"></script>
+    <script type="application/javascript" src="{% static 'js/react-bundle.js' %}"></script>
 {% endblock %}

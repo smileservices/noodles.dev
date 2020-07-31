@@ -1,21 +1,22 @@
-{% extends "account/base.html" %}
+{% extends "frontend/base.html" %}
 
 {% load i18n %}
 {% load account socialaccount %}
 {% load crispy_forms_tags %}
 {% load static %}
-
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
 
-    <h1><i class="fas fa-angle-double-right"> </i> {% trans "Sign In" %}</h1>
+    <div class="auth-container">
+    <h1>{% trans "Sign In" %}</h1>
 
     {% get_providers as socialaccount_providers %}
 
     {% if socialaccount_providers %}
 
-        <p>{% blocktrans with site.name as site_name %}Sign in with social account or <a href="{{ signup_url }}">sign up</a> with username and password{% endblocktrans %}</p>
+        <p>{% blocktrans with site.name as site_name %}Sign in with social account or
+            <a href="{{ signup_url }}">sign up</a> with username and password{% endblocktrans %}</p>
 
         <div class="socialaccount_providers">
             {% include "socialaccount/snippets/provider_list.html" with process="login" %}
@@ -37,6 +38,8 @@
         {% endif %}
         <a class="" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
 
-        <button class="btn btn-primary float-right" type="submit">{% trans "Sign In" %}</button>
+        <button class="btn submit" type="submit">{% trans "Sign In" %}</button>
     </form>
+    </div>
+
 {% endblock %}

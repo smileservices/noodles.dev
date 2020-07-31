@@ -1,0 +1,42 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+@import "node_modules/bootstrap/scss/utilities";
+
+:root {
+    /* ---- colours ---- */
+    --color-main: whitesmoke;
+    --color-light: #f8f8f8;
+    --color-tone-light: #FFFFFF;
+    --color-tone-dark: #cfcfcf;
+    --color-dark: #b5b5b5;
+
+    --selected-bg: #a87070;
+    --dropdown-open-bg: green;
+    --selected-font: white;
+    --dropdown-open-font: white;
+
+    --form-submit-button-color: red;
+    --form-submit-button-bg: blue;
+
+    /* ---- sizes ---- */
+    --topbar-height: 3rem;
+    --sidebar-width: 15rem;
+}
+
+@import "reset";
+@import "navbar";
+@import "dropdowns";
+@import "sidebar";
+@import "responsive";
+@import "content";
+@import "forms";
+@import "buttons";
+@import "authentication";
+
+body {
+  font-family: $font-family-sans-serif;
+}
+
+@import "node_modules/bootstrap/scss/forms";
+@import "node_modules/bootstrap/scss/alert";
