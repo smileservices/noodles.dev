@@ -3,29 +3,45 @@
 @import "node_modules/bootstrap/scss/mixins";
 @import "node_modules/bootstrap/scss/utilities";
 
+// text and general elements
+$theme-color-main: #36383d;
+$theme-color-main-contrast: #e0e1ea;
+
+// for special elements like buttons
+$theme-color-accent: #1c59d2;
+
+//important elements color scheme
+//navbar
+$nav-bg : $theme-color-main;
+$nav-text: $theme-color-main-contrast;
+$nav-hover-bg: lighten($nav-bg, 20);
+$nav-hover-text: $nav-text;
+//dropdowns
+$dropdown-bg: lighten($theme-color-main, 10);
+$dropdown-text: lighten($theme-color-main-contrast, 10);
+$dropdown-hover-bg: darken($dropdown-bg, 10);
+$dropdown-hover-text: lighten($dropdown-text, 10);
+//sidebar
+$sidebar-bg: $theme-color-main;
+$sidebar-text: $theme-color-main-contrast;
+$sidebar-hover-bg: lighten($sidebar-bg, 10);
+$sidebar-hover-text: lighten($sidebar-text, 10);
+
+
 :root {
-    /* ---- colours ---- */
-    --color-main: whitesmoke;
-    --color-light: #f8f8f8;
-    --color-tone-light: #FFFFFF;
-    --color-tone-dark: #cfcfcf;
-    --color-dark: #b5b5b5;
-    --color-error: red;
-
-    --selected-bg: #a87070;
-    --dropdown-open-bg: green;
-    --selected-font: white;
-    --dropdown-open-font: white;
-
-    --form-submit-button-color: red;
-    --form-submit-button-bg: blue;
-
     /* ---- sizes ---- */
     --topbar-height: 3rem;
     --sidebar-width: 15rem;
 }
 
+body {
+  font-family: $font-family-sans-serif;
+  color: $theme-color-main;
+  background-color: $theme-color-main-contrast;
+}
+
 @import "reset";
+@import "transitions";
 @import "navbar";
 @import "dropdowns";
 @import "sidebar";
@@ -34,10 +50,6 @@
 @import "forms";
 @import "buttons";
 @import "authentication";
-
-body {
-  font-family: $font-family-sans-serif;
-}
 
 @import "node_modules/bootstrap/scss/forms";
 @import "node_modules/bootstrap/scss/alert";

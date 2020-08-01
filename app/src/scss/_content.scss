@@ -1,7 +1,10 @@
 main {
     padding: 30px;
-    background-color: var(--color-main);
     min-height: 80vh;
+}
+
+h1,h2,h3,h4,h5 {
+    color: $theme-color-accent;
 }
 
 h1 {
