@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'core',
     'rest_framework',
     'django_filters',
-    'authentication',
     'dashboard',
     'frontend',
     # users
@@ -92,7 +91,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['authentication/templates/allauth/', 'shared_templates'],
+        'DIRS': ['allauth/templates/allauth/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

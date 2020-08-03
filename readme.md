@@ -1,11 +1,14 @@
 # Template for multi-user platform
-multi-lingual, automated translations, social authentication, REST API ready, ReactJs frontend and dashboard, bootstrap4
+multi-lingual, automated translations, social authentication, REST API ready, minimal vanilla js code, reactJs mini-apps ready
 
 ## Features
-- frontend and dashboard written in reactjs
-- socialauthtentication
+- frontend and dashboard apps
 - django-rest ready
-- bundled reactjs packages
+- social auth implemented
+- bundled reactjs packages to use mini react apps
+- minimized responsive navbar/sidebar with html/css and minimal js
+- no js libraries
+- modular scss imports from bootstrap
 
 ## Installation
 first of all make sure to create the .env file and populate it using the .env.template structure
@@ -19,13 +22,14 @@ python manage.py runserver
 ```
 
 ## Settings
-we are using split settings (in folder root/app/app/settings)
-__init__.py hosts base settings
-dev.py - for development settings
-prod.py - for production 
+- using split settings (in folder root/app/app/settings)
+- __init__.py hosts base settings
+- dev.py - for development settings
+- prod.py - for production 
 
 ## Social Auth Implementation
-using django-allauth
+- using django-allauth
+- allauth app is just for overloading elements from original like forms/templates
 
 ## Autotranslate
 this implementation is a fork of https://github.com/ankitpopli1891/django-autotranslate/
