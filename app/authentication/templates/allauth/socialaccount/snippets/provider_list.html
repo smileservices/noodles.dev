@@ -4,9 +4,8 @@
 {% get_providers as socialaccount_providers %}
 
 {% for provider in socialaccount_providers %}
-  <a class="socialaccount_provider {{ provider.id }} btn btn-primary btn-block" title="{{provider.name}}" class="{{provider.id}}"
+  <a class="socialaccount_provider btn {{ provider.id }}" title="{{provider.name}}" class="{{provider.id}}"
      href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
-     <i class="fab fa-{{ provider.id }} fa-lg" aria-hidden="true"> </i>
-      {% blocktrans with provider.name as provider_name %}Sign up using {{ provider_name }}{% endblocktrans %}
+      {% blocktrans with provider.name as provider_name %}Use {{ provider_name }} Account{% endblocktrans %}
   </a>
 {% endfor %}

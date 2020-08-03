@@ -1,15 +1,15 @@
 <script>
-    const USER_FULL_NAME="{{ request.user.get_full_name }}";
-    const USER_AUTH={% if user.is_authenticated %}true{% else %}false{% endif %};
-    const LANGUAGE_CODE="{{ LANGUAGE_CODE }}"
+    const USER_FULL_NAME = "{{ request.user.get_full_name }}";
+    const USER_AUTH = {% if user.is_authenticated %}true{% else %}false{% endif %};
+    const LANGUAGE_CODE = "{{ LANGUAGE_CODE }}"
     let _langs = [];
     {% for lang in LANGUAGES %}
         _langs.push(
-                {
-                    'id': '{{ lang.0 }}',
-                    'text': '{{ lang.1 }}'
-                }
-            )
+            {
+                'id': '{{ lang.0 }}',
+                'text': '{{ lang.1 }}'
+            }
+        )
     {% endfor %}
     const LANGUAGES = JSON.parse(JSON.stringify(_langs));
     const ROUTES = {

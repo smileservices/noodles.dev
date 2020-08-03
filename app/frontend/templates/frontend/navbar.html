@@ -1,0 +1,22 @@
+{% load i18n %}
+
+<nav>
+    <div class="left-side">
+        <a href="{% url "homepage" %}">Logo</a>
+    </div>
+
+    <div class="right-side collapsible">
+        <a href="#" class="collapse-toggle">Show links <span class="icon-angle-down"></span></a>
+        <div class="right-side collapsible-links">
+            <div class="dropdown hidden">
+                <a class="dropdown-button" href="#">Language <span class="icon-angle-down"></span></a>
+                <div class="dropdown-menu">
+                    {% for lang in LANGUAGES %}
+                        <a href="#" onclick="setLanguage('{{ lang.0 }}')" class="{% if LANGUAGE_CODE == lang.0 %}selected{% endif %}">{{ lang.1 }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <a href="{% url "account_login" %}">Sign In</a>
+        </div>
+    </div>
+</nav>

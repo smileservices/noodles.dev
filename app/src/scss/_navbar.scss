@@ -1,0 +1,35 @@
+nav {
+    background-color: $nav-bg;
+    height: var(--topbar-height);
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav a {
+    display: inline-block;
+    padding: 1rem;
+    text-decoration: none;
+    color: $nav-text;
+}
+
+nav a > svg {
+    fill: $nav-text;
+}
+
+nav a:hover {
+    background-color: $nav-hover-bg;
+    color: $nav-hover-text;
+}
+
+nav a:hover > svg {
+    fill: $nav-hover-text;
+}
+
+nav .left-side, .right-side {
+    display: flex;
+}
+
+nav .show-collapsed-links {
+    display: none;
+}

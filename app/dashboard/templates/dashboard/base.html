@@ -7,17 +7,73 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block head_title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'bootstrap/css/min.css' %}">
-    <link rel="stylesheet" href="{% static "fontawesome/css/all.min.css"%}">
-    <link rel="stylesheet" href="{% static 'dashboard/main.css' %}">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "fonts/style.css" %}">
+    <link rel="stylesheet" href="{% static "dashboard/css/main.css" %}">
     {% block extra_css %}{% endblock %}
 </head>
+
+
 <body>
-{% block content %}{% endblock %}
-{% include 'globals.html' %}
-<script type="application/javascript" src="{% url 'javascript-catalog' %}"></script>
-<script type="application/javascript" src="{% static 'js/react-bundle.js' %}"></script>
+{% block navbar %}
+    {% include "dashboard/navbar.html" %}
+{% endblock %}
+{% block sidebar %}
+    {% include "dashboard/sidebar.html" %}
+{% endblock %}
+<main>
+    <section class="content">
+        {% block content %}{% endblock %}
+    </section>
+</main>
+<script>
+    function toggle_sidebar() {
+        document.querySelector('aside').classList.toggle('hidden');
+    }
+
+    function setLanguage(languageId) {
+        document.cookie = "django_language=" + languageId + ";path=/;max-age=" + 60 * 60 * 24 * 365;
+        document.location.reload();
+    }
+
+    document.querySelector('.collapsible .collapse-toggle').onclick = evt => {
+        evt.target.closest('.collapsible').classList.toggle('show');
+    }
+
+    let dropdownsNodes = document.querySelectorAll(".dropdown");
+    let dropdownArray = Array.prototype.slice.call(dropdownsNodes, 0);
+    dropdownArray.forEach(dropdown => {
+        let button = dropdown.querySelector('a.dropdown-button');
+        let isSubmenu = dropdown.classList.contains('submenu');
+        let dropdownOpen = () => {
+            if (dropdown.classList.contains('hidden')) dropdown.classList.remove('hidden');
+        }
+        let dropdownClose = () => {
+            if (!dropdown.classList.contains('hidden')) dropdown.classList.add('hidden');
+            // close submenus
+            let submenus = dropdown.querySelectorAll('.dropdown:not(.hidden)');
+            submenus
+                ? submenus.forEach(dropdown => dropdown.classList.add('hidden'))
+                : false;
+        }
+        button.onclick = evt => {
+            evt.preventDefault();
+            if (dropdown.classList.contains('hidden')) {
+                dropdownOpen();
+                if (!isSubmenu && window.onclick) window.onclick();
+                dropdown.onclick = ev => ev.stopPropagation();
+                if (!isSubmenu) setTimeout(() => window.onclick = ev => {
+                    dropdownClose();
+                    window.onclick = null;
+                }, 100);
+            } else {
+                dropdownClose();
+                if (!isSubmenu) window.onclick = null;
+            }
+        }
+    })
+</script>
 {% block extra_js %}{% endblock %}
 </body>
+
 </html>
