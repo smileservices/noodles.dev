@@ -1,7 +1,16 @@
 from . import *
 
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+INSTALLED_APPS.append('debug_toolbar')
 INSTALLED_APPS.append('django_extensions')
 INSTALLED_APPS.append('autotranslate')
+
+MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+
 
 LOGGING = {
     'version': 1,
