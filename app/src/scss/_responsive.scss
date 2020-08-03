@@ -1,52 +1,51 @@
 @media only screen and (min-width: 700px) {
-    nav .collapsible .collapse-toggle {
-        display: none;
-    }
+  nav .collapsible .collapse-toggle {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 700px) {
-    main {
-        padding: 1rem!important;
-    }
+  main {
+    padding: 1rem !important;
+  }
 
-    nav .collapsible {
-        display: flex;
-        flex-direction: row;
-        justify-content: end;
-    }
+  nav .collapsible {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+  }
 
-    nav .collapsible.collapse-toggle {
-        display: block;
-    }
+  nav .collapsible.collapse-toggle {
+    display: block;
+  }
 
-    nav .collapsible.show .collapsible-links {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: var(--topbar-height);
-        left: 0;
-        background-color: var(--color-dark);
-        border-top: 1px var(--color-tone-dark) solid;
-        width: 100%;
-        animation: growDown 300ms ease-in-out forwards;
-        transform-origin: top center;
-    }
+  nav .collapsible.show .collapsible-links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: var(--topbar-height);
+    left: 0;
+    background-color: $nav-bg;
+    width: 100%;
+    animation: growDown 300ms ease-in-out forwards;
+    transform-origin: top center;
+  }
 
-    nav .collapsible:not(.show) .collapsible-links {
-        display: none;
-    }
+  nav .collapsible:not(.show) .collapsible-links {
+    display: none;
+  }
 
-    nav .dropdown .dropdown-menu {
-        position: static;
-    }
+  nav .dropdown .dropdown-menu {
+    position: static;
+  }
 
-    nav .dropdown .dropdown-button {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+  nav .dropdown .dropdown-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-    nav .dropdown .dropdown-menu a {
-        padding-left: 2rem;
-    }
+  nav .dropdown .dropdown-menu a {
+    padding-left: 2rem;
+  }
 }

@@ -41,7 +41,7 @@
     }
 
     document.querySelector('.collapsible .collapse-toggle').onclick = evt => {
-        evt.target.parentElement.classList.toggle('show');
+        evt.target.closest('.collapsible').classList.toggle('show');
     }
 
     let dropdownsNodes = document.querySelectorAll(".dropdown");
