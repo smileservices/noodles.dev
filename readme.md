@@ -1,14 +1,31 @@
 # Template for multi-user platform
 multi-lingual, automated translations, social authentication, REST API ready, minimal vanilla js code, reactJs mini-apps ready
 
+## Problems trying to solve
+This is a more complete implementation of Django framework, opinionated:
+Many apps have become bloated and difficult to manage without having the need for it
+I believe web apps should focus on speed, efficiency and scalability. 
+A fast loading frontend can be obtained both by SPAs and cached server rendered pages. 
+While the SPA approach eases load on server, it requires a many hours invested in frontend development and maintenance.
+Few types of applications even need SPAs and a poorly built one means bad experience for the end user.
+Relying on too many js libraries bring vulnerability issues in security and stability, overhead in maintenance.
+
+## Use this implementation of Django if:
+1. there is no need for SPAs
+2. size of css/js bundles matters
+3. it's enough to rely on server rendered html with django templates and possible inject mini ReactJS apps
+4. REST protocol is enough
+5. want a multi-user app structure with multi-language and autotranslate support
+6. stable and easily implementable is preferred rather than having the latest tech hype
+
 ## Features
-- frontend and dashboard apps
-- django-rest ready
 - social auth implemented
-- bundled reactjs packages to use mini react apps
+- django-rest ready
+- frontend and dashboard apps
 - minimized responsive navbar/sidebar with html/css and minimal js
-- no js libraries
-- modular scss imports from bootstrap
+- bundled react js packages to use mini react apps
+- pure vanilla js
+- easy to use modular scss imports from bootstrap
 
 ## Installation
 first of all make sure to create the .env file and populate it using the .env.template structure
