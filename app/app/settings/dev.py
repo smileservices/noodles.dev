@@ -9,7 +9,7 @@ INSTALLED_APPS.append('debug_toolbar')
 INSTALLED_APPS.append('django_extensions')
 INSTALLED_APPS.append('autotranslate')
 
-MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+MIDDLEWARE.insert(9, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 
 LOGGING = {
