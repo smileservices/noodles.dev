@@ -8,7 +8,7 @@ $theme-color-main: #36383d;
 $theme-color-main-contrast: #e0e1ea;
 
 // for special elements like buttons
-$theme-color-accent: #1c59d2;
+$theme-color-accent: #309287;
 
 //important elements color scheme
 //navbar
@@ -40,17 +40,23 @@ body {
   background-color: $theme-color-main-contrast;
 }
 
+@import "node_modules/bootstrap/scss/forms";
+@import "node_modules/bootstrap/scss/alert";
+
 @import "reset";
-@import "transitions";
 @import "animations";
 @import "navbar";
 @import "dropdowns";
 @import "sidebar";
-@import "responsive";
 @import "content";
+@import "search_page";
+@import "create_resource_page";
+@import "homepage";
+@import "study_resource_detail";
+@import "page_sections";
+@import "pagination";
 @import "forms";
 @import "buttons";
 @import "authentication";
 
-@import "node_modules/bootstrap/scss/forms";
-@import "node_modules/bootstrap/scss/alert";
+@import "responsive";

@@ -44,8 +44,15 @@ export const PaginationElement = ({pagination, resultsCount, setPagination}) => 
             }
             {Array.from({length: totalPages}).map((_, i) => {
                     const pageNo = i+1;
+                    const pageActive = pageNo === pagination.current;
                     return (
-                        <li key={makeId(4)} className={pageNo === pagination.current ? "active" : ""}><a onClick={(e) => handlePageClick(e,pageNo)}>{pageNo}</a></li>)
+                        <li key={makeId(4)} className={pageActive ? "active" : ""}>
+                            {pageActive
+                                ? <span>{pageNo}</span>
+                                : <a onClick={(e) => handlePageClick(e, pageNo)}>{pageNo}</a>
+                            }
+                        </li>
+                    )
                 })
             }
             {pagination.current !== totalPages ?

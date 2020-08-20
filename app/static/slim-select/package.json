@@ -1,0 +1,87 @@
+{
+  "_from": "slim-select",
+  "_id": "slim-select@1.26.0",
+  "_inBundle": false,
+  "_integrity": "sha512-yCdxZNFTnEPcvXcatiwZKRPoLyMOtTppiA4LFrONFI7LqO/WlRyxCAL/Ks/nlXVdp0/Z/3V0QHZcaT9DmXuBhw==",
+  "_location": "/slim-select",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "slim-select",
+    "name": "slim-select",
+    "escapedName": "slim-select",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/slim-select/-/slim-select-1.26.0.tgz",
+  "_shasum": "c00afc7ab9bfbd885f67585eb059c30b0b847afe",
+  "_spec": "slim-select",
+  "_where": "/home/vldmr/dev/noodles/app",
+  "author": {
+    "name": "Brian Voelker",
+    "email": "brian@webiswhatido.com",
+    "url": "http://webiswhatido.com"
+  },
+  "bugs": {
+    "url": "https://github.com/brianvoe/slim-select/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Slim advanced select dropdown",
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.1.2",
+    "@vue/cli-plugin-typescript": "^4.1.2",
+    "@vue/cli-service": "^4.1.2",
+    "ajv": "^6.10.2",
+    "chance": "^1.1.4",
+    "clipboard": "^2.0.4",
+    "node-sass": "^4.13.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "prismjs": "^1.18.0",
+    "sass-loader": "^8.0.0",
+    "typescript": "^3.7.4",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.3",
+    "vue-template-compiler": "^2.6.11",
+    "vuex": "^3.1.2",
+    "webpack-cli": "^3.3.10"
+  },
+  "engines": {
+    "node": ">=8"
+  },
+  "homepage": "https://slimselectjs.com",
+  "keywords": [
+    "select",
+    "vanilla",
+    "dropdown",
+    "search",
+    "multiselect"
+  ],
+  "license": "MIT",
+  "main": "dist/slimselect.min.js",
+  "name": "slim-select",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brianvoe/slim-select.git"
+  },
+  "sass": "src/slim-select/slimselect.scss",
+  "scripts": {
+    "build": "npm run docs && npm run library",
+    "cleanDist": "rm dist/slimselectcss.min.js && rm dist/slimselectcss.js",
+    "dev": "vue-cli-service serve",
+    "docs": "vue-cli-service build",
+    "library": "rm -r dist && cd src/slim-select && webpack && cd ../../ && npm run cleanDist && npm run renameDist",
+    "lint": "vue-cli-service lint",
+    "renameDist": "mv 'dist/slimselectcss.css' 'dist/slimselect.css' && mv 'dist/slimselectcss.min.css' 'dist/slimselect.min.css'"
+  },
+  "style": "dist/slimselect.min.css",
+  "types": "dist/index.d.ts",
+  "version": "1.26.0"
+}

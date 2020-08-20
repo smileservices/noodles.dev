@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import Select from 'react-select';
+import Creatable, { makeCreatableSelect } from 'react-select/creatable';
 
 export const ConfirmComponent = ({buttonText, questionText, handleConfirm}) => {
     const [ask, setAsk] = useState(false);
@@ -23,15 +25,109 @@ export const ConfirmComponent = ({buttonText, questionText, handleConfirm}) => {
     )
 }
 
-export const Input = (props) => {
+export const Input = ({id, label, inputProps, smallText, error}) => {
     return (
         <div className="form-group">
-            <label htmlFor={props.id}>{props.label}</label>
-            <input {...props.inputProps} id={props.id} aria-describedby={props.id + 'help'} className="form-control"/>
-            {props.smallText
-                ? <small id={props.id + 'help'} className="form-text text-muted">{props.smallText}</small>
+            {label
+                ? (<label htmlFor={id}>{label}</label>)
+                : ''
+            }
+            <input {...inputProps} id={id} aria-describedby={id + 'help'} className="form-control"/>
+            {smallText
+                ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
+                : ''
+            }
+            {error
+                ? (<div className="invalid-feedback">{error}</div>)
                 : ''
             }
         </div>
     )
 }
+
+export const Textarea = ({id, label, inputProps, smallText, error}) => {
+    return (
+        <div className="form-group">
+            {label
+                ? (<label htmlFor={id}>{label}</label>)
+                : ''
+            }
+            <textarea id={id} cols="30" rows="5"
+                      aria-describedby={id + 'help'}
+                      className="form-control"
+                      {...inputProps}
+            />
+            {smallText
+                ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
+                : ''
+            }
+            {error
+                ? (<div className="invalid-feedback">{error}</div>)
+                : ''
+            }
+        </div>
+    )
+}
+
+export const SelectVanilla = ({id, label, inputProps, smallText, error, Options}) => {
+    return (
+        <div className="form-group">
+            {label
+                ? (<label htmlFor={id}>{label}</label>)
+                : ''
+            }
+            <select id={id}
+                    aria-describedby={id + 'help'}
+                    className="form-control"
+                    {...inputProps}
+            >
+                {Options}
+            </select>
+
+            {smallText
+                ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
+                : ''
+            }
+            {error
+                ? (<div className="invalid-feedback">{error}</div>)
+                : ''
+            }
+        </div>
+    )
+}
+
+export const SelectReact = ({id, label, smallText, error, options, value, onChange, props}) => (
+    <div className="form-group">
+        {label
+            ? (<label htmlFor={id}>{label}</label>)
+            : ''
+        }
+        <Select options={options} value={value} onChange={onChange} {...props} />
+        {smallText
+            ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
+            : ''
+        }
+        {error
+            ? (<div className="invalid-feedback">{error}</div>)
+            : ''
+        }
+    </div>
+)
+
+export const SelectReactCreatable = ({id, label, smallText, error, options, value, onChange, props}) => (
+    <div className="form-group">
+        {label
+            ? (<label htmlFor={id}>{label}</label>)
+            : ''
+        }
+        <Creatable options={options} value={value} onChange={onChange} {...props} />
+        {smallText
+            ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
+            : ''
+        }
+        {error
+            ? (<div className="invalid-feedback">{error}</div>)
+            : ''
+        }
+    </div>
+)

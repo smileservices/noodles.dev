@@ -1,30 +1,73 @@
 main {
-    padding: 30px;
-    min-height: 80vh;
+  padding: 30px;
+  min-height: 80vh;
 }
 
-h1,h2,h3,h4,h5 {
-    color: $theme-color-accent;
+h1, h2, h3, h4, h5 {
+  color: $theme-color-accent;
 }
 
 h1 {
-    font-weight: bold;
-    font-size: 1.7rem;
-    margin-bottom: 0.7rem;
+  font-weight: bold;
+  font-size: 1.7rem;
+  margin-bottom: 0.7rem;
 }
 
 h2 {
-    font-weight: bold;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 h3 {
-    font-weight: bold;
-    font-size: 1.3rem;
-    margin-bottom: 0.3rem;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.alert {
+  margin: 1rem 0;
 }
 
 small, .small {
   font-size: 0.875rem;
 }
+
+.waiting-container {
+  display: block;
+  margin: 1rem 0;
+  text-align: center;
+  padding: 1rem;
+  color: $theme-color-accent;
+  border: 1px solid;
+  border-radius: 0.25rem;
+
+  span {
+    margin: 0 1rem;
+  }
+}
+
+.alert {
+  position: relative;
+  span.close {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+  span.close:hover {
+    color: $theme-color-accent;
+  }
+}
+
+  span.close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  span.close:hover {
+    color: $theme-color-accent;
+  }

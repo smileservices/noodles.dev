@@ -1,19 +1,54 @@
 {% extends 'frontend/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
-{% block content %}
-    <p>
-        Remove the space from wrapped rows or columns
-        The align-content property gives you options for distributing the space around wrapped rows or columns.
-        The
-        options are flex-start, flex-end, space-between, space-around and stretch. To simply remove the space
-        around
-        wrapped columns, set align-content to center.
-    </p>
+{% block header %}
+    <header>
+        <div class="content">
+            <h1>turn noodles into code</h1>
+            <p>a community curated collection of tutorials and courses on web development</p>
+            {% include 'study_resource/search_bar_section.html' %}
+        </div>
+    </header>
 {% endblock %}
 
-{# use this if you have a react app #}
+{% block content %}
+    <section class="homepage">
+        {#        <section class="header">#}
+        {#            <h1>Homepage</h1>#}
+        {#        </section>#}
+
+        <section class="filtering collapsible">
+            <div href="#" class="collapse-toggle">Toggle Filters</div>
+            <div class="collapsible-content">
+                <form action="{% url 'search' %}" method="GET">
+                    {{ filter.form | crispy }}
+                    <button class="btn submit" type="submit">Filter</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="results-container">
+
+            <h3>Most appreciated:</h3>
+            <div class="results-selection">
+                {% for result in most_appreciated %}
+                    <div class="result">{% include 'study_resource/result.html' %}</div>
+                {% endfor %}
+            </div>
+
+            <h3>Latest added:</h3>
+            <div class="results-selection">
+                {% for result in latest %}
+                    <div class="result">{% include 'study_resource/result.html' %}</div>
+                {% endfor %}
+            </div>
+
+        </section>
+
+    </section>
+{% endblock %}
+
 {% block extra_js %}
-    <script type="application/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <script type="application/javascript" src="{% static 'js/react-bundle.js' %}"></script>
+
 {% endblock %}

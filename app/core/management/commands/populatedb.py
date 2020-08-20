@@ -1,14 +1,15 @@
 from io import StringIO
 
-from django.apps import apps
+from django.core.exceptions import ValidationError
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
+from django.db.utils import IntegrityError
 from django.db import connection
 
 from users.models import CustomUser
-from merchant.fake import create_merchant, create_merchant_notes
-from simplecrud.fake import create_person
 from users.fake import create_user
+from study_resource.fake import initial_data, new_study_resource, new_study_resource_review
+from random import randint, choice, choices
 
 
 class Command(BaseCommand):
@@ -56,13 +57,46 @@ class Command(BaseCommand):
             msg = self.create_superuser(credentials)
             self.stdout.write(msg)
 
+        initial_data()
+
         # create users
-        for i in range(5):
-            create_user()
-        # create people
-        for i in range(15):
-            create_person()
-        # create merchants
-        for i in range(15):
-            create_merchant()
-        create_merchant_notes()
+        users = []
+        for i in range(20):
+            users.append(create_user())
+        self.stdout.write(" >> Created users: done")
+
+        # study resources
+        study_resources = []
+        for user in users:
+            for _ in range(randint(0, 5)):
+                study_resources.append(new_study_resource(user))
+        self.stdout.write(" >> Created study resources: done")
+
+        # reviews
+        reviews = []
+        for user in users:
+            for _ in range(randint(0,len(study_resources))):
+                try:
+                    review = new_study_resource_review(
+                            study_resource=choice(study_resources),
+                            user=user)
+                    review.save()
+                    reviews.append(review)
+                except IntegrityError:
+                    pass
+        self.stdout.write(" >> Created study resources reviews: done")
+
+
+        # rate reviews
+        for user in users:
+            for review in choices(reviews, k=randint(0, len(reviews))):
+                try:
+                    choice([
+                        lambda r,u: review.vote_up(u),
+                        lambda r,u: review.vote_down(u),
+                    ])(review, user)
+                except ValidationError:
+                    pass
+        self.stdout.write(" >> Rated reviews: done")
+
+

@@ -1,23 +1,94 @@
 @keyframes growDown {
-    0% {
-        transform: scaleY(0)
-    }
-    70% {
-        transform: scaleY(1.1)
-    }
-    100% {
-        transform: scaleY(1)
-    }
+  0% {
+    transform: scaleY(0)
+  }
+  70% {
+    transform: scaleY(1.1)
+  }
+  100% {
+    transform: scaleY(1)
+  }
 }
 
 @keyframes growRight {
-    0% {
-        transform: scaleX(0)
-    }
-    70% {
-        transform: scaleX(1.1)
-    }
-    100% {
-        transform: scaleX(1)
-    }
+  0% {
+    transform: scaleX(0)
+  }
+  70% {
+    transform: scaleX(1.1)
+  }
+  100% {
+    transform: scaleX(1)
+  }
 }
+
+@keyframes spin-stop {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(0deg);
+  }
+  45% {
+    transform: rotate(180deg);
+  }
+  55% {
+    transform: rotate(180deg);
+  }
+  90% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+a {
+  transition: background-color 0.2s ease-in-out;
+}
+
+aside {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.dropdown .dropdown-menu {
+  animation: growDown 0.2s ease-in-out;
+}
+
+.collapsible-content {
+  animation: growDown 0.2s ease-in-out;
+}
+
+.spin-stop {
+  display: inline-block;
+  animation-name: spin-stop;
+  animation-duration: 3000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+section.reviews {
+  .review {
+    animation: fade-in 0.5s ease-in-out;
+  }
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-in {
+  opacity: 100%;
+  animation: fade-in 0.1s ease-in-out;
+}
+

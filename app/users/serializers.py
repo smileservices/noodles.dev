@@ -8,3 +8,11 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'first_name', 'last_name', 'email', 'is_active', 'date_joined']
+
+
+class UserSerializerMinimal(ModelSerializer):
+    queryset = CustomUser.objects.all()
+
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'first_name', 'last_name', 'email', 'is_active']

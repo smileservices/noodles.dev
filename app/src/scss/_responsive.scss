@@ -4,6 +4,12 @@
   }
 }
 
+@media only screen and (min-width: 900px) {
+  main .collapsible .collapse-toggle {
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 700px) {
   main {
     padding: 1rem !important;
@@ -20,6 +26,7 @@
   }
 
   nav .collapsible.show .collapsible-links {
+    z-index: 10000;
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -47,5 +54,29 @@
 
   nav .dropdown .dropdown-menu a {
     padding-left: 2rem;
+  }
+
+}
+
+
+
+@media only screen and (max-width: 900px) {
+  main .search-page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main .detail-page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main .homepage {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main .collapsible:not(.show) .collapsible-content {
+    display: none;
   }
 }

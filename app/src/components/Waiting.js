@@ -1,10 +1,10 @@
 import React from 'react';
 
-export function Waiting({text}) {
+export default function Waiting({text}) {
     return (
         <div className="waiting-container">
-            <p className="text">{text}</p>
-            <i className="spinner fa fa-cog"> </i>
+            <span className="icon-hour-glass spin-stop"> </span>
+            <span className="text">{text}</span>
         </div>
     )
 }

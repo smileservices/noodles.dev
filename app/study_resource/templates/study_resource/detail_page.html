@@ -1,0 +1,42 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block content %}
+    <script>
+        const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
+        const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
+        const REVIEW_API_ENDPOINT = "{% url 'review-viewset-list' %}";
+        const REVIEWS_LIST_API_ENDPOINT = "{% url 'study-resource-viewset-reviews' result.id %}";
+        const MAX_RATING = {{ MAX_RATING }};
+        const RESOURCE_ID = {{ result.id }};
+    </script>
+    <div class="detail-page">
+        <section class="header">
+            <h1>Detail page</h1>
+            {% include 'study_resource/search_bar_section.html' %}
+        </section>
+
+        <section class="detail">
+            {% include 'study_resource/detail.html' %}
+        </section>
+
+        <section class="reviews"></section>
+
+        <section class="related">
+            <h3>Related</h3>
+            <div class="results-selection">
+                {% for result in related %}
+                    <div class="result">
+                        {% include 'study_resource/result.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'study_resource/study-resource-detail-reviews.js' %}"></script>
+{% endblock %}

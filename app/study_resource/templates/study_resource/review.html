@@ -1,0 +1,20 @@
+{% load star_rating %}
+
+<p class="rating">{% star_rating review.rating %}</p>
+<p class="date">{{ review.created_at }}</p>
+<p class="author">by {{ review.author }}</p>
+<p class="text">{{ review.text }}</p>
+<div class="thumbs">
+    <div class="down">
+        <a href="">
+            <span class="icon-thumbs-o-down"></span>
+            <span>{{ review.thumbs_down }}</span>
+        </a>
+    </div>
+    <div class="up">
+        <a href="">
+            <span class="icon-thumbs-o-up"></span>
+            <span>{{ review.thumbs_up }}</span>
+        </a>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 .dropdown .dropdown-menu {
+    z-index: 1000;
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -6,7 +7,6 @@
     background-color: $dropdown-bg;
     overflow: hidden;
     height: auto;
-    animation: growDown 300ms ease-in-out forwards;
     transform-origin: top center;
 }
 

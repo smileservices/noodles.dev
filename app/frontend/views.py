@@ -1,4 +1,16 @@
 from django.shortcuts import render
+from study_resource.models import StudyResource
+from study_resource import filters
+from django.db.models import Avg, Q
+
 
 def homepage(request):
-    return render(request, 'frontend/homepage.html')
+    queryset = StudyResource.objects.order_by('-publication_date').annotate(rating=Avg('reviews__rating'))
+    latest = queryset[:5]
+    most_appreciated = queryset.filter(~Q(reviews=None)).order_by('-rating')[:5]
+    data = {
+        'filter': filters.StudyResourceFilter,
+        'latest': latest,
+        'most_appreciated': most_appreciated,
+    }
+    return render(request, 'frontend/homepage.html', data)

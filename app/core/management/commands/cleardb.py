@@ -9,8 +9,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import Q
 from users.models import CustomUser
-from simplecrud.models import People
-from merchant.models import MerchantModel, MerchantNoteModel
+from study_resource.fake import clean as clean_study_resource
 
 
 class Command(BaseCommand):
@@ -40,7 +39,8 @@ class Command(BaseCommand):
             CustomUser.objects.exclude(pk__in=staff).delete()
             self.stdout.write("Removed all except staff users")
 
-        MerchantNoteModel.objects.all().delete()
-        self.stdout.write("Removed all people data")
-        People.objects.all().delete()
-        self.stdout.write("Removed all category data")
+        clean_study_resource()
+        self.stdout.write("Cleaned study_resource app")
+
+
+

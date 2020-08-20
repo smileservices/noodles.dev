@@ -7,7 +7,6 @@ INTERNAL_IPS = [
 
 INSTALLED_APPS.append('debug_toolbar')
 INSTALLED_APPS.append('django_extensions')
-INSTALLED_APPS.append('autotranslate')
 
 # MIDDLEWARE.insert(9, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
@@ -40,6 +39,4 @@ LOGGING = {
     },
 }
 
-AUTOTRANSLATE_TRANSLATOR_SERVICE = 'autotranslate.services.GoogleAPITranslatorService'
-GOOGLE_TRANSLATE_KEY = env.str('GOOG_TRANSLATE_KEY')
 GOOGLE_APPLICATION_CREDENTIALS = env.str('GOOGLE_APPLICATION_CREDENTIALS')

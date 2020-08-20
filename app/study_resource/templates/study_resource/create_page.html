@@ -1,0 +1,24 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block content %}
+    <script>
+        const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
+        const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
+        const STUDY_RESOURCE_ENDPOINT = "{% url 'study-resource-viewset-list' %}";
+        const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
+        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+    </script>
+    <div class="create-page">
+        <section class="header">
+            <h1>Create new resource</h1>
+        </section>
+        <section class="create-resource" id="create-app"></section>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'study_resource/study-resource-create.js' %}"></script>
+{% endblock %}

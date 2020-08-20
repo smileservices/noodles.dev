@@ -9,6 +9,7 @@ urlpatterns = [
     path('', include('frontend.urls')),
     path('accounts/', include('allauth.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('tutorials/', include('study_resource.urls')),
     path('admin/', admin.site.urls),
 ]
 

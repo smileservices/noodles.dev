@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
+    'simple_history',
     # our app
     'core',
     'rest_framework',
@@ -58,9 +59,7 @@ INSTALLED_APPS = [
     'frontend',
     # users
     'users',
-    'merchant',
-    # crud example
-    'simplecrud',
+    'study_resource',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +72,7 @@ MIDDLEWARE = [
     'compression_middleware.middleware.CompressionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -84,7 +84,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 50
+    'PAGE_SIZE': 10
 }
 
 ROOT_URLCONF = 'app.urls'
@@ -92,7 +92,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['allauth/templates/allauth/'],
+        'DIRS': ['allauth/templates/allauth/', 'core/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -196,3 +196,4 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'login'
+MAX_RATING = 5
