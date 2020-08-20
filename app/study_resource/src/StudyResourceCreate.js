@@ -181,7 +181,7 @@ function Content() {
                     if (stepStatus[step] === 'ok' || stepStatus[step] === 'current') {
                         setStep(step);
                     } else {
-                        setAlert(<Alert text="Please submit current form before going to next steps." type="warning" stick={false}/>)
+                        setAlert(<Alert text="Please submit current form before going to next steps." type="warning" stick={false} hideable={false}/>)
                     }
                 }}
             />

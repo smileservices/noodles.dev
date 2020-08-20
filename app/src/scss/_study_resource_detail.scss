@@ -1,6 +1,7 @@
 main .detail-page {
   display: grid;
   grid-gap: 2rem;
+  grid-template-columns: 1.3fr 1fr;
   grid-template-areas:
   "header header"
   "detail related"

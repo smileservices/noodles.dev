@@ -16,8 +16,7 @@
         <a class="tech" href="{% url 'search' %}?technologies={{ tech.id }}">{{ tech }}</a>
     {% endfor %}
 </p>
-<p class="type">Type :{{ result.media_label }}</p>
-<p class="type">Price: {{ result.price_label }}</p>
+<p class="type">{{ result.price_label }} {{ result.media_label }}</p>
 
 <p class="summary">{{ result.summary }}</p>
 <p class="author">added by {{ result.author }}</p>
