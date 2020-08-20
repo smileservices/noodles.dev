@@ -90,6 +90,7 @@ section.results-container {
     margin: 0.4rem 0;
     font-size: 1rem;
     font-weight: bolder;
+    padding: 0.5rem 0;
 
     a, a:visited {
       text-decoration: none;
@@ -149,6 +150,10 @@ section.results-container {
     font-size: 0.85rem;
     color: $text-muted;
   }
+}
+
+.result > * {
+  overflow: hidden;
 }
 
 section.create-resource {
