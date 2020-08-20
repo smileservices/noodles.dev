@@ -7,6 +7,12 @@ main .detail-page {
   "detail related"
   "reviews related";
 
+  .detail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
   section.detail {
     display: block;
     background-color: #ffffff;

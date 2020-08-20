@@ -17,11 +17,13 @@
             {% include 'study_resource/search_bar_section.html' %}
         </section>
 
-        <section class="detail">
-            {% include 'study_resource/detail.html' %}
-        </section>
+        <div class="detail-container">
+            <section class="detail">
+                {% include 'study_resource/detail.html' %}
+            </section>
+            <section class="reviews"></section>
+        </div>
 
-        <section class="reviews"></section>
 
         <section class="related">
             <h3>Related</h3>
