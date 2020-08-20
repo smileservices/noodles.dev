@@ -22,18 +22,19 @@ export default function Thumbs({thumbs_obj, url_endpoint, user_id}) {
                             setThumbs(data.thumbs)
                         });
                 } else if (result.status === 403) {
-                    setAlert(<Alert
-                        text="Only signed in users can rate reviews"
-                        type="danger" hideable={false}
-                        stick={false}
-                    />)
-                } else {
                     result.json().then(
                         data => setAlert(<Alert
-                            text={data.error ? data.error : data.detail}
-                            type="danger" hideable={false} stick={false}
-                        />)
-                    )
+                                text={ data.error || data.detail || "Operation forbidden"}
+                                type="danger" hideable={false}
+                                stick={false}
+                            />)
+                    );
+
+                } else {
+                    setAlert(<Alert
+                        text="Something went wrong :("
+                        type="danger" hideable={false} stick={false}
+                    />)
                 }
             })
     }
