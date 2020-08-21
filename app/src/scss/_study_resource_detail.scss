@@ -13,13 +13,18 @@ main .detail-page {
     gap: 2rem;
   }
 
-  section.detail {
+  section#detail {
+    position: relative;
     display: block;
     background-color: #ffffff;
     padding: 1rem;
-    border: 2px solid $theme-color-accent;;
+    border: 2px solid $theme-color-accent;
     border-radius: 0.25rem;
     height: fit-content;
+
+    .waiting-container {
+      border: none;
+    }
 
     p {
       margin: 0.5rem 0;
@@ -82,37 +87,6 @@ main .detail-page {
       padding: 1rem;
       border-radius: 0.25rem;
       position: relative;
-
-      .confirm {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-
-        .option {
-          cursor: pointer;
-          margin: 0 0.5rem;
-        }
-
-        .option:last-child {
-          margin: 0;
-        }
-
-        .option:hover {
-          color: $theme-color-accent;
-        }
-      }
-
-      .delete {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        color: $danger;
-        cursor: pointer;
-      }
-
-      .delete:hover {
-        color: $theme-color-accent;
-      }
 
       .rating {
         font-size: 0.65rem;

@@ -25,13 +25,15 @@ export default function Review({review}) {
 
     function deleteElement(confirm) {
         if (confirm) {
-            return (<span className="confirm">
-                Are you sure?
-                <span className="option" onClick={remove}>yes</span>
-                <span className="option" onClick={e => setConfirm(false)}>cancel</span>
-            </span>);
+            return (
+                <div className="confirm">
+                    <span className="text">Are you sure?</span>
+                    <span className="option delete" onClick={remove}>yes</span>
+                    <span className="option" onClick={e => setConfirm(false)}>cancel</span>
+                </div>
+            );
         }
-        return (<span className="delete icon-close" onClick={e=>setConfirm(true)}/>)
+        return (<span className="delete icon-close" onClick={e => setConfirm(true)}/>)
     }
 
     let date = new Date(review.created_at);
@@ -48,7 +50,7 @@ export default function Review({review}) {
             <p className="date">{date.toUTCString()}</p>
             <p className="author">by {author_full_name}</p>
             {current_owner
-                ? deleteElement(confirm)
+                ? <div className="toolbar">{deleteElement(confirm)}</div>
                 : ''
             }
             <p className="text">{review.text}</p>

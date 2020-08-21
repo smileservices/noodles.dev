@@ -5,7 +5,7 @@
     <a href="{{ result.url }}">{{ result.name }}</a>
 </p>
 <p class="publication-date">Published on {{ result.publication_date }} by {{ result.published_by }}</p>
-<p class="creation-date">Created on {{ result.created_at }}</p>
+<p class="creation-date">Added here on {{ result.created_at }} by {% if user == result.author %}you{% else %}{{ result.author }}{% endif %}</p>
 
 <p class="tags">Tags
     {% for tag in result.tags.all %}
@@ -16,7 +16,8 @@
         <a class="tech" href="{% url 'search' %}?technologies={{ tech.id }}">{{ tech }}</a>
     {% endfor %}
 </p>
+
+<p class="experience-level">Experience level: {{ result.experience_level_label }}</p>
 <p class="type">{{ result.price_label }} {{ result.media_label }}</p>
 
 <p class="summary">{{ result.summary }}</p>
-<p class="author">added by {{ result.author }}</p>

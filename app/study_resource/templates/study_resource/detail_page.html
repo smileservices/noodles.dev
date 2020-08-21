@@ -18,7 +18,7 @@
         </section>
 
         <div class="detail-container">
-            <section class="detail">
+            <section id="detail">
                 {% include 'study_resource/detail.html' %}
             </section>
             <section class="reviews"></section>
@@ -41,4 +41,33 @@
 {% block extra_js %}
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'study_resource/study-resource-detail-reviews.js' %}"></script>
+    {% if user.is_authenticated and user == result.author %}
+        <script>
+            const SEARCH_URL = "{% url 'search' %}";
+            const STUDY_RESOURCE_ENDPOINT = "{% url 'study-resource-viewset-list' %}";
+            const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
+            const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+            const RESULT = {
+                rating: {{ result.rating }},
+                name: "{{ result.name }}",
+                url: "{{ result.url }}",
+                publication_date: "{{ result.publication_date }}",
+                published_by: "{{ result.published_by }}",
+                created_at: "{{ result.created_at }}",
+                type: {{ result.price }},
+                media: {{ result.media }},
+                experience_level: {{ result.experience_level }},
+                summary: "{{ result.summary }}",
+                tags: [],
+                technologies: []
+            }
+            {% for tag in result.tags.all %}
+                RESULT.tags.push({{ tag.id }});
+            {% endfor %}
+            {% for tech in result.technologies.all %}
+                RESULT.technologies.push({{ tech.id }});
+            {% endfor %}
+        </script>
+        <script src="{% static 'study_resource/study-resource-edit.js' %}"></script>
+    {% endif %}
 {% endblock %}
