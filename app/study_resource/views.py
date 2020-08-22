@@ -83,7 +83,7 @@ class StudyResourceViewset(ModelViewSet):
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):
         try:
-            self.queryset.only('pk').get(url=request.data['url'])
+            self.queryset.only('pk').exclude(pk=request.data['pk']).get(url=request.data['url'])
             return Response({
                 'error': True,
                 'message': 'Resource with the same url already exists.'

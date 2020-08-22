@@ -7,6 +7,8 @@
 <p class="publication-date">{{ result.publication_date }}</p>
 <p class="experience-level">Difficulty: {{ result.experience_level_label }}</p>
 
+<p class="type">{{ result.media_label }}, {{ result.price_label }}</p>
+
 <p class="tags">{% for tag in result.tags.all %}
     <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>
 {% endfor %}
@@ -15,5 +17,3 @@
     {% endfor %}
 </p>
 
-<p class="summary">{{ result.summary }}</p>
-<p class="type">{{ result.media_label }}, {{ result.price_label }}</p>

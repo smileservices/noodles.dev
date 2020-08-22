@@ -11,6 +11,11 @@ main .detail-page {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+
+    .update-form-container form {
+      gap: 1.5rem;
+    }
+
   }
 
   section#detail {
@@ -42,10 +47,20 @@ main .detail-page {
       color: $theme-color-accent;
     }
 
-    .publication-date {
+    .group {
+      margin: 1rem 0;
+      .publication-date, .creation-date, .experience-level, .type {
+        color: $text-muted;
+      }
     }
 
     .tags {
+      font-size: 0.75rem;
+      display: inline-block;
+
+      span {
+        color: $text-muted;
+      }
 
       a, a:visited {
         color: $theme-color-main;
@@ -54,15 +69,13 @@ main .detail-page {
 
       .tag, .tech {
         display: inline-block;
-        padding: 0.125rem;
-        margin: 0.125rem 0;
-        font-size: 0.75rem;
-        border-radius: 5px;
+        padding: 0.125rem 0.35rem;
+        margin: 0.125rem 0.125rem;
       }
 
       .tag:hover, .tech:hover {
         color: $theme-color-accent;
-        background-color: $theme-color-main-contrast;
+        background-color: #ffffff;
       }
 
       .tag {

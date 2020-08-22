@@ -19,7 +19,6 @@ export default async function apiDelete(
         if (result.ok) {
             success('Successfully deleted');
         } else {
-            console.log(result);
             setError(result);
         }
     })

@@ -1,9 +1,9 @@
 import {getCsrfToken} from "../components/utils";
 
-export async function update(
+export default async function apiUpdate(
     endpoint,
-    data,
     id,
+    data,
     success,
     setWaiting, setError,
 ) {
@@ -22,8 +22,9 @@ export async function update(
             return result.json();
         } else {
             setError(result)
+            return false;
         }
     }).then(data => {
-        success(data);
+        if (data) success(data);
     })
 }

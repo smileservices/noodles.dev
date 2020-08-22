@@ -10,6 +10,7 @@
         const REVIEWS_LIST_API_ENDPOINT = "{% url 'study-resource-viewset-reviews' result.id %}";
         const MAX_RATING = {{ MAX_RATING }};
         const RESOURCE_ID = {{ result.id }};
+        const HOMEPAGE = "{% url 'homepage' %}";
     </script>
     <div class="detail-page">
         <section class="header">
@@ -48,7 +49,8 @@
             const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
             const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
             const RESULT = {
-                rating: {{ result.rating }},
+                pk: {{ result.pk }},
+                rating: {% if result.rating %}{{ result.rating }}{% else %}false{% endif %},
                 name: "{{ result.name }}",
                 url: "{{ result.url }}",
                 publication_date: "{{ result.publication_date }}",

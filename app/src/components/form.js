@@ -25,6 +25,26 @@ export const ConfirmComponent = ({buttonText, questionText, handleConfirm}) => {
     )
 }
 
+function handleInputClass(error) {
+    if (error) {
+        return "form-control is-invalid";
+    } else if (error === 'valid') {
+        return "form-control is-valid";
+    } else {
+        return "form-control";
+    }
+}
+
+function handleSelectClass(error) {
+    if (error) {
+        return "form-control_invalid";
+    } else if (error === 'valid') {
+        return "form-control_valid";
+    } else {
+        return "form-control";
+    }
+}
+
 export const Input = ({id, label, inputProps, smallText, error}) => {
     return (
         <div className="form-group">
@@ -32,7 +52,7 @@ export const Input = ({id, label, inputProps, smallText, error}) => {
                 ? (<label htmlFor={id}>{label}</label>)
                 : ''
             }
-            <input {...inputProps} id={id} aria-describedby={id + 'help'} className="form-control"/>
+            <input {...inputProps} id={id} aria-describedby={id + 'help'} className={handleInputClass(error)}/>
             {smallText
                 ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
                 : ''
@@ -54,7 +74,7 @@ export const Textarea = ({id, label, inputProps, smallText, error}) => {
             }
             <textarea id={id} cols="30" rows="5"
                       aria-describedby={id + 'help'}
-                      className="form-control"
+                      className={handleInputClass(error)}
                       {...inputProps}
             />
             {smallText
@@ -78,7 +98,7 @@ export const SelectVanilla = ({id, label, inputProps, smallText, error, Options}
             }
             <select id={id}
                     aria-describedby={id + 'help'}
-                    className="form-control"
+                    className={handleInputClass(error)}
                     {...inputProps}
             >
                 {Options}
@@ -102,7 +122,7 @@ export const SelectReact = ({id, label, smallText, error, options, value, onChan
             ? (<label htmlFor={id}>{label}</label>)
             : ''
         }
-        <Select options={options} value={value} onChange={onChange} {...props} />
+        <Select options={options} value={value} onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
         {smallText
             ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
             : ''
@@ -120,7 +140,7 @@ export const SelectReactCreatable = ({id, label, smallText, error, options, valu
             ? (<label htmlFor={id}>{label}</label>)
             : ''
         }
-        <Creatable options={options} value={value} onChange={onChange} {...props} />
+        <Creatable options={options} value={value} onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
         {smallText
             ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
             : ''

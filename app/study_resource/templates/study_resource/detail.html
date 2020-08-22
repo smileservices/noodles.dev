@@ -4,20 +4,25 @@
 <p class="title">
     <a href="{{ result.url }}">{{ result.name }}</a>
 </p>
-<p class="publication-date">Published on {{ result.publication_date }} by {{ result.published_by }}</p>
-<p class="creation-date">Added here on {{ result.created_at }} by {% if user == result.author %}you{% else %}{{ result.author }}{% endif %}</p>
 
-<p class="tags">Tags
+<div class="group">
+    <p class="publication-date">Published on {{ result.publication_date }} by {{ result.published_by }}</p>
+    <p class="creation-date">Added here on {{ result.created_at }} by {% if user == result.author %}you{% else %}
+        {{ result.author }}{% endif %}</p>
+    <p class="experience-level">Experience level: {{ result.experience_level_label }}</p>
+    <p class="type">Type: {{ result.price_label }} {{ result.media_label }}</p>
+</div>
+<p class="summary">{{ result.summary }}</p>
+
+<div class="tags">
+    <span>Tags: </span>
     {% for tag in result.tags.all %}
         <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>
     {% endfor %}
-<p class="tags">Technologies
+</div>
+<div class="tags">
+    <span>Tech: </span>
     {% for tech in result.technologies.all %}
         <a class="tech" href="{% url 'search' %}?technologies={{ tech.id }}">{{ tech }}</a>
     {% endfor %}
-</p>
-
-<p class="experience-level">Experience level: {{ result.experience_level_label }}</p>
-<p class="type">{{ result.price_label }} {{ result.media_label }}</p>
-
-<p class="summary">{{ result.summary }}</p>
+</div>

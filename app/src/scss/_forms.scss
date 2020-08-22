@@ -30,6 +30,10 @@ form {
     flex-direction: column;
     gap: 0.5rem;
 
+    label {
+      color: $theme-color-accent;
+    }
+
     input {
       flex-grow: 1;
     }
@@ -50,6 +54,11 @@ form {
   .invalid-feedback {
     display: block;
   }
+
+  .form-control_invalid__control {
+    border-color: $form-feedback-invalid-color;
+  }
+
 }
 
 ul.progress {
