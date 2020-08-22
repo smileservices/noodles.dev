@@ -159,16 +159,7 @@ main .detail-page {
     }
   }
 
-  section.related {
+  section.results-container {
     grid-area: related;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    .results-selection {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
   }
 }
