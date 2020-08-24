@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Avg, Q
+from django.db.models import Q
 from django.db import IntegrityError
 from django.conf import settings
 from django.urls import reverse_lazy
@@ -20,7 +20,7 @@ from .models import StudyResource
 
 
 def search(request):
-    queryset = StudyResource.objects.annotate(rating=Avg('reviews__rating'))
+    queryset = StudyResource.objects.annotate_with_rating()
     filtered = filters.StudyResourceFilter(request.GET, queryset=queryset)
     paginator = Paginator(filtered.qs.order_by('-publication_date'), 10)
     try:
@@ -38,7 +38,7 @@ def search(request):
 
 
 def detail(request, id):
-    queryset = StudyResource.objects.annotate(rating=Avg('reviews__rating'))
+    queryset = StudyResource.objects.annotate_with_rating()
     resource = queryset.get(pk=id)
     related = queryset.filter(
         Q(tags__in=resource.tags.all()),
@@ -61,7 +61,7 @@ def create(request):
 
 class StudyResourceViewset(ModelViewSet):
     serializer_class = serializers.StudyResourceSerializer
-    queryset = serializers.StudyResourceSerializer.queryset.annotate(rating=Avg('reviews__rating'))
+    queryset = serializers.StudyResourceSerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest

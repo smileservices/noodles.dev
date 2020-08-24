@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Tag, Technology, StudyResource, Review
+from django.db.models import Avg
 from users.serializers import UserSerializerMinimal
 
 
@@ -28,7 +29,7 @@ class TechnologySerializerShort(serializers.ModelSerializer):
 
 
 class StudyResourceSerializer(serializers.ModelSerializer):
-    queryset = StudyResource.objects.all()
+    queryset = StudyResource.objects.annotate_with_rating()
     author = UserSerializerMinimal(many=False, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     technologies = TechnologySerializerShort(many=True, read_only=True)

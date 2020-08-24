@@ -25,6 +25,19 @@ class Technology(models.Model):
         unique_together = ['name', 'version']
 
 
+class StudyResourceManager(models.Manager):
+    def get_queryset(self):
+        return StudyResourceQueryset(self.model, using=self.db)
+
+    def annotate_with_rating(self):
+        return self.get_queryset().annotate_with_rating()
+
+
+class StudyResourceQueryset(models.QuerySet):
+    def annotate_with_rating(self):
+        return self.annotate(rating=models.Avg('reviews__rating'))
+
+
 class StudyResource(models.Model):
     class Price(models.IntegerChoices):
         FREE = (0, 'free')
@@ -43,6 +56,7 @@ class StudyResource(models.Model):
         MIDDLE = (2, 'middle')
         SENIOR = (3, 'experienced')
 
+    objects = StudyResourceManager()
     name = models.CharField(max_length=128)
     publication_date = models.DateField()
     published_by = models.CharField(max_length=128)
@@ -98,6 +112,10 @@ class Review(models.Model):
 
     def __str__(self):
         return f'review for {self.study_resource}: {self.rating} by {self.author}'
+
+    @property
+    def study_resource_with_rating(self):
+        return StudyResource.objects.annotate_with_rating().get(pk=self.study_resource.pk)
 
     @property
     def thumbs_up(self):

@@ -1,23 +1,20 @@
 {% extends 'frontend/base.html' %}
-{% load static %}
 {% load crispy_forms_tags %}
 
-{% block content %}
-    <div class="search-page">
-        <section class="header">
-            <h1>Search Page</h1>
-            {% include 'study_resource/search_bar_section.html' %}
-        </section>
 
-        {% include 'frontend/filter.html' with filter_url='search' %}
+{% block content %}
+    <div class="my-reviews-page">
+        <section class="header">
+            <h1>My Reviews</h1>
+        </section>
         <section class="results-container">
             {% if not results %}
-                <h3>Did not find any results :(</h3>
+                <h3>You didn't review anything :(</h3>
             {% else %}
-                <h3>Found {{ results.paginator.count }} results matching your query:</h3>
+                <h3>You submitted {{ results.paginator.count }} reviews:</h3>
                 <div class="results-selection">
-                    {% for result in results %}
-                        <div class="result">{% include 'study_resource/result.html' %}</div>
+                    {% for review in results %}
+                        {% include 'users/review_listing.html' %}
                     {% endfor %}
                 </div>
                 {% if results.has_other_pages %}

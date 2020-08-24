@@ -1,15 +1,21 @@
 {% extends 'frontend/base.html' %}
-{% load static %}
 {% load crispy_forms_tags %}
+
 
 {% block content %}
     <div class="search-page">
         <section class="header">
-            <h1>Search Page</h1>
-            {% include 'study_resource/search_bar_section.html' %}
+            <h1>Resources Added By Me</h1>
+            <section class="search-bar">
+                <form action="{% url 'my-resources' %}" method="GET">
+                    <input class="form-control" type="text" name="contains"
+                           placeholder="Search for a tutorial or course..."
+                           required value="{% if filter.data.contains %}{{ filter.data.contains }}{% endif %}"/>
+                    <button class="btn submit"><span class="icon-search"> </span> Search</button>
+                </form>
+            </section>
         </section>
-
-        {% include 'frontend/filter.html' with filter_url='search' %}
+        {% include 'frontend/filter.html' with filter_url='my-resources' %}
         <section class="results-container">
             {% if not results %}
                 <h3>Did not find any results :(</h3>

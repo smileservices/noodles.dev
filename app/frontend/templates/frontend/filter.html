@@ -1,0 +1,11 @@
+{% load crispy_forms_tags %}
+<section class="filtering collapsible">
+    <div href="#" class="collapse-toggle">Toggle Filters</div>
+    <div class="collapsible-content">
+        <form action="{% url filter_url %}" method="GET">
+            <h3 class="title">Filter</h3>
+            {{ filter.form | crispy }}
+            <button class="btn submit" type="submit">Filter</button>
+        </form>
+    </div>
+</section>

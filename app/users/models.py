@@ -14,14 +14,18 @@ class CustomUser(AbstractUser):
     id = models
     username = None
     email = models.EmailField('email address', unique=True)
-    positive_score = models.IntegerField(default=0)
-    negative_score = models.IntegerField(default=0)
-    positive_thumbs = models.IntegerField(default=0)
-    negative_thumbs = models.IntegerField(default=0)
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
     objects = CustomUserManager()
+
+    # keeps track of other users feedback on user
+    positive_score = models.IntegerField(default=0)
+    negative_score = models.IntegerField(default=0)
+
+    # keeps track of user actions
+    positive_thumbs = models.IntegerField(default=0)
+    negative_thumbs = models.IntegerField(default=0)
 
     def __str__(self):
         """A string representation of the model."""

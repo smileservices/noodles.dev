@@ -1,0 +1,29 @@
+{% extends 'frontend/base.html' %}
+{% load star_rating %}
+
+{% block content %}
+    <section class="user-profile">
+        <div class="account">
+            <h3 class="title">Account</h3>
+            <p>{{ user.get_full_name }}</p>
+        </div>
+        <div class="statistics">
+            <h3 class="title">Statistics</h3>
+            <div class="group">
+                <p class="title">Given reviews</p>
+                <p>Average rating: {% star_rating statistics.rating__avg %}</p>
+            </div>
+            <div class="group">
+                <p class="title">Your overall score</p>
+                <p>Positive: {{ user.positive_score }}</p>
+                <p>Negative: {{ user.positive_score }}</p>
+            </div>
+            <div class="group">
+                <p class="title">Your actions on others</p>
+                <p>Appreciated: {{ user.positive_thumbs }}</p>
+                <p>Not appreciated: {{ user.negative_thumbs }}</p>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}

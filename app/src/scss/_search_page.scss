@@ -1,7 +1,8 @@
 main .search-page {
   display: grid;
   grid-gap: 1rem;
+  grid-template-columns: 0.3fr 1fr;
   grid-template-areas:
-  "header header header header"
-  "filtering results results results";
+  "header header"
+  "filtering results";
 }

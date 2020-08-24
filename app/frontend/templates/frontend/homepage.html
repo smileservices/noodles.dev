@@ -18,18 +18,9 @@
         {#            <h1>Homepage</h1>#}
         {#        </section>#}
 
-        <section class="filtering collapsible">
-            <div href="#" class="collapse-toggle">Toggle Filters</div>
-            <div class="collapsible-content">
-                <form action="{% url 'search' %}" method="GET">
-                    {{ filter.form | crispy }}
-                    <button class="btn submit" type="submit">Filter</button>
-                </form>
-            </div>
-        </section>
 
+        {% include 'frontend/filter.html' with filter_url='search' %}
         <section class="results-container">
-
             <h3>Most appreciated:</h3>
             <div class="results-selection">
                 {% for result in most_appreciated %}
@@ -43,7 +34,6 @@
                     <div class="result">{% include 'study_resource/result.html' %}</div>
                 {% endfor %}
             </div>
-
         </section>
 
     </section>

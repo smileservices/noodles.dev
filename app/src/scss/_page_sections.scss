@@ -47,6 +47,17 @@ section.filtering {
   display: flex;
   flex-direction: column;
 
+  form {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: $border-radius;
+
+    .title {
+      margin-bottom: 1rem;
+    }
+
+  }
+
   .collapse-toggle {
     background-color: $theme-color-main;
     color: $theme-color-main-contrast;
@@ -154,6 +165,57 @@ section.results-container {
 
 .result > * {
   overflow: hidden;
+}
+
+.review {
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  position: relative;
+
+  .rating {
+    font-size: 0.65rem;
+    color: $theme-color-accent;
+    margin-bottom: 0.3rem;
+  }
+
+  .date, .author {
+    color: $text-muted;
+  }
+
+  .text {
+    margin: 0.5rem 0;
+  }
+
+  .thumbs {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    div {
+      border: none;
+      background-color: #ffffff;
+      padding: 0;
+      margin: 0;
+    }
+
+    a, a:visited {
+      color: $text-muted;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a:hover {
+      color: $theme-color-accent;
+    }
+  }
+
+  .thumbs .voted {
+    a, a:visited {
+      color: $theme-color-accent;
+    }
+  }
 }
 
 section.create-resource {
