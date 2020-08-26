@@ -8,8 +8,9 @@ module.exports = {
         // 'static/js/react-bundle': ['./app/static/js/react.min.js', './app/static/js/react-dom.min.js'],
         // 'static/js/react-bundle': ['./app/static/js/react.development.js', './app/static/js/react-dom.development.js'],
         '/static/study_resource/study-resource-detail-reviews': './app/study_resource/src/StudyResourceDetailReviews.js',
-        '/static/study_resource/study-resource-create': './app/study_resource/src/StudyResourceCreate.js',
-        '/static/study_resource/study-resource-edit': './app/study_resource/src/StudyResourceEdit.js',
+        '/static/study_resource/study-resource-create': './app/study_resource/src/create/StudyResourceCreate.js',
+        '/static/study_resource/study-resource-edit': './app/study_resource/src/edit/StudyResourceEdit.js',
+        '/static/study_resource/user-collections': './app/study_resource/src/collections/UserCollections.js',
     },
     output: {
         filename: '[name].js',

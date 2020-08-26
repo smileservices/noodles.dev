@@ -27,10 +27,8 @@ class Technology(models.Model):
 
 class StudyResourceManager(models.Manager):
     def get_queryset(self):
-        return StudyResourceQueryset(self.model, using=self.db)
-
-    def annotate_with_rating(self):
-        return self.get_queryset().annotate_with_rating()
+        # it's not so inneficient
+        return StudyResourceQueryset(self.model, using=self.db).annotate_with_rating()
 
 
 class StudyResourceQueryset(models.QuerySet):
@@ -114,10 +112,6 @@ class Review(models.Model):
         return f'review for {self.study_resource}: {self.rating} by {self.author}'
 
     @property
-    def study_resource_with_rating(self):
-        return StudyResource.objects.annotate_with_rating().get(pk=self.study_resource.pk)
-
-    @property
     def thumbs_up(self):
         return len(self.thumbs_up_array)
 
@@ -162,3 +156,37 @@ class Review(models.Model):
             self.author.negative_feedback()
             user.thumb_down()
         self.save()
+
+
+class CollectionQueryset(models.QuerySet):
+    def annotate_with_items_count(self):
+        return self.annotate(items_count=models.Count('resources'))
+
+
+class CollectionManager(models.Manager):
+    def get_queryset(self):
+        return CollectionQueryset(self.model, using=self.db).annotate_with_items_count()
+
+
+class Collection(models.Model):
+    objects = CollectionManager()
+    created_at = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=128)
+    owner = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)
+    description = models.TextField(null=True, blank=True)
+    resources = models.ManyToManyField(
+        StudyResource,
+        related_name="collections",
+        through='CollectionResources'
+    )
+    tags = models.ManyToManyField(Tag, related_name='collections')
+    technologies = models.ManyToManyField(Technology, related_name='collections')
+
+    def __str__(self):
+        return f'{self.name} by {self.owner}'
+
+
+class CollectionResources(models.Model):
+    study_resource = models.ForeignKey(StudyResource, on_delete=models.CASCADE)
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
+    order = models.IntegerField(null=True, blank=True)

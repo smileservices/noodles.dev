@@ -40,6 +40,7 @@ section.search-bar {
 
 section.header {
   grid-area: header;
+  margin: 0 0 3rem;
 }
 
 section.filtering {
@@ -91,6 +92,7 @@ section.results-container {
   border-radius: $border-radius;
   padding: 0.75rem;
   min-width: 200px;
+  position: relative;
 
   .rating {
     font-size: 0.65rem;
@@ -219,16 +221,24 @@ section.results-container {
 }
 
 section.create-resource {
-  margin-top: 2rem;
+  background-color: #ffffff;
+  border-radius: .25rem;
+  padding: 1rem;
+  position: relative;
+  margin-top: 1rem;
 
   form {
-    background-color: #ffffff;
-    border-radius: $border-radius;
-    padding: 1rem;
-    gap: 2rem;
+    gap: 1rem;
   }
 }
 
 .ss-main .ss-multi-selected .ss-values .ss-value {
   background-color: $theme-color-accent;
+}
+
+button.create-element {
+  background-color: $theme-color-accent;
+  width: 250px;
+  color: #ffffff;
+  padding: 0.5rem;
 }

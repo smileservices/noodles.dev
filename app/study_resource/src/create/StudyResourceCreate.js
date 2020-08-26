@@ -1,11 +1,11 @@
 import React, {useState, useEffect, Fragment} from "react"
 import ReactDOM from "react-dom";
-import FormMultiStepProgress from "../../src/components/FormMultiStepProgress";
-import CreateFormStep1 from "./create-forms/CreateFormStep1";
-import CreateFormStep2 from "./create-forms/CreateFormStep2";
-import CreateFormStep3 from "./create-forms/CreateFormStep3";
-import Alert from "../../src/components/Alert";
-import apiCreate from "../../src/api_interface/apiCreate";
+import FormMultiStepProgress from "../../../src/components/FormMultiStepProgress";
+import CreateFormStep1 from "./CreateFormStep1";
+import CreateFormStep2 from "./CreateFormStep2";
+import CreateFormStep3 from "./CreateFormStep3";
+import Alert from "../../../src/components/Alert";
+import apiCreate from "../../../src/api_interface/apiCreate";
 
 function Content() {
     const emptyDataStep1 = {

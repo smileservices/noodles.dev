@@ -8,6 +8,8 @@ from study_resource.models import StudyResource, Review
 from study_resource import filters
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Avg
+from django.contrib.auth.decorators import login_required
+
 
 class UsersViewset(ModelViewSet):
     serializer_class = UserSerializer
@@ -18,15 +20,20 @@ class UsersViewset(ModelViewSet):
     ordering_fields = ['first_name', 'last_name', 'email', 'is_active', 'date_joined']
 
 
+@login_required
 def my_profile(request):
     data = {
-        'statistics': Review.objects.filter(author=request.user).only('rating__avg').aggregate(Avg('rating'))
+        'statistics': {
+            'average_given_rating': Review.objects.filter(author=request.user).only('rating__avg').aggregate(
+                Avg('rating'))
+        }
     }
     return render(request, 'users/my_profile.html', data)
 
 
+@login_required
 def my_resources(request):
-    queryset = StudyResource.objects.annotate_with_rating().filter(author=request.user)
+    queryset = StudyResource.objects.filter(author=request.user)
     filtered = filters.StudyResourceFilter(request.GET, queryset=queryset)
     paginator = Paginator(filtered.qs.order_by('-publication_date'), 10)
     try:
@@ -43,6 +50,7 @@ def my_resources(request):
     return render(request, 'users/my_resources.html', data)
 
 
+@login_required
 def my_reviews(request):
     queryset = Review.objects.filter(author=request.user).order_by('-created_at')
     paginator = Paginator(queryset, 10)
@@ -58,3 +66,7 @@ def my_reviews(request):
     }
     return render(request, 'users/my_reviews.html', data)
 
+
+@login_required
+def my_collections(request):
+    return render(request, 'users/my_collections.html')

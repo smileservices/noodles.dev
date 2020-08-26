@@ -4,7 +4,7 @@ import Alert from "../../../src/components/Alert";
 import {Input, SelectReact, SelectReactCreatable, Textarea} from "../../../src/components/form";
 import apiPost from "../../../src/api_interface/apiPost";
 import apiUpdate from "../../../src/api_interface/apiUpdate";
-import CreateTech from "../create-forms/CreateTech";
+import CreateTech from "../create/CreateTech";
 
 export default function EditDetailForm({data, tags, techs, addTech, options, setData, cancel}) {
 

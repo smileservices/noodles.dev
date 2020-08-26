@@ -1,0 +1,24 @@
+.my-collections-page {
+
+  section.results-container {
+    .results-selection {
+      .result {
+        max-width: 450px;
+
+        .date, .items {
+          color: $theme-color-accent;
+        }
+
+        .items {
+          float: right;
+        }
+      }
+    }
+  }
+
+  section.create-resource {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+}

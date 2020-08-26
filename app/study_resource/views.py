@@ -20,7 +20,7 @@ from .models import StudyResource
 
 
 def search(request):
-    queryset = StudyResource.objects.annotate_with_rating()
+    queryset = StudyResource.objects
     filtered = filters.StudyResourceFilter(request.GET, queryset=queryset)
     paginator = Paginator(filtered.qs.order_by('-publication_date'), 10)
     try:
@@ -38,7 +38,7 @@ def search(request):
 
 
 def detail(request, id):
-    queryset = StudyResource.objects.annotate_with_rating()
+    queryset = StudyResource.objects
     resource = queryset.get(pk=id)
     related = queryset.filter(
         Q(tags__in=resource.tags.all()),
@@ -82,8 +82,11 @@ class StudyResourceViewset(ModelViewSet):
 
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):
+        queryset = self.queryset
+        if 'pk' in request.data:
+            queryset = queryset.only('pk').exclude(pk=request.data['pk'])
         try:
-            self.queryset.only('pk').exclude(pk=request.data['pk']).get(url=request.data['url'])
+            queryset.get(url=request.data['url'])
             return Response({
                 'error': True,
                 'message': 'Resource with the same url already exists.'
@@ -120,7 +123,6 @@ class StudyResourceViewset(ModelViewSet):
 
     def get_success_headers(self, data):
         return {'Location': reverse_lazy('detail', kwargs={'id': data['pk']})}
-
 
 
 class TagViewset(ModelViewSet):
@@ -192,3 +194,34 @@ class ReviewVieset(ModelViewSet):
                 data={
                     'error': e
                 })
+
+
+class CollectionViewset(ModelViewSet):
+    serializer_class = serializers.CollectionSerializer
+    queryset = serializers.CollectionSerializer.queryset.order_by('-created_at')
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(
+            owner=self.request.user,
+        )
+
+    @action(methods=['GET'], detail=False)
+    def owned(self, *args, **kwargs):
+        queryset = self.queryset.filter(owner=self.request.user.id)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.serializer_class(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(methods=['GET'], detail=True)
+    def resources(self, *args, **kwargs):
+        queryset = self.queryset.get(pk=kwargs['pk']).resources
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = serializers.StudyResourceSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = serializers.StudyResourceSerializer(queryset, many=True)
+        return Response(serializer.data)

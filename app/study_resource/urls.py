@@ -7,6 +7,7 @@ router.register('resources', views.StudyResourceViewset, basename='study-resourc
 router.register('tags', views.TagViewset, basename='tags-viewset')
 router.register('techs', views.TechViewset, basename='techs-viewset')
 router.register('reviews', views.ReviewVieset, basename='review-viewset')
+router.register('collections', views.CollectionViewset, basename='collection-viewset')
 
 urlpatterns = [
     path('api/', include(router.urls)),

@@ -3,7 +3,7 @@
 
 <div class="resource-review-container">
     <div class="result">
-        {% with res=review.study_resource_with_rating %}
+        {% with res=review.study_resource %}
             <p class="rating">{% star_rating res.rating %}</p>
             <p class="title">
                 <a href="{% url 'detail' res.id %}">{{ res.name }}</a>

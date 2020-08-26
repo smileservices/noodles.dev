@@ -1,0 +1,24 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block content %}
+    <script>
+        const USER_ID = {{ user.id }};
+        const COLLECTIONS_ENDPOINT = "{% url 'collection-viewset-list' %}";
+        const USER_COLLECTIONS_ENDPOINT = "{% url 'collection-viewset-owned' %}";
+        const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
+        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+    </script>
+    <div class="my-collections-page">
+        <section class="header">
+            <h1>My Collections</h1>
+        </section>
+        <section class="results-container" id="collections-app"></section>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'study_resource/user-collections.js' %}"></script>
+{% endblock %}

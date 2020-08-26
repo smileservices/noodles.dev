@@ -39,7 +39,6 @@ export default function CreateFormStep2({data, submit, techs, tags, addTech}) {
             createdCallback={data => {
                 addTech(data);
                 setTechForm(false);
-                console.log(formData);
                 setFormData({...formData, technologies: [...formData.technologies, getOptionFromTech(data)]});
                 setAlert(<Alert text="Created new technology version successfully." type="success"/>)
             }}

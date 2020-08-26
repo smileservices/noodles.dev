@@ -1,8 +1,8 @@
 import React, {useState, useEffect, Fragment} from "react"
 import ReactDOM from "react-dom";
-import Alert from "../../src/components/Alert";
-import DetailStatic from "./edit-page/DetailStatic";
-import EditForm from "./edit-page/EditForm";
+import Alert from "../../../src/components/Alert";
+import DetailStatic from "./DetailStatic";
+import EditForm from "./EditForm";
 
 function Content() {
 

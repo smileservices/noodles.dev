@@ -11,6 +11,7 @@ def clean():
     models.Tag.objects.all().delete()
     models.Technology.objects.all().delete()
     models.StudyResource.objects.all().delete()
+    models.Collection.objects.all().delete()
 
 
 def initial_data():
@@ -54,3 +55,15 @@ def new_study_resource_review(study_resource, user):
         text=f.text(),
     )
     return review
+
+
+def new_collection(user):
+    collection = models.Collection(
+        owner=user,
+        name=f.text(40),
+        description=f.text(),
+    )
+    collection.save()
+    collection.resources.add(*choices(models.StudyResource.objects.all(), k=randint(1, 4)))
+    collection.tags.add(*choices(models.Tag.objects.all(), k=randint(1, 4)))
+    collection.technologies.add(*choices(models.Technology.objects.all(), k=randint(1, 3)))
