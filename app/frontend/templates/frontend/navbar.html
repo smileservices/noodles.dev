@@ -23,7 +23,7 @@
                 <div class="dropdown hidden">
                     <a class="dropdown-button" href="#">{% trans "Account" %} <span class="icon-angle-down"></span></a>
                     <div class="dropdown-menu">
-                        <a href="{% url 'account_logout' %}">{% trans "Logout" %}</a>
+                        <a href="#" id="signout_button">{% trans 'Sign Out' %}</a>
                         <div class="dropdown submenu hidden">
                             <a class="dropdown-button" href="#">{% trans "Settings" %} <span
                                     class="icon-angle-down"></span></a>
@@ -35,6 +35,32 @@
                         </div>
                     </div>
                 </div>
+                <script>
+                    function getCsrfToken() {
+                        let value = "; " + document.cookie;
+                        let parts = value.split("; csrftoken=");
+                        if (parts.length === 2) return parts.pop().split(";").shift();
+                    }
+                    document.getElementById('signout_button').addEventListener('click', e => {
+                        e.preventDefault();
+                        e.target.innerHTML = '<span class="icon-hour-glass spin-stop"> </span> Wait..';
+                        fetch(
+                            "{% url 'account_logout' %}",
+                            {
+                                method: "POST",
+                                headers: {
+                                    'X-CSRFToken': getCsrfToken(),
+                                },
+                            }
+                        ).then(result => {
+                            if (result.ok) {
+                                location.reload();
+                            } else {
+                                alert(result.statusText);
+                            }
+                        })
+                    })
+                </script>
             {% else %}
                 <a href="{% url "account_login" %}">Sign In</a>
             {% endif %}
