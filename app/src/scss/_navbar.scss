@@ -13,6 +13,10 @@ nav a {
     color: $nav-text;
 }
 
+nav a, a:visited, a:active {
+    color: $nav-text;
+}
+
 nav a > svg {
     fill: $nav-text;
 }
