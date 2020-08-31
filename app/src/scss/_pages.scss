@@ -1,0 +1,81 @@
+main .homepage {
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: 0.3fr 1fr;
+  grid-template-areas:
+  "header header"
+  "filtering results";
+}
+
+main .search-page {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 0.3fr 1fr;
+  grid-template-areas:
+  "header header"
+  "filtering results";
+}
+
+section.user-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  > * {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    position: relative;
+
+    .title {
+      margin-bottom: 1rem;
+      color: $theme-color-accent;
+    }
+
+    .group {
+      margin-bottom: 1rem;
+
+      .title {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
+
+.my-reviews-page {
+  .resource-review-container {
+    .result {
+      padding: 0;
+    }
+
+    .review {
+      margin-top: 1rem;
+      padding: 0;
+    }
+  }
+}
+
+.my-collections-page {
+
+  .items-container {
+    margin-top: 1rem;
+    gap: 0;
+
+    .result.resource {
+      gap: 0.3rem;
+      border-bottom: 1px solid $theme-color-accent;
+      padding: 0.5rem;
+      .toolbar {
+        font-size: 0.7rem;
+      }
+    }
+
+    .result.resource:hover {
+      background-color: $theme-color-main-contrast;
+    }
+
+    .result.resource:last-child {
+      border-bottom: none;
+    }
+  }
+}

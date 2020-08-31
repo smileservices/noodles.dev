@@ -11,6 +11,8 @@ function Content() {
         tags: RESULT.tags,
         technologies: RESULT.technologies,
         name: RESULT.name,
+        author_id: RESULT.author_id,
+        author: RESULT.author,
         created_at: RESULT.created_at,
         publication_date: RESULT.publication_date,
         published_by: RESULT.published_by,

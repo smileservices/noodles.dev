@@ -39,6 +39,7 @@ function ResourceReviewsApp() {
             {alert}
             <PaginatedLayout data={reviews.results} resultsCount={reviews.count} pagination={pagination}
                              setPagination={setPagination}
+                             resultsContainerClass="column-container"
                              mapFunction={
                                  (item, idx) =>
                                      <Review
@@ -49,8 +50,10 @@ function ResourceReviewsApp() {
             />
             {reviewed
                 ? <Alert text='Thank you for reviewing!' type='success'/>
-                : <div className="review form">
-                    <h3>Write Review</h3>
+                : <div className="review form-container">
+                    <div className="header">
+                        <h3>Write Review</h3>
+                    </div>
                     <ReviewForm createReviewCallback={createReviewCallback}/>
                 </div>
             }
@@ -58,4 +61,4 @@ function ResourceReviewsApp() {
     )
 }
 
-ReactDOM.render(<ResourceReviewsApp/>, document.querySelector('section.reviews'))
+ReactDOM.render(<ResourceReviewsApp/>, document.querySelector('#reviews'))

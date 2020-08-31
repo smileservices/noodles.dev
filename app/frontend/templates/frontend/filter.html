@@ -2,10 +2,14 @@
 <section class="filtering collapsible">
     <div href="#" class="collapse-toggle">Toggle Filters</div>
     <div class="collapsible-content">
-        <form action="{% url filter_url %}" method="GET">
-            <h3 class="title">Filter</h3>
-            {{ filter.form | crispy }}
-            <button class="btn submit" type="submit">Filter</button>
-        </form>
+        <div class="form-container">
+            <div class="header">
+                <h3 class="title">Filter</h3>
+            </div>
+            <form action="{% url filter_url %}" method="GET">
+                {{ filter.form | crispy }}
+                <button class="btn submit" type="submit">Filter</button>
+            </form>
+        </div>
     </div>
 </section>

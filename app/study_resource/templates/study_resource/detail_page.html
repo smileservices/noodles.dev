@@ -11,6 +11,36 @@
         const MAX_RATING = {{ MAX_RATING }};
         const RESOURCE_ID = {{ result.id }};
         const HOMEPAGE = "{% url 'homepage' %}";
+        const SEARCH_URL = "{% url 'search' %}";
+        const STUDY_RESOURCE_ENDPOINT = "{% url 'study-resource-viewset-list' %}";
+        const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
+        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+        const URL_USER_COLLECTIONS = "{% url 'my-collections' %}";
+        const USER_COLLECTIONS_ENDPOINT = "{% url 'collection-viewset-owned-resource' %}";
+        const USER_COLLECTIONS_SET_ENDPOINT = "{% url 'collection-viewset-set-items' %}";
+        const RESULT = {
+            pk: {{ result.pk }},
+            rating: {% if result.rating %}{{ result.rating }}{% else %}false{% endif %},
+            name: "{{ result.name|escapejs }}",
+            author: "{{ result.author|escapejs }}",
+            author_id: {{ result.author.id|escapejs }},
+            url: "{{ result.url|escapejs }}",
+            publication_date: "{{ result.publication_date|escapejs }}",
+            published_by: "{{ result.published_by|escapejs }}",
+            created_at: "{{ result.created_at|escapejs }}",
+            type: {{ result.price }},
+            media: {{ result.media }},
+            experience_level: {{ result.experience_level }},
+            summary: "{{ result.summary|escapejs }}",
+            tags: [],
+            technologies: []
+        }
+        {% for tag in result.tags.all %}
+            RESULT.tags.push({{ tag.id }});
+        {% endfor %}
+        {% for tech in result.technologies.all %}
+            RESULT.technologies.push({{ tech.id }});
+        {% endfor %}
     </script>
     <div class="detail-page">
         <section class="header">
@@ -18,19 +48,22 @@
             {% include 'study_resource/search_bar_section.html' %}
         </section>
 
-        <div class="detail-container">
-            <section id="detail">
+        <div class="column-container">
+            <section id="detail" class="card">
+                <div class="toolbar">
+                    <div id="add_to_collection"></div>
+                </div>
                 {% include 'study_resource/detail.html' %}
             </section>
-            <section class="reviews"></section>
+            <section id="reviews" class="column-container"></section>
         </div>
 
 
-        <section class="results-container">
+        <section class="related column-container">
             <h3>Related</h3>
-            <div class="results-selection">
+            <div class="tile-container">
                 {% for result in related %}
-                    <div class="result">
+                    <div class="result card">
                         {% include 'study_resource/result.html' %}
                     </div>
                 {% endfor %}
@@ -42,34 +75,5 @@
 {% block extra_js %}
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'study_resource/study-resource-detail-reviews.js' %}"></script>
-    {% if user.is_authenticated and user == result.author %}
-        <script>
-            const SEARCH_URL = "{% url 'search' %}";
-            const STUDY_RESOURCE_ENDPOINT = "{% url 'study-resource-viewset-list' %}";
-            const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
-            const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
-            const RESULT = {
-                pk: {{ result.pk }},
-                rating: {% if result.rating %}{{ result.rating }}{% else %}false{% endif %},
-                name: "{{ result.name }}",
-                url: "{{ result.url }}",
-                publication_date: "{{ result.publication_date }}",
-                published_by: "{{ result.published_by }}",
-                created_at: "{{ result.created_at }}",
-                type: {{ result.price }},
-                media: {{ result.media }},
-                experience_level: {{ result.experience_level }},
-                summary: "{{ result.summary }}",
-                tags: [],
-                technologies: []
-            }
-            {% for tag in result.tags.all %}
-                RESULT.tags.push({{ tag.id }});
-            {% endfor %}
-            {% for tech in result.technologies.all %}
-                RESULT.technologies.push({{ tech.id }});
-            {% endfor %}
-        </script>
-        <script src="{% static 'study_resource/study-resource-edit.js' %}"></script>
-    {% endif %}
+    <script src="{% static 'study_resource/study-resource-edit.js' %}"></script>
 {% endblock %}

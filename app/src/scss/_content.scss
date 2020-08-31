@@ -25,12 +25,27 @@ h3 {
   margin-bottom: 0.3rem;
 }
 
+a, a:visited {
+  text-decoration: none;
+  color: $theme-color-accent;
+}
+
+a:hover {
+  color: $theme-color-main;
+  cursor: pointer;
+}
+
 .alert {
   margin: 1rem 0;
 }
 
 small, .small {
   font-size: 0.875rem;
+}
+
+
+section.header {
+  margin-bottom: 3rem;
 }
 
 .waiting-container {
@@ -47,8 +62,46 @@ small, .small {
   }
 }
 
+.btn {
+  display: block;
+  margin: 0.2rem 0;
+  background-color: $theme-color-accent;
+  padding: 0.5rem 1rem;
+  font-weight: 700 !important;
+  border-radius: 0.25rem;
+  color: #ffffff;
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.btn:hover {
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5)) brightness(110%);
+}
+
+.btn.submit.waiting {
+  &:hover {
+    cursor: not-allowed;
+    filter: none;
+  }
+
+  > * {
+    margin-right: 1rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.btn.create-element {
+  background-color: $theme-color-accent;
+  width: 250px;
+  color: #ffffff;
+  padding: 0.5rem;
+}
+
 .alert {
-  position: relative;
+  margin-bottom: 0;
 
   span.close {
     position: absolute;
@@ -62,6 +115,7 @@ small, .small {
     color: $theme-color-accent;
   }
 }
+
 
 .toolbar {
   position: absolute;
@@ -90,7 +144,7 @@ small, .small {
 }
 
 .confirm {
-  color: #8b3535;
+  color: $danger;
 
   .option {
     margin: 0.35rem;
@@ -99,5 +153,75 @@ small, .small {
   .option:hover {
     color: $theme-color-accent;
     border-bottom: 1px solid $theme-color-accent;
+  }
+}
+
+.rating {
+  font-size: 0.65rem;
+  color: $theme-color-accent;
+  margin-bottom: 0.3rem;
+}
+
+.thumbs {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 1rem;
+
+  div {
+    border: none;
+    background-color: #ffffff;
+    padding: 0;
+    margin: 0;
+  }
+
+  a, a:visited {
+    color: $theme-color-main;
+  }
+
+  a:hover {
+    color: $theme-color-accent;
+  }
+
+  .voted {
+    a, a:visited {
+      color: $theme-color-accent;
+    }
+
+    a:hover {
+      color: $theme-color-main;
+    }
+  }
+}
+
+.tags {
+  font-size: 0.75rem;
+  display: inline-block;
+
+  span {
+    color: $text-muted;
+  }
+
+  a, a:visited {
+    color: $theme-color-main;
+  }
+
+  .tag, .tech {
+    display: inline-block;
+    padding: 0.125rem 0.35rem;
+    margin: 0.125rem 0.125rem;
+  }
+
+  .tag:hover, .tech:hover {
+    color: $theme-color-accent;
+    background-color: #ffffff;
+  }
+
+  .tag {
+    background-color: lighten($theme-color-accent, 50%);
+  }
+
+  .tech {
+    background-color: lighten($theme-color-accent, 40%);
   }
 }

@@ -1,5 +1,4 @@
 import React, {useState, useEffect, Fragment} from "react";
-import Waiting from "../../../src/components/Waiting";
 import Alert from "../../../src/components/Alert";
 import {Input, SelectReact, SelectReactCreatable, Textarea} from "../../../src/components/form";
 import apiPost from "../../../src/api_interface/apiPost";
@@ -136,7 +135,6 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
         return d.toISOString().substr(0, 10);
     }
 
-    if (waiting) return waiting;
     if (techForm) return <CreateTech
         techs={techs} cancel={e => setTechForm(false)}
         createdCallback={tech => {
@@ -145,12 +143,12 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
         }}/>
 
     return (
-        <div className="update-form-container">
+        <div className="form-container">
             <div className="toolbar">
                 <span className="icon-close" onClick={cancel}/>
             </div>
-            <h3>Edit resource</h3>
-            {alert ? alert : ''}
+            <div className="header"><h3>Edit resource</h3></div>
+
             <form action="#" onSubmit={e => {
                 e.preventDefault();
                 validate(formData, submit);
@@ -159,6 +157,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                     id={'name'}
                     label="Title"
                     inputProps={{
+                        disabled: Boolean(waiting),
                         type: 'text',
                         required: true,
                         value: formData.name,
@@ -173,6 +172,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                     id='inputurl'
                     label="URL"
                     inputProps={{
+                        disabled: Boolean(waiting),
                         onChange: e => setFormData({...formData, url: e.target.value}),
                         value: formData.url,
                         required: true,
@@ -187,6 +187,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                         id={'publication_date'}
                         label="Publishing Date"
                         inputProps={{
+                            disabled: Boolean(waiting),
                             type: 'date',
                             required: true,
                             value: formatDate(formData.publication_date),
@@ -199,6 +200,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                         id={'published_by'}
                         label="Author"
                         inputProps={{
+                            disabled: Boolean(waiting),
                             type: 'text',
                             required: true,
                             value: formData.published_by,
@@ -215,6 +217,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                                       value={formData.tags}
                                       props={{isMulti: true}}
                                       error={errors.tags}
+                                      isDisabled={Boolean(waiting)}
                 />
                 <SelectReact id="select-techs" label="Choose technologies"
                              smallText={
@@ -233,6 +236,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                              value={formData.technologies}
                              props={{isMulti: true}}
                              error={errors.technologies}
+                             isDisabled={Boolean(waiting)}
                 />
                 <div className="row">
                     <SelectReact label='Type'
@@ -241,6 +245,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                                  options={getOptions('type')}
                                  onChange={sel => setFormData({...formData, type: sel})}
                                  smallText="Free or paid"
+                                 isDisabled={Boolean(waiting)}
                     />
                     <SelectReact label='Media'
                                  value={formData.media}
@@ -248,6 +253,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                                  options={getOptions('media')}
                                  onChange={sel => setFormData({...formData, media: sel})}
                                  smallText="Media type"
+                                 isDisabled={Boolean(waiting)}
                     />
                     <SelectReact label='Experience level'
                                  value={formData.experience_level}
@@ -255,12 +261,14 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                                  options={getOptions('experience_level')}
                                  onChange={sel => setFormData({...formData, experience_level: sel})}
                                  smallText="Experience level required"
+                                 isDisabled={Boolean(waiting)}
                     />
                 </div>
                 <Textarea
                     id={'summary'}
                     label="Summary"
                     inputProps={{
+                        disabled: Boolean(waiting),
                         required: true,
                         value: formData.summary,
                         onChange: e => setFormData({...formData, summary: e.target.value})
@@ -268,7 +276,11 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                     smallText="What is it about"
                     error={errors.summary}
                 />
-                <button className="btn submit" type="submit">Update</button>
+                {alert ? alert : ''}
+                {waiting
+                    ? waiting
+                    : <button className="btn submit" type="submit">Update</button>
+                }
             </form>
         </div>
     )

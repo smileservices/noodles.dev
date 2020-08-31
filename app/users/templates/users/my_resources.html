@@ -16,14 +16,14 @@
             </section>
         </section>
         {% include 'frontend/filter.html' with filter_url='my-resources' %}
-        <section class="results-container">
+        <section class="results-container column-container">
             {% if not results %}
                 <h3>Did not find any results :(</h3>
             {% else %}
                 <h3>Found {{ results.paginator.count }} results matching your query:</h3>
-                <div class="results-selection">
+                <div class="tile-container">
                     {% for result in results %}
-                        <div class="result">{% include 'study_resource/result.html' %}</div>
+                        <div class="result card">{% include 'study_resource/result.html' %}</div>
                     {% endfor %}
                 </div>
                 {% if results.has_other_pages %}

@@ -7,14 +7,17 @@
         const USER_ID = {{ user.id }};
         const COLLECTIONS_ENDPOINT = "{% url 'collection-viewset-list' %}";
         const USER_COLLECTIONS_ENDPOINT = "{% url 'collection-viewset-owned' %}";
+        const STUDY_RESOURCE_OPTIONS_ENDPOINT = "{% url 'study-resource-viewset-options' %}";
+        const USER_COLLECTIONS_UPDATE_ITEMS_ENDPOINT = "{% url 'collection-viewset-update-collection-items' %}";
+        const RESOURCE_URL = "/tutorials/"
         const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
         const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
     </script>
-    <div class="my-collections-page">
+    <div class="my-collections-page column-container">
         <section class="header">
             <h1>My Collections</h1>
         </section>
-        <section class="results-container" id="collections-app"></section>
+        <section id="collections-app"></section>
     </div>
 {% endblock %}
 

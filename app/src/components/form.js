@@ -116,13 +116,13 @@ export const SelectVanilla = ({id, label, inputProps, smallText, error, Options}
     )
 }
 
-export const SelectReact = ({id, label, smallText, error, options, value, onChange, props}) => (
+export const SelectReact = ({id, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => (
     <div className="form-group">
         {label
             ? (<label htmlFor={id}>{label}</label>)
             : ''
         }
-        <Select options={options} value={value} onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
+        <Select isLoading={isLoading} isDisabled={isDisabled} options={options} value={value} onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
         {smallText
             ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
             : ''
@@ -134,13 +134,13 @@ export const SelectReact = ({id, label, smallText, error, options, value, onChan
     </div>
 )
 
-export const SelectReactCreatable = ({id, label, smallText, error, options, value, onChange, props}) => (
+export const SelectReactCreatable = ({id, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => (
     <div className="form-group">
         {label
             ? (<label htmlFor={id}>{label}</label>)
             : ''
         }
-        <Creatable options={options} value={value} onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
+        <Creatable isLoading={isLoading} isDisabled={isDisabled} options={options} value={value} onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
         {smallText
             ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
             : ''

@@ -11,7 +11,10 @@ export default function PaginatedLayout({data, mapFunction, pagination, resultsC
             <div className={resultsContainerClass}>
                 {data.map((item, idx) => mapFunction(item, idx))}
             </div>
-            <PaginationElement pagination={pagination} resultsCount={resultsCount} setPagination={setPagination}/>
+            { resultsCount > pagination.resultsPerPage
+                ? <PaginationElement pagination={pagination} resultsCount={resultsCount} setPagination={setPagination}/>
+                : ''
+            }
         </Fragment>
     )
 }

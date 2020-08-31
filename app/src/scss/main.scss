@@ -45,21 +45,20 @@ body {
 
 @import "reset";
 @import "animations";
-@import "navbar";
-@import "dropdowns";
-@import "sidebar";
-@import "content";
-@import "search_page";
-@import "create_resource_page";
-@import "my_profile_page";
-@import "my_reviews_page";
-@import "my_collections_page";
-@import "homepage";
-@import "study_resource_detail";
-@import "page_sections";
-@import "pagination";
+@import "layouts";
 @import "forms";
-@import "buttons";
+
+@import "content";
+
+@import "navbar";
+@import "sidebar";
+@import "dropdowns";
+@import "pagination";
+
 @import "authentication";
+@import "page_sections";
+@import "pages";
+@import "study_resource_detail";
+
 
 @import "responsive";

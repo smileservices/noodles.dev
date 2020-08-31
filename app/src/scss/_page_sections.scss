@@ -48,17 +48,6 @@ section.filtering {
   display: flex;
   flex-direction: column;
 
-  form {
-    background-color: #ffffff;
-    padding: 1rem;
-    border-radius: $border-radius;
-
-    .title {
-      margin-bottom: 1rem;
-    }
-
-  }
-
   .collapse-toggle {
     background-color: $theme-color-main;
     color: $theme-color-main-contrast;
@@ -76,111 +65,38 @@ section.filtering {
 
 section.results-container {
   grid-area: results;
+}
+
+.result {
+  position: relative;
+  min-width: 200px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 
-  .results-selection {
-    display: grid;
-    grid-gap: 0.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  }
-}
-
-.result {
-  background-color: #ffffff;
-  border-radius: $border-radius;
-  padding: 0.75rem;
-  min-width: 200px;
-  position: relative;
-
-  .rating {
-    font-size: 0.65rem;
-    color: $theme-color-accent;
-  }
-
   .title {
-    margin: 0.4rem 0;
     font-size: 1rem;
     font-weight: bolder;
-    padding: 0.5rem 0;
-
-    a, a:visited {
-      text-decoration: none;
-      color: $theme-color-main;
-    }
-
-    a:hover {
-      color: $theme-color-accent;
-    }
   }
 
-  .publication-date {
-    font-size: 0.85rem;
+  .row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .group-muted {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    font-size: 0.8rem;
+    justify-content: center;
+    gap: 0.3rem;
     color: $text-muted;
   }
-
-  .experience-level {
-    font-size: 0.85rem;
-    color: $text-muted;
-  }
-
-  .tags {
-    margin: 0.3rem 0;
-
-    a, a:visited {
-      color: $theme-color-main;
-      text-decoration: none;
-    }
-
-    .tag, .tech {
-      display: inline-block;
-      padding: 0.125rem;
-      margin: 0.125rem 0;
-      font-size: 0.85rem;
-      border-radius: 5px;
-    }
-
-    .tag:hover, .tech:hover {
-      color: $theme-color-accent;
-      background-color: $theme-color-main-contrast;
-    }
-
-    .tag {
-      background-color: lighten($theme-color-accent, 50%);
-    }
-
-    .tech {
-      background-color: lighten($theme-color-accent, 40%);
-    }
-  }
-
-  .summary {
-    margin: 0.4rem 0;
-  }
-
-  .type {
-    font-size: 0.85rem;
-    color: $text-muted;
-  }
-}
-
-.result > * {
-  overflow: hidden;
 }
 
 .review {
-  background-color: #ffffff;
-  padding: 1rem;
-  border-radius: 0.25rem;
-  position: relative;
-
-  .rating {
-    font-size: 0.65rem;
-    color: $theme-color-accent;
-    margin-bottom: 0.3rem;
-  }
-
   .date, .author {
     color: $text-muted;
   }
@@ -188,57 +104,25 @@ section.results-container {
   .text {
     margin: 0.5rem 0;
   }
-
-  .thumbs {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: 1rem;
-
-    div {
-      border: none;
-      background-color: #ffffff;
-      padding: 0;
-      margin: 0;
-    }
-
-    a, a:visited {
-      color: $text-muted;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    a:hover {
-      color: $theme-color-accent;
-    }
-  }
-
-  .thumbs .voted {
-    a, a:visited {
-      color: $theme-color-accent;
-    }
-  }
 }
 
-section.create-resource {
-  background-color: #ffffff;
-  border-radius: .25rem;
-  padding: 1rem;
-  position: relative;
-  margin-top: 1rem;
-
-  form {
-    gap: 1rem;
-  }
+.highlighted {
+  border: 0.1rem solid $theme-color-accent;
 }
 
 .ss-main .ss-multi-selected .ss-values .ss-value {
   background-color: $theme-color-accent;
 }
 
-button.create-element {
-  background-color: $theme-color-accent;
-  width: 250px;
-  color: #ffffff;
-  padding: 0.5rem;
+.selectable {
+  cursor: pointer;
+}
+
+.card.selectable {
+  padding: 0.9rem;
+  border: 0.1rem solid #ffffff;
+}
+
+.selectable.selected {
+  border: 0.1rem solid $theme-color-accent;
 }

@@ -3,7 +3,8 @@ import StarRating from "../../../src/components/StarRating";
 import Waiting from "../../../src/components/Waiting";
 import apiDelete from "../../../src/api_interface/apiDelete";
 import Alert from "../../../src/components/Alert";
-
+import FormatDate from "../../../src/vanilla/date";
+import {openAddCollectionModal} from "../collections/AddToCollectionModal";
 
 export default function DetailStatic({data, tags, techs, options, setEditForm}) {
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -16,7 +17,7 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
             setWaiting,
             data => {
                 setAlert(<Alert text={"Successfully deleted. Returning to homepage..."} type="info"/>)
-                window.location=HOMEPAGE
+                window.location = HOMEPAGE
             },
             result => setAlert(<Alert text={"Could not delete study resource"} type="danger"/>)
         )
@@ -35,8 +36,15 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
                             <span className="option" onClick={e => setConfirmDelete(false)}>cancel</span>
                         </div>
                         : <Fragment>
-                            <span className="icon-pencil edit" onClick={e => setEditForm(true)}/>
-                            <span className="icon-close delete" onClick={e => setConfirmDelete(true)}/>
+                            {RESULT.author_id === USER_ID
+                                ?
+                                <Fragment>
+                                    <span className="icon-pencil edit" onClick={e => setEditForm(true)}/>
+                                    <span className="icon-close delete" onClick={e => setConfirmDelete(true)}/>
+                                </Fragment>
+                                : ''
+                            }
+                            <span className="icon-bookmark" onClick={e => openAddCollectionModal()}/>
                         </Fragment>
                     }
             </span>
@@ -45,8 +53,8 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
                 <a href="">{data.name}</a>
             </p>
             <div className="group">
-                <p className="publication-date">Published on {data.publication_date} by {data.published_by}</p>
-                <p className="creation-date">Added here on {data.created_at} by you</p>
+                <p className="publication-date">Published on {FormatDate(data.publication_date, 'date')} by {data.published_by}</p>
+                <p className="creation-date">Added here on {FormatDate(data.created_at, 'date')} by {data.author}</p>
                 {!options ? <Waiting text={"Loading options"}/>
                     : <Fragment>
                         <p className="experience-level">Experience level: {options.experience_level.map(opt => {

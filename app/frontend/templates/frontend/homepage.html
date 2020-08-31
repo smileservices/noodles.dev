@@ -20,18 +20,18 @@
 
 
         {% include 'frontend/filter.html' with filter_url='search' %}
-        <section class="results-container">
+        <section class="results-container column-container">
             <h3>Most appreciated:</h3>
-            <div class="results-selection">
+            <div class="results-selection tile-container">
                 {% for result in most_appreciated %}
-                    <div class="result">{% include 'study_resource/result.html' %}</div>
+                    <div class="result card">{% include 'study_resource/result.html' %}</div>
                 {% endfor %}
             </div>
 
             <h3>Latest added:</h3>
-            <div class="results-selection">
+            <div class="results-selection tile-container">
                 {% for result in latest %}
-                    <div class="result">{% include 'study_resource/result.html' %}</div>
+                    <div class="result card">{% include 'study_resource/result.html' %}</div>
                 {% endfor %}
             </div>
         </section>

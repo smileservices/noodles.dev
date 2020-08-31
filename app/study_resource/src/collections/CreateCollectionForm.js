@@ -84,12 +84,13 @@ export default function CreateCollectionForm({tags, techs, setTags, setTechs, ad
     )
 
     return (
-        <Fragment>
+        <div className="form-container full-page-sm">
             <div className="toolbar">
                 <span className="icon-close" onClick={cancel}/>
             </div>
-            <h3>Create New Collection</h3>
-            {alert ? alert : ''}
+            <div className="header">
+                <h3>Create New Collection</h3>
+            </div>
             <form action="#" onSubmit={e => {
                 e.preventDefault();
                 validate(formData, submit);
@@ -101,7 +102,8 @@ export default function CreateCollectionForm({tags, techs, setTags, setTechs, ad
                         type: 'text',
                         required: true,
                         value: formData.name,
-                        onChange: e => setFormData({...formData, name: e.target.value})
+                        onChange: e => setFormData({...formData, name: e.target.value}),
+                        disabled: Boolean(waiting),
                     }}
                     error={errors.name}
                 />
@@ -120,7 +122,10 @@ export default function CreateCollectionForm({tags, techs, setTags, setTechs, ad
                                       onChange={selectedOptions => setFormData({...formData, tags: selectedOptions})}
                                       options={tags.map(tag => getOptionFromTag(tag))}
                                       value={formData.tags}
-                                      props={{isMulti: true}}
+                                      props={{
+                                          isMulti: true,
+                                          disabled: Boolean(waiting),
+                                      }}
                                       error={errors.tags}
                 />
                 <SelectReact id="select-techs" label="Choose technologies"
@@ -138,11 +143,18 @@ export default function CreateCollectionForm({tags, techs, setTags, setTechs, ad
                              onChange={selectedOptions => setFormData({...formData, technologies: selectedOptions})}
                              options={techs.map(tech => getOptionFromTech(tech))}
                              value={formData.technologies}
-                             props={{isMulti: true}}
+                             props={{
+                                 isMulti: true,
+                                 disabled: Boolean(waiting),
+                             }}
                              error={errors.technologies}
                 />
-                <button className="btn submit" type="submit">Create</button>
+                {alert ? alert : ''}
+                {waiting
+                    ? waiting
+                    : <button className="btn submit" type="submit">Create</button>
+                }
             </form>
-        </Fragment>
+        </div>
     );
 }

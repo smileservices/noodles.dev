@@ -4,7 +4,7 @@ import apiPost from "../../../src/api_interface/apiPost";
 import Alert from "../../../src/components/Alert";
 import {Input, Textarea, SelectReact} from "../../../src/components/form";
 
-export default function CreateFormStep3({data, options, submit}) {
+export default function CreateFormStep3({data, options, submit, waiting}) {
     const [formData, setFormData] = useState(data);
     const [errors, setErrors] = useState({});
     const [alert, setAlert] = useState('');
@@ -30,84 +30,96 @@ export default function CreateFormStep3({data, options, submit}) {
     }
 
     return (
-        <form action="#" onSubmit={e => {
-            e.preventDefault();
-            validate(formData, submit);
-        }}>
-            { alert ? alert : ''}
-            <Input
-                id={'name'}
-                label="Title"
-                inputProps={{
-                    type: 'text',
-                    required: true,
-                    value: formData.name,
-                    onChange: e => setFormData({...formData, name: e.target.value})
-                }}
-                smallText="Resource name"
-                error={errors.name}
-            />
-            <div className="row">
+        <div className="form-container">
+            <form action="#" onSubmit={e => {
+                e.preventDefault();
+                validate(formData, submit);
+            }}>
                 <Input
-                    id={'publication_date'}
-                    label="Publishing Date"
+                    id={'name'}
+                    label="Title"
                     inputProps={{
-                        type: 'date',
-                        required: true,
-                        value: formData.publication_date,
-                        onChange: e => setFormData({...formData, publication_date: e.target.value})
-                    }}
-                    smallText="Date the resource was published"
-                    error={errors.publication_date}
-                />
-                <Input
-                    id={'published_by'}
-                    label="Author"
-                    inputProps={{
+                        disabled: Boolean(waiting),
                         type: 'text',
                         required: true,
-                        value: formData.published_by,
-                        onChange: e => setFormData({...formData, published_by: e.target.value})
+                        value: formData.name,
+                        onChange: e => setFormData({...formData, name: e.target.value})
                     }}
-                    smallText="Who is the author of the resource"
-                    error={errors.published_by}
+                    smallText="Resource name"
+                    error={errors.name}
                 />
-            </div>
-            <div className="row">
-                <SelectReact label='Type'
-                             value={formData.type}
-                             error={errors.type}
-                             options={getOptions('type')}
-                             onChange={sel => setFormData({...formData, type: sel})}
-                             smallText="Free or paid"
+                <div className="row">
+                    <Input
+                        id={'publication_date'}
+                        label="Publishing Date"
+                        inputProps={{
+                            disabled: Boolean(waiting),
+                            type: 'date',
+                            required: true,
+                            value: formData.publication_date,
+                            onChange: e => setFormData({...formData, publication_date: e.target.value})
+                        }}
+                        smallText="Date the resource was published"
+                        error={errors.publication_date}
+                    />
+                    <Input
+                        id={'published_by'}
+                        label="Author"
+                        inputProps={{
+                            disabled: Boolean(waiting),
+                            type: 'text',
+                            required: true,
+                            value: formData.published_by,
+                            onChange: e => setFormData({...formData, published_by: e.target.value})
+                        }}
+                        smallText="Who is the author of the resource"
+                        error={errors.published_by}
+                    />
+                </div>
+                <div className="row">
+                    <SelectReact label='Type'
+                                 value={formData.type}
+                                 error={errors.type}
+                                 options={getOptions('type')}
+                                 onChange={sel => setFormData({...formData, type: sel})}
+                                 props={{disabled:Boolean(waiting)}}
+                                 smallText="Free or paid"
+                    />
+                    <SelectReact label='Media'
+                                 value={formData.media}
+                                 error={errors.media}
+                                 options={getOptions('media')}
+                                 onChange={sel => setFormData({...formData, media: sel})}
+                                 props={{disabled:Boolean(waiting)}}
+                                 smallText="Media type"
+                    />
+                    <SelectReact label='Experience level'
+                                 value={formData.experience_level}
+                                 error={errors.experience_level}
+                                 options={getOptions('experience_level')}
+                                 onChange={sel => setFormData({...formData, experience_level: sel})}
+                                 props={{disabled:Boolean(waiting)}}
+                                 smallText="Experience level required"
+                    />
+                </div>
+                <Textarea
+                    id={'summary'}
+                    label="Summary"
+                    inputProps={{
+                        disabled: Boolean(waiting),
+                        required: true,
+                        value: formData.summary,
+                        onChange: e => setFormData({...formData, summary: e.target.value})
+                    }}
+                    smallText="What is it about"
+                    error={errors.summary}
                 />
-                <SelectReact label='Media'
-                             value={formData.media}
-                             error={errors.media}
-                             options={getOptions('media')}
-                             onChange={sel => setFormData({...formData, media: sel})}
-                             smallText="Media type"
-                />
-                <SelectReact label='Experience level'
-                             value={formData.experience_level}
-                             error={errors.experience_level}
-                             options={getOptions('experience_level')}
-                             onChange={sel => setFormData({...formData, experience_level: sel})}
-                             smallText="Experience level required"
-                />
-            </div>
-            <Textarea
-                id={'summary'}
-                label="Summary"
-                inputProps={{
-                    required: true,
-                    value: formData.summary,
-                    onChange: e => setFormData({...formData, summary: e.target.value})
-                }}
-                smallText="What is it about"
-                error={errors.summary}
-            />
-            <button className="btn submit" type="submit">Publish</button>
-        </form>
+                { alert }
+                {waiting
+                    ? waiting
+                    : <button className="btn submit" type="submit">Publish</button>
+                }
+            </form>
+        </div>
     )
 }

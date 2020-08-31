@@ -1,5 +1,5 @@
 import {getCsrfToken} from "../components/utils";
-import Waiting from "../components/Waiting";
+import {WaitingButton} from "../components/Waiting";
 
 export default async function apiCreate(
     endpoint,
@@ -8,7 +8,7 @@ export default async function apiCreate(
     setWaiting, setError,
     handleSuccessHeaders
 ) {
-    setWaiting(<Waiting text={'Please wait'} />);
+    setWaiting(<WaitingButton text={'Creating'} />);
     await fetch(endpoint, {
         method: "POST",
         headers: {

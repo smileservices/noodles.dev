@@ -7,14 +7,16 @@
         <section class="header">
             <h1>My Reviews</h1>
         </section>
-        <section class="results-container">
+        <section class="results-container column-container">
             {% if not results %}
                 <h3>You didn't review anything :(</h3>
             {% else %}
                 <h3>You submitted {{ results.paginator.count }} reviews:</h3>
-                <div class="results-selection">
+                <div class="tile-container">
                     {% for review in results %}
-                        {% include 'users/review_listing.html' %}
+                        <div class="resource-review-container card">
+                            {% include 'users/review_listing.html' %}
+                        </div>
                     {% endfor %}
                 </div>
                 {% if results.has_other_pages %}

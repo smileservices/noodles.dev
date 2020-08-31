@@ -1,11 +1,13 @@
+import Waiting from "../components/Waiting";
+
 export async function detail(
     endpoint,
     pk,
     success,
     setWaiting, setError,
 ) {
-    setWaiting('Retrieving data');
-    let url = endpoint+pk;
+    setWaiting(<Waiting text={'Retrieving data'}/>);
+    let url = endpoint + pk;
     await fetch(url, {
         method: "GET"
     }).then(result => {

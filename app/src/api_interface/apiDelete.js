@@ -6,7 +6,7 @@ export default async function apiDelete(
     setWaiting,
     success, setError
 ) {
-    setWaiting(<Waiting text={'Please wait'}/>);
+    setWaiting(<Waiting text={'Deleting'}/>);
     await fetch(endpoint, {
         method: "DELETE",
         headers: {

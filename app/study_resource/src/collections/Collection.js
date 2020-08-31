@@ -4,7 +4,7 @@ import Alert from "../../../src/components/Alert";
 import FormatDate from "../../../src/vanilla/date";
 import Waiting from "../../../src/components/Waiting";
 
-export default function Collection({data, setEdit, handleDelete}) {
+export default function Collection({data, handleSelect, setEdit, handleDelete}) {
 
     const [waiting, setWaiting] = useState('');
     const [alert, setAlert] = useState('');
@@ -21,7 +21,7 @@ export default function Collection({data, setEdit, handleDelete}) {
         )
     }
 
-    function deleteElement(confirm) {
+    function toolbarElement(confirm) {
         if (confirm) {
             return (
                 <div className="confirm">
@@ -33,7 +33,10 @@ export default function Collection({data, setEdit, handleDelete}) {
         }
         return (
             <Fragment>
-                <span className="icon-pencil edit" onClick={e => setEdit()}/>
+                <span className="icon-pencil edit" onClick={e => {
+                    e.stopPropagation();
+                    setEdit();
+                }}/>
                 <span className="delete icon-close" onClick={e => setConfirm(true)}/>
             </Fragment>
         )
@@ -42,25 +45,25 @@ export default function Collection({data, setEdit, handleDelete}) {
     if (waiting) return waiting;
 
     return (
-        <div className="result">
+        <div className="result card selectable" onClick={e => {
+            handleSelect();
+        }}>
             {alert}
-            <div className="toolbar">{deleteElement(confirm)}</div>
+            <div className="toolbar" onClick={e=>e.stopPropagation()}>{toolbarElement(confirm)}</div>
 
-            <p className="title">
-                <a href="">{data.name}</a>
-            </p>
-            <p>
-                <span className="date">Created on {FormatDate(data.created_at, 'date')}</span>
-                <span className="items">{data.items_count} items</span>
-            </p>
-            <p className="summary">{data.description}</p>
+            <p className="title">{data.name}</p>
+            <div className="group-muted">
+                <div className="row">
+                    <span className="date">Created on {FormatDate(data.created_at, 'date')}</span>
+                    {/*<span className="items">{data.items_count} items</span>*/}
+                </div>
+                <p className="summary">{data.description}</p>
+            </div>
             <span className="tags">
                 <span>Tags: </span>
-                {data.tags.map(t=> <a key={'tag'+t.pk} className="tag">{t.name}</a>)}
-            </span>
-            <span className="tags">
+                {data.tags.map(t => <a key={'tag' + t.pk} className="tag">{t.name}</a>)}
                 <span>Tech: </span>
-                {data.technologies.map(t=> <a key={'tech'+t.pk} className="tech">{t.name}</a>)}
+                {data.technologies.map(t => <a key={'tech' + t.pk} className="tech">{t.name}</a>)}
             </span>
         </div>
     )

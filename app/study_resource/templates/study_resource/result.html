@@ -4,10 +4,12 @@
 <p class="title">
     <a href="{% url 'detail' result.id %}">{{ result.name }}</a>
 </p>
-<p class="publication-date">{{ result.publication_date }}</p>
-<p class="experience-level">Difficulty: {{ result.experience_level_label }}</p>
 
-<p class="type">{{ result.media_label }}, {{ result.price_label }}</p>
+<div class="group-muted">
+<p class="publication-date">{{ result.publication_date }}</p>
+<p class="experience-level">Difficulty {{ result.experience_level_label }}</p>
+<p class="type">Type {{ result.media_label }}, {{ result.price_label }}</p>
+</div>
 
 <p class="tags">{% for tag in result.tags.all %}
     <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>

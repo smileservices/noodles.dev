@@ -43,7 +43,7 @@ export default function Review({review}) {
     };
     if (deleted) return <Alert text={deleted} type='success'/>;
     return (
-        <div className={current_owner ? 'review highlighted' : 'review'}>
+        <div className={current_owner ? 'review card highlighted' : 'review card'}>
             {waiting}
             {alert}
             <p className="rating"><StarRating rating={review.rating} maxRating={MAX_RATING}/></p>

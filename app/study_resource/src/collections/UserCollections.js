@@ -7,10 +7,14 @@ import PaginatedLayout from "../../../src/components/PaginatedLayout";
 import Collection from "./Collection";
 import CreateCollectionForm from "./CreateCollectionForm";
 import EditCollectionForm from "./EditCollectionForm";
+import CollectionItemsModal from "./CollectionItemsModal";
+
 
 function Content() {
     const [tags, setTags] = useState([]);
     const [techs, setTechs] = useState([]);
+    const [options, setOptions] = useState(false);
+
     const [collections, setCollections] = useState([]);
 
     const [pagination, setPagination] = useState({
@@ -23,6 +27,8 @@ function Content() {
     const [alert, setAlert] = useState('');
     const [editFormData, setEditFormData] = useState(false);
     const [createForm, setCreateForm] = useState(false);
+
+    const [modal, setModal] = useState(false);
 
 
     useEffect(() => {
@@ -55,6 +61,18 @@ function Content() {
                 setTechs(data);
             }
         })
+        let optionsPromise = fetch(
+            STUDY_RESOURCE_OPTIONS_ENDPOINT, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert text="Could not retrieve options" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) setOptions(data);
+        })
     }, []);
 
     useEffect(e => {
@@ -77,66 +95,65 @@ function Content() {
     }
 
     if (createForm) return (
-        <section className="create-resource">
-            <CreateCollectionForm
-                tags={tags} techs={techs} setTechs={setTechs}
-                cancel={e => setCreateForm(false)}
-                addCollection={data => {
-                    setCollections({
-                        ...collections,
-                        count: collections.count + 1,
-                        results: [...collections.results, data]
-                    });
-                    setCreateForm(false);
-                }}
-            />
-        </section>
+        <CreateCollectionForm
+            tags={tags} techs={techs} setTechs={setTechs}
+            cancel={e => setCreateForm(false)}
+            addCollection={data => {
+                setCollections({
+                    ...collections,
+                    count: collections.count + 1,
+                    results: [...collections.results, data]
+                });
+                setCreateForm(false);
+            }}
+        />
     )
 
     if (editFormData) {
         return (
-            <section className="create-resource">
-                <EditCollectionForm
-                    data={editFormData}
-                    tags={tags} techs={techs} setTechs={setTechs}
-                    cancel={e => setEditFormData(false)}
-                    // set updated collection data
-                    editCollection={data => {
-                        setCollections({
-                            ...collections,
-                            results: collections.results.map(
-                                coll => coll.pk === data.pk ? data : coll
-                            )
-                        })
-                        setEditFormData(false);
-                    }}
-                />
-            </section>
+            <EditCollectionForm
+                data={editFormData}
+                tags={tags} techs={techs} setTechs={setTechs}
+                cancel={e => setEditFormData(false)}
+                // set updated collection data
+                editCollection={data => {
+                    setCollections({
+                        ...collections,
+                        results: collections.results.map(
+                            coll => coll.pk === data.pk ? data : coll
+                        )
+                    })
+                    setEditFormData(false);
+                }}
+            />
         )
     }
 
     return (
         <Fragment>
-
             <button className="create-element btn submit" onClick={e => {
                 e.preventDefault();
                 setCreateForm(true);
             }}>create new collection
             </button>
-
-            {waiting}
-            {alert}
-
-            <PaginatedLayout data={collections.results} resultsCount={collections.count} pagination={pagination}
-                             setPagination={setPagination}
-                             mapFunction={item =>
-                                 <Collection key={'collection' + item.pk}
-                                             data={item}
-                                             handleDelete={() => handleDelete(item)}
-                                             setEdit={() => setEditFormData(item)}
-                                 />}
-                             resultsContainerClass="results-selection"
-            />
+            <div id="collections" className="column-container">
+                {waiting}
+                {alert}
+                <PaginatedLayout data={collections.results} resultsCount={collections.count} pagination={pagination}
+                                 setPagination={setPagination}
+                                 mapFunction={item =>
+                                     <Collection key={'collection' + item.pk}
+                                                 data={item}
+                                                 handleSelect={e => {
+                                                     setModal(<CollectionItemsModal collection={item}  options={options} close={e=>setModal(false)}/>);
+                                                 }}
+                                                 handleDelete={() => handleDelete(item)}
+                                                 setEdit={() => setEditFormData(item)}
+                                     />}
+                                 resultsContainerClass="tile-container"
+                />
+            </div>
+            {modal}
         </Fragment>
     );
 }

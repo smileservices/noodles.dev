@@ -36,28 +36,31 @@ export default function CreateFormStep1({data, submit}) {
         })
     }
 
-    if (waiting) return waiting;
-
     return (
-        <form action="#" onSubmit={e => {
-            e.preventDefault();
-            validate(formData, submit);
-        }}>
-            { alert ? alert : ''}
-            <Input
-                type="text"
-                id='inputurl'
-                label="URL"
-                inputProps={{
-                    onChange: e => setFormData({...formData, url: e.target.value}),
-                    value: formData.url,
-                    required: true,
-                    placeholder: "url"
-                }}
-                smallText="Resource source url"
-                error={errors.url}
-            />
-            <button className="btn submit" type="submit">Next</button>
-        </form>
+        <div className="form-container">
+            <form action="#" onSubmit={e => {
+                e.preventDefault();
+                validate(formData, submit);
+            }}>
+                <Input
+                    type="text"
+                    id='inputurl'
+                    label="URL"
+                    inputProps={{
+                        onChange: e => setFormData({...formData, url: e.target.value}),
+                        value: formData.url,
+                        required: true,
+                        placeholder: "url"
+                    }}
+                    smallText="Resource source url"
+                    error={errors.url}
+                />
+                {alert}
+                {waiting
+                    ? waiting
+                    : <button className="btn submit" type="submit">Next</button>
+                }
+            </form>
+        </div>
     )
 }

@@ -31,8 +31,6 @@ export default function CreateFormStep2({data, submit, techs, tags, addTech}) {
         return {value: data.pk, label: data.name}
     };
 
-    if (waiting) return waiting;
-
     if (techForm) return (
         <CreateTech
             techs={techs}
@@ -49,22 +47,22 @@ export default function CreateFormStep2({data, submit, techs, tags, addTech}) {
     )
 
     return (
-        <form action="#" onSubmit={e => {
-            e.preventDefault();
-            validate(formData, submit);
-        }}>
-            {alert ? alert : ''}
-            <SelectReactCreatable id="select-tags" label="Choose tags"
-                                  smallText="Can choose one or multiple or add a new one if necessary."
-                                  onChange={selectedOptions => setFormData({...formData, tags: selectedOptions})}
-                                  options={tags.map(tag => getOptionFromTag(tag))}
-                                  value={formData.tags}
-                                  props={{isMulti: true}}
-                                  error={errors.tags}
-            />
-            <SelectReact id="select-techs" label="Choose technologies"
-                         smallText={
-                             <span>
+        <div className="form-container">
+            <form action="#" onSubmit={e => {
+                e.preventDefault();
+                validate(formData, submit);
+            }}>
+                <SelectReactCreatable id="select-tags" label="Choose tags"
+                                      smallText="Can choose one or multiple or add a new one if necessary."
+                                      onChange={selectedOptions => setFormData({...formData, tags: selectedOptions})}
+                                      options={tags.map(tag => getOptionFromTag(tag))}
+                                      value={formData.tags}
+                                      props={{isMulti: true}}
+                                      error={errors.tags}
+                />
+                <SelectReact id="select-techs" label="Choose technologies"
+                             smallText={
+                                 <span>
                                  <span>Choose one or more technologies. </span>
                                  <a href="" onClick={e => {
                                      e.preventDefault();
@@ -73,14 +71,19 @@ export default function CreateFormStep2({data, submit, techs, tags, addTech}) {
                                      Add new
                                  </a>
                              </span>
-                         }
-                         onChange={selectedOptions => setFormData({...formData, technologies: selectedOptions})}
-                         options={techs.map(tech => getOptionFromTech(tech))}
-                         value={formData.technologies}
-                         props={{isMulti: true}}
-                         error={errors.technologies}
-            />
-            <button className="btn submit" type="submit">Next</button>
-        </form>
+                             }
+                             onChange={selectedOptions => setFormData({...formData, technologies: selectedOptions})}
+                             options={techs.map(tech => getOptionFromTech(tech))}
+                             value={formData.technologies}
+                             props={{isMulti: true}}
+                             error={errors.technologies}
+                />
+                {alert}
+                {waiting
+                    ? waiting
+                    : <button className="btn submit" type="submit">Next</button>
+                }
+            </form>
+        </div>
     )
 }

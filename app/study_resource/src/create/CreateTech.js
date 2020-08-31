@@ -82,12 +82,13 @@ export default function CreateTech({techs, createdCallback, cancel}) {
     }
 
     return (
-        <div className="create-tech-container">
+        <div className="form-container full-page-sm">
             <div className="toolbar">
                 <span className="icon-close" onClick={cancel}/>
             </div>
-            <h3>Add new technology</h3>
-            {alert ? alert : ''}
+            <div className="header">
+                <h3>Add new technology</h3>
+            </div>
             <form action="#" onSubmit={e => {
                 e.preventDefault();
                 validate(formData, createTech);
@@ -101,12 +102,14 @@ export default function CreateTech({techs, createdCallback, cancel}) {
                         value={formData['name']}
                         onChange={selected => setFormData({...formData, name: selected})}
                         options={makeTechsOptions()}
+                        props={{disabled: Boolean(waiting)}}
                     />
                     <Input id="version" label="Version" inputProps={{
                         required: true,
                         type: 'text',
                         value: formData['version'],
-                        onChange: e => setFormData({...formData, version: e.target.value})
+                        onChange: e => setFormData({...formData, version: e.target.value}),
+                        disabled: Boolean(waiting)
                     }}
                            smallText="The version of tech"
                            error={errors.version}
@@ -118,6 +121,7 @@ export default function CreateTech({techs, createdCallback, cancel}) {
                               required: true,
                               value: formData.description,
                               onChange: e => setFormData({...formData, description: e.target.value}),
+                              disabled: Boolean(waiting)
                           }}
                           smallText="Write about release date, what it is about or notable changes versus previous versions."
                           error={errors.description}
@@ -126,14 +130,16 @@ export default function CreateTech({techs, createdCallback, cancel}) {
                     required: true,
                     type: 'text',
                     value: formData['url'],
-                    onChange: e => setFormData({...formData, url: e.target.value})
+                    onChange: e => setFormData({...formData, url: e.target.value}),
+                    disabled: Boolean(waiting)
                 }}
                        smallText="Url of docs or version page"
                        error={errors.url}
                 />
+                {alert ? alert : ''}
                 {waiting
                     ? waiting
-                    : <button className="btn submit" type="submit">Add</button>
+                    : <button className="btn submit" type="submit">Create</button>
                 }
             </form>
         </div>

@@ -1,4 +1,5 @@
 import {getCsrfToken} from "../components/utils";
+import {WaitingButton} from "../components/Waiting";
 
 export default async function apiUpdate(
     endpoint,
@@ -7,7 +8,7 @@ export default async function apiUpdate(
     success,
     setWaiting, setError,
 ) {
-    setWaiting('Updating ...');
+    setWaiting(<WaitingButton text="Updating"/>);
     await fetch(endpoint+id+'/', {
         method: "PUT",
         headers: {

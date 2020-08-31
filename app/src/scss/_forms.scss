@@ -1,45 +1,50 @@
-form {
+.form-container {
   position: relative;
+  background-color: #ffffff;
+  padding: 1.35rem;
+  border-radius: $border-radius;
+
+  .header {
+    margin-bottom: 2rem;
+  }
+}
+
+form {
   margin: 1rem 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
+
+  > * {
+    margin: 0;
+  }
 
   .row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    gap: 1rem;
 
-    .form-group {
+    > * {
       flex-grow: 1;
-      display: block;
-      margin-right: 1rem;
     }
 
-    .form-group label + * {
-      margin: 0.5rem 0;
-    }
-
-    .form-group:last-child {
-      margin-right: 0;
+    .form-group input {
+      flex-grow: 0;
     }
   }
 
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-
-    label {
-      color: $theme-color-accent;
-    }
+    gap: 0.3rem;
 
     input {
       flex-grow: 1;
     }
   }
 
-  .btn.submit {
+  button.submit {
     align-self: flex-end;
   }
 
@@ -59,6 +64,12 @@ form {
     border-color: $form-feedback-invalid-color;
   }
 
+}
+
+.form-multistep-container {
+  ul.progress {
+    margin-bottom: 1rem;
+  }
 }
 
 ul.progress {

@@ -1,8 +1,6 @@
-import React, {useState, useEffect, Fragment} from "react";
-import Waiting from "../../../src/components/Waiting";
+import React, {useState} from "react";
 import Alert from "../../../src/components/Alert";
 import {Input, SelectReact, SelectReactCreatable, Textarea} from "../../../src/components/form";
-import apiPost from "../../../src/api_interface/apiPost";
 import apiUpdate from "../../../src/api_interface/apiUpdate";
 import CreateTech from "../create/CreateTech";
 
@@ -77,8 +75,6 @@ export default function EditCollectionForm({data, tags, techs, setTechs, editCol
         setTechs([...techs, tech]);
     }
 
-    if (waiting) return waiting;
-
     if (techForm) return (
         <CreateTech
             techs={techs}
@@ -95,12 +91,13 @@ export default function EditCollectionForm({data, tags, techs, setTechs, editCol
     )
 
     return (
-        <Fragment>
+        <div className="form-container full-page-sm">
             <div className="toolbar">
                 <span className="icon-close" onClick={cancel}/>
             </div>
-            <h3>Edit Collection</h3>
-            {alert ? alert : ''}
+            <div className="header">
+                <h3>Edit Collection</h3>
+            </div>
             <form action="#" onSubmit={e => {
                 e.preventDefault();
                 validate(formData, submit);
@@ -112,7 +109,8 @@ export default function EditCollectionForm({data, tags, techs, setTechs, editCol
                         type: 'text',
                         required: true,
                         value: formData.name,
-                        onChange: e => setFormData({...formData, name: e.target.value})
+                        onChange: e => setFormData({...formData, name: e.target.value}),
+                        disabled: Boolean(waiting),
                     }}
                     smallText="Collection name"
                     error={errors.name}
@@ -123,7 +121,8 @@ export default function EditCollectionForm({data, tags, techs, setTechs, editCol
                     inputProps={{
                         required: true,
                         value: formData.description,
-                        onChange: e => setFormData({...formData, description: e.target.value})
+                        onChange: e => setFormData({...formData, description: e.target.value}),
+                        disabled: Boolean(waiting),
                     }}
                     smallText="What is it about"
                     error={errors.description}
@@ -135,6 +134,7 @@ export default function EditCollectionForm({data, tags, techs, setTechs, editCol
                                       value={formData.tags}
                                       props={{isMulti: true}}
                                       error={errors.tags}
+                                      isDisabled={Boolean(waiting)}
                 />
                 <SelectReact id="select-techs" label="Choose technologies"
                              smallText={
@@ -153,9 +153,11 @@ export default function EditCollectionForm({data, tags, techs, setTechs, editCol
                              value={formData.technologies}
                              props={{isMulti: true}}
                              error={errors.technologies}
+                             isDisabled={Boolean(waiting)}
                 />
-                <button className="btn submit" type="submit">Update</button>
+                {alert}
+                {waiting ? waiting : <button className="btn submit" type="submit">Update</button>}
             </form>
-        </Fragment>
+        </div>
     )
 }

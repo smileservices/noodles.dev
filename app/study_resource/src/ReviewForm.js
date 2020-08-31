@@ -43,16 +43,12 @@ export default function ReviewForm({createReviewCallback}) {
         })
     }
 
-    if (waiting) {
-        return waiting;
-    }
-
     return (
         <Fragment>
-            {alert}
             <form id="review_form" method="POST" onSubmit={e => {
                 e.preventDefault();
                 if (validateForm(formData)) {
+                    setAlert('');
                     apiCreate(REVIEW_API_ENDPOINT, formData, handleSuccess, setWaiting, handleError);
                 }
             }
@@ -60,7 +56,9 @@ export default function ReviewForm({createReviewCallback}) {
                 <div className="form-group">
                     <div id="form_rating_stars">
                         <StarRating rating={formData.rating} maxRating={MAX_RATING}
-                                    ratingChange={r => setFormData({...formData, rating: r})}/>
+                                    ratingChange={r => setFormData({...formData, rating: r})}
+                                    isDisabled={Boolean(waiting)}
+                        />
                         {errors.rating ? (<div className="invalid-feedback">{errors.rating}</div>) : ''}
                     </div>
                 </div>
@@ -70,11 +68,13 @@ export default function ReviewForm({createReviewCallback}) {
                               required: true,
                               value: formData.text,
                               onChange: e => setFormData({...formData, text: e.target.value}),
+                              disabled: Boolean(waiting),
                           }}
                           error={errors.text}
                 />
+                {alert}
                 {USER_ID
-                    ? <button type="submit" className="btn submit">Submit</button>
+                    ? waiting ? waiting : <button type="submit" className="btn submit">Submit</button>
                     : <a className="login" href={LOGIN_URL}>Sign in to write review</a>
                 }
             </form>

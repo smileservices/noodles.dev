@@ -13,6 +13,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from study_resource.models import CollectionResources
 
 from . import serializers
 from . import filters
@@ -124,6 +125,12 @@ class StudyResourceViewset(ModelViewSet):
     def get_success_headers(self, data):
         return {'Location': reverse_lazy('detail', kwargs={'id': data['pk']})}
 
+    def perform_destroy(self, instance):
+        if self.request.user == instance.author or self.request.user.is_superuser:
+            instance.delete()
+        else:
+            raise PermissionDenied('Only owner or admin can delete.')
+
 
 class TagViewset(ModelViewSet):
     serializer_class = serializers.TagSerializer
@@ -216,10 +223,53 @@ class CollectionViewset(ModelViewSet):
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
+    @action(methods=['GET'], detail=False)
+    def owned_resource(self, *args, **kwargs):
+        # returns all user collections and which ones contain the resource
+        all_queryset = self.queryset.filter(owner=self.request.user.id)
+        selected_queryset = all_queryset.filter(resources=self.request.GET['pk'])
+        all_serialized = self.serializer_class(all_queryset, many=True)
+        selected_serialized = self.serializer_class(selected_queryset, many=True)
+        return Response({
+            'all': all_serialized.data,
+            'selected': selected_serialized.data
+        })
+
+    @action(methods=['POST'], detail=False)
+    def set_items(self, *args, **kwargs):
+        # remove resource from unselected collections
+        # add resource to all selected
+        queryset = self.queryset.filter(owner=self.request.user.id)
+        resource_id = self.request.GET['pk']
+        selected_collections = self.request.data['collections']
+        for collection in queryset:
+            if collection.pk in selected_collections:
+                collection.resources.add(resource_id)
+            else:
+                collection.resources.remove(resource_id)
+        return Response(status=200)
+
+    @action(methods=['POST'], detail=False)
+    def update_collection_items(self, *args, **kwargs):
+        collection = self.queryset.filter(owner=self.request.user.id).values('pk').get(pk=self.request.data['pk'])
+        # clean previous resources
+        CollectionResources.objects.filter(
+            collection=collection['pk'],
+            study_resource_id__in=self.request.data['remove']
+        ).delete()
+        # todo handle update
+        # updated_resources = [CollectionResources(
+        #     collection_id=collection.pk,
+        #     study_resource_id=resource['pk'],
+        #     order=resource['order'],
+        # ) for resource in self.request.data['resources']]
+        # CollectionResources.objects.bulk_create(updated_resources)
+        return Response(status=204)
+
     @action(methods=['GET'], detail=True)
     def resources(self, *args, **kwargs):
         queryset = self.queryset.get(pk=kwargs['pk']).resources
-        page = self.paginate_queryset(queryset)
+        page = self.paginate_queryset(queryset.all())
         if page is not None:
             serializer = serializers.StudyResourceSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)

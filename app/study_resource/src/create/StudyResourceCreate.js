@@ -132,7 +132,7 @@ function Content() {
 
         function submitStep(step, setData, formData) {
             let stepStatusCp = [...stepStatus];
-            let nextStep = step+1;
+            let nextStep = step + 1;
             stepStatusCp[step] = 'ok';
             stepStatusCp[nextStep] = 'current';
             setAlert('');
@@ -143,17 +143,20 @@ function Content() {
 
         switch (step) {
             case 0:
-                return (<CreateFormStep1 data={dataStep1} submit={formData => submitStep(step, setDataStep1, formData)} />);
+                return (
+                    <CreateFormStep1 data={dataStep1} submit={formData => submitStep(step, setDataStep1, formData)}/>
+                );
             case 1:
                 return (<CreateFormStep2 data={dataStep2} tags={tags} techs={techs} addTech={addTech}
-                    submit={formData => submitStep(step, setDataStep2, formData)}
+                                         submit={formData => submitStep(step, setDataStep2, formData)}
                 />);
             case 2:
                 return (<CreateFormStep3 data={dataStep3} options={options}
-                     submit={formData => {
-                         submitStep(step, setDataStep3, formData);
-                         submit(dataStep1, dataStep2, formData);
-                     }}
+                                         submit={formData => {
+                                             submitStep(step, setDataStep3, formData);
+                                             submit(dataStep1, dataStep2, formData);
+                                         }}
+                                         waiting={waiting}
                 />);
         }
     }
@@ -173,7 +176,7 @@ function Content() {
     );
 
     return (
-        <Fragment>
+        <div className="form-multistep-container full-page-md">
             <FormMultiStepProgress
                 steps={stepsArr}
                 currentStep={step}
@@ -181,16 +184,14 @@ function Content() {
                     if (stepStatus[step] === 'ok' || stepStatus[step] === 'current') {
                         setStep(step);
                     } else {
-                        setAlert(<Alert text="Please submit current form before going to next steps." type="warning" stick={false} hideable={false}/>)
+                        setAlert(<Alert text="Please submit current form before going to next steps." type="warning"
+                                        stick={false} hideable={false}/>)
                     }
                 }}
             />
-            {alert ? alert : ''}
-            {waiting
-                ? waiting
-                : renderStep(step)
-            }
-        </Fragment>
+            {alert}
+            {renderStep(step)}
+        </div>
     );
 }
 
