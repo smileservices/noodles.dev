@@ -29,7 +29,16 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         """A string representation of the model."""
-        return self.get_full_name()
+        return self.email
+
+    def community_score(self):
+        return self.positive_score - self.negative_score
+
+    def total_cast_votes(self):
+        return self.positive_thumbs + self.negative_thumbs
+
+    def cast_votes_sentiment(self):
+        return self.positive_thumbs - self.negative_thumbs
 
     def positive_feedback(self):
         self.positive_score += 1

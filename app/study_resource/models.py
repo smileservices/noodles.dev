@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.postgres.fields import ArrayField
 from users.models import CustomUser
 from simple_history.models import HistoricalRecords
-
+from django.urls import reverse
 
 class Tag(models.Model):
     name = models.CharField(max_length=128, db_index=True)
