@@ -11,7 +11,11 @@ export default function StudyResourceListing({data, options, remove}) {
                     remove();
                 }}/>
             </div>
-            <p className="rating"><StarRating maxRating={5} rating={data.rating}/></p>
+            <p className="rating">
+                <span><StarRating maxRating={5} rating={data.rating}/></span>
+                <span>{ data.rating.toFixed(1) }/{MAX_RATING}</span>
+                <span>{data.reviews_count} reviews</span>
+            </p>
             <p className="title">
                 <a href={RESOURCE_URL+data.pk} target="new">{data.name}</a>
             </p>

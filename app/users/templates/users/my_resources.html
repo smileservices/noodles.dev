@@ -23,7 +23,7 @@
                 <h3>Found {{ results.paginator.count }} results matching your query:</h3>
                 <div class="tile-container">
                     {% for result in results %}
-                        <div class="result card">{% include 'study_resource/result.html' %}</div>
+                        {% include 'study_resource/result.html' %}
                     {% endfor %}
                 </div>
                 {% if results.has_other_pages %}

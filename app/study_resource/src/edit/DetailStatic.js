@@ -51,7 +51,7 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
             <p className="rating">
                 <span><StarRating maxRating={5} rating={RESULT.rating}/></span>
                 <span>
-                    <span itemProp="ratingValue">{RESULT.rating}</span>/<span itemProp="bestRating">{MAX_RATING}</span>
+                    <span itemProp="ratingValue">{RESULT.rating.toFixed(1)}</span>/<span itemProp="bestRating">{MAX_RATING}</span>
                 </span>
                 <span>
                     (<span itemProp="ratingCount">{RESULT.reviews_count}</span> reviews)

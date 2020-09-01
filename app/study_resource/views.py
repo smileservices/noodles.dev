@@ -2,7 +2,7 @@ import requests
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.db import IntegrityError
+from django.db import IntegrityError, models
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -268,7 +268,7 @@ class CollectionViewset(ModelViewSet):
 
     @action(methods=['GET'], detail=True)
     def resources(self, *args, **kwargs):
-        queryset = self.queryset.get(pk=kwargs['pk']).resources
+        queryset = self.queryset.get(pk=kwargs['pk']).resources.annotate(reviews_count=models.Count('reviews'))
         page = self.paginate_queryset(queryset.all())
         if page is not None:
             serializer = serializers.StudyResourceSerializer(page, many=True)

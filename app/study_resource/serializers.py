@@ -34,6 +34,7 @@ class StudyResourceSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True, read_only=True)
     technologies = TechnologySerializerShort(many=True, read_only=True)
     rating = FloatField(read_only=True)
+    reviews_count = IntegerField(read_only=True)
 
     class Meta:
         model = StudyResource
