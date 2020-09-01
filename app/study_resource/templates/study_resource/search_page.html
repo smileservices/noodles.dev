@@ -2,11 +2,19 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block meta_tags %}
+    <title>Noodles.com Search Page</title>
+    <meta name="description"
+          content="Result of searching query"/>
+    <meta name="robots" content="index, nofollow"/>
+    <meta name="googlebot" content="index, nofollow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, nofollow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
 {% block content %}
     <div class="search-page">
         <section class="header">
             <h1>Search Page</h1>
-            {% include 'study_resource/search_bar_section.html' %}
         </section>
 
         {% include 'frontend/filter.html' with filter_url='search' %}
@@ -17,7 +25,7 @@
                 <h3>Found {{ results.paginator.count }} results matching your query:</h3>
                 <div class="results-selection tile-container">
                     {% for result in results %}
-                        <div class="result card">{% include 'study_resource/result.html' %}</div>
+                        {% include 'study_resource/result.html' %}
                     {% endfor %}
                 </div>
                 {% if results.has_other_pages %}

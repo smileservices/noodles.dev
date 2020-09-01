@@ -33,7 +33,7 @@ class StudyResourceManager(models.Manager):
 
 class StudyResourceQueryset(models.QuerySet):
     def annotate_with_rating(self):
-        return self.annotate(rating=models.Avg('reviews__rating'))
+        return self.annotate(rating=models.Avg('reviews__rating'), reviews_count=models.Count('reviews'))
 
 
 class StudyResource(models.Model):

@@ -126,3 +126,8 @@ section.results-container {
 .selectable.selected {
   border: 0.1rem solid $theme-color-accent;
 }
+
+.rating {
+  display: flex;
+  gap: 0.3rem;
+}

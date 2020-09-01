@@ -2,6 +2,17 @@
 {% load static %}
 {% load star_rating %}
 
+{% block meta_tags %}
+    <title>{{ result.name }}</title>
+    <meta name="description"
+          content="{{ result.summary }}"/>
+    <meta name="keywords" content="
+            {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies.all %}{{ tech }}, {% endfor %}"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
 {% block content %}
     <script>
         const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
@@ -21,6 +32,7 @@
         const RESULT = {
             pk: {{ result.pk }},
             rating: {% if result.rating %}{{ result.rating }}{% else %}false{% endif %},
+            reviews_count: {{ result.reviews_count}},
             name: "{{ result.name|escapejs }}",
             author: "{{ result.author|escapejs }}",
             author_id: {{ result.author.id|escapejs }},
@@ -43,13 +55,10 @@
         {% endfor %}
     </script>
     <div class="detail-page">
-        <section class="header">
-            <h1>Detail page</h1>
-            {% include 'study_resource/search_bar_section.html' %}
-        </section>
 
-        <div class="column-container">
-            <section id="detail" class="card">
+        <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
+            <section id="detail" class="card" itemprop="itemReviewed" itemscope
+                     itemtype="https://schema.org/CreativeWork">
                 <div class="toolbar">
                     <div id="add_to_collection"></div>
                 </div>
@@ -63,9 +72,7 @@
             <h3>Related</h3>
             <div class="tile-container">
                 {% for result in related %}
-                    <div class="result card">
-                        {% include 'study_resource/result.html' %}
-                    </div>
+                    {% include 'study_resource/result.html' %}
                 {% endfor %}
             </div>
         </section>

@@ -6,7 +6,14 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block head_title %}{% endblock %}</title>
+    {% block meta_tags %}
+        <title>Noodles.com</title>
+        <meta name="description"
+              content="Browse through a community curated collection of tutorials and courses on software development"/>
+        <meta name="robots" content="index, follow"/>
+        <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+        <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    {% endblock %}
     <link rel="stylesheet" href="{% static 'slim-select/dist/slimselect.min.css' %}">
     <link rel="stylesheet" href="{% static 'icomoon_fonts/style.css' %}">
     <link rel="stylesheet" href="{% static 'frontend/css/main.css' %}">

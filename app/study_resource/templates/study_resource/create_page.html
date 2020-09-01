@@ -2,6 +2,12 @@
 {% load static %}
 {% load star_rating %}
 
+{% block meta_tags %}
+    <title>Noodles.com - add resource</title>
+    <meta name="description"
+          content="Add a study resource to the curated collection"/>
+{% endblock %}
+
 {% block content %}
     <script>
         const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";

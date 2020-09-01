@@ -9,6 +9,7 @@ def homepage(request):
     latest = queryset[:5]
     most_appreciated = queryset.filter(~Q(reviews=None)).order_by('-rating')[:5]
     data = {
+        'hide_navbar_search': True,
         'filter': filters.StudyResourceFilter,
         'latest': latest,
         'most_appreciated': most_appreciated,

@@ -1,26 +1,40 @@
 {% load star_rating %}
 
-<p class="rating">{% if result.rating %}{% star_rating result.rating %}{% else %}not rated{% endif %}</p>
-<p class="title">
-    <a href="{{ result.url }}">{{ result.name }}</a>
+<p class="rating">
+    {% if result.rating %}
+        <span>{% star_rating result.rating %}</span>
+        <span>
+        <span itemProp="ratingValue">{{ result.rating }}</span>/<span itemProp="bestRating">{{ MAX_RATING }}</span>
+        </span>
+        <span>(<span itemProp="ratingCount">{{ result.reviews_count }}</span>)
+        </span>
+    {% else %}
+        not rated
+    {% endif %}
 </p>
+
+<h1 class="title" itemProp="name">
+    <a href="{{ result.url }}">{{ result.name }}</a>
+</h1>
 
 <div class="group">
     <p class="publication-date">Published on {{ result.publication_date }} by {{ result.published_by }}</p>
     <p class="creation-date">Added here on {{ result.created_at }} by {% if user == result.author %}you{% else %}
         {{ result.author }}{% endif %}</p>
-    <p class="experience-level">Experience level: {{ result.experience_level_label }}</p>
-    <p class="type">Type: {{ result.price_label }} {{ result.media_label }}</p>
+    <p class="experience-level">Experience level: <span
+            itemProp="educationalLevel">{{ result.experience_level_label }}</span></p>
+    <p class="type">Type: {{ result.price_label }} <span itemProp="learningResourceType">{{ result.media_label }}</span>
+    </p>
 </div>
-<p class="summary">{{ result.summary }}</p>
+<p class="summary" itemProp="abstract">{{ result.summary }}</p>
 
-<div class="tags">
+<div class="tags" itemProp="keywords">
     <span>Tags: </span>
     {% for tag in result.tags.all %}
-        <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>
+        <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"><span></span>{{ tag }}</a>
     {% endfor %}
 </div>
-<div class="tags">
+<div class="tags" itemProp="keywords">
     <span>Tech: </span>
     {% for tech in result.technologies.all %}
         <a class="tech" href="{% url 'search' %}?technologies={{ tech.id }}">{{ tech }}</a>

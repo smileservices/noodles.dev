@@ -43,17 +43,22 @@ export default function Review({review}) {
     };
     if (deleted) return <Alert text={deleted} type='success'/>;
     return (
-        <div className={current_owner ? 'review card highlighted' : 'review card'}>
+        <div className={current_owner ? 'review card highlighted' : 'review card'} itemProp="review" itemScope itemType="https://schema.org/Review">
             {waiting}
             {alert}
-            <p className="rating"><StarRating rating={review.rating} maxRating={MAX_RATING}/></p>
-            <p className="date">{date.toUTCString()}</p>
-            <p className="author">by {author_full_name}</p>
+            <p className="rating" itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
+                <span><StarRating rating={review.rating} maxRating={MAX_RATING}/></span>
+                <span>
+                    <span itemProp="ratingValue">{review.rating}</span>/<span itemProp="bestRating">{MAX_RATING}</span>
+                </span>
+            </p>
+            <p className="date" itemProp="datePublished">{date.toUTCString()}</p>
+            <p className="author">by <span itemProp="author">{author_full_name}</span></p>
             {current_owner
                 ? <div className="toolbar">{deleteElement(confirm)}</div>
                 : ''
             }
-            <p className="text">{review.text}</p>
+            <p className="text" itemProp="ratingExplanation">{review.text}</p>
             <div className="thumbs">
                 <Thumbs
                     thumbs_obj={thumbs_obj}

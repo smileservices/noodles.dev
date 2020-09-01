@@ -1,6 +1,6 @@
 {% load star_rating %}
 
-<p class="rating">{% star_rating review.rating %}</p>
+<p class="rating"><span>{% star_rating review.rating %}</span></p>
 <p class="date">{{ review.created_at }}</p>
 <p class="author">by {{ review.author }}</p>
 <p class="text">{{ review.text }}</p>

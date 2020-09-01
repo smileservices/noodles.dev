@@ -1,35 +1,74 @@
 nav {
-    background-color: $nav-bg;
-    height: var(--topbar-height);
-    overflow: hidden;
-    display: flex;
-    justify-content: space-between;
+  background-color: $nav-bg;
+  height: var(--topbar-height);
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
 }
 
 nav a {
-    display: inline-block;
-    padding: 1rem;
-    text-decoration: none;
-    color: $nav-text;
+  display: inline-block;
+  padding: 1rem;
+  text-decoration: none;
+  color: $nav-text;
 }
 
 nav a, nav a:visited, nav a:active {
-    color: $nav-text;
+  color: $nav-text;
 }
 
 nav a > svg {
-    fill: $nav-text;
+  fill: $nav-text;
 }
 
 nav a:hover {
-    background-color: $nav-hover-bg;
-    color: $nav-hover-text;
+  background-color: $nav-hover-bg;
+  color: $nav-hover-text;
 }
 
 nav a:hover > svg {
-    fill: $nav-hover-text;
+  fill: $nav-hover-text;
 }
 
 nav .left-side, .right-side {
-    display: flex;
+  display: flex;
 }
+
+nav {
+  section.navbar-search-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+
+    form {
+      flex-grow: 1;
+      display: block;
+      margin: 0;
+
+      button {
+        padding: 0.25rem;
+        position: relative;
+        margin-top: -1.55rem;
+        margin-right: 0.10rem;
+        float: right;
+        color: $theme-color-accent;
+        background-color: #ffffff;
+        border-radius: 0.125rem;
+      }
+
+      button:hover {
+        color: #ffffff;
+        background-color: $theme-color-accent;
+      }
+
+      input {
+        padding: 0.15rem 1.5rem 0.15rem 1rem;
+        border-radius: 0.125rem;
+        width: 100%;
+      }
+    }
+  }
+}
+

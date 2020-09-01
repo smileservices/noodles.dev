@@ -2,6 +2,15 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block meta_tags %}
+    <title>Noodles.com - homepage</title>
+    <meta name="description"
+          content="Browse through a community curated collection of tutorials and courses on software development"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
 {% block header %}
     <header>
         <div class="content">
@@ -24,14 +33,14 @@
             <h3>Most appreciated:</h3>
             <div class="results-selection tile-container">
                 {% for result in most_appreciated %}
-                    <div class="result card">{% include 'study_resource/result.html' %}</div>
+                    {% include 'study_resource/result.html' %}
                 {% endfor %}
             </div>
 
             <h3>Latest added:</h3>
             <div class="results-selection tile-container">
                 {% for result in latest %}
-                    <div class="result card">{% include 'study_resource/result.html' %}</div>
+                    {% include 'study_resource/result.html' %}
                 {% endfor %}
             </div>
         </section>

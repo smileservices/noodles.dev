@@ -3,7 +3,7 @@
 <nav>
     <div class="left-side">
         {% if user.is_authenticated %}
-            <a href="#" onclick="toggle_sidebar()">
+            <a rel="nofollow noopener" href="#" onclick="toggle_sidebar()">
                 <svg viewBox="0 0 100 80" width="40" height="40">
                     <rect width="100" height="20"></rect>
                     <rect y="30" width="100" height="20"></rect>
@@ -15,22 +15,33 @@
     </div>
 
     <div class="right-side collapsible">
-        <a href="#" class="collapse-toggle"><span class="icon-angle-down"></span></a>
+        <a rel="nofollow noopener" href="#" class="collapse-toggle"><span class="icon-angle-down"></span></a>
         <div class="right-side collapsible-links">
-            <a href="{% url "create-resource" %}">Create</a>
+            {% if not hide_navbar_search %}
+            <section class="navbar-search-bar">
+                <form action="{% url 'search' %}" method="GET">
+                    <input type="text" name="contains"
+                           placeholder="Search for a tutorial or course..."
+                           required value="{% if filter.data.contains %}{{ filter.data.contains }}{% endif %}"/>
+                    <button><span class="icon-search"> </span></button>
+                </form>
+            </section>
+            {% endif %}
+
+            <a rel="nofollow noopener" href="{% url "create-resource" %}">Create</a>
 
             {% if user.is_authenticated %}
                 <div class="dropdown hidden">
-                    <a class="dropdown-button" href="#">{% trans "Account" %} <span class="icon-angle-down"></span></a>
+                    <a rel="nofollow noopener" class="dropdown-button" href="#">{% trans "Account" %} <span class="icon-angle-down"></span></a>
                     <div class="dropdown-menu">
-                        <a href="#" id="signout_button">{% trans 'Sign Out' %}</a>
+                        <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
                         <div class="dropdown submenu hidden">
-                            <a class="dropdown-button" href="#">{% trans "Settings" %} <span
+                            <a rel="nofollow noopener" class="dropdown-button" href="#">{% trans "Settings" %} <span
                                     class="icon-angle-down"></span></a>
                             <div class="dropdown-menu">
-                                <a href={% url "account_email" %}>{% trans "change email " %}</a>
-                                <a href={% url "account_change_password" %}>{% trans "change password" %}</a>
-                                <a href={% url "socialaccount_connections" %}>{% trans "change social accounts" %}</a>
+                                <a rel="nofollow noopener" href={% url "account_email" %}>{% trans "change email " %}</a>
+                                <a rel="nofollow noopener" href={% url "account_change_password" %}>{% trans "change password" %}</a>
+                                <a rel="nofollow noopener" href={% url "socialaccount_connections" %}>{% trans "change social accounts" %}</a>
                             </div>
                         </div>
                     </div>
@@ -41,6 +52,7 @@
                         let parts = value.split("; csrftoken=");
                         if (parts.length === 2) return parts.pop().split(";").shift();
                     }
+
                     document.getElementById('signout_button').addEventListener('click', e => {
                         e.preventDefault();
                         e.target.innerHTML = '<span class="icon-hour-glass spin-stop"> </span> Wait..';
@@ -62,7 +74,7 @@
                     })
                 </script>
             {% else %}
-                <a href="{% url "account_login" %}">Sign In</a>
+                <a rel="nofollow noopener" href="{% url "account_login" %}">Sign In</a>
             {% endif %}
 
         </div>

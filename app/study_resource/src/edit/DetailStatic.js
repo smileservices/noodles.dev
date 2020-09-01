@@ -48,31 +48,45 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
                         </Fragment>
                     }
             </span>
-            <p className="rating"><StarRating maxRating={5} rating={RESULT.rating}/></p>
-            <p className="title">
-                <a href="">{data.name}</a>
+            <p className="rating">
+                <span><StarRating maxRating={5} rating={RESULT.rating}/></span>
+                <span>
+                    <span itemProp="ratingValue">{RESULT.rating}</span>/<span itemProp="bestRating">{MAX_RATING}</span>
+                </span>
+                <span>
+                    (<span itemProp="ratingCount">{RESULT.reviews_count}</span> reviews)
+                </span>
             </p>
+            <h1 className="title" itemProp="name">
+                <a href="">{data.name}</a>
+            </h1>
             <div className="group">
-                <p className="publication-date">Published on {FormatDate(data.publication_date, 'date')} by {data.published_by}</p>
+                <p className="publication-date">Published
+                    on {FormatDate(data.publication_date, 'date')} by {data.published_by}</p>
                 <p className="creation-date">Added here on {FormatDate(data.created_at, 'date')} by {data.author}</p>
                 {!options ? <Waiting text={"Loading options"}/>
                     : <Fragment>
-                        <p className="experience-level">Experience level: {options.experience_level.map(opt => {
-                            if (opt[0] === data.experience_level) return opt[1];
-                        })}</p>
+                        <p className="experience-level">Experience level:
+                            <span itemProp="educationalLevel">{options.experience_level.map(opt => {
+                                if (opt[0] === data.experience_level) return opt[1];
+                            })}</span>
+                        </p>
                         <p className="type">
+                            <span>
                             {options.type.map(opt => {
                                 if (opt[0] === data.type) return opt[1];
-                            })} {options.media.map(opt => {
-                            if (opt[0] === data.media) return opt[1];
-                        })}
+                            })} </span>
+                            <span itemProp="learningResourceType">{options.media.map(opt => {
+                                if (opt[0] === data.media) return opt[1];
+                            })}
+                            </span>
                         </p>
                     </Fragment>
                 }
             </div>
-            <p className="summary">{data.summary}</p>
+            <p className="summary" itemProp="abstract">{data.summary}</p>
             {!tags ? <Waiting text={"Loading tags"}/>
-                : <span className="tags">
+                : <span className="tags" itemProp="keywords">
                     <span>Tags: </span>
                     {data.tags.map(id => tags.map(tobj => {
                         if (tobj.pk === id) {
@@ -84,7 +98,7 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
                 </span>
             }
             {!techs ? <Waiting text={"Loading technologies"}/>
-                : <span className="tags">
+                : <span className="tags" itemProp="keywords">
                     <span>Tech: </span>
                     {data.technologies.map(id => techs.map(tobj => {
                         if (tobj.pk === id) {
