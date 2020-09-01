@@ -1,0 +1,45 @@
+footer {
+  margin-top: 3rem;
+  min-height: 15rem;
+  padding: 2rem 1rem 0.5rem 1rem;
+  background-color: $theme-color-main;
+  color: $theme-color-main-contrast;
+
+  a:hover {
+    color: $theme-color-main-contrast;
+  }
+
+
+  section.top-container {
+    .about {
+      align-self: center;
+      max-width: 500px;
+    }
+  }
+
+  section.bottom-container {
+    padding-top: 2rem;
+    margin-top: auto;
+
+    .social {
+      display: flex;
+      align-self: end;
+      justify-content: center;
+      gap: 0.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .terms {
+      display: flex;
+      align-self: end;
+      justify-content: center;
+      gap: 0.5rem;
+
+      a {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+
+}
