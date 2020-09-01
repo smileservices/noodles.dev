@@ -15,7 +15,7 @@
     {% endif %}
 </p>
 <h2 class="title" itemprop="name">
-    <a itemprop="name" href="{% url 'detail' result.id %}">{{ result.name }}</a>
+    <a itemprop="name" href="{% url 'detail' result.id result.slug %}">{{ result.name }}</a>
 </h2>
 
 <div class="group-muted">

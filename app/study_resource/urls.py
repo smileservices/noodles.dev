@@ -11,7 +11,7 @@ router.register('collections', views.CollectionViewset, basename='collection-vie
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('<int:id>', views.detail, name='detail'),
+    path('<int:id>/<slug:slug>', views.detail, name='detail'),
     path('create/', views.create, name='create-resource'),
     path('', views.search, name='search')
 ]

@@ -5,6 +5,8 @@ import apiDelete from "../../../src/api_interface/apiDelete";
 import Alert from "../../../src/components/Alert";
 import FormatDate from "../../../src/vanilla/date";
 import {openAddCollectionModal} from "../collections/AddToCollectionModal";
+import ResourceRating from "../ResourceRating";
+
 
 export default function DetailStatic({data, tags, techs, options, setEditForm}) {
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -49,16 +51,10 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
                     }
             </span>
             <p className="rating">
-                <span><StarRating maxRating={5} rating={RESULT.rating}/></span>
-                <span>
-                    <span itemProp="ratingValue">{RESULT.rating.toFixed(1)}</span>/<span itemProp="bestRating">{MAX_RATING}</span>
-                </span>
-                <span>
-                    (<span itemProp="ratingCount">{RESULT.reviews_count}</span> reviews)
-                </span>
+                <ResourceRating rating={RESULT.rating} maxRating={MAX_RATING} reviewsCount={RESULT.reviews_count} />
             </p>
             <h1 className="title" itemProp="name">
-                <a href="">{data.name}</a>
+                <a href={data.url}>{data.name}</a>
             </h1>
             <div className="group">
                 <p className="publication-date">Published
@@ -67,7 +63,7 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
                 {!options ? <Waiting text={"Loading options"}/>
                     : <Fragment>
                         <p className="experience-level">Experience level:
-                            <span itemProp="educationalLevel">{options.experience_level.map(opt => {
+                            <span itemProp="educationalLevel"> {options.experience_level.map(opt => {
                                 if (opt[0] === data.experience_level) return opt[1];
                             })}</span>
                         </p>

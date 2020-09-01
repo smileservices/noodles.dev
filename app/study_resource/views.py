@@ -38,7 +38,7 @@ def search(request):
     return render(request, 'study_resource/search_page.html', data)
 
 
-def detail(request, id):
+def detail(request, id, slug):
     queryset = StudyResource.objects
     resource = queryset.get(pk=id)
     related = queryset.filter(
@@ -123,7 +123,7 @@ class StudyResourceViewset(ModelViewSet):
         )
 
     def get_success_headers(self, data):
-        return {'Location': reverse_lazy('detail', kwargs={'id': data['pk']})}
+        return {'Location': reverse_lazy('detail', kwargs={'id': data['pk'],'slug': data['slug']})}
 
     def perform_destroy(self, instance):
         if self.request.user == instance.author or self.request.user.is_superuser:

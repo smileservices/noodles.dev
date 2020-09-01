@@ -38,7 +38,7 @@ class StudyResourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudyResource
-        fields = ['pk', 'rating', 'reviews_count', 'name', 'url', 'summary', 'price', 'media', 'experience_level', 'author', 'tags',
+        fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'url', 'summary', 'price', 'media', 'experience_level', 'author', 'tags',
                   'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by']
 
     def run_validation(self, data):

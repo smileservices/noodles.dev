@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.postgres.fields import ArrayField
+from django.db.models.fields import SlugField
+from django.template.defaultfilters import slugify
 from users.models import CustomUser
 from simple_history.models import HistoricalRecords
 from django.urls import reverse
@@ -60,6 +62,7 @@ class StudyResource(models.Model):
     published_by = models.CharField(max_length=128)
     url = models.TextField(max_length=1024, unique=True)
     summary = models.TextField(max_length=2048)
+    slug = SlugField()
     # related fields
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='resources')
@@ -75,6 +78,15 @@ class StudyResource(models.Model):
 
     def __str__(self):
         return f'{self.media_label} on {self.name}'
+
+    @property
+    def absolute_url(self):
+        return reverse('detail', kwargs={'id':self.id, 'slug': self.slug})
+
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
 
     @property
     def price_label(self):
