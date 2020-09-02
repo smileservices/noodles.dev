@@ -42,6 +42,7 @@ body {
 
 @import "node_modules/bootstrap/scss/forms";
 @import "node_modules/bootstrap/scss/alert";
+@import "app/static/slim-select/src/slim-select/slimselect.scss";
 
 @import "reset";
 @import "animations";
@@ -60,6 +61,5 @@ body {
 @import "page_sections";
 @import "pages";
 @import "study_resource_detail";
-
 
 @import "responsive";

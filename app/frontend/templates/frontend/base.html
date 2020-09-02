@@ -14,9 +14,9 @@
         <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
         <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     {% endblock %}
-    <link rel="stylesheet" href="{% static 'slim-select/dist/slimselect.min.css' %}">
-    <link rel="stylesheet" href="{% static 'icomoon_fonts/style.css' %}">
+{#    <link rel="stylesheet" href="{% static 'slim-select/dist/slimselect.min.css' %}">#}
     <link rel="stylesheet" href="{% static 'frontend/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'icomoon_fonts/style.css' %}">
     {% block extra_css %}{% endblock %}
     {% block extra_top_js %}{% endblock %}
 </head>
@@ -39,7 +39,7 @@
 
 {% include 'frontend/footer.html' %}
 
-<script src="{% static 'slim-select/dist/slimselect.min.js' %}"></script>
+<script defer src="{% static 'slim-select/dist/slimselect.min.js' %}"></script>
 <script>
     function toggle_sidebar() {
         document.querySelector('aside').classList.toggle('hidden');
