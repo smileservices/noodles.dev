@@ -3,18 +3,20 @@ from users.fake import create_user
 from study_resource.fake import initial_data, new_study_resource, new_study_resource_review
 from .models import Review
 from django.core.exceptions import ValidationError
-
+from users.models import CustomUser
 
 # Create your tests here.
 
 class StudyResourceTestCase(TestCase):
 
     def setUp(self):
-        self.users = [create_user() for _ in range(0, 5)]
+        CustomUser.objects.bulk_create([create_user() for _ in range(0, 5)])
+        self.users = CustomUser.objects.all()
         initial_data()
 
     def create_review(self, resource_author, review_author):
         resource = new_study_resource(resource_author)
+        resource.save()
         review = new_study_resource_review(resource, review_author)
         review.save()
         self.assertIn(review, resource.reviews.all())
