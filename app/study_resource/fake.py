@@ -70,7 +70,8 @@ def study_resources_bulk(count, users):
 
 def reviews_bulk(resources, users, count):
     reviews = []
-    only_one_review_per_user_check = []
+    older_reviews = models.Review.objects.all()
+    only_one_review_per_user_check = [f'{review.study_resource.id}{review.author.id}' for review in older_reviews]
     for _ in range(count):
         review = new_study_resource_review(
             study_resource=choice(resources),

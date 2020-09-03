@@ -18,6 +18,11 @@ class Command(BaseCommand):
             default=False,
             help="Create admin account",
         )
+        parser.add_argument(
+            "--clear",
+            default=False,
+            help="if true, will delete all, excepting staff users",
+        )
 
         parser.add_argument(
             "--users",
@@ -69,14 +74,15 @@ class Command(BaseCommand):
             msg = self.create_superuser(credentials)
             self.stdout.write(msg)
 
-        staff = CustomUser.objects.filter(models.Q(is_staff=True) | models.Q(is_superuser=True))
-        CustomUser.objects.exclude(pk__in=staff).delete()
-        self.stdout.write("Removed all users except staff users")
-        self.stdout.write('Cleaning all resources ... ')
-        fake_res.clean()
-        self.stdout.write('Tabula Rasa!')
-        fake_res.initial_data()
-        self.stdout.write('Populated with initial data - tags/technologies')
+        if options['clear']:
+            staff = CustomUser.objects.filter(models.Q(is_staff=True) | models.Q(is_superuser=True))
+            CustomUser.objects.exclude(pk__in=staff).delete()
+            self.stdout.write("Removed all users except staff users")
+            self.stdout.write('Cleaning all resources ... ')
+            fake_res.clean()
+            self.stdout.write('Tabula Rasa!')
+            fake_res.initial_data()
+            self.stdout.write('Populated with initial data - tags/technologies')
 
         # create users
         fake_users.create_bulk_users(options['users'])
