@@ -186,6 +186,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+
 SITE_ID = 1
 AUTH_USER_MODEL = 'users.CustomUser'
 

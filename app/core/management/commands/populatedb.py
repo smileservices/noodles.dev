@@ -1,29 +1,41 @@
-from io import StringIO
-
-from django.core.exceptions import ValidationError
-from django.core.management import call_command
 from django.core.management.base import BaseCommand
-from django.db.utils import IntegrityError
-from django.db import connection
+from django.db import connection, models
 
 from users.models import CustomUser
-from users.fake import create_user
-from study_resource.fake import initial_data, new_study_resource, new_study_resource_review, new_collection
-from random import randint, choice, choices
+from study_resource import models as res_models
+from users import fake as fake_users
+import study_resource.fake as fake_res
 
 
 class Command(BaseCommand):
     help = "Populate database with test objects"
-    placeholders_dir = "saleor/static/placeholders/"
 
     def add_arguments(self, parser):
 
         parser.add_argument(
             "--createsuperuser",
             action="store_true",
-            dest="createsuperuser",
             default=False,
             help="Create admin account",
+        )
+
+        parser.add_argument(
+            "--users",
+            type=int,
+            default=50,
+            help="How many users",
+        )
+        parser.add_argument(
+            "--resources",
+            type=int,
+            default=250,
+            help="How many resources",
+        )
+        parser.add_argument(
+            "--reviews",
+            type=int,
+            default=500,
+            help="How many reviews",
         )
 
     def make_database_faster(self):
@@ -57,52 +69,45 @@ class Command(BaseCommand):
             msg = self.create_superuser(credentials)
             self.stdout.write(msg)
 
-        initial_data()
+        staff = CustomUser.objects.filter(models.Q(is_staff=True) | models.Q(is_superuser=True))
+        CustomUser.objects.exclude(pk__in=staff).delete()
+        self.stdout.write("Removed all users except staff users")
+        self.stdout.write('Cleaning all resources ... ')
+        fake_res.clean()
+        self.stdout.write('Tabula Rasa!')
+        fake_res.initial_data()
+        self.stdout.write('Populated with initial data - tags/technologies')
 
         # create users
-        users = []
-        for i in range(20):
-            users.append(create_user())
+        fake_users.create_bulk_users(options['users'])
         self.stdout.write(" >> Created users: done")
+        users = CustomUser.objects.all()
 
         # study resources
-        study_resources = []
-        for user in users:
-            for _ in range(randint(0, 5)):
-                study_resources.append(new_study_resource(user))
+        fake_res.study_resources_bulk(options['resources'], users=users)
         self.stdout.write(" >> Created study resources: done")
+
+        resources = res_models.StudyResource.objects.all()
 
         # reviews
         reviews = []
-        for user in users:
-            for _ in range(randint(0,len(study_resources))):
-                try:
-                    review = new_study_resource_review(
-                            study_resource=choice(study_resources),
-                            user=user)
-                    review.save()
-                    reviews.append(review)
-                except IntegrityError:
-                    pass
+        fake_res.reviews_bulk(resources, users, options['reviews'])
         self.stdout.write(" >> Created study resources reviews: done")
 
-
-        # rate reviews
-        for user in users:
-            for review in choices(reviews, k=randint(0, 30)):
-                try:
-                    choice([
-                        lambda r,u: review.vote_up(u),
-                        lambda r,u: review.vote_down(u),
-                    ])(review, user)
-                except ValidationError:
-                    pass
-        self.stdout.write(" >> Rated reviews: done")
-
-        # create collections
-        for user in choices(users, k=5):
-            for _ in range(1,4):
-                new_collection(user)
-        self.stdout.write(" >> Create collections: done")
-
-
+        # # rate reviews
+        # for user in users:
+        #     for review in choices(reviews, k=randint(0, 30)):
+        #         try:
+        #             choice([
+        #                 lambda r, u: review.vote_up(u),
+        #                 lambda r, u: review.vote_down(u),
+        #             ])(review, user)
+        #         except ValidationError:
+        #             pass
+        # self.stdout.write(" >> Rated reviews: done")
+        #
+        # # create collections
+        # for user in choices(users, k=5):
+        #     for _ in range(1, 4):
+        #         new_collection(user)
+        # self.stdout.write(" >> Create collections: done")

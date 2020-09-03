@@ -7,7 +7,9 @@
         {% if results.number == i %}
             <li class="active"><span>{{ i }}</span></li>
         {% else %}
-            <li><a href="?page={{ i }}" data-page="{{ i }}">{{ i }}</a></li>
+            {% if i > before_pages and i < after_pages %}
+                <li><a href="?page={{ i }}" data-page="{{ i }}">{{ i }}</a></li>
+            {% endif %}
         {% endif %}
     {% endfor %}
     {% if results.has_next %}

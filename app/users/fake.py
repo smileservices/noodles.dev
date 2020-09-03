@@ -13,8 +13,11 @@ def create_user(locale=False):
         last_name=lname,
         email=email
     )
-    new_user.save()
     password = '123'
     new_user.set_password(password)
-    new_user.save()
     return new_user
+
+
+def create_bulk_users(count):
+    users = [create_user() for _ in range(count)]
+    CustomUser.objects.bulk_create(users)

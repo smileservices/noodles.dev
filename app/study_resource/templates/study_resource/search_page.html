@@ -1,6 +1,7 @@
 {% extends 'frontend/base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load paginator_tag %}
 
 {% block meta_tags %}
     <title>Noodles.com Search Page</title>
@@ -29,7 +30,7 @@
                     {% endfor %}
                 </div>
                 {% if results.has_other_pages %}
-                    {% include 'static_pagination.html' %}
+                    {% paginator_tag results 3 %}
                 {% endif %}
             {% endif %}
         </section>

@@ -62,7 +62,7 @@ class StudyResource(models.Model):
     published_by = models.CharField(max_length=128)
     url = models.TextField(max_length=1024, unique=True)
     summary = models.TextField(max_length=2048)
-    slug = SlugField()
+    slug = SlugField(max_length=255)
     # related fields
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='resources')
