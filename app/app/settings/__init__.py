@@ -187,15 +187,21 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+# allauth - main config
+AUTH_USER_MODEL = 'users.CustomUser'
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = reverse_lazy('account_confirm_complete')
-ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('account_confirm_complete')
-AUTH_USER_MODEL = 'users.CustomUser'
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+# allauth - email confirmation
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = reverse_lazy('account_login')
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('homepage')
+
 
 ADMINS = [tuple(adm.split(':')) for adm in env.list('ADMINS')]
 EMAIL_REPLY_TO = env.str('EMAIL_REPLY_TO')
@@ -203,7 +209,7 @@ DEFAULT_FROM_EMAIL = env.str('EMAIL_SYSTEM_ADDRESS', 'admin@noodles.dev')
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = 'homepage'
-LOGOUT_REDIRECT_URL = 'login'
+LOGIN_REDIRECT_URL = reverse_lazy('homepage')
+LOGOUT_REDIRECT_URL = reverse_lazy('account_login')
 
 MAX_RATING = 5
