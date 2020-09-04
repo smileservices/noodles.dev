@@ -40,3 +40,6 @@ LOGGING = {
 }
 
 GOOGLE_APPLICATION_CREDENTIALS = env.str('GOOGLE_APPLICATION_CREDENTIALS')
+AUTOTRANSLATE_TRANSLATOR_SERVICE = 'autotranslate.services.GoogleAPITranslatorService'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

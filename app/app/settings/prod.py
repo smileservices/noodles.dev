@@ -4,7 +4,7 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 sentry_sdk.init(
-    dsn="https://d21d5192b99349409121a487136c4178@o424360.ingest.sentry.io/5414175",
+    dsn=env.str('SENTRY_DSN'),
     integrations=[DjangoIntegration()],
     traces_sample_rate=1.0,
 
@@ -15,6 +15,8 @@ sentry_sdk.init(
 
 if DEBUG:
     raise ValueError('Running production settings with DEBUG set to True')
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
 LOGGING = {
     'version': 1,
@@ -34,4 +36,9 @@ LOGGING = {
     },
 }
 
-AUTOTRANSLATE_TRANSLATOR_SERVICE = 'autotranslate.services.GoogleAPITranslatorService'
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.str('EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env.str('EMAIL_USE_TLS', False)
+EMAIL_USE_SSL = env.str('EMAIL_USE_SSL', False)

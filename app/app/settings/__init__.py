@@ -186,7 +186,12 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+ADMINS = [tuple(adm.split(':')) for adm in env.list('ADMINS')]
+
+EMAIL_REPLY_TO = env.str('EMAIL_REPLY_TO')
+EMAIL_QUOTES_FROM = env.str('EMAIL_QUOTES_FROM')
+EMAIL_EXPATS_FROM = env.str('EMAIL_EXPATS_FROM')
+SERVER_EMAIL = env.str('EMAIL_SYSTEM_ADDRESS', 'admin@djangoapp.com')
 
 SITE_ID = 1
 AUTH_USER_MODEL = 'users.CustomUser'
