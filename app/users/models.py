@@ -16,7 +16,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField('email address', unique=True)
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['first_name', 'last_name']
     objects = CustomUserManager()
 
     # keeps track of other users feedback on user
