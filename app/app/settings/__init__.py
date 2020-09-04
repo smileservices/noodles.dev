@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import environ
+from django.urls import reverse_lazy
+
 
 env = environ.Env(
     DEBUG=(bool, False),
@@ -186,21 +188,22 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-ADMINS = [tuple(adm.split(':')) for adm in env.list('ADMINS')]
-
-EMAIL_REPLY_TO = env.str('EMAIL_REPLY_TO')
-EMAIL_QUOTES_FROM = env.str('EMAIL_QUOTES_FROM')
-EMAIL_EXPATS_FROM = env.str('EMAIL_EXPATS_FROM')
-SERVER_EMAIL = env.str('EMAIL_SYSTEM_ADDRESS', 'admin@djangoapp.com')
-
-SITE_ID = 1
-AUTH_USER_MODEL = 'users.CustomUser'
-
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = reverse_lazy('account_confirm_complete')
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('account_confirm_complete')
+AUTH_USER_MODEL = 'users.CustomUser'
+
+ADMINS = [tuple(adm.split(':')) for adm in env.list('ADMINS')]
+EMAIL_REPLY_TO = env.str('EMAIL_REPLY_TO')
+DEFAULT_FROM_EMAIL = env.str('EMAIL_SYSTEM_ADDRESS', 'admin@noodles.dev')
+
+SITE_ID = 1
 
 LOGIN_REDIRECT_URL = 'homepage'
 LOGOUT_REDIRECT_URL = 'login'
+
 MAX_RATING = 5
