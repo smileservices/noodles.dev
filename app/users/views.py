@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic import FormView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import OrderingFilter
@@ -9,6 +10,9 @@ from study_resource import filters
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Avg
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import ProfileForm
+from django.urls import reverse_lazy
 
 
 class UsersViewset(ModelViewSet):
@@ -29,6 +33,29 @@ def my_profile(request):
         }
     }
     return render(request, 'users/my_profile.html', data)
+
+
+class EditProfile(FormView, LoginRequiredMixin):
+    template_name = 'users/my_profile_edit.html'
+    form_class = ProfileForm
+    success_url = reverse_lazy('my-profile')
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        # data['form'] = self.form_class({
+        #     'first_name': self.request.user.first_name,
+        #     'last_name': self.request.user.last_name,
+        # })
+        data['form'] = self.form_class(instance=self.request.user)
+        return data
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 @login_required

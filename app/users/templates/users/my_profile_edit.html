@@ -1,0 +1,16 @@
+{% extends 'frontend/base.html' %}
+{% load star_rating %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="form-container full-page-sm">
+        <div class="header">
+            <h3>Edit Profile</h3>
+        </div>
+            <form action="{% url 'my-profile-edit' %}" method="POST">
+                {{ form|crispy }}
+                {% csrf_token %}
+                <button class="btn submit">Submit</button>
+            </form>
+    </div>
+{% endblock %}

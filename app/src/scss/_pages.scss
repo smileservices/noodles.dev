@@ -16,32 +16,6 @@ main .search-page {
   "filtering results";
 }
 
-section.user-profile {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-
-  > * {
-    background-color: #ffffff;
-    padding: 1rem;
-    border-radius: 0.25rem;
-    position: relative;
-
-    .title {
-      margin-bottom: 1rem;
-      color: $theme-color-accent;
-    }
-
-    .group {
-      margin-bottom: 1rem;
-
-      .title {
-        margin-bottom: 0.5rem;
-      }
-    }
-  }
-}
-
 .my-reviews-page {
   .resource-review-container {
     .result {

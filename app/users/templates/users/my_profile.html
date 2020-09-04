@@ -2,24 +2,29 @@
 {% load star_rating %}
 
 {% block content %}
-    <section class="user-profile">
-        <div class="account">
-            <h3 class="title">Account</h3>
-            <p>{{ user.get_full_name }}</p>
+    <section class="user-profile column-container full-page-md">
+        <div class="card column-container">
+            <div class="header">
+                <h3>Account</h3>
+            </div>
+            <p>Full Name: {{ user.get_full_name }}</p>
+            <p><a href="{% url 'my-profile-edit' %}">edit</a></p>
         </div>
-        <div class="statistics">
-            <h3 class="title">Statistics</h3>
+        <div class="card column-container">
+            <div class="header">
+                <h3>Statistics</h3>
+            </div>
             <div class="group">
-                <p class="title">Given reviews</p>
+                <p class="color-accent">Given reviews</p>
                 <p>Average rating: {% star_rating statistics.average_given_rating.rating__avg %}</p>
             </div>
             <div class="group">
-                <p class="title">Your overall score</p>
+                <p class="color-accent">Your overall score</p>
                 <p>Positive: {{ user.positive_score }}</p>
                 <p>Negative: {{ user.positive_score }}</p>
             </div>
             <div class="group">
-                <p class="title">Your actions on others</p>
+                <p class="color-accent">Your actions on others</p>
                 <p>Appreciated: {{ user.positive_thumbs }}</p>
                 <p>Not appreciated: {{ user.negative_thumbs }}</p>
             </div>
