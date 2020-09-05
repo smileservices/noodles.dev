@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.fields import FloatField, IntegerField
 from .models import Tag, Technology, StudyResource, Review, Collection
 from users.serializers import UserSerializerMinimal
+from django.template.defaultfilters import slugify
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -38,10 +39,12 @@ class StudyResourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudyResource
-        fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'url', 'summary', 'price', 'media', 'experience_level', 'author', 'tags',
+        fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'price', 'media', 'experience_level', 'author', 'tags',
                   'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by']
 
     def run_validation(self, data):
+        if 'slug' not in data:
+            data['slug'] = slugify(data['name'])
         validated_data = super(StudyResourceSerializer, self).run_validation(data)
         validated_data['tags'] = []
         for tag in data['tags']:
