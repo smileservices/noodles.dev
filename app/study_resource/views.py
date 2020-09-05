@@ -23,7 +23,7 @@ from .models import StudyResource
 def search(request):
     queryset = StudyResource.objects
     filtered = filters.StudyResourceFilter(request.GET, queryset=queryset)
-    paginator = Paginator(filtered.qs.order_by('-publication_date'), 10)
+    paginator = Paginator(filtered.qs.order_by('-rating','-publication_date'), 10)
     try:
         results = paginator.page(request.GET.get('page', 1))
     except PageNotAnInteger:

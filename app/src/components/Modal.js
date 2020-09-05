@@ -9,16 +9,17 @@ export default function Modal({children, close}) {
     }
     function closeModal() {
         body.classList.remove('modal-open');
+        close();
         setOpen(false);
     }
 
     useEffect(bodyAddModal, []);
 
     return (
-        <div className="modal-container" style={{top: window.pageYOffset}} onClick={close}>
+        <div className="modal-container" style={{top: window.pageYOffset}} onClick={closeModal}>
             <div className="card full-page-md" onClick={e => e.stopPropagation()}>
                 <div className="toolbar">
-                    <span className="icon-close" onClick={close}/>
+                    <span className="icon-close" onClick={closeModal}/>
                 </div>
                 {children}
             </div>
