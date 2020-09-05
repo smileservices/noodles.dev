@@ -7,6 +7,7 @@ from users.models import CustomUser
 from simple_history.models import HistoricalRecords
 from django.urls import reverse
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=128, db_index=True)
 
@@ -28,14 +29,30 @@ class Technology(models.Model):
 
 
 class StudyResourceManager(models.Manager):
+
     def get_queryset(self):
-        # it's not so inneficient
         return StudyResourceQueryset(self.model, using=self.db).annotate_with_rating()
+
+    def order_by_rating_then_publishing_date(self):
+        return StudyResourceQueryset(self.model, using=self.db).annotate_with_rating().order_by(
+            models.F('rating').desc(nulls_last=True),
+            '-reviews_count',
+            'publication_date'
+        )
 
 
 class StudyResourceQueryset(models.QuerySet):
+
     def annotate_with_rating(self):
-        return self.annotate(rating=models.Avg('reviews__rating')).annotate(reviews_count=models.Count('reviews', distinct=True))
+        return self.annotate(rating=models.Avg('reviews__rating')).annotate(
+            reviews_count=models.Count('reviews', distinct=True))
+
+    def order_by_rating_then_publishing_date(self):
+        return self.annotate_with_rating().order_by(
+            models.F('rating').desc(nulls_last=True),
+            '-reviews_count',
+            'publication_date'
+        )
 
 
 class StudyResource(models.Model):
@@ -81,7 +98,7 @@ class StudyResource(models.Model):
 
     @property
     def absolute_url(self):
-        return reverse('detail', kwargs={'id':self.id, 'slug': self.slug})
+        return reverse('detail', kwargs={'id': self.id, 'slug': self.slug})
 
     def save(self, *args, **kwargs):  # new
         if not self.slug:

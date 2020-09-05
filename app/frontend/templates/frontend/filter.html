@@ -8,6 +8,7 @@
             </div>
             <form action="{% url filter_url %}" method="GET">
                 {{ filter.form | crispy }}
+                <small>By default the results are ordered by rating and number of reviews</small>
                 <button class="btn submit" type="submit">Filter</button>
             </form>
         </div>

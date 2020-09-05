@@ -21,9 +21,9 @@ from .models import StudyResource
 
 
 def search(request):
-    queryset = StudyResource.objects
+    queryset = StudyResource.objects.order_by_rating_then_publishing_date()
     filtered = filters.StudyResourceFilter(request.GET, queryset=queryset)
-    paginator = Paginator(filtered.qs.order_by('-rating','-publication_date'), 10)
+    paginator = Paginator(filtered.qs, 10)
     try:
         results = paginator.page(request.GET.get('page', 1))
     except PageNotAnInteger:
@@ -45,11 +45,10 @@ def detail(request, id, slug):
         Q(tags__in=resource.tags.all()),
         Q(technologies__in=resource.technologies.all()),
         ~Q(id=resource.id)
-    ).order_by('-publication_date')[:5]
+    ).order_by_rating_then_publishing_date()[:5]
     data = {
         'result': resource,
         'related': related,
-        'reviews': resource.reviews.order_by('created_at').all(),
         'MAX_RATING': settings.MAX_RATING
     }
     return render(request, 'study_resource/detail_page.html', data)
@@ -123,7 +122,7 @@ class StudyResourceViewset(ModelViewSet):
         )
 
     def get_success_headers(self, data):
-        return {'Location': reverse_lazy('detail', kwargs={'id': data['pk'],'slug': data['slug']})}
+        return {'Location': reverse_lazy('detail', kwargs={'id': data['pk'], 'slug': data['slug']})}
 
     def perform_destroy(self, instance):
         if self.request.user == instance.author or self.request.user.is_superuser:
