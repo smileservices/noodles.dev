@@ -34,9 +34,17 @@ main .detail-page {
 
     .group {
       margin: 1rem 0;
+      line-height: 1.1rem;
+
       .publication-date, .creation-date, .experience-level, .type {
         color: $text-muted;
       }
+    }
+
+    .summary {
+      line-height: 1.4rem;
+      padding: 1rem 0;
+      white-space: break-spaces;
     }
   }
 

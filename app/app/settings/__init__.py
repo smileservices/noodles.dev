@@ -14,7 +14,6 @@ import os
 import environ
 from django.urls import reverse_lazy
 
-
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, ["*"])
@@ -52,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
+    'captcha',
     'simple_history',
     # our app
     'core',
@@ -190,7 +190,9 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # allauth - main config
 AUTH_USER_MODEL = 'users.CustomUser'
-ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
+ACCOUNT_FORMS = {
+    'signup': 'users.forms.SignupForm'
+}
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -202,6 +204,10 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = reverse_lazy('account_login')
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('homepage')
 
+# django recaptcha
+RECAPTCHA_PUBLIC_KEY = env.str('GOOGLE_RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = env.str('GOOGLE_RECAPTCHA_SECRET_KEY')
+NOCAPTCHA = True
 
 ADMINS = [tuple(adm.split(':')) for adm in env.list('ADMINS')]
 EMAIL_REPLY_TO = env.str('EMAIL_REPLY_TO')
