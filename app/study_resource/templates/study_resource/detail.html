@@ -14,8 +14,9 @@
 </p>
 
 <h1 class="title" itemProp="name">
-    <a href="{{ result.url }}">{{ result.name }}</a>
+    {{ result.name }}
 </h1>
+
 
 <div class="group">
     <p class="publication-date">Published on {{ result.publication_date }} by {{ result.published_by }}</p>
@@ -25,6 +26,7 @@
             itemProp="educationalLevel">{{ result.experience_level_label }}</span></p>
     <p class="type">Type: {{ result.price_label }} <span itemProp="learningResourceType">{{ result.media_label }}</span>
     </p>
+    <p class="source_url"><a href="{{ result.url }}">resource url</a></p>
 </div>
 <p class="summary" itemProp="abstract">{{ result.summary }}</p>
 

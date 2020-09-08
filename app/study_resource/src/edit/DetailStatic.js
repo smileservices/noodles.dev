@@ -53,9 +53,7 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
             <p className="rating">
                 <ResourceRating rating={RESULT.rating} maxRating={MAX_RATING} reviewsCount={RESULT.reviews_count} />
             </p>
-            <h1 className="title" itemProp="name">
-                <a href={data.url}>{data.name}</a>
-            </h1>
+            <h1 className="title" itemProp="name">{data.name}</h1>
             <div className="group">
                 <p className="publication-date">Published
                     on {FormatDate(data.publication_date, 'date')} by {data.published_by}</p>
@@ -79,6 +77,7 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
                         </p>
                     </Fragment>
                 }
+                <p className="source_url"><a href={data.url}>resource url</a></p>
             </div>
             <p className="summary" itemProp="abstract">{data.summary}</p>
             {!tags ? <Waiting text={"Loading tags"}/>
