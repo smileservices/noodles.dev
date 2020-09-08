@@ -3,13 +3,18 @@ from django.core.exceptions import ValidationError
 from django.contrib.postgres.fields import ArrayField
 from django.db.models.fields import SlugField
 from django.template.defaultfilters import slugify
+from django.contrib.postgres.search import SearchQuery, SearchRank
 from users.models import CustomUser
 from simple_history.models import HistoricalRecords
 from django.urls import reverse
+import tsvector_field
 
 
 class Tag(models.Model):
     name = models.CharField(max_length=128, db_index=True)
+    search_vector_index = tsvector_field.SearchVectorField([
+        tsvector_field.WeightedColumn('name', 'A'),
+    ], 'english')
 
     def __str__(self):
         return self.name
@@ -20,6 +25,10 @@ class Technology(models.Model):
     description = models.TextField(max_length=1024)
     version = models.CharField(max_length=128)
     url = models.TextField(max_length=1024)
+    search_vector_index = tsvector_field.SearchVectorField([
+        tsvector_field.WeightedColumn('name', 'A'),
+        tsvector_field.WeightedColumn('description', 'B'),
+    ], 'english')
 
     def __str__(self):
         return f'{self.name} v{self.version}'
@@ -54,6 +63,9 @@ class StudyResourceQueryset(models.QuerySet):
             'publication_date'
         )
 
+    def search(self, text, min_rank=0.1):
+        return self.annotate(rank=SearchRank(models.F('search_vector_index'), SearchQuery(text))).filter(rank__gte=min_rank).order_by('-rank')
+
 
 class StudyResource(models.Model):
     class Price(models.IntegerChoices):
@@ -85,13 +97,17 @@ class StudyResource(models.Model):
     tags = models.ManyToManyField(Tag, related_name='resources')
     technologies = models.ManyToManyField(Technology, related_name='resources')
     # history fields
-    history = HistoricalRecords()
+    history = HistoricalRecords(excluded_fields='search_vector_index')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # choices fields
     price = models.IntegerField(default=0, choices=Price.choices, db_index=True)
     media = models.IntegerField(default=0, choices=Media.choices, db_index=True)
     experience_level = models.IntegerField(default=0, choices=ExperienceLevel.choices, db_index=True)
+    search_vector_index = tsvector_field.SearchVectorField([
+        tsvector_field.WeightedColumn('name', 'A'),
+        tsvector_field.WeightedColumn('summary', 'B'),
+    ], 'english')
 
     def __str__(self):
         return f'{self.media_label} on {self.name}'

@@ -17,6 +17,7 @@ django-extensions==2.2.9
 django-filter==2.3.0
 django-recaptcha==2.0.6
 django-simple-history==2.11.0
+django-tsvector-field==0.9.5
 djangorestframework==3.11.0
 Faker==4.1.1
 futures==3.1.1

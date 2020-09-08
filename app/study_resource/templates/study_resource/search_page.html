@@ -23,7 +23,7 @@
             {% if not results %}
                 <h3>Did not find any results :(</h3>
             {% else %}
-                <h3>Found {{ results.paginator.count }} results matching your query:</h3>
+                <h3>Found {{ results.paginator.count }} results matching {% if filter.data.contains %}"{{ filter.data.contains }}"{% else %} your query{% endif %}:</h3>
                 <div class="results-selection tile-container">
                     {% for result in results %}
                         {% include 'study_resource/result.html' %}

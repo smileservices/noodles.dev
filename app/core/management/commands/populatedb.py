@@ -20,6 +20,7 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             "--clear",
+            action="store_true",
             default=False,
             help="if true, will delete all, excepting staff users",
         )

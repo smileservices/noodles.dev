@@ -66,9 +66,7 @@ class StudyResourceFilter(FilterSet):
     )
 
     def search(self, queryset, name, value):
-        return queryset.filter(
-            Q(name__icontains=value) | Q(summary__icontains=value) | Q(tags__name__icontains=value) | Q(technologies__name__icontains=value)
-        )
+        return queryset.search(value, min_rank=0.001)
 
     class Meta:
         model = models.StudyResource
