@@ -26,4 +26,7 @@ class Migration(migrations.Migration):
             name='search_vector_index',
             field=tsvector_field.SearchVectorField(columns=[tsvector_field.WeightedColumn('name', 'A'), tsvector_field.WeightedColumn('description', 'B')], language='english'),
         ),
+        tsvector_field.IndexSearchVector('studyresource', 'search_vector_index'),
+        tsvector_field.IndexSearchVector('tag', 'search_vector_index'),
+        tsvector_field.IndexSearchVector('technology', 'search_vector_index'),
     ]
