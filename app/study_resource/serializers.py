@@ -29,6 +29,7 @@ class TechnologySerializerShort(serializers.ModelSerializer):
         fields = ['pk', 'name', 'version']
 
 
+
 class StudyResourceSerializer(serializers.ModelSerializer):
     queryset = StudyResource.objects
     author = UserSerializerMinimal(many=False, read_only=True)
@@ -39,20 +40,15 @@ class StudyResourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudyResource
-        fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'price', 'media', 'experience_level', 'author', 'tags',
+        fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'price', 'media',
+                  'experience_level', 'author', 'tags',
                   'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by']
 
     def run_validation(self, data):
         if 'slug' not in data:
             data['slug'] = slugify(data['name'])
-        validated_data = super(StudyResourceSerializer, self).run_validation(data)
-        validated_data['tags'] = []
-        for tag in data['tags']:
-            if type(tag) == int:
-                validated_data['tags'].append(tag)
-            else:
-                new_tag = Tag.objects.create(name=tag)
-                validated_data['tags'].append(new_tag.id)
+        validated_data = super().run_validation(data)
+        validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
         validated_data['technologies'] = data['technologies']
         return validated_data
 
@@ -81,13 +77,7 @@ class CollectionSerializer(serializers.ModelSerializer):
 
     def run_validation(self, data):
         validated_data = super(CollectionSerializer, self).run_validation(data)
-        validated_data['tags'] = []
-        for tag in data['tags']:
-            if type(tag) == int:
-                validated_data['tags'].append(tag)
-            else:
-                new_tag = Tag.objects.create(name=tag)
-                validated_data['tags'].append(new_tag.id)
+        validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
         validated_data['technologies'] = data['technologies']
         if 'resources' in data:
             validated_data['resources'] = data['resources']
