@@ -4,6 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.db.models.fields import SlugField
 from django.template.defaultfilters import slugify
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
+from django.contrib.postgres.indexes import GinIndex
 from users.models import CustomUser
 from simple_history.models import HistoricalRecords
 from django.urls import reverse
@@ -146,6 +147,11 @@ class StudyResource(models.Model):
         tsvector_field.WeightedColumn('name', 'A'),
         tsvector_field.WeightedColumn('summary', 'B'),
     ], 'english')
+
+    class Meta:
+        indexes = [
+            GinIndex(fields=['name', 'summary'], name='gintrgm_index', opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
+        ]
 
     def __str__(self):
         return f'{self.media_label} on {self.name}'
