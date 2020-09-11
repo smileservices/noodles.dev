@@ -23,14 +23,14 @@ from .models import StudyResource
 def search(request):
     queryset = StudyResource.objects.order_by_rating_then_publishing_date()
     filtered = filters.StudyResourceFilterMatches(request.GET, queryset=queryset)
-    user_query_term = filtered.data["contains"] if "contains" in filtered.data else "your query"
-    message = f'Found {filtered.qs.count()} results matching "{user_query_term}"'
+    user_query_term = f'"{filtered.data["contains"]}"' if "contains" in filtered.data and filtered.data['contains'] != '' else "your query"
+    message = f'Found {filtered.qs.count()} results matching {user_query_term}'
     if filtered.qs.count() == 0:
         filtered = filters.StudyResourceFilterSimilar(request.GET, queryset=queryset)
         if filtered.qs.count() > 0:
-            message = f'Found {filtered.qs.count()} results similar to "{user_query_term}"'
+            message = f'Found {filtered.qs.count()} results similar to {user_query_term}'
         else:
-            message = f'Count not find any results matching or similar to "{user_query_term}"'
+            message = f'Count not find any results matching or similar to {user_query_term}'
     paginator = Paginator(filtered.qs, 10)
     try:
         results = paginator.page(request.GET.get('page', 1))
