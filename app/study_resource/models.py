@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.postgres.fields import ArrayField
 from django.db.models.fields import SlugField
 from django.template.defaultfilters import slugify
-from django.contrib.postgres.search import SearchQuery, SearchRank
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from users.models import CustomUser
 from simple_history.models import HistoricalRecords
 from django.urls import reverse
@@ -54,7 +54,7 @@ class Technology(models.Model):
     ], 'english')
 
     def __str__(self):
-        return f'{self.name} v{self.version}'
+        return f'{self.name} {self.version}'
 
     class Meta:
         unique_together = ['name', 'version']
@@ -86,9 +86,23 @@ class StudyResourceQueryset(models.QuerySet):
             'publication_date'
         )
 
-    def search(self, text, min_rank=0.1):
-        return self.annotate(rank=SearchRank(models.F('search_vector_index'), SearchQuery(text))).filter(
-            rank__gte=min_rank).order_by('-rank')
+    def search_match(self, text, min_rank=0.1):
+        # searching through tags and techs is too expensive
+        # search_vector = SearchVector('search_vector_index', 'tags__search_vector_index', 'technologies__search_vector_index')
+        search_vector = SearchVector('search_vector_index')
+        rank = SearchRank(search_vector, SearchQuery(text))
+        return self.annotate(
+            rank=rank,
+        ) \
+            .filter(models.Q(rank__gte=min_rank)) \
+            .order_by('-rank')
+
+    def search_similar(self, text, min_sim=0.1):
+        return self.annotate(
+            similarity=TrigramSimilarity('name', text) + TrigramSimilarity('summary', text)
+        ) \
+            .filter(models.Q(similarity__gte=min_sim))\
+            .order_by('-similarity')
 
 
 class StudyResource(models.Model):
@@ -179,6 +193,10 @@ class Review(models.Model):
 
     def __str__(self):
         return f'review for {self.study_resource}: {self.rating} by {self.author}'
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        super(Review, self).save()
 
     @property
     def thumbs_up(self):

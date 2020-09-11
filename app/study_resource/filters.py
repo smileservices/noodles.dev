@@ -65,9 +65,6 @@ class StudyResourceFilter(FilterSet):
         )
     )
 
-    def search(self, queryset, name, value):
-        return queryset.search(value, min_rank=0.001)
-
     class Meta:
         model = models.StudyResource
         fields = [
@@ -80,3 +77,15 @@ class StudyResourceFilter(FilterSet):
             'publication_date_after',
             'ordering_by_date',
         ]
+
+
+class StudyResourceFilterMatches(StudyResourceFilter):
+
+    def search(self, queryset, name, value):
+        return queryset.search_match(value, min_rank=0.01)
+
+
+class StudyResourceFilterSimilar(StudyResourceFilter):
+
+    def search(self, queryset, name, value):
+        return queryset.search_similar(value, min_sim=0.2)

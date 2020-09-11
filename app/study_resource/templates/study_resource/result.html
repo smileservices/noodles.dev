@@ -16,6 +16,9 @@
     {% if result.rank %}
         <span>{{ result.rank|floatformat:3 }} relevancy</span>
     {% endif %}
+    {% if result.similarity %}
+        <span>{{ result.similarity|floatformat:3 }} similarity</span>
+    {% endif %}
 </p>
 <h2 class="title" itemprop="name">
     <a itemprop="name" href="{% url 'detail' result.id result.slug %}">{{ result.name }}</a>

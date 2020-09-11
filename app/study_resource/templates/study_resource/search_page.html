@@ -20,18 +20,14 @@
 
         {% include 'frontend/filter.html' with filter_url='search' %}
         <section class="results-container column-container">
-            {% if not results %}
-                <h3>Did not find any results :(</h3>
-            {% else %}
-                <h3>Found {{ results.paginator.count }} results matching {% if filter.data.contains %}"{{ filter.data.contains }}"{% else %} your query{% endif %}:</h3>
-                <div class="results-selection tile-container">
-                    {% for result in results %}
-                        {% include 'study_resource/result.html' %}
-                    {% endfor %}
-                </div>
-                {% if results.has_other_pages %}
-                    {% paginator_tag results 3 %}
-                {% endif %}
+            <h3>{{ message }}</h3>
+            <div class="results-selection tile-container">
+                {% for result in results %}
+                    {% include 'study_resource/result.html' %}
+                {% endfor %}
+            </div>
+            {% if results.has_other_pages %}
+                {% paginator_tag results 3 %}
             {% endif %}
         </section>
     </div>
