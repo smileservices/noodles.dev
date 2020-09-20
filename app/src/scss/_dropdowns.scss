@@ -1,5 +1,5 @@
 .dropdown .dropdown-menu {
-    z-index: 1000;
+    z-index: $dropdown-zindex;
     position: absolute;
     display: flex;
     flex-direction: column;

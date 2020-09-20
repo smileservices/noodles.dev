@@ -2,7 +2,7 @@ aside {
   position: fixed;
   width: 100vw;
   height: 100vh;
-  z-index: 90000;
+  z-index: $sidebar-zindex;
   background-color: RGBA(0, 0, 0, 0.5);
 }
 
