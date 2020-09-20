@@ -84,7 +84,7 @@ function Content() {
                                    addTech={addTech}
                                    setData={data => {
                                        setEditForm(false);
-                                       setAlert(<Alert close={e=>setAlert(null)} text="Successfully updated the resource!"  type="success" />)
+                                       setAlert(<Alert close={e=>setAlert(null)} text="Successfully updated the resource!"  type="success" hideable={false} stick={false}/>)
                                        setData(data);
                                    }}
                                    cancel={e => setEditForm(false)}/>

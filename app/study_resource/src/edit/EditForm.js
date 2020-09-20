@@ -82,7 +82,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not validate url" type="danger" close={e => setAlert(null)}/>)
+                setAlert(<Alert text="Could not validate url" type="danger" close={e => setAlert(null)} hideable={false} />)
                 return false;
             }
         }).then(data => {
@@ -100,7 +100,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
             if (!formData.tags || formData.tags.length === 0) vErrors.tags = 'Choose at least one tag';
             if (!formData.technologies || formData.technologies.length === 0) vErrors.technologies = 'Choose at least one technology';
             if (!valid || Object.keys(vErrors).length > 0) {
-                setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)
+                setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger" hideable={false} />)
                 console.log(vErrors);
                 setErrors({...vErrors});
                 return false
@@ -137,7 +137,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
             },
             setWaiting,
             result => {
-                setAlert(<Alert close={e => setAlert(null)} text={"Could not update."} type="danger"/>);
+                setAlert(<Alert close={e => setAlert(null)} text={"Could not update."} type="danger" hideable={false} stick={false}/>);
             }
         )
     }

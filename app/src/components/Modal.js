@@ -16,9 +16,9 @@ export default function Modal({children, close}) {
 
     return (
         <PortalComponent id="modal-portal">
-            <div className="modal-backdrop" onClick={closeModal}/>
+            <div className="modal-backdrop"/>
             {/*<div className="modal-container" style={{top: window.pageYOffset}} onClick={closeModal}>*/}
-            <div className="modal">
+            <div className="modal" onClick={closeModal}>
                 <div className="card full-page-md" onClick={e => e.stopPropagation()}>
                     <div className="toolbar">
                         <span className="icon-close" onClick={closeModal}/>

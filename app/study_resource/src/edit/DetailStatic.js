@@ -3,11 +3,12 @@ import Waiting from "../../../src/components/Waiting";
 import apiDelete from "../../../src/api_interface/apiDelete";
 import Alert from "../../../src/components/Alert";
 import FormatDate from "../../../src/vanilla/date";
-import {openAddCollectionModal} from "../collections/AddToCollectionModal";
+import AddToCollectionModal from "../collections/AddToCollectionModal";
 import ResourceRating from "../ResourceRating";
 
 export default function DetailStatic({data, tags, techs, options, setEditForm}) {
     const [confirmDelete, setConfirmDelete] = useState(false);
+    const [showAddToCollectionModal, setShowAddToCollectionModal] = useState(false);
     const [waiting, setWaiting] = useState(false);
     const [alert, setAlert] = useState(false);
 
@@ -16,10 +17,10 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
             STUDY_RESOURCE_ENDPOINT + RESOURCE_ID,
             setWaiting,
             data => {
-                setAlert(<Alert close={e=>setAlert(null)} text={"Successfully deleted. Returning to homepage..."} type="info"/>)
+                setAlert(<Alert close={e=>setAlert(null)} text={"Successfully deleted. Returning to homepage..."} type="info" hideable={false} stick={false}/>)
                 window.location = HOMEPAGE
             },
-            result => setAlert(<Alert close={e=>setAlert(null)} text={"Could not delete study resource"} type="danger"/>)
+            result => setAlert(<Alert close={e=>setAlert(null)} text={"Could not delete study resource"} type="danger" hideable={false}/>)
         )
     }
 
@@ -44,7 +45,7 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
                                 </Fragment>
                                 : ''
                             }
-                            <span className="icon-bookmark" onClick={e => openAddCollectionModal()}/>
+                            <span className="icon-bookmark" onClick={e=>setShowAddToCollectionModal(true)}/>
                         </Fragment>
                     }
             </span>
@@ -103,6 +104,7 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
                     }
                 </span>
             }
+            {showAddToCollectionModal ? <AddToCollectionModal close={e=>setShowAddToCollectionModal(false)}/> : ''}
         </Fragment>
     );
 }
