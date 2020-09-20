@@ -18,7 +18,7 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
         if (!formData.experience_level) vErrors.experience_level = 'Required';
         if (!formData.media) vErrors.media = 'Required';
         if (Object.keys(vErrors).length > 0) {
-            setAlert(<Alert text="Please fix the form errors" type="danger"/>)
+            setAlert(<Alert close={e=>setAlert(null)} text="Please fix the form errors" type="danger"/>)
             setErrors(vErrors);
         } else callback(formData);
     }
@@ -82,7 +82,7 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
                                  error={errors.type}
                                  options={getOptions('type')}
                                  onChange={sel => setFormData({...formData, type: sel})}
-                                 props={{disabled:Boolean(waiting)}}
+                                 props={{disabled: Boolean(waiting)}}
                                  smallText="Free or paid"
                     />
                     <SelectReact label='Media'
@@ -90,7 +90,7 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
                                  error={errors.media}
                                  options={getOptions('media')}
                                  onChange={sel => setFormData({...formData, media: sel})}
-                                 props={{disabled:Boolean(waiting)}}
+                                 props={{disabled: Boolean(waiting)}}
                                  smallText="Media type"
                     />
                     <SelectReact label='Experience level'
@@ -98,10 +98,25 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
                                  error={errors.experience_level}
                                  options={getOptions('experience_level')}
                                  onChange={sel => setFormData({...formData, experience_level: sel})}
-                                 props={{disabled:Boolean(waiting)}}
+                                 props={{disabled: Boolean(waiting)}}
                                  smallText="Experience level required"
                     />
                 </div>
+                <div className="row">
+                    <img src={formData.image_url} alt=""/>
+                </div>
+                <Input
+                    id={'image_url'}
+                    label="Image Url"
+                    inputProps={{
+                        disabled: Boolean(waiting),
+                        type: 'text',
+                        value: formData.image_url,
+                        onChange: e => setFormData({...formData, image_url: e.target.value})
+                    }}
+                    smallText="The main image url. Can be empty"
+                    error={errors.image_url}
+                />
                 <Textarea
                     id={'summary'}
                     label="Summary"
@@ -114,7 +129,7 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
                     smallText="What is it about"
                     error={errors.summary}
                 />
-                { alert }
+                {alert}
                 {waiting
                     ? waiting
                     : <button className="btn submit" type="submit">Publish</button>

@@ -35,7 +35,7 @@ export default function EditCollectionForm({data, tags, techs, setTechs, editCol
         if (!formData.tags || formData.tags.length === 0) vErrors.tags = 'Choose at least one tag';
         if (!formData.technologies || formData.technologies.length === 0) vErrors.technologies = 'Choose at least one technology';
         if (Object.keys(vErrors).length > 0) {
-            setAlert(<Alert text="Please fix the form errors" type="danger"/>)
+            setAlert(<Alert close={e=>setAlert(null)} text="Please fix the form errors" type="danger"/>)
             console.log(vErrors);
             setErrors({...vErrors});
         } else {
@@ -66,7 +66,7 @@ export default function EditCollectionForm({data, tags, techs, setTechs, editCol
             },
             setWaiting,
             result => {
-                setAlert(<Alert text={"Could not update."} type="danger"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text={"Could not update."} type="danger"/>);
             }
         )
     }
@@ -82,7 +82,7 @@ export default function EditCollectionForm({data, tags, techs, setTechs, editCol
                 addTech(data);
                 setTechForm(false);
                 setFormData({...formData, technologies: [...formData.technologies, getOptionFromTech(data)]});
-                setAlert(<Alert text="Created new technology version successfully." type="success"/>)
+                setAlert(<Alert close={e=>setAlert(null)} text="Created new technology version successfully." type="success"/>)
             }}
             cancel={e => {
                 setTechForm(false);

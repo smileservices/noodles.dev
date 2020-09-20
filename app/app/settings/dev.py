@@ -1,6 +1,5 @@
 from . import *
 
-
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
@@ -8,7 +7,7 @@ INTERNAL_IPS = [
 INSTALLED_APPS.append('debug_toolbar')
 INSTALLED_APPS.append('django_extensions')
 
-MIDDLEWARE.insert(9, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+# MIDDLEWARE.insert(9, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 LOGGING = {
     'version': 1,
@@ -41,5 +40,7 @@ LOGGING = {
 
 GOOGLE_APPLICATION_CREDENTIALS = env.str('GOOGLE_APPLICATION_CREDENTIALS')
 AUTOTRANSLATE_TRANSLATOR_SERVICE = 'autotranslate.services.GoogleAPITranslatorService'
-
+VERSATILEIMAGEFIELD_SETTINGS = {
+    'create_images_on_demand': True,
+}
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -6,6 +6,7 @@ import CreateFormStep2 from "./CreateFormStep2";
 import CreateFormStep3 from "./CreateFormStep3";
 import Alert from "../../../src/components/Alert";
 import apiCreate from "../../../src/api_interface/apiCreate";
+import FormatDate from "../../../src/vanilla/date";
 
 function Content() {
     const emptyDataStep1 = {
@@ -23,6 +24,7 @@ function Content() {
         media: false,
         experience_level: false,
         summary: '',
+        image_url: '',
     }
     const [step, setStep] = useState(0);
     const [tags, setTags] = useState([]);
@@ -56,7 +58,7 @@ function Content() {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not retrieve tags" type="danger"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve tags" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -70,7 +72,7 @@ function Content() {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not retrieve tags" type="danger"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve tags" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -84,7 +86,7 @@ function Content() {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not retrieve options" type="danger"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve options" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -103,9 +105,10 @@ function Content() {
         let data = {...dataStep1, ...dataStep3};
         data.tags = dataStep2.tags.map(arr => arr.value);
         data.technologies = dataStep2.technologies.map(arr => arr.value);
-        data.type = dataStep3.type.value
-        data.media = dataStep3.media.value
-        data.experience_level = dataStep3.experience_level.value
+        data.type = dataStep3.type.value;
+        data.media = dataStep3.media.value;
+        data.experience_level = dataStep3.experience_level.value;
+        data.images = [{url: dataStep3.image_url}];
         return data;
     }
 
@@ -118,7 +121,7 @@ function Content() {
             },
             setWaiting,
             result => {
-                setAlert(<Alert text={"Could not create."} type="danger"/>)
+                setAlert(<Alert close={e=>setAlert(null)} text={"Could not create."} type="danger"/>)
             },
             successHeaders => {
                 setCreated({
@@ -126,6 +129,29 @@ function Content() {
                 })
             }
         )
+    }
+
+    function handleStepOne(formData, scraped_data) {
+        setDataStep1(formData);
+        setDataStep2({
+            tags: scraped_data['tags'] ? scraped_data['tags'].map(tag => {return {value: tag, label: tag}}) : []
+        })
+        setDataStep3({
+            name: scraped_data['name'],
+            publication_date: FormatDate(scraped_data['publishing_date'], 'html-date'),
+            published_by: scraped_data['created_by'] ? scraped_data['created_by'].join(', ') : '',
+            type: {label: 'free', value: 0},
+            media: {label: 'article', value: 0},
+            experience_level: false,
+            summary: scraped_data['summary'],
+            image_url: scraped_data['top_img'],
+        })
+        setStep(1);
+        setStepStatus([
+            'ok',
+            'current',
+            'unsubmitted'
+        ]);
     }
 
     function renderStep(step) {
@@ -144,7 +170,7 @@ function Content() {
         switch (step) {
             case 0:
                 return (
-                    <CreateFormStep1 data={dataStep1} submit={formData => submitStep(step, setDataStep1, formData)}/>
+                    <CreateFormStep1 data={dataStep1} submit={handleStepOne}/>
                 );
             case 1:
                 return (<CreateFormStep2 data={dataStep2} tags={tags} techs={techs} addTech={addTech}
@@ -184,7 +210,7 @@ function Content() {
                     if (stepStatus[step] === 'ok' || stepStatus[step] === 'current') {
                         setStep(step);
                     } else {
-                        setAlert(<Alert text="Please submit current form before going to next steps." type="warning"
+                        setAlert(<Alert close={e=>setAlert(null)} text="Please submit current form before going to next steps." type="warning"
                                         stick={false} hideable={false}/>)
                     }
                 }}

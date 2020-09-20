@@ -36,7 +36,7 @@ export default function CreateTech({techs, createdCallback, cancel}) {
                 } else {
                     alertContent = "Something went wrong. Please check the error messages.";
                 }
-                if (alertContent) setAlert(<Alert text={alertContent} type="danger"/>);
+                if (alertContent) setAlert(<Alert close={e=>setAlert(null)} text={alertContent} type="danger"/>);
                 setErrors(errsCopy);
             })
         )
@@ -57,7 +57,7 @@ export default function CreateTech({techs, createdCallback, cancel}) {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not validate" type="danger"/>)
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not validate" type="danger"/>)
                 return false;
             }
         }).then(data => {
@@ -105,13 +105,12 @@ export default function CreateTech({techs, createdCallback, cancel}) {
                         props={{disabled: Boolean(waiting)}}
                     />
                     <Input id="version" label="Version" inputProps={{
-                        required: true,
                         type: 'text',
                         value: formData['version'],
                         onChange: e => setFormData({...formData, version: e.target.value}),
                         disabled: Boolean(waiting)
                     }}
-                           smallText="The version of tech"
+                           smallText="The version of tech. Leave empty if it refers to all versions or not sure."
                            error={errors.version}
                     />
                 </div>

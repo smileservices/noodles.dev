@@ -13,5 +13,7 @@ export default function FormatDate(dateStr, type) {
             return getDate();
         case 'datetime':
             return getDate() + ' ' +getTime();
+        case 'html-date':
+            return dateObj.toISOString().split('T')[0];
     }
 }

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import FloatField, IntegerField
-from .models import Tag, Technology, StudyResource, Review, Collection
+from .models import Tag, Technology, StudyResource, Review, Collection, StudyResourceImage
 from users.serializers import UserSerializerMinimal
 from django.template.defaultfilters import slugify
 
@@ -29,6 +29,13 @@ class TechnologySerializerShort(serializers.ModelSerializer):
         fields = ['pk', 'name', 'version']
 
 
+class ImageSerializer(serializers.ModelSerializer):
+    queryset = StudyResourceImage.objects
+
+    class Meta:
+        model = StudyResourceImage
+        fields = ['pk', 'study_resource', 'image_file', 'image_url']
+
 
 class StudyResourceSerializer(serializers.ModelSerializer):
     queryset = StudyResource.objects
@@ -37,12 +44,13 @@ class StudyResourceSerializer(serializers.ModelSerializer):
     technologies = TechnologySerializerShort(many=True, read_only=True)
     rating = FloatField(read_only=True)
     reviews_count = IntegerField(read_only=True)
+    images = ImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = StudyResource
         fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'price', 'media',
                   'experience_level', 'author', 'tags',
-                  'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by']
+                  'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by', 'images']
 
     def run_validation(self, data):
         if 'slug' not in data:

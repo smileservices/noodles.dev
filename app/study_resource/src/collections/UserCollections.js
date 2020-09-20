@@ -39,7 +39,7 @@ function Content() {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not retrieve tags" type="danger"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve tags" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -53,7 +53,7 @@ function Content() {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not retrieve tags" type="danger"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve tags" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -67,7 +67,7 @@ function Content() {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not retrieve options" type="danger"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve options" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -81,7 +81,7 @@ function Content() {
             pagination,
             setCollections,
             setWaiting,
-            err => setAlert(<Alert text={err} type="danger"/>),
+            err => setAlert(<Alert close={e=>setAlert(null)} text={err} type="danger"/>),
         )
     }, [pagination])
 
@@ -91,7 +91,7 @@ function Content() {
             count: collections.count - 1,
             results: collections.results.filter(c => data.pk !== c.pk)
         });
-        setAlert(<Alert text={"Deleted collection " + data.name} type="warning" stick={false}/>);
+        setAlert(<Alert close={e=>setAlert(null)} text={"Deleted collection " + data.name} type="warning" stick={false}/>);
     }
 
     if (createForm) return (

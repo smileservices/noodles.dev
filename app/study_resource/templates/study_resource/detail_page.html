@@ -29,6 +29,7 @@
         const URL_USER_COLLECTIONS = "{% url 'my-collections' %}";
         const USER_COLLECTIONS_ENDPOINT = "{% url 'collection-viewset-owned-resource' %}";
         const USER_COLLECTIONS_SET_ENDPOINT = "{% url 'collection-viewset-set-items' %}";
+        const RESOURCE_IMAGE_ENDPOINT = "{% url "resource-image-viewset-list" %}"
         const RESULT = {
             pk: {{ result.pk }},
             rating: {% if result.rating %}{{ result.rating }}{% else %}false{% endif %},
@@ -45,8 +46,13 @@
             experience_level: {{ result.experience_level }},
             summary: "{{ result.summary|escapejs }}",
             tags: [],
-            technologies: []
+            technologies: [],
         }
+        {% if result.image %}
+            RESULT['image'] = "{{ result.image.image_file.thumbnail.350x350 }}";
+            RESULT['image_pk'] = {{ result.image.pk }};
+            RESULT['image_url'] = "{{ result.image.image_url }}";
+        {% endif %}
         {% for tag in result.tags.all %}
             RESULT.tags.push({{ tag.id }});
         {% endfor %}

@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {makeId} from "./utils";
 
-export default function Alert({text, type, hideable = true, stick = true}) {
-    const [hide, setHide] = useState(false);
-    const [id, setId] = useState(makeId(5));
+export default function Alert({text, type, hideable = true, stick = true, close}) {
+    const defaultClassName = "fade alert alert-" + type;
+
+    const id = useState(makeId(5));
+    const [className, setClassName] = useState(defaultClassName);
     const alertEl = (
-        <div key={id} id={id} className={"fade alert alert-" + type} role="alert">
+        <div key={id} id={id} className={className} role="alert">
             {hideable
                 ? <span className="icon-close close" onClick={e => fadeOut()}> </span>
                 : ''
@@ -15,9 +17,9 @@ export default function Alert({text, type, hideable = true, stick = true}) {
     );
 
     function fadeOut() {
-        document.getElementById(id).classList.add('fade-out');
+        setClassName(defaultClassName + " fade-out");
         window.setTimeout(() => {
-            setHide(true);
+            close();
         }, 500)
     }
 
@@ -27,6 +29,5 @@ export default function Alert({text, type, hideable = true, stick = true}) {
         }
     }, [])
 
-    if (hide) return '';
     return alertEl;
 }

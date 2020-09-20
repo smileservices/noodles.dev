@@ -43,7 +43,7 @@ function AddToCollectionModal() {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text={result.statusText} type='danger'/>)
+                setAlert(<Alert close={e=>setAlert(null)} text={result.statusText} type='danger'/>)
             }
         }).then(data => {
             setCollections(data.all.map(c => {
@@ -65,10 +65,10 @@ function AddToCollectionModal() {
             setWaiting,
         ).then(result => {
             if (result.ok) {
-                setAlert(<Alert text="Modified successfully" type="success"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text="Modified successfully" type="success"/>);
                 setTimeout(e => closeAddCollectionModal(), 1000);
             } else {
-                setAlert(<Alert text="There was a problem" type="danger"/>)
+                setAlert(<Alert close={e=>setAlert(null)} text="There was a problem" type="danger"/>)
             }
         })
     }
@@ -77,7 +77,7 @@ function AddToCollectionModal() {
         let vErrors = {};
         if (Object.keys(vErrors).length > 0) {
             setErrors(vErrors);
-            setAlert(<Alert text="There are errors on your form" type="danger"/>)
+            setAlert(<Alert close={e=>setAlert(null)} text="There are errors on your form" type="danger"/>)
         } else {
             callback(data);
         }

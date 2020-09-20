@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'captcha',
     'simple_history',
     'tsvector_field',
+    'versatileimagefield',
     # our app
     'core',
     'rest_framework',
@@ -101,6 +102,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.media',
                 'django.template.context_processors.i18n',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -169,6 +171,8 @@ LANGUAGES = [
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static_col")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+MEDIA_ROOT = env('MEDIA_ROOT')
+MEDIA_URL = env('MEDIA_URL')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

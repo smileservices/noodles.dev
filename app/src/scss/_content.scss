@@ -232,3 +232,13 @@ section.header {
     background-color: lighten($theme-color-accent, 40%);
   }
 }
+
+img {
+  display: block;
+  margin: 0;
+  max-height: 100%;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  object-fit: scale-down;
+}

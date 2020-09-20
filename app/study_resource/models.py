@@ -5,10 +5,24 @@ from django.db.models.fields import SlugField
 from django.template.defaultfilters import slugify
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from django.contrib.postgres.indexes import GinIndex
-from users.models import CustomUser
-from simple_history.models import HistoricalRecords
 from django.urls import reverse
+from django.dispatch import receiver
+from django.core.files import File
+from uuid import uuid4
+from tempfile import NamedTemporaryFile
 import tsvector_field
+from versatileimagefield.fields import VersatileImageField
+from simple_history.models import HistoricalRecords
+from users.models import CustomUser
+from urllib.request import urlopen
+
+
+class PublishableModelMixin:
+    is_published = models.BooleanField(default=True)
+
+
+class RequireAdminAprovalModelMixin:
+    approved = models.BooleanField(default=False)
 
 
 class TagModelManager(models.Manager):
@@ -47,7 +61,7 @@ class Tag(models.Model):
 class Technology(models.Model):
     name = models.CharField(max_length=128, db_index=True)
     description = models.TextField(max_length=1024)
-    version = models.CharField(max_length=128)
+    version = models.CharField(max_length=128, null=True, blank=True)
     url = models.TextField(max_length=1024)
     search_vector_index = tsvector_field.SearchVectorField([
         tsvector_field.WeightedColumn('name', 'A'),
@@ -102,7 +116,7 @@ class StudyResourceQueryset(models.QuerySet):
         return self.annotate(
             similarity=TrigramSimilarity('name', text) + TrigramSimilarity('summary', text)
         ) \
-            .filter(models.Q(similarity__gte=min_sim))\
+            .filter(models.Q(similarity__gte=min_sim)) \
             .order_by('-similarity')
 
 
@@ -127,7 +141,7 @@ class StudyResource(models.Model):
     objects = StudyResourceManager()
     name = models.CharField(max_length=128)
     publication_date = models.DateField()
-    published_by = models.CharField(max_length=128)
+    published_by = models.CharField(max_length=256)
     url = models.TextField(max_length=1024, unique=True)
     summary = models.TextField(max_length=2048)
     slug = SlugField(max_length=255)
@@ -160,6 +174,10 @@ class StudyResource(models.Model):
     def absolute_url(self):
         return reverse('detail', kwargs={'id': self.id, 'slug': self.slug})
 
+    @property
+    def image(self):
+        return self.images.first()
+
     def save(self, *args, **kwargs):  # new
         if not self.slug:
             self.slug = slugify(self.name)
@@ -176,6 +194,33 @@ class StudyResource(models.Model):
     @property
     def experience_level_label(self):
         return self.ExperienceLevel(self.experience_level).label
+
+
+class StudyResourceImage(models.Model):
+    study_resource = models.ForeignKey(StudyResource, on_delete=models.CASCADE, related_name='images')
+    image_file = VersatileImageField(upload_to='tutorials', blank=True, null=True)
+    image_url = models.URLField(default='', blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.image_url and not self.image_file:
+            img_temp = NamedTemporaryFile(delete=True)
+            img_temp.write(urlopen(self.image_url).read())
+            self.image_file.save(
+                f"image_{self.study_resource.pk}_{uuid4().__str__()}.{self.image_url.split('.')[-1]}",
+                File(img_temp)
+            )
+            img_temp.flush()
+        else:
+            super(StudyResourceImage, self).save(*args, **kwargs)
+
+
+@receiver(models.signals.post_delete, sender=StudyResourceImage)
+def delete_study_resource_images(sender, instance, **kwargs):
+    """
+    Deletes StudyResourceImage image renditions on post_delete.
+    """
+    instance.image_file.delete_all_created_images()
+    instance.image_file.delete(save=False)
 
 
 class Review(models.Model):

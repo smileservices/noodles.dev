@@ -4,6 +4,10 @@ import {Input, SelectReact, SelectReactCreatable, Textarea} from "../../../src/c
 import apiPost from "../../../src/api_interface/apiPost";
 import apiUpdate from "../../../src/api_interface/apiUpdate";
 import CreateTech from "../create/CreateTech";
+import EditableComponent from "../../../src/components/EditableComponent";
+import StudyResourceImageUpdateForm from "./StudyResourceImageUpdateForm";
+import StudyResourceImageCreateForm from "./StudyResourceImageCreateForm";
+import CreateableComponent from "../../../src/components/CreateableComponent";
 
 export default function EditDetailForm({data, tags, techs, addTech, options, setData, cancel}) {
 
@@ -44,9 +48,17 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
     const [alert, setAlert] = useState('');
     const [techForm, setTechForm] = useState(false);
 
+    const imageData = {
+        'image_file': data.image_file,
+        'pk': data.image_pk,
+        'image_url': data.image_url,
+        'study_resource': data.study_resource,
+    }
+
     const getOptionFromTech = data => {
         return {value: data.pk, label: data.name + " " + data.version}
     };
+
     const getOptionFromTag = data => {
         return {value: data.pk, label: data.name}
     };
@@ -70,7 +82,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not validate url" type="danger"/>)
+                setAlert(<Alert text="Could not validate url" type="danger" close={e => setAlert(null)}/>)
                 return false;
             }
         }).then(data => {
@@ -88,7 +100,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
             if (!formData.tags || formData.tags.length === 0) vErrors.tags = 'Choose at least one tag';
             if (!formData.technologies || formData.technologies.length === 0) vErrors.technologies = 'Choose at least one technology';
             if (!valid || Object.keys(vErrors).length > 0) {
-                setAlert(<Alert text="Please fix the form errors" type="danger"/>)
+                setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)
                 console.log(vErrors);
                 setErrors({...vErrors});
                 return false
@@ -125,7 +137,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
             },
             setWaiting,
             result => {
-                setAlert(<Alert text={"Could not update."} type="danger"/>);
+                setAlert(<Alert close={e => setAlert(null)} text={"Could not update."} type="danger"/>);
             }
         )
     }
@@ -264,6 +276,39 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                                  isDisabled={Boolean(waiting)}
                     />
                 </div>
+                {imageData.pk
+                    ? <div className="images-edit">
+                        <div style={{position: "relative"}}>
+                            <EditableComponent endpoint={RESOURCE_IMAGE_ENDPOINT} data={imageData}
+                                               DisplayViewComponent={
+                                                   ({data}) => (<img src={data.image_file} alt=""/>)
+                                               }
+                                               FormViewComponent={StudyResourceImageUpdateForm}
+                                               callback={imageData => setData({
+                                                   ...data,
+                                                   image_file: imageData.image_file,
+                                                   image_url: imageData.image_url,
+                                                   image_pk: imageData.pk,
+                                               })}
+                                               deleteCallback={()=>setData({
+                                                   ...data,
+                                                   image_file: '',
+                                                   image_url: '',
+                                                   image_pk: false,
+                                               })}
+                            />
+                        </div>
+                    </div>
+                    : <CreateableComponent endpoint={RESOURCE_IMAGE_ENDPOINT} data={imageData}
+                                           FormViewComponent={StudyResourceImageCreateForm}
+                                           callback={imageData => setData({
+                                               ...data,
+                                               image_file: imageData.image_file,
+                                               image_url: imageData.image_url,
+                                               image_pk: imageData.pk,
+                                           })}
+                    />
+                }
                 <Textarea
                     id={'summary'}
                     label="Summary"
