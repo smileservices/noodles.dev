@@ -233,3 +233,12 @@ LOGIN_REDIRECT_URL = reverse_lazy('homepage')
 LOGOUT_REDIRECT_URL = reverse_lazy('account_login')
 
 MAX_RATING = 5
+
+# VERSATILE IMAGEFIELD
+VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
+    'resource_image': [
+        ('small', 'thumbnail__180x180'),
+        ('medium', 'thumbnail__220x220'),
+        ('large', 'thumbnail__320x320'),
+    ],
+}

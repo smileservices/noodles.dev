@@ -25,7 +25,7 @@
 </h2>
     {% if result.image.image_file %}
         <a itemprop="name" href="{% url 'detail' result.id result.slug %}">
-            <img class="primary-image" src="{{ result.image.image_file.thumbnail.250x250 }}" alt="">
+            <img class="primary-image" src="{{ result.image.sizes.small }}" alt="">
         </a>
     {% endif %}
 

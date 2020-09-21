@@ -15,7 +15,9 @@ from versatileimagefield.fields import VersatileImageField
 from simple_history.models import HistoricalRecords
 from users.models import CustomUser
 from urllib.request import urlopen
-
+from versatileimagefield.image_warmer import VersatileImageFieldWarmer
+from versatileimagefield.utils import build_versatileimagefield_url_set
+from django.conf import settings
 
 class PublishableModelMixin:
     is_published = models.BooleanField(default=True)
@@ -201,6 +203,13 @@ class StudyResourceImage(models.Model):
     image_file = VersatileImageField(upload_to='tutorials', blank=True, null=True)
     image_url = models.URLField(default='', blank=True, null=True)
 
+    @property
+    def sizes(self):
+        return build_versatileimagefield_url_set(
+            self.image_file,
+            settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image']
+        )
+
     def save(self, *args, **kwargs):
         if self.image_url and not self.image_file:
             img_temp = NamedTemporaryFile(delete=True)
@@ -221,6 +230,17 @@ def delete_study_resource_images(sender, instance, **kwargs):
     """
     instance.image_file.delete_all_created_images()
     instance.image_file.delete(save=False)
+
+
+@receiver(models.signals.post_save, sender=StudyResourceImage)
+def warm_Study_Resource_Images(sender, instance, **kwargs):
+    """Ensures Person head shots are created post-save"""
+    sr_images_warmer = VersatileImageFieldWarmer(
+        instance_or_queryset=instance,
+        rendition_key_set='resource_image',
+        image_attr='image_file'
+    )
+    num_created, failed_to_create = sr_images_warmer.warm()
 
 
 class Review(models.Model):

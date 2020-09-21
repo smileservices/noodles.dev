@@ -36,6 +36,11 @@ LOGGING = {
     },
 }
 
+VERSATILEIMAGEFIELD_SETTINGS = {
+    'create_images_on_demand': False,
+    'jpeg_resize_quality': 80,
+}
+
 EMAIL_HOST = env.str('EMAIL_HOST')
 EMAIL_PORT = env.str('EMAIL_PORT')
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
