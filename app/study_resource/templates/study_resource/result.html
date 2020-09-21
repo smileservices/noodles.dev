@@ -23,11 +23,13 @@
 <h2 class="title" itemprop="name">
     <a itemprop="name" href="{% url 'detail' result.id result.slug %}">{{ result.name }}</a>
 </h2>
-{% if result.image.image_file %}
+    {% if result.image.image_file %}
+        <a itemprop="name" href="{% url 'detail' result.id result.slug %}">
+            <img class="primary-image" src="{{ result.image.image_file.thumbnail.250x250 }}" alt="">
+        </a>
+    {% endif %}
 
-<img class="primary-image" src="{{ result.image.image_file.thumbnail.250x250 }}" alt="">
-{% endif %}
-<div class="group-muted">
+    <div class="group-muted">
     <p class="publication-date">{{ result.publication_date }}</p>
     <p class="experience-level">Difficulty <span itemprop="educationalLevel">{{ result.experience_level_label }}</span>
     </p>

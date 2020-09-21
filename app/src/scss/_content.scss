@@ -111,15 +111,13 @@ section.header {
   margin-bottom: 0;
 
   span.close {
-    position: absolute;
     top: 0.25rem;
     right: 0.25rem;
     font-size: 0.75rem;
-    cursor: pointer;
   }
 
   span.close:hover {
-    color: $theme-color-accent;
+    cursor: pointer;
   }
 }
 
@@ -131,10 +129,10 @@ section.header {
   display: flex;
   flex-direction: row;
   gap: 0.35rem;
-  cursor: pointer;
 
   > span {
-    padding: 0.35rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
     color: $theme-color-accent;
   }
 
@@ -143,10 +141,10 @@ section.header {
   }
 
   > span:hover {
-    color: #ffffff;
-    border-radius: 0.25rem;
-    background-color: $theme-color-accent;
+    background-color: rgba($theme-color-main, 0.2);
     transition: background-color 0.5s ease-in-out;
+    border-radius: 1rem;
+    cursor: pointer;
   }
 }
 
@@ -160,6 +158,7 @@ section.header {
   .option:hover {
     color: $theme-color-accent;
     border-bottom: 1px solid $theme-color-accent;
+    cursor: pointer;
   }
 }
 
@@ -188,6 +187,7 @@ section.header {
 
   a:hover {
     color: $theme-color-accent;
+    cursor: pointer;
   }
 
   .voted {

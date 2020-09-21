@@ -9,7 +9,7 @@ export default function Alert({text, type, hideable = true, stick = true, close}
     const alertEl = (
         <div key={id} id={id} className={className} role="alert">
             {hideable
-                ? <span className="icon-close close" onClick={e => fadeOut()}> </span>
+                ? <div className="toolbar"><span className="icon-close close" onClick={e => fadeOut()}/></div>
                 : ''
             }
             {text}
