@@ -20,6 +20,11 @@ function Content() {
         media: RESULT.media,
         experience_level: RESULT.experience_level,
         summary: RESULT.summary,
+        // for image
+        image_file: RESULT.image,
+        image_pk: RESULT.image_pk,
+        image_url: RESULT.image_url,
+        study_resource: RESULT.pk,
     }
 
     const [tags, setTags] = useState(false);
@@ -39,7 +44,7 @@ function Content() {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not retrieve tags" type="danger"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve tags" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -51,7 +56,7 @@ function Content() {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not retrieve tags" type="danger"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve tags" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -63,7 +68,7 @@ function Content() {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not retrieve options" type="danger"/>);
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve options" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -79,7 +84,7 @@ function Content() {
                                    addTech={addTech}
                                    setData={data => {
                                        setEditForm(false);
-                                       setAlert(<Alert text="Successfully updated the resource!"  type="success" />)
+                                       setAlert(<Alert close={e=>setAlert(null)} text="Successfully updated the resource!"  type="success" hideable={false} stick={false}/>)
                                        setData(data);
                                    }}
                                    cancel={e => setEditForm(false)}/>

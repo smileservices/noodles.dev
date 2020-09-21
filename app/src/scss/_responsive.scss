@@ -72,7 +72,7 @@
   }
 
   nav .collapsible.show .collapsible-links {
-    z-index: 10000;
+    z-index: $collapsible-zindex;
     display: flex;
     flex-direction: column;
     position: absolute;

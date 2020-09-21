@@ -30,7 +30,7 @@ export default function CollectionItemsModal({collection, options, close}) {
             pagination,
             setItems,
             setWaiting,
-            err => setAlert(<Alert text={err} type="danger"/>),
+            err => setAlert(<Alert close={e=>setAlert(null)} text={err} type="danger"/>),
         )
     }, [pagination, collection])
 
@@ -50,7 +50,7 @@ export default function CollectionItemsModal({collection, options, close}) {
             setWaiting,
         ).then(result => {
             if (result.ok) close();
-            setAlert(<Alert text="Something went wrong" type="danger" stick={true}/>)
+            setAlert(<Alert close={e=>setAlert(null)} text="Something went wrong" type="danger" stick={true}/>)
         })
     }
 

@@ -21,18 +21,19 @@ export default function CreateFormStep1({data, submit}) {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not validate" type="danger"/>)
+                setAlert(<Alert close={e=>setAlert(null)} text="Could not validate" type="danger"/>)
                 return false;
             }
         }).then(data => {
             if (!data) return false;
             if (data.error) {
-                setAlert(<Alert text="Please fix the form errors" type="danger"/>)
+                setAlert(<Alert close={e=>setAlert(null)} text="Please fix the form errors" type="danger"/>)
                 setErrors({...errors, url: data.message})
                 return false;
-            } else return true;
-        }).then(valid => {
-            if (valid) callback(formData);
+            } else return data;
+        //    return parsed data from url and pass it to big formdata
+        }).then(data => {
+            if (data) callback(formData, data);
         })
     }
 

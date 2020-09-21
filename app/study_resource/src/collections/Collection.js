@@ -17,7 +17,7 @@ export default function Collection({data, handleSelect, setEdit, handleDelete}) 
             text => {
                 handleDelete();
             },
-            data => setAlert(<Alert text='An error occured' type='danger'/>)
+            data => setAlert(<Alert close={e=>setAlert(null)} text='An error occured' type='danger'/>)
         )
     }
 

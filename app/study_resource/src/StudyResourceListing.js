@@ -1,5 +1,4 @@
 import React, {Fragment, useState} from "react";
-import StarRating from "../../src/components/StarRating";
 import FormatDate from "../../src/vanilla/date";
 import Waiting from "../../src/components/Waiting";
 import ResourceRating from "./ResourceRating";

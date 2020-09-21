@@ -3,6 +3,7 @@
 @import "node_modules/bootstrap/scss/mixins";
 @import "node_modules/bootstrap/scss/utilities";
 
+
 // text and general elements
 $theme-color-main: #36383d;
 $theme-color-main-contrast: #e0e1ea;
@@ -27,6 +28,13 @@ $sidebar-text: $theme-color-main-contrast;
 $sidebar-hover-bg: lighten($sidebar-bg, 10);
 $sidebar-hover-text: lighten($sidebar-text, 10);
 
+//z-index
+$header-zindex: 1;
+$sidebar-zindex: 10000;
+$dropdown-zindex: 10000;
+$collapsible-zindex: 90000;
+$modal-backdrop-zindex: 95000;
+$modal-content-zindex: 96000;
 
 :root {
     /* ---- sizes ---- */
@@ -47,6 +55,7 @@ body {
 @import "reset";
 @import "animations";
 @import "layouts";
+@import "modal";
 @import "forms";
 
 @import "content";

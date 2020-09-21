@@ -19,7 +19,7 @@ export default function CreateFormStep2({data, submit, techs, tags, addTech}) {
         if (formData.tags.length === 0) vErrors.tags = 'Choose at least one tag';
         if (formData.technologies.length === 0) vErrors.technologies = 'Choose at least one technology';
         if (Object.keys(vErrors).length > 0) {
-            setAlert(<Alert text="Please fix the form errors" type="danger"/>)
+            setAlert(<Alert close={e=>setAlert(null)} text="Please fix the form errors" type="danger"/>)
             setErrors(vErrors);
         } else callback(formData)
     }
@@ -38,7 +38,7 @@ export default function CreateFormStep2({data, submit, techs, tags, addTech}) {
                 addTech(data);
                 setTechForm(false);
                 setFormData({...formData, technologies: [...formData.technologies, getOptionFromTech(data)]});
-                setAlert(<Alert text="Created new technology version successfully." type="success"/>)
+                setAlert(<Alert close={e=>setAlert(null)} text="Created new technology version successfully." type="success"/>)
             }}
             cancel={e => {
                 setTechForm(false);

@@ -37,25 +37,3 @@
   border-radius: $border-radius;
   overflow: hidden;
 }
-
-//modal
-
-body.modal-open {
-  //add this class to body after adding the modal
-  overflow-y: hidden;
-}
-
-.modal-container {
-  position: absolute;
-  overflow-y: scroll;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-
-.modal-container .card, .form-container {
-  flex-grow: 1;
-}

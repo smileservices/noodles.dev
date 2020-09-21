@@ -23,7 +23,7 @@ export default function Thumbs({thumbs_obj, url_endpoint, user_id}) {
                         });
                 } else if (result.status === 403) {
                     result.json().then(
-                        data => setAlert(<Alert
+                        data => setAlert(<Alert close={e=>setAlert(null)}
                                 text={ data.error || data.detail || "Operation forbidden"}
                                 type="danger" hideable={false}
                                 stick={false}
@@ -31,7 +31,7 @@ export default function Thumbs({thumbs_obj, url_endpoint, user_id}) {
                     );
 
                 } else {
-                    setAlert(<Alert
+                    setAlert(<Alert close={e=>setAlert(null)}
                         text="Something went wrong :("
                         type="danger" hideable={false} stick={false}
                     />)

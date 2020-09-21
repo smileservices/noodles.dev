@@ -24,7 +24,7 @@ function ResourceReviewsApp() {
             pagination,
             setReviews,
             setWaiting,
-            err => setAlert(<Alert text={err} type="danger"/>)
+            err => setAlert(<Alert close={e=>setAlert(null)} text={err} type="danger"/>)
         )
     }, [pagination, reviewed])
 

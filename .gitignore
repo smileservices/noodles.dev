@@ -4,6 +4,7 @@
 .idea/
 */migrations/*
 static_col/*
+MEDIA/*
 *.log
 .env
 venv/

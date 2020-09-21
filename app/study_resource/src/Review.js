@@ -19,7 +19,7 @@ export default function Review({review}) {
             REVIEW_API_ENDPOINT + review.pk + '/',
             setWaiting,
             text => setDeleted(text),
-            data => setAlert(<Alert text='An error occured' type='danger'/>)
+            data => setAlert(<Alert close={e=>setAlert(null)} text='An error occured' type='danger'/>)
         )
     }
 

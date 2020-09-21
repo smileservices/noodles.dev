@@ -38,7 +38,7 @@ export default function ReviewForm({createReviewCallback}) {
     function handleError(result) {
         result.json().then(data => {
             if (data.detail) {
-                setAlert(<Alert text={data.detail} type={'danger'}/>);
+                setAlert(<Alert close={e=>setAlert(null)} text={data.detail} type={'danger'}/>);
             }
         })
     }
