@@ -49,7 +49,7 @@
             technologies: [],
         }
         {% if result.image %}
-            RESULT['image'] = "{{ result.image.sizes.small }}";
+            RESULT['image'] = "{{ result.image.sizes.medium }}";
             RESULT['image_pk'] = {{ result.image.pk }};
             RESULT['image_url'] = "{{ result.image.image_url }}";
         {% endif %}
