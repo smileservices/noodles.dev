@@ -3,6 +3,8 @@ from rest_framework.fields import FloatField, IntegerField
 from .models import Tag, Technology, StudyResource, Review, Collection, StudyResourceImage
 from users.serializers import UserSerializerMinimal
 from django.template.defaultfilters import slugify
+from versatileimagefield.serializers import VersatileImageFieldSerializer
+from django.conf import settings
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -31,6 +33,10 @@ class TechnologySerializerShort(serializers.ModelSerializer):
 
 class ImageSerializer(serializers.ModelSerializer):
     queryset = StudyResourceImage.objects
+    image_file = VersatileImageFieldSerializer(
+        sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image'],
+        read_only=True
+    )
 
     class Meta:
         model = StudyResourceImage

@@ -14,7 +14,7 @@ import tsvector_field
 from versatileimagefield.fields import VersatileImageField
 from simple_history.models import HistoricalRecords
 from users.models import CustomUser
-from urllib.request import urlopen
+import requests
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from versatileimagefield.utils import build_versatileimagefield_url_set
 from django.conf import settings
@@ -213,7 +213,7 @@ class StudyResourceImage(models.Model):
     def save(self, *args, **kwargs):
         if self.image_url and not self.image_file:
             img_temp = NamedTemporaryFile(delete=True)
-            img_temp.write(urlopen(self.image_url).read())
+            img_temp.write(requests.get(self.image_url).content)
             self.image_file.save(
                 f"image_{self.study_resource.pk}_{uuid4().__str__()}.{self.image_url.split('.')[-1]}",
                 File(img_temp)
