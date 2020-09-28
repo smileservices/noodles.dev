@@ -63,8 +63,10 @@ INSTALLED_APPS = [
     'django_filters',
     'dashboard',
     'frontend',
-    # users
+    #
     'users',
+    'tag',
+    'technology',
     'study_resource',
 ]
 

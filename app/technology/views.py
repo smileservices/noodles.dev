@@ -4,12 +4,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from study_resource import serializers
+from .serializers import TechnologySerializer, TechnologySerializerShort
 
 
 class TechViewset(ModelViewSet):
-    serializer_class = serializers.TechnologySerializer
-    queryset = serializers.TechnologySerializer.queryset
+    serializer_class = TechnologySerializer
+    queryset = TechnologySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     pagination_class = None
 

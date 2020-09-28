@@ -1,34 +1,13 @@
 from rest_framework import serializers
 from rest_framework.fields import FloatField, IntegerField
-from .models import Tag, Technology, StudyResource, Review, Collection, StudyResourceImage
+from .models import StudyResource, Review, Collection, StudyResourceImage
 from users.serializers import UserSerializerMinimal
 from django.template.defaultfilters import slugify
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from django.conf import settings
-
-
-class TagSerializer(serializers.ModelSerializer):
-    queryset = Tag.objects
-
-    class Meta:
-        model = Tag
-        fields = ['pk', 'name']
-
-
-class TechnologySerializer(serializers.ModelSerializer):
-    queryset = Technology.objects
-
-    class Meta:
-        model = Technology
-        fields = ['pk', 'name', 'description', 'version', 'url']
-
-
-class TechnologySerializerShort(serializers.ModelSerializer):
-    queryset = Technology.objects
-
-    class Meta:
-        model = Technology
-        fields = ['pk', 'name', 'version']
+from tag.serializers import TagSerializer
+from tag.models import Tag
+from technology.serializers import TechnologySerializerShort
 
 
 class ImageSerializer(serializers.ModelSerializer):

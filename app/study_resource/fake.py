@@ -7,7 +7,6 @@ from django.conf import settings
 from django.template.defaultfilters import slugify
 f = Faker()
 
-
 def clean():
     models.Tag.objects.all().delete()
     models.Technology.objects.all().delete()

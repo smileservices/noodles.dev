@@ -4,16 +4,6 @@ from django.urls import reverse
 from simple_history.admin import SimpleHistoryAdmin
 
 
-@admin.register(models.Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-
-
-@admin.register(models.Technology)
-class TechnologyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'version', 'url')
-
-
 @admin.register(models.StudyResource)
 class StudyResourceAdmin(SimpleHistoryAdmin):
     date_hierarchy = 'created_at'

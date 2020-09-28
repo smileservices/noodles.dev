@@ -3,14 +3,10 @@ from django.urls import path, include
 from .views.study_resource import StudyResourceViewset, create, detail, search
 from .views.image import StudyImageViewset
 from .views.review import ReviewVieset
-from .views.tag import TagViewset
-from .views.technology import TechViewset
 from .views.collection import CollectionViewset
 
 router = DefaultRouter()
 router.register('resources', StudyResourceViewset, basename='study-resource-viewset')
-router.register('tags', TagViewset, basename='tags-viewset')
-router.register('techs', TechViewset, basename='techs-viewset')
 router.register('reviews', ReviewVieset, basename='review-viewset')
 router.register('collections', CollectionViewset, basename='collection-viewset')
 router.register('images/resources', StudyImageViewset, basename='resource-image-viewset')
