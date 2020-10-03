@@ -20,14 +20,7 @@ from versatileimagefield.utils import build_versatileimagefield_url_set
 from django.conf import settings
 from tag.models import Tag
 from technology.models import Technology
-
-
-class PublishableModelMixin:
-    is_published = models.BooleanField(default=True)
-
-
-class RequireAdminAprovalModelMixin:
-    approved = models.BooleanField(default=False)
+from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin
 
 
 class StudyResourceManager(models.Manager):
@@ -43,7 +36,7 @@ class StudyResourceManager(models.Manager):
         )
 
 
-class StudyResourceQueryset(models.QuerySet):
+class StudyResourceQueryset(SearchAbleQuerysetMixin):
 
     def annotate_with_rating(self):
         return self.annotate(rating=models.Avg('reviews__rating')).annotate(
@@ -56,26 +49,8 @@ class StudyResourceQueryset(models.QuerySet):
             'publication_date'
         )
 
-    def search_match(self, text, min_rank=0.1):
-        # searching through tags and techs is too expensive
-        # search_vector = SearchVector('search_vector_index', 'tags__search_vector_index', 'technologies__search_vector_index')
-        search_vector = SearchVector('search_vector_index')
-        rank = SearchRank(search_vector, SearchQuery(text))
-        return self.annotate(
-            rank=rank,
-        ) \
-            .filter(models.Q(rank__gte=min_rank)) \
-            .order_by('-rank')
 
-    def search_similar(self, text, min_sim=0.1):
-        return self.annotate(
-            similarity=TrigramSimilarity('name', text) + TrigramSimilarity('summary', text)
-        ) \
-            .filter(models.Q(similarity__gte=min_sim)) \
-            .order_by('-similarity')
-
-
-class StudyResource(models.Model):
+class StudyResource(SluggableModelMixin, DateTimeModelMixin):
     class Price(models.IntegerChoices):
         FREE = (0, 'free')
         PAID = (1, 'paid')
@@ -94,12 +69,10 @@ class StudyResource(models.Model):
         SENIOR = (3, 'experienced')
 
     objects = StudyResourceManager()
-    name = models.CharField(max_length=128)
     publication_date = models.DateField()
     published_by = models.CharField(max_length=256)
     url = models.TextField(max_length=1024, unique=True)
     summary = models.TextField(max_length=2048)
-    slug = SlugField(max_length=255)
     # related fields
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='resources')
@@ -132,11 +105,6 @@ class StudyResource(models.Model):
     @property
     def image(self):
         return self.images.first()
-
-    def save(self, *args, **kwargs):  # new
-        if not self.slug:
-            self.slug = slugify(self.name)
-        return super().save(*args, **kwargs)
 
     @property
     def price_label(self):
@@ -196,7 +164,7 @@ def warm_Study_Resource_Images(sender, instance, **kwargs):
     num_created, failed_to_create = sr_images_warmer.warm()
 
 
-class Review(models.Model):
+class Review(DateTimeModelMixin):
     study_resource = models.ForeignKey(StudyResource, on_delete=models.CASCADE, related_name='reviews')
     author = models.ForeignKey(CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
     rating = models.IntegerField()
@@ -204,8 +172,6 @@ class Review(models.Model):
     visible = models.BooleanField(default=True)
     thumbs_up_array = ArrayField(models.IntegerField(), default=list)
     thumbs_down_array = ArrayField(models.IntegerField(), default=list)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ['author', 'study_resource']
@@ -279,9 +245,8 @@ class CollectionManager(models.Manager):
         return CollectionQueryset(self.model, using=self.db).annotate_with_items_count()
 
 
-class Collection(models.Model):
+class Collection(DateTimeModelMixin):
     objects = CollectionManager()
-    created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=128)
     owner = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(null=True, blank=True)

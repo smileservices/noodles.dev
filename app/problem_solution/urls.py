@@ -1,0 +1,14 @@
+from rest_framework.routers import DefaultRouter
+from django.urls import path, include
+import problem_solution.views as views
+
+router = DefaultRouter()
+router.register('problems', views.ProblemViewset, basename='problem-viewset')
+router.register('solutions', views.SolutionViewset, basename='solution-viewset')
+
+urlpatterns = [
+    path('api/', include(router.urls)),
+    path('problem/<int:id>/<slug:slug>', views.problem_detail, name='problem-detail'),
+    path('solution/<int:id>/<slug:slug>', views.solution_detail, name='solution-detail'),
+    path('create/problem/', views.problem_create, name='problem-create'),
+]

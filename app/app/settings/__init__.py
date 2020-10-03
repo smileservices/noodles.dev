@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'frontend',
     #
     'users',
+    'problem_solution',
     'tag',
     'technology',
     'study_resource',

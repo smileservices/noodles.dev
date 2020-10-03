@@ -23,7 +23,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class StudyResourceSerializer(serializers.ModelSerializer):
-    queryset = StudyResource.objects
+    queryset = StudyResource.objects.all()
     author = UserSerializerMinimal(many=False, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     technologies = TechnologySerializerShort(many=True, read_only=True)

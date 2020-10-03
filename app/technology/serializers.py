@@ -7,7 +7,8 @@ class TechnologySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Technology
-        fields = ['pk', 'name', 'description', 'version', 'url']
+        depth = 1
+        fields = ['pk', 'name', 'description', 'version', 'url', 'license', 'owner', 'pros', 'cons', 'limitations', 'ecosystem']
 
 
 class TechnologySerializerShort(serializers.ModelSerializer):

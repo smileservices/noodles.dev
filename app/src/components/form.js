@@ -45,16 +45,30 @@ function handleSelectClass(error) {
     }
 }
 
-export const Input = ({id, label, inputProps, smallText, error}) => {
+export function FormElement({data, children, callback, alert, waiting}) {
+    return (
+        <form onSubmit={e => {
+            e.preventDefault();
+            e.stopPropagation();
+            callback(data);
+        }}>
+            { children }
+            { alert }
+            { waiting ? waiting : <button type="submit" className="btn submit">Submit</button> }
+        </form>
+    )
+}
+
+export const Input = ({name, value, label, inputProps, smallText, error}) => {
     return (
         <div className="form-group">
             {label
-                ? (<label htmlFor={id}>{label}</label>)
+                ? (<label htmlFor={name}>{label}</label>)
                 : ''
             }
-            <input {...inputProps} id={id} aria-describedby={id + 'help'} className={handleInputClass(error)}/>
+            <input {...inputProps} id={name} name={name} aria-describedby={name + 'help'} value={value} className={handleInputClass(error)}/>
             {smallText
-                ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
+                ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
                 : ''
             }
             {error
@@ -65,20 +79,20 @@ export const Input = ({id, label, inputProps, smallText, error}) => {
     )
 }
 
-export const Textarea = ({id, label, inputProps, smallText, error}) => {
+export const Textarea = ({name, label, inputProps, smallText, error}) => {
     return (
         <div className="form-group">
             {label
-                ? (<label htmlFor={id}>{label}</label>)
+                ? (<label htmlFor={name}>{label}</label>)
                 : ''
             }
-            <textarea id={id} cols="30" rows="5"
-                      aria-describedby={id + 'help'}
+            <textarea id={name} name={name} cols="30" rows="5"
+                      aria-describedby={name + 'help'}
                       className={handleInputClass(error)}
                       {...inputProps}
             />
             {smallText
-                ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
+                ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
                 : ''
             }
             {error
@@ -89,15 +103,15 @@ export const Textarea = ({id, label, inputProps, smallText, error}) => {
     )
 }
 
-export const SelectVanilla = ({id, label, inputProps, smallText, error, Options}) => {
+export const SelectVanilla = ({name, label, inputProps, smallText, error, Options}) => {
     return (
         <div className="form-group">
             {label
-                ? (<label htmlFor={id}>{label}</label>)
+                ? (<label htmlFor={name}>{label}</label>)
                 : ''
             }
-            <select id={id}
-                    aria-describedby={id + 'help'}
+            <select id={name} name={name}
+                    aria-describedby={name + 'help'}
                     className={handleInputClass(error)}
                     {...inputProps}
             >
@@ -105,7 +119,7 @@ export const SelectVanilla = ({id, label, inputProps, smallText, error, Options}
             </select>
 
             {smallText
-                ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
+                ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
                 : ''
             }
             {error
@@ -116,15 +130,15 @@ export const SelectVanilla = ({id, label, inputProps, smallText, error, Options}
     )
 }
 
-export const SelectReact = ({id, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => (
+export const SelectReact = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => (
     <div className="form-group">
         {label
-            ? (<label htmlFor={id}>{label}</label>)
+            ? (<label htmlFor={name}>{label}</label>)
             : ''
         }
         <Select isLoading={isLoading} isDisabled={isDisabled} options={options} value={value} onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
         {smallText
-            ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
+            ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
             : ''
         }
         {error
@@ -134,15 +148,15 @@ export const SelectReact = ({id, label, smallText, error, options, value, onChan
     </div>
 )
 
-export const SelectReactCreatable = ({id, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => (
+export const SelectReactCreatable = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => (
     <div className="form-group">
         {label
-            ? (<label htmlFor={id}>{label}</label>)
+            ? (<label htmlFor={name}>{label}</label>)
             : ''
         }
         <Creatable isLoading={isLoading} isDisabled={isDisabled} options={options} value={value} onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
         {smallText
-            ? <small id={id + 'help'} className="form-text text-muted">{smallText}</small>
+            ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
             : ''
         }
         {error

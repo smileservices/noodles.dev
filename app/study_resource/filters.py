@@ -88,4 +88,4 @@ class StudyResourceFilterMatches(StudyResourceFilter):
 class StudyResourceFilterSimilar(StudyResourceFilter):
 
     def search(self, queryset, name, value):
-        return queryset.search_similar(value, min_sim=0.2)
+        return queryset.search_similar(['name', 'summary'], value, min_sim=0.2)
