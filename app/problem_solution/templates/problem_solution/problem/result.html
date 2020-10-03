@@ -1,0 +1,9 @@
+<div class="card result" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
+    <h2 class="title" itemprop="name">
+        <a itemprop="name" href="{% url 'problem-detail' result.id result.slug %}">{{ result.name }}</a>
+    </h2>
+    <p class="tags" itemprop="keywords">{% for tag in result.tags.all %}
+        <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>
+    {% endfor %}
+    </p>
+</div>

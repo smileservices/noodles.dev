@@ -1,0 +1,10 @@
+<h1 class="title" itemProp="name">
+    {{ result.name }}
+</h1>
+<p class="summary" itemProp="abstract">{{ result.description }}</p>
+<div class="tags" itemProp="keywords">
+    <span>Tags: </span>
+    {% for tag in result.tags.all %}
+        <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"><span></span>{{ tag }}</a>
+    {% endfor %}
+</div>
