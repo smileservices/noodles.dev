@@ -9,7 +9,7 @@ export default function ProblemForm({data, tags, callback, alert, waiting, error
         'tags': [],
         'parent': false,
     }
-    const [formData, setFormData] = useState(data ? data : emptyData);
+    const [formData, setFormData] = useState(Object.assign({}, emptyData, data));
 
     function makeStateProps(name) {
         function updateValue(name) {

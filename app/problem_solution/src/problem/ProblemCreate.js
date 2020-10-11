@@ -88,7 +88,7 @@ function Content() {
 
     return (
         <div className="form-container full-page-sm">
-            <ProblemForm data={false} tags={tags} errors={errors} waiting={waiting} alert={alert}
+            <ProblemForm data={{}} tags={tags} errors={errors} waiting={waiting} alert={alert}
                          callback={formData => {
                              if (validate(formData)) createProblem(formData)
                          }}/>

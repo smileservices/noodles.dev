@@ -16,7 +16,10 @@ module.exports = {
         // '/static/study_resource/study-resource-create': './app/study_resource/src/create/StudyResourceCreate.js',
         // '/static/study_resource/study-resource-edit': './app/study_resource/src/edit/StudyResourceEdit.js',
         // '/static/study_resource/user-collections': './app/study_resource/src/collections/UserCollections.js',
-        '/static/problem_solution/problem-create': './app/problem_solution/src/problem/ProblemCreate.js',
+        // '/static/problem_solution/problem-create': './app/problem_solution/src/problem/ProblemCreate.js',
+        '/static/problem_solution/create-solution-modal': './app/problem_solution/src/solution/CreateSolutionModal.js',
+        '/static/problem_solution/problem-children-tree': './app/problem_solution/src/problem/ChildrenTree.js',
+        '/static/problem_solution/solution-children-tree': './app/problem_solution/src/solution/ChildrenTree.js',
     },
     output: {
         filename: '[name].js',

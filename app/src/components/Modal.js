@@ -17,7 +17,6 @@ export default function Modal({children, close}) {
     return (
         <PortalComponent id="modal-portal">
             <div className="modal-backdrop"/>
-            {/*<div className="modal-container" style={{top: window.pageYOffset}} onClick={closeModal}>*/}
             <div className="modal" onClick={closeModal}>
                 <div className="card full-page-md" onClick={e => e.stopPropagation()}>
                     <div className="toolbar">
@@ -26,7 +25,6 @@ export default function Modal({children, close}) {
                     {children}
                 </div>
             </div>
-            {/*</div>*/}
         </PortalComponent>
     );
 }

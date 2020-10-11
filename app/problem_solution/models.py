@@ -31,7 +31,7 @@ class Problem(SluggableModelMixin, DateTimeModelMixin):
     history = HistoricalRecords(excluded_fields='search_vector_index')
 
     description = models.TextField(max_length=3048)
-    parent = models.ForeignKey('Solution', null=True, blank=True, on_delete=models.CASCADE)
+    parent = models.ForeignKey('Solution', null=True, blank=True, on_delete=models.CASCADE, related_name='problems')
     tags = models.ManyToManyField(Tag, related_name='problems')
 
     search_vector_index = tsvector_field.SearchVectorField([
@@ -60,3 +60,7 @@ class Solution(SluggableModelMixin, DateTimeModelMixin):
         tsvector_field.WeightedColumn('name', 'A'),
         tsvector_field.WeightedColumn('description', 'B'),
     ], 'english')
+
+    @property
+    def absolute_url(self):
+        return reverse('solution-detail', kwargs={'id': self.id, 'slug': self.slug})

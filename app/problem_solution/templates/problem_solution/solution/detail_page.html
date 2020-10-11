@@ -20,15 +20,14 @@
         const HOMEPAGE = "{% url 'homepage' %}";
         const SEARCH_URL = "{% url 'search' %}";
         const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
-        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
-        const PROBLEM_SOLUTIONS_ENDPOINT = "{% url 'problem-viewset-solutions' result.pk %}";
+        const SOLUTION_PROBLEMS_ENDPOINT = "{% url 'solution-viewset-problems' result.pk %}";
         const PROBLEM_ENDPOINT = "{% url 'problem-viewset-list' %}";
         const SOLUTIONS_ENDPOINT = "{% url 'solution-viewset-list' %}";
         const RESULT = {
-            pk: {{ result.pk }},
             name: "{{ result.name }}",
             description: "{{ result.description|escapejs }}",
             tags: [],
+            technologies: [],
         }
         {% if result.parent %}
             RESULT['parent'] = {
@@ -43,15 +42,17 @@
         {% for tag in result.tags.all %}
             RESULT.tags.push({{ tag.id }});
         {% endfor %}
+        {% for tech in result.technologies.all %}
+            RESULT.technologies.push({{ tech.id }});
+        {% endfor %}
     </script>
     <div class="detail-page">
 
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
-                {% include 'problem_solution/problem/detail.html' %}
+                {% include 'problem_solution/solution/detail.html' %}
             </section>
-            <section id="create-solution" class="column-container"></section>
             <section id="children" class="column-container"></section>
         </div>
 
@@ -60,7 +61,7 @@
             <h3>Related</h3>
             <div class="tile-container">
                 {% for result in related %}
-                    {% include 'problem_solution/problem/result.html' %}
+                    {% include 'problem_solution/solution/result.html' %}
                 {% endfor %}
             </div>
         </section>
@@ -70,6 +71,5 @@
 
 {% block extra_js %}
     <script src="{% static 'js/react-bundle.js' %}"></script>
-    <script src="{% static 'problem_solution/problem-children-tree.js' %}"></script>
-    <script src="{% static 'problem_solution/create-solution-modal.js' %}"></script>
+    <script src="{% static 'problem_solution/solution-children-tree.js' %}"></script>
 {% endblock %}

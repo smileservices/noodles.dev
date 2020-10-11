@@ -1,20 +1,12 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState} from 'react';
 import apiCreate from "../api_interface/apiCreate";
 import Alert from "./Alert";
 import {makeId} from "./utils";
-import Modal from "./Modal";
 
-export default function CreateableComponent({endpoint, data, extraData, FormViewComponent, successCallback}) {
-    const [showForm, setShowForm] = useState(false);
+export default function CreateableFormComponent({endpoint, data, extraData, FormViewComponent, successCallback}) {
     const [waiting, setWaiting] = useState(false);
     const [alert, setAlert] = useState(false);
     const [errors, setErrors] = useState({});
-
-    function toggleShowForm() {
-        setAlert(false);
-        setErrors({});
-        setShowForm(!showForm);
-    }
 
     function createElement(validatedData) {
         apiCreate(
@@ -22,8 +14,6 @@ export default function CreateableComponent({endpoint, data, extraData, FormView
             validatedData,
             (data) => {
                 successCallback(data);
-                document.body.classList.remove('modal-open');
-                toggleShowForm();
             },
             setWaiting,
             result => {
@@ -47,28 +37,17 @@ export default function CreateableComponent({endpoint, data, extraData, FormView
             })
     }
 
-    function displayFormModal() {
-        return (
-            <Modal close={toggleShowForm}>
-                <FormViewComponent
-                    data={data}
-                    extraData={extraData}
-                    submitCallback={createElement}
-                    waiting={waiting}
-                    alert={alert}
-                    errors={errors}
-                    setAlert={setAlert}
-                    setErrors={setErrors}
-                    setWaiting={setWaiting}
-                />
-            </Modal>
-        )
-    }
-
     return (
-        <Fragment>
-            <button type="button" className="btn" onClick={e => toggleShowForm()}>{extraData.addButtonText}</button>
-            {showForm ? displayFormModal() : ''}
-        </Fragment>
+        <FormViewComponent
+            data={data}
+            extraData={extraData}
+            submitCallback={createElement}
+            waiting={waiting}
+            alert={alert}
+            errors={errors}
+            setAlert={setAlert}
+            setErrors={setErrors}
+            setWaiting={setWaiting}
+        />
     )
 }

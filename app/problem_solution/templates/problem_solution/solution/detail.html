@@ -2,12 +2,15 @@
     {{ result.name }}
 </h1>
 {% if result.parent %}
-    <p class="">problem of <a href="{{ result.parent.absolute_url }}">{{ result.parent.name }}</a></p>
+    <p class="">solution to <a href="{{ result.parent.absolute_url }}">{{ result.parent.name }}</a></p>
 {% endif %}
 <p class="summary" itemProp="abstract">{{ result.description }}</p>
 <div class="tags" itemProp="keywords">
     <span>Tags: </span>
     {% for tag in result.tags.all %}
         <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"><span></span>{{ tag }}</a>
+    {% endfor %}
+    {% for tech in result.technologies.all %}
+        <a class="tech" href="{% url 'search' %}?technologies={{ tech.id }}"><span></span>{{ tech }}</a>
     {% endfor %}
 </div>
