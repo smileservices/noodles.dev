@@ -78,7 +78,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin):
     tags = models.ManyToManyField(Tag, related_name='resources')
     technologies = models.ManyToManyField(Technology, related_name='resources')
     # history fields
-    history = HistoricalRecords(excluded_fields='search_vector_index')
+    history = HistoricalRecords(excluded_fields=['search_vector_index'])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # choices fields

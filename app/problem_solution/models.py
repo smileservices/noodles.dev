@@ -28,7 +28,7 @@ class SolutionManager(models.Manager):
 
 class Problem(SluggableModelMixin, DateTimeModelMixin):
     objects = ProblemManager()
-    history = HistoricalRecords(excluded_fields='search_vector_index')
+    history = HistoricalRecords(excluded_fields=['search_vector_index'])
 
     description = models.TextField(max_length=3048)
     parent = models.ForeignKey('Solution', null=True, blank=True, on_delete=models.CASCADE, related_name='problems')
@@ -49,7 +49,7 @@ class Problem(SluggableModelMixin, DateTimeModelMixin):
 
 class Solution(SluggableModelMixin, DateTimeModelMixin):
     objects = SolutionManager()
-    history = HistoricalRecords(excluded_fields='search_vector_index')
+    history = HistoricalRecords(excluded_fields=['search_vector_index'])
 
     description = models.TextField(max_length=3048)
     parent = models.ForeignKey(Problem, on_delete=models.CASCADE, related_name='solutions')

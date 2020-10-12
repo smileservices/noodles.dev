@@ -1,4 +1,26 @@
-# Template for multi-user platform
+# Noodles.dev
+platform for learning software development with community-curated content
+
+## Vision
+There are too many subjective approaches to learning software development. Most of them focus on learning specific technologies. 
+Our approach focuses instead on exploring the problems that software tries to solve. Different problems give rise to different
+solutions that are implemented with the use of specific technologies. But solutions also have limitations and may bring new problems, therefore
+we can also add problems to solutions. Many times there are multiple solutions for solving the same problem.
+The platform allows for the community of developers to raise problems and add the solutions and the involved technologies. The community also
+can add external learning resources (tutorials, articles, courses) for learning these technologies. 
+The main part is having the "problems". Community can add "solutions" to these "problems". Solutions have one or more "technologies". The "technologies"
+can have associated training resources to them. The training resources are reviewed and rated by the community.
+
+## Community curated content
+By community we mean any registered user that uses the platform. Based on their actions, like adding or editing content, rating reviews, reviewing resources,
+users get scored. Admins and moderators maintain the quality of the content.
+
+## Admins and moderators
+Are privileged users that make sure the community is following the rules of creating/editing/reviewing content. They get notified of newly added or modified content.
+
+
+--- Built on (Template for multi-user platform)[https://github.com/smileservices/djangotemplate_multiuser_multilanguage_react]
+
 multi-lingual, automated translations, social authentication, REST API ready, minimal vanilla js code, reactJs mini-apps ready
 
 ## Problems trying to solve

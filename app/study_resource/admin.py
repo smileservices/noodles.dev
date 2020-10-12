@@ -11,7 +11,7 @@ class StudyResourceAdmin(SimpleHistoryAdmin):
     list_filter = ('created_at', 'updated_at', 'tags', 'technologies')
 
     def view_on_site(self, obj):
-        return reverse('detail', kwargs={'id': obj.id})
+        return reverse('detail', kwargs={'id': obj.id, 'slug': obj.slug})
 
 
 class ResourceInline(admin.TabularInline):
