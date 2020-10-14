@@ -19,7 +19,7 @@
         const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
         const HOMEPAGE = "{% url 'homepage' %}";
         const SEARCH_URL = "{% url 'search' %}";
-        const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
+        const TAGS_ENDPOINT = "{% url 'tags-options-list' %}";
         const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
         const PROBLEM_SOLUTIONS_ENDPOINT = "{% url 'problem-viewset-solutions' result.pk %}";
         const PROBLEM_ENDPOINT = "{% url 'problem-viewset-list' %}";
@@ -41,7 +41,7 @@
             RESULT['parent'] = false;
         {% endif %}
         {% for tag in result.tags.all %}
-            RESULT.tags.push({{ tag.id }});
+            RESULT.tags.push({value: {{ tag.pk }}, label: "{{ tag.name }}"});
         {% endfor %}
     </script>
     <div class="detail-page">
@@ -71,5 +71,6 @@
 {% block extra_js %}
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'problem_solution/problem-children-tree.js' %}"></script>
-    <script src="{% static 'problem_solution/create-solution-modal.js' %}"></script>
+    <script src="{% static 'problem_solution/problem-edit.js' %}"></script>
+    <script src="{% static 'problem_solution/solution-create-modal.js' %}"></script>
 {% endblock %}

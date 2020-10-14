@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {FormElement, Input, Textarea} from "../../../src/components/form";
 import {SelectReactCreatable} from "../../../src/components/form";
+import Alert from "../../../src/components/Alert";
 
-export default function ProblemForm({data, tags, callback, alert, waiting, errors}) {
+export default function ProblemForm({data, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
     const emptyData = {
         'name': '',
         'description': '',
@@ -10,6 +11,25 @@ export default function ProblemForm({data, tags, callback, alert, waiting, error
         'parent': false,
     }
     const [formData, setFormData] = useState(Object.assign({}, emptyData, data));
+    const [tags, setTags] = useState([]);
+
+    useEffect(() => {
+        //get tags options
+        fetch(
+            TAGS_ENDPOINT, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve tags" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) {
+                setTags(data);
+            }
+        })
+    }, []);
 
     function makeStateProps(name) {
         function updateValue(name) {
@@ -26,12 +46,34 @@ export default function ProblemForm({data, tags, callback, alert, waiting, error
         }
     }
 
-    const getOptionFromTag = data => {
-        return {value: data.pk, label: data.name}
-    };
+    function normalizeData(data) {
+        let cpd = {...data};
+        cpd.tags = data.tags.map(t => {
+            return t.value
+        });
+        return cpd
+    }
+
+    function validate(normalizedData) {
+        let vErr = {};
+        if (normalizedData.name.length < 5) vErr.name = 'Title is too short. It has to be at least 5 characters';
+        if (normalizedData.description.length < 30) vErr.description = 'Description is too short. It has to be at least 30 characters';
+        if (normalizedData.tags.length === 0) vErr.tags = 'Choose at least one tag';
+        setErrors(vErr);
+        if (Object.keys(vErr).length > 0) {
+            setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)
+            return false;
+        } else return true;
+    }
 
     return (
-        <FormElement data={formData} callback={callback} alert={alert} waiting={waiting}>
+        <FormElement data={formData}
+                     callback={formData => validate(normalizeData(formData))
+                         ? submitCallback(normalizeData(formData))
+                         : formData => {}}
+                     alert={alert}
+                     waiting={waiting}
+        >
             <Input type="text" name="name" label="Name"
                    inputProps={{...makeStateProps('name'), defaultValue: data['name']}}
                    smallText="A title for the problem"
@@ -45,7 +87,7 @@ export default function ProblemForm({data, tags, callback, alert, waiting, error
             <SelectReactCreatable name="select-tags" label="Choose tags"
                                   smallText="Can choose one or multiple or add a new one if necessary."
                                   onChange={selectedOptions => setFormData({...formData, tags: selectedOptions})}
-                                  options={tags.map(tag => getOptionFromTag(tag))}
+                                  options={tags}
                                   value={formData.tags}
                                   props={{isMulti: true}}
                                   error={errors.tags}

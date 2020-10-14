@@ -1,96 +1,43 @@
 import React, {useState, Fragment} from 'react';
 import apiDelete from "../api_interface/apiDelete";
-import apiUpdate from "../api_interface/apiUpdate";
 import Alert from "./Alert";
 import {makeId} from "./utils";
 import Modal from "./Modal";
+import EditableFormComponent from "./EditableFormComponent";
 
-export default function EditableComponent({endpoint, data, DisplayViewComponent, FormViewComponent, callback, deleteCallback, customUpdateFunction = false}) {
+export default function EditableComponent({endpoint, data, extraData, DisplayViewComponent, FormViewComponent, updateCallback, deleteCallback}) {
     const [showForm, setShowForm] = useState(false);
     const [confirmDelete, setConfirmDelete] = useState(false);
 
+    const [resourceData, setResourceData] = useState(data);
     const [waiting, setWaiting] = useState(false);
-    const [responseAlertUpdate, setResponseAlertUpdate] = useState(false);
-    const [responseAlertDisplay, setResponseAlertDisplay] = useState(false);
-    const [formErrors, setFormErrors] = useState({});
+    const [alertDisplay, setAlertDisplay] = useState(false);
 
     function deleteElement() {
         apiDelete(endpoint + data.pk + '/',
             setWaiting,
             msg => {
-                setResponseAlertDisplay(<Alert key={makeId()} text={msg} type={'success'} stick={false} hideable={false}
-                                               close={e => setResponseAlertDisplay(null)}/>)
+                setAlertDisplay(<Alert key={makeId()} text={msg} type={'success'} stick={false} hideable={false}
+                                      close={e => setAlertDisplay(null)}/>)
                 deleteCallback();
             },
-            result => setResponseAlertDisplay(<Alert key={makeId()} text={result.statusText} type={'danger'}
-                                                     stick={true}
-                                                     hideable={false}
-                                                     close={e => setResponseAlertDisplay(null)}/>)
+            result => setAlertDisplay(<Alert key={makeId()} text={result.statusText} type={'danger'}
+                                            stick={true}
+                                            hideable={false}
+                                            close={e => setAlertDisplay(null)}/>)
         )
-    }
-
-    function updateElement(updatedData) {
-        if (customUpdateFunction) {
-            customUpdateFunction(updatedData);
-        } else {
-            apiUpdate(
-                endpoint, data.pk, updatedData,
-                data => {
-                    setResponseAlertDisplay(<Alert key={makeId()} text="Updated successfully!" type={'success'}
-                                                   stick={false}
-                                                   close={e => setResponseAlertDisplay(null)}/>);
-                    setShowForm(false);
-                    callback(data);
-                    document.body.classList.remove('modal-open');
-                },
-                setWaiting,
-                result => {
-                    result.json().then(errors => {
-                        if (errors) {
-                            let flattenedErrors = {};
-                            Object.keys(errors).map(k => {
-                                flattenedErrors[k] = [k].join('</br>');
-                            })
-                            setFormErrors(flattenedErrors);
-                            setResponseAlertUpdate(<Alert key={makeId()}
-                                                          text="Please check the field errors and try again."
-                                                          type="danger" stick={false}
-                                                          hideable={false} close={e => setResponseAlertUpdate(null)}/>)
-                        } else {
-                            setResponseAlertUpdate(<Alert key={makeId()} text={result.statusText} type="danger"
-                                                          stick={false}
-                                                          hideable={false} close={e => setResponseAlertUpdate(null)}/>)
-                        }
-                    })
-                }
-            )
-        }
     }
 
     function toggleShowForm() {
         setShowForm(!showForm);
-        setResponseAlertUpdate(false);
-        setResponseAlertDisplay(false);
-        setFormErrors({});
+        setAlertDisplay(false);
         setConfirmDelete(false)
     }
 
-    function displayFormModal() {
+    function displayToolbar() {
+        if (waiting) return waiting;
+        if (alertDisplay) return alertDisplay;
         return (
-            <Modal close={toggleShowForm}>
-                <FormViewComponent data={data}
-                                   updateElement={updateElement}
-                                   waiting={waiting}
-                                   responseAlert={responseAlertUpdate}
-                                   formErrors={formErrors}
-                />
-            </Modal>
-        )
-    }
-
-    return (
-        <Fragment>
-            {responseAlertDisplay}
             <span className="toolbar">
                 {confirmDelete
                     ? <div className="confirm">
@@ -105,7 +52,34 @@ export default function EditableComponent({endpoint, data, DisplayViewComponent,
                     </Fragment>
                 }
             </span>
-            <DisplayViewComponent data={data} waiting={waiting}/>
+        )
+    }
+
+    function displayFormModal() {
+        return (
+            <Modal close={toggleShowForm}>
+                <EditableFormComponent endpoint={endpoint}
+                                       data={resourceData}
+                                       extraData={extraData}
+                                       successCallback={data => {
+                                           setShowForm(false);
+                                           setResourceData(data);
+                                           updateCallback(data);
+                                           setAlertDisplay(<Alert text="Successfully updated" type="success"
+                                                                  stick={false} hideable={false}
+                                                                  close={()=>setAlertDisplay(false)}
+                                           />)
+                                       }}
+                                       FormViewComponent={FormViewComponent}
+                />
+            </Modal>
+        )
+    }
+
+    return (
+        <Fragment>
+            {displayToolbar()}
+            <DisplayViewComponent data={resourceData}/>
             {showForm ? displayFormModal() : ''}
         </Fragment>
     )

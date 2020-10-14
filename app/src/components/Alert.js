@@ -6,7 +6,7 @@ export default function Alert({text, type, hideable = true, stick = true, close}
 
     const id = useState(makeId(5));
     const [className, setClassName] = useState(defaultClassName);
-    const alertEl = (
+    const [alertEl, setAlertEl] = useState((
         <div key={id} id={id} className={className} role="alert">
             {hideable
                 ? <div className="toolbar"><span className="icon-close close" onClick={e => fadeOut()}/></div>
@@ -14,13 +14,14 @@ export default function Alert({text, type, hideable = true, stick = true, close}
             }
             {text}
         </div>
-    );
+    ));
 
     function fadeOut() {
         setClassName(defaultClassName + " fade-out");
         window.setTimeout(() => {
+            setAlertEl('');
             close();
-        }, 500)
+        }, 300)
     }
 
     useEffect(() => {

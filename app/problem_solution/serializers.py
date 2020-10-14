@@ -2,7 +2,7 @@ import rest_framework.fields as fields
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from django.template.defaultfilters import slugify
 from . import models
-from tag.serializers import TagSerializer
+from tag.serializers import TagSerializerSelect
 from tag.models import Tag
 from technology.serializers import TechnologySerializerShort
 from technology.models import Technology
@@ -27,7 +27,7 @@ class ProblemSerializerMinimal(ModelSerializer):
 
 class SolutionSerializerShort(ModelSerializer):
     queryset = models.Solution.objects.all()
-    tags = TagSerializer(many=True, read_only=True)
+    tags = TagSerializerSelect(many=True, read_only=True)
     technologies = TechnologySerializerShort(many=True, read_only=True)
     problems_count = SerializerMethodField()
     problems = ProblemSerializerMinimal(many=True, read_only=True)
@@ -44,9 +44,9 @@ class SolutionSerializerShort(ModelSerializer):
 
 class ProblemSerializer(ModelSerializer):
     queryset = models.Problem.objects.all()
-    tags = TagSerializer(many=True, read_only=True)
+    tags = TagSerializerSelect(many=True, read_only=True)
     solutions = SolutionSerializerShort(many=True, read_only=True)
-    parent = SolutionSerializerMinimal()
+    parent = SolutionSerializerMinimal(read_only=True)
 
     class Meta:
         model = models.Problem
@@ -65,9 +65,9 @@ class ProblemSerializer(ModelSerializer):
 
 class ProblemSerializerShort(ModelSerializer):
     queryset = models.Problem.objects.all()
-    tags = TagSerializer(many=True)
-    solutions = SolutionSerializerMinimal(many=True)
-    solutions_count = SerializerMethodField()
+    tags = TagSerializerSelect(many=True, read_only=True)
+    solutions = SolutionSerializerMinimal(many=True, read_only=True)
+    solutions_count = SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.Problem
@@ -79,7 +79,7 @@ class ProblemSerializerShort(ModelSerializer):
 
 class SolutionSerializer(ModelSerializer):
     queryset = models.Solution.objects.all()
-    tags = TagSerializer(many=True, read_only=True)
+    tags = TagSerializerSelect(many=True, read_only=True)
     technologies = TechnologySerializerShort(many=True, read_only=True)
     parent = ProblemSerializerShort(many=False, read_only=True)
     problems = ProblemSerializerShort(many=True, read_only=True)

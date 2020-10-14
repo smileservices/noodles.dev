@@ -18,6 +18,13 @@ users get scored. Admins and moderators maintain the quality of the content.
 ## Admins and moderators
 Are privileged users that make sure the community is following the rules of creating/editing/reviewing content. They get notified of newly added or modified content.
 
+# TODO
+- Create Problem from Solution page
+- Make edit Problem/Solution
+- Replace Create Tech form where it's used
+- Make moderator admin panel - notifications about new/updated content
+- Make user
+
 
 --- Built on (Template for multi-user platform)[https://github.com/smileservices/djangotemplate_multiuser_multilanguage_react]
 
