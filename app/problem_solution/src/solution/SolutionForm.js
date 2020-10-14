@@ -32,12 +32,12 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
         })
         //get technologies options
         fetch(
-            TECH_ENDPOINT, {method: 'GET'}
+            TECH_OPTIONS_ENDPOINT, {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve tags" type="danger"/>);
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve technologies" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -62,9 +62,6 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
         }
     }
 
-    const getOptionFromTag = data => {
-        return {value: data.pk, label: data.name}
-    };
     const getOptionFromTech = data => {
         return {value: data.pk, label: data.name + " " + data.version}
     };
@@ -119,7 +116,7 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
             <SelectReactCreatable name="select-tags" label="Choose tags"
                                   smallText="Can choose one or multiple or add a new one if necessary."
                                   onChange={selectedOptions => setFormData({...formData, tags: selectedOptions})}
-                                  options={tags.map(tag => getOptionFromTag(tag))}
+                                  options={tags}
                                   value={formData.tags}
                                   props={{isMulti: true}}
                                   error={errors.tags}
@@ -127,7 +124,7 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
             <SelectReact name="select-techs" label="Choose technologies"
                          smallText={<a onClick={extraData.showTechForm}><span className="icon-folder-plus"/> add tech</a>}
                          onChange={selectedOptions => setFormData({...formData, technologies: selectedOptions})}
-                         options={technologies.map(tech => getOptionFromTech(tech))}
+                         options={technologies}
                          value={formData.technologies}
                          props={{isMulti: true}}
                          error={errors.technologies}

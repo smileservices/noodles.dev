@@ -22,7 +22,7 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
     useEffect(() => {
         //get technologies options
         fetch(
-            TECH_ENDPOINT, {method: 'GET'}
+            TECH_OPTIONS_ENDPOINT, {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();

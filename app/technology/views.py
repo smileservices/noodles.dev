@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from .serializers import TechnologySerializer, TechnologySerializerShort
+from .serializers import TechnologySerializer, TechnologySerializerOption
 
 
 class TechViewset(ModelViewSet):
@@ -30,3 +30,10 @@ class TechViewset(ModelViewSet):
         return Response({
             'error': False
         })
+
+
+class TechViewsetOptions(ModelViewSet):
+    serializer_class = TechnologySerializerOption
+    queryset = TechnologySerializerOption.queryset
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    pagination_class = None

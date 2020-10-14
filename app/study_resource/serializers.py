@@ -7,7 +7,7 @@ from versatileimagefield.serializers import VersatileImageFieldSerializer
 from django.conf import settings
 from tag.serializers import TagSerializer
 from tag.models import Tag
-from technology.serializers import TechnologySerializerShort
+from technology.serializers import TechnologySerializer, TechnologySerializerOption
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -26,7 +26,7 @@ class StudyResourceSerializer(serializers.ModelSerializer):
     queryset = StudyResource.objects.all()
     author = UserSerializerMinimal(many=False, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
-    technologies = TechnologySerializerShort(many=True, read_only=True)
+    technologies = TechnologySerializerOption(many=True, read_only=True)
     rating = FloatField(read_only=True)
     reviews_count = IntegerField(read_only=True)
     images = ImageSerializer(many=True, read_only=True)
@@ -61,7 +61,7 @@ class CollectionSerializer(serializers.ModelSerializer):
     queryset = Collection.objects
     owner = UserSerializerMinimal(many=False, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
-    technologies = TechnologySerializerShort(many=True, read_only=True)
+    technologies = TechnologySerializerOption(many=True, read_only=True)
     items_count = IntegerField(read_only=True)
 
     class Meta:

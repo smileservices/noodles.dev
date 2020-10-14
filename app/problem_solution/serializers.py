@@ -4,7 +4,7 @@ from django.template.defaultfilters import slugify
 from . import models
 from tag.serializers import TagSerializerSelect
 from tag.models import Tag
-from technology.serializers import TechnologySerializerShort
+from technology.serializers import TechnologySerializerOption
 from technology.models import Technology
 
 
@@ -28,7 +28,7 @@ class ProblemSerializerMinimal(ModelSerializer):
 class SolutionSerializerShort(ModelSerializer):
     queryset = models.Solution.objects.all()
     tags = TagSerializerSelect(many=True, read_only=True)
-    technologies = TechnologySerializerShort(many=True, read_only=True)
+    technologies = TechnologySerializerOption(many=True, read_only=True)
     problems_count = SerializerMethodField()
     problems = ProblemSerializerMinimal(many=True, read_only=True)
 
@@ -80,7 +80,7 @@ class ProblemSerializerShort(ModelSerializer):
 class SolutionSerializer(ModelSerializer):
     queryset = models.Solution.objects.all()
     tags = TagSerializerSelect(many=True, read_only=True)
-    technologies = TechnologySerializerShort(many=True, read_only=True)
+    technologies = TechnologySerializerOption(many=True, read_only=True)
     parent = ProblemSerializerShort(many=False, read_only=True)
     problems = ProblemSerializerShort(many=True, read_only=True)
 
