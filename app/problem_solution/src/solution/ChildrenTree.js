@@ -5,16 +5,19 @@ import PaginatedLayout from "../../../src/components/PaginatedLayout";
 import Alert from "../../../src/components/Alert";
 import ProblemItem from "../problem/ProblemItem";
 
-function Content() {
+function ProblemChildrenApp() {
     const [problems, setProblems] = useState([]);
     const [waiting, setWaiting] = useState('');
     const [alert, setAlert] = useState('');
+    const [refresh, setRefresh] = useState(false);
 
     const [pagination, setPagination] = useState({
         resultsPerPage: 5,
         current: 1,
         offset: 0
     });
+
+    window.refreshChildren = () => setRefresh(!refresh);
 
     useEffect(e => {
         apiList(
@@ -24,7 +27,7 @@ function Content() {
             setWaiting,
             err => setAlert(<Alert close={e=>setAlert(null)} text={err} type="danger"/>)
         )
-    }, [pagination])
+    }, [pagination, refresh])
 
     return (
         <Fragment>
@@ -42,4 +45,4 @@ function Content() {
     )
 }
 
-ReactDom.render(<Content/>, document.getElementById('children'));
+ReactDom.render(<ProblemChildrenApp/>, document.getElementById('children'));

@@ -16,7 +16,7 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
     useEffect(() => {
         //get tags options
         fetch(
-            TAGS_ENDPOINT, {method: 'GET'}
+            TAGS_OPTIONS_ENDPOINT, {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();

@@ -57,6 +57,8 @@ class ProblemSerializer(ModelSerializer):
         if 'slug' not in data:
             data['slug'] = slugify(data['name'])
         validated_data = super().run_validation(data)
+        if data['parent']:
+            validated_data['parent_id'] = data['parent']
         validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
         return validated_data
 

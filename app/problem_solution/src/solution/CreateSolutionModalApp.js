@@ -5,7 +5,7 @@ import SolutionForm from "./SolutionForm";
 import CreateableFormComponent from "../../../src/components/CreateableFormComponent";
 import TechForm from "../../../technology/src/TechForm";
 
-function App() {
+function CreateSolutionApp() {
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState('solution');
 
@@ -56,4 +56,4 @@ function App() {
     )
 }
 
-ReactDOM.render(<App/>, document.getElementById('create-solution'));
+ReactDOM.render(<CreateSolutionApp/>, document.getElementById('create-solution'));

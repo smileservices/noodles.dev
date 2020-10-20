@@ -28,7 +28,7 @@ class Technology(models.Model):
     ], 'english')
 
     def __str__(self):
-        return f'{self.name} {self.version}'
+        return f'{self.name} {self.version}' if self.version else self.name
 
     class Meta:
         unique_together = ['name', 'version']

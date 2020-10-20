@@ -5,7 +5,7 @@ import PaginatedLayout from "../../../src/components/PaginatedLayout";
 import Alert from "../../../src/components/Alert";
 import SolutionItem from "../solution/SolutionItem";
 
-function App() {
+function SolutionChildrenApp() {
     const [solutions, setSolutions] = useState([]);
     const [waiting, setWaiting] = useState('');
     const [alert, setAlert] = useState('');
@@ -45,4 +45,4 @@ function App() {
     )
 }
 
-ReactDom.render(<App />, document.getElementById('children'));
+ReactDom.render(<SolutionChildrenApp />, document.getElementById('children'));

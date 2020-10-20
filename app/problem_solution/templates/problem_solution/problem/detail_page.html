@@ -19,8 +19,8 @@
         const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
         const HOMEPAGE = "{% url 'homepage' %}";
         const SEARCH_URL = "{% url 'search' %}";
-        const TAGS_ENDPOINT = "{% url 'tags-options-list' %}";
         const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+        const TAGS_OPTIONS_ENDPOINT = "{% url 'tags-options-list' %}";
         const TECH_OPTIONS_ENDPOINT = "{% url 'techs-options-list' %}";
         const PROBLEM_SOLUTIONS_ENDPOINT = "{% url 'problem-viewset-solutions' result.pk %}";
         const PROBLEM_ENDPOINT = "{% url 'problem-viewset-list' %}";
@@ -32,9 +32,9 @@
             tags: [],
         }
         {% if result.parent %}
-            RESULT['parent'] = {
-                pk: "{{ result.parent.pk }}",
-                url: "{{ result.parent.absolute_url }}",
+            RESULT['parent_element'] = {
+                pk: {{ result.parent.pk }},
+                absolute_url: "{{ result.parent.absolute_url }}",
                 name: "{{ result.parent.name }}",
                 description: "{{ result.parent.description|escapejs }}",
             }

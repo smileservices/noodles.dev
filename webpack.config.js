@@ -16,10 +16,16 @@ module.exports = {
         // '/static/study_resource/study-resource-create': './app/study_resource/src/create/StudyResourceCreate.js',
         // '/static/study_resource/study-resource-edit': './app/study_resource/src/edit/StudyResourceEdit.js',
         // '/static/study_resource/user-collections': './app/study_resource/src/collections/UserCollections.js',
-        // '/static/problem_solution/problem-create': './app/problem_solution/src/problem/ProblemCreateApp.js',
+
+        //problem-related
+        '/static/problem_solution/problem-create': './app/problem_solution/src/problem/ProblemCreateApp.js',
         '/static/problem_solution/problem-edit': './app/problem_solution/src/problem/ProblemEditApp.js',
-        '/static/problem_solution/solution-create-modal': './app/problem_solution/src/solution/CreateSolutionModalApp.js',
         '/static/problem_solution/problem-children-tree': './app/problem_solution/src/problem/ChildrenTree.js',
+        '/static/problem_solution/solution-create-modal': './app/problem_solution/src/solution/CreateSolutionModalApp.js',
+
+        //solution-related
+        '/static/problem_solution/problem-create-modal': './app/problem_solution/src/problem/CreateProblemModalApp.js',
+        '/static/problem_solution/solution-edit': './app/problem_solution/src/solution/SolutionEditApp.js',
         '/static/problem_solution/solution-children-tree': './app/problem_solution/src/solution/ChildrenTree.js',
     },
     output: {

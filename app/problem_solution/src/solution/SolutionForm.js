@@ -17,7 +17,7 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
     useEffect(() => {
         //get tags options
         fetch(
-            TAGS_ENDPOINT, {method: 'GET'}
+            TAGS_OPTIONS_ENDPOINT, {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();
@@ -61,10 +61,6 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
             value: formData[name]
         }
     }
-
-    const getOptionFromTech = data => {
-        return {value: data.pk, label: data.name + " " + data.version}
-    };
 
     function normalizeData(data) {
         let cpd = {...data};

@@ -10,7 +10,7 @@ export default function ProblemItem({data}) {
                     <p>Solutions:</p>
                     <ul>
                         {data.solutions.map(pb => (
-                            <li><a href={pb.absolute_url}>{pb.name}</a></li>
+                            <li key={"solution-"+pb.pk}><a href={pb.absolute_url}>{pb.name}</a></li>
                         ))}
                     </ul>
                 </Fragment>

@@ -19,20 +19,25 @@
         const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
         const HOMEPAGE = "{% url 'homepage' %}";
         const SEARCH_URL = "{% url 'search' %}";
-        const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
+
+        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+        const TAGS_OPTIONS_ENDPOINT = "{% url 'tags-options-list' %}";
+        const TECH_OPTIONS_ENDPOINT = "{% url 'techs-options-list' %}";
+
         const SOLUTION_PROBLEMS_ENDPOINT = "{% url 'solution-viewset-problems' result.pk %}";
         const PROBLEM_ENDPOINT = "{% url 'problem-viewset-list' %}";
-        const SOLUTIONS_ENDPOINT = "{% url 'solution-viewset-list' %}";
+        const SOLUTION_ENDPOINT = "{% url 'solution-viewset-list' %}";
         const RESULT = {
+            pk: {{ result.pk }},
             name: "{{ result.name }}",
             description: "{{ result.description|escapejs }}",
             tags: [],
             technologies: [],
         }
         {% if result.parent %}
-            RESULT['parent'] = {
-                pk: "{{ result.parent.pk }}",
-                url: "{{ result.parent.absolute_url }}",
+            RESULT['parent_element'] = {
+                pk: {{ result.parent.pk }},
+                absolute_url: "{{ result.parent.absolute_url }}",
                 name: "{{ result.parent.name }}",
                 description: "{{ result.parent.description|escapejs }}",
             }
@@ -40,10 +45,10 @@
             RESULT['parent'] = false;
         {% endif %}
         {% for tag in result.tags.all %}
-            RESULT.tags.push({{ tag.id }});
+            RESULT.tags.push({value: {{ tag.pk }}, label: "{{ tag.name }}"});
         {% endfor %}
         {% for tech in result.technologies.all %}
-            RESULT.technologies.push({{ tech.id }});
+            RESULT.technologies.push({value: {{ tech.pk }}, label: "{{ tech }}"});
         {% endfor %}
     </script>
     <div class="detail-page">
@@ -53,6 +58,7 @@
                      itemtype="https://schema.org/CreativeWork">
                 {% include 'problem_solution/solution/detail.html' %}
             </section>
+            <section id="create-problem" class="column-container"></section>
             <section id="children" class="column-container"></section>
         </div>
 
@@ -72,4 +78,6 @@
 {% block extra_js %}
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'problem_solution/solution-children-tree.js' %}"></script>
+    <script src="{% static 'problem_solution/problem-create-modal.js' %}"></script>
+    <script src="{% static 'problem_solution/solution-edit.js' %}"></script>
 {% endblock %}
