@@ -98,7 +98,7 @@ export default function DetailStatic({data, tags, techs, options, setEditForm}) 
                     {data.technologies.map(id => techs.map(tobj => {
                         if (tobj.pk === id) {
                             return (<a key={tobj.pk + 'tech'} className="tech"
-                                       href={SEARCH_URL + "?technologies=" + tobj.pk}>{tobj.name + ' ' + tobj.version}</a>)
+                                       href={"/technologies/"+tobj.pk}>{tobj.name + ' ' + tobj.version}</a>)
                         }
                     }))
                     }

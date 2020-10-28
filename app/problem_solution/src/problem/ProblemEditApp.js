@@ -21,7 +21,7 @@ function ProblemEditApp() {
                 <p className="summary" itemProp="abstract">{data.description}</p>
                 <div className="tags" itemProp="keywords">
                     <span>Tags: </span>
-                    {data.tags.map(tag => <a key={makeId(5)} className="tag" href="">{tag.label}</a>)}
+                    {data.tags.map(tag => <a key={makeId(5)} className="tag" href={SEARCH_URL+"?tags="+tag.value}>{tag.label}</a>)}
                 </div>
             </Fragment>
         )

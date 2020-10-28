@@ -1,0 +1,63 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block meta_tags %}
+    <title>{{ result.name }}</title>
+    <meta name="description"
+          content="{{ result.summary }}"/>
+    <meta name="keywords" content="
+            {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies.all %}{{ tech }}, {% endfor %}"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
+{% block content %}
+    <script>
+        const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
+        const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
+        const HOMEPAGE = "{% url 'homepage' %}";
+        const SEARCH_URL = "{% url 'search' %}";
+
+        const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
+        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+
+        const RESULT = {
+            pk: {{ result.pk }},
+            name: "{{ result.name|escapejs }}",
+            description: "{{ result.description|escapejs }}",
+            version: "{{ result.version|escapejs }}",
+            license: "{{ result.license }}",
+            url: "{{ result.url|escapejs }}",
+            owner: "{{ result.owner|escapejs }}",
+            pros: "{{ result.pros|escapejs }}",
+            cons: "{{ result.cons|escapejs }}",
+            limitations: "{{ result.limitations|escapejs }}",
+            ecosystem: "{{ result.ecosystem|escapejs }}",
+        }
+    </script>
+    <div class="detail-page">
+
+        <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
+            <section id="detail" class="card" itemprop="itemReviewed" itemscope
+                     itemtype="https://schema.org/CreativeWork">
+                {% include 'technology/detail.html' %}
+            </section>
+            <section id="reviews" class="column-container"></section>
+        </div>
+
+
+        <section class="related column-container">
+            <h3>Related</h3>
+            <div class="tile-container">
+                {% for result in related_resources %}
+                    {% include 'study_resource/result.html' %}
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

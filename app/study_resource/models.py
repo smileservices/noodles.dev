@@ -1,9 +1,4 @@
 from django.db import models
-from django.core.exceptions import ValidationError
-from django.contrib.postgres.fields import ArrayField
-from django.db.models.fields import SlugField
-from django.template.defaultfilters import slugify
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from django.contrib.postgres.indexes import GinIndex
 from django.urls import reverse
 from django.dispatch import receiver
@@ -20,7 +15,7 @@ from versatileimagefield.utils import build_versatileimagefield_url_set
 from django.conf import settings
 from tag.models import Tag
 from technology.models import Technology
-from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin
+from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin, VotableMixin
 
 
 class StudyResourceManager(models.Manager):
@@ -50,7 +45,7 @@ class StudyResourceQueryset(SearchAbleQuerysetMixin):
         )
 
 
-class StudyResource(SluggableModelMixin, DateTimeModelMixin):
+class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     class Price(models.IntegerChoices):
         FREE = (0, 'free')
         PAID = (1, 'paid')
@@ -164,22 +159,15 @@ def warm_Study_Resource_Images(sender, instance, **kwargs):
     num_created, failed_to_create = sr_images_warmer.warm()
 
 
-class Review(DateTimeModelMixin):
+class Review(DateTimeModelMixin, VotableMixin):
     study_resource = models.ForeignKey(StudyResource, on_delete=models.CASCADE, related_name='reviews')
     author = models.ForeignKey(CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
     rating = models.IntegerField()
     text = models.TextField(max_length=2048)
     visible = models.BooleanField(default=True)
-    thumbs_up_array = ArrayField(models.IntegerField(), default=list)
-    thumbs_down_array = ArrayField(models.IntegerField(), default=list)
 
     class Meta:
         unique_together = ['author', 'study_resource']
-
-    class ErrorMessages:
-        ONE_USER_ONE_VOTE = 'An user can vote only once'
-        USER_DIDNT_VOTE = "User didn't vote"
-        USER_VOTE_OWN_REVIEW = 'Same user not allowed to vote on own review'
 
     def __str__(self):
         return f'review for {self.study_resource}: {self.rating} by {self.author}'
@@ -187,52 +175,6 @@ class Review(DateTimeModelMixin):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         super(Review, self).save()
-
-    @property
-    def thumbs_up(self):
-        return len(self.thumbs_up_array)
-
-    @property
-    def thumbs_down(self):
-        return len(self.thumbs_down_array)
-
-    def _validate_vote(self, user: CustomUser, vote: str):
-        if user == self.author:
-            raise ValidationError(self.ErrorMessages.USER_VOTE_OWN_REVIEW)
-        if user.pk in self.thumbs_up_array:
-            self.cancel_vote(user)
-            if vote == 'up':
-                return 'cancel'
-        if user.pk in self.thumbs_down_array:
-            self.cancel_vote(user)
-            if vote == 'down':
-                return 'cancel'
-
-    def cancel_vote(self, user):
-        if user.pk in self.thumbs_up_array:
-            self.thumbs_up_array.remove(user.pk)
-            user.cancel_thumb_up()
-            self.author.positive_score -= 1
-        elif user.pk in self.thumbs_down_array:
-            self.thumbs_down_array.remove(user.pk)
-            user.cancel_thumb_down()
-            self.author.negative_score -= 1
-        else:
-            raise ValidationError(self.ErrorMessages.USER_DIDNT_VOTE)
-
-    def vote_up(self, user):
-        if self._validate_vote(user, 'up') != 'cancel':
-            self.thumbs_up_array.append(user.pk)
-            self.author.positive_feedback()
-            user.thumb_up()
-        self.save()
-
-    def vote_down(self, user):
-        if self._validate_vote(user, 'down') != 'cancel':
-            self.thumbs_down_array.append(user.pk)
-            self.author.negative_feedback()
-            user.thumb_down()
-        self.save()
 
 
 class CollectionQueryset(models.QuerySet):
@@ -245,7 +187,7 @@ class CollectionManager(models.Manager):
         return CollectionQueryset(self.model, using=self.db).annotate_with_items_count()
 
 
-class Collection(DateTimeModelMixin):
+class Collection(DateTimeModelMixin, VotableMixin):
     objects = CollectionManager()
     name = models.CharField(max_length=128)
     owner = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)

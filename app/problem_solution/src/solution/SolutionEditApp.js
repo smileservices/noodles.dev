@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import SolutionForm from "./SolutionForm";
 import EditableComponent from "../../../src/components/EditableComponent";
 import {makeId} from "../../../src/components/utils";
-import Alert from "../../../src/components/Alert";
 
 function SolutionEditApp() {
 
@@ -23,9 +22,9 @@ function SolutionEditApp() {
                 <p className="summary" itemProp="abstract">{data.description}</p>
                 <div className="tags" itemProp="keywords">
                     <span>Tags: </span>
-                    {data.tags.map(tag => <a key={makeId(5)} className="tag" href="">{tag.label}</a>)}
+                    {data.tags.map(tag => <a key={makeId(5)} className="tag" href={SEARCH_URL+"?tags="+tag.value}>{tag.label}</a>)}
                     <span>Technologies: </span>
-                    {data.technologies.map(tech => <a key={makeId(5)} className="tech" href="">{tech.label}</a>)}
+                    {data.technologies.map(tech => <a key={makeId(5)} className="tech" href={"/technologies/"+tech.value}>{tech.label}</a>)}
                 </div>
             </Fragment>
         )

@@ -30,5 +30,8 @@ class Technology(models.Model):
     def __str__(self):
         return f'{self.name} {self.version}' if self.version else self.name
 
+    def license_label(self):
+        return self.LicenseType(self.license).label
+
     class Meta:
         unique_together = ['name', 'version']

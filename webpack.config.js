@@ -12,10 +12,11 @@ module.exports = {
         //for prod
         // 'static/js/react-bundle': ['./app/static/js/react.min.js', './app/static/js/react-dom.min.js'],
 
+        //study resource related
         // '/static/study_resource/study-resource-detail-reviews': './app/study_resource/src/StudyResourceDetailReviews.js',
-        // '/static/study_resource/study-resource-create': './app/study_resource/src/create/StudyResourceCreate.js',
-        // '/static/study_resource/study-resource-edit': './app/study_resource/src/edit/StudyResourceEdit.js',
-        // '/static/study_resource/user-collections': './app/study_resource/src/collections/UserCollections.js',
+        '/static/study_resource/study-resource-create': './app/study_resource/src/create/StudyResourceCreate.js',
+        '/static/study_resource/study-resource-edit': './app/study_resource/src/edit/StudyResourceEdit.js',
+        '/static/study_resource/user-collections': './app/study_resource/src/collections/UserCollections.js',
 
         //problem-related
         '/static/problem_solution/problem-create': './app/problem_solution/src/problem/ProblemCreateApp.js',

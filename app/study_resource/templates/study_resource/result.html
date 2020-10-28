@@ -41,7 +41,7 @@
     <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>
 {% endfor %}
     {% for tech in result.technologies.all %}
-        <a class="tech" href="{% url 'search' %}?technologies={{ tech.id }}">{{ tech }}</a>
+        <a class="tech" href="/technologies/{{ tech.id }}">{{ tech }}</a>
     {% endfor %}
 </p>
 </div>

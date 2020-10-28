@@ -6,7 +6,9 @@ from simple_history.models import HistoricalRecords
 import tsvector_field
 from core.abstract_models import SluggableModelMixin, DateTimeModelMixin, RequireAdminAprovalModelMixin, \
     SearchAbleQuerysetMixin
-
+from users.models import CustomUser
+from edit_suggestion.models import EditSuggestion
+from core.abstract_models import VotableMixin
 
 class ProblemQueryset(SearchAbleQuerysetMixin):
     pass
@@ -28,7 +30,9 @@ class SolutionManager(models.Manager):
 
 class Problem(SluggableModelMixin, DateTimeModelMixin):
     objects = ProblemManager()
-    history = HistoricalRecords(excluded_fields=['search_vector_index'])
+    history = HistoricalRecords(excluded_fields=['search_vector_index', 'edit_suggestions'])
+    edit_suggestions = EditSuggestion(excluded_fields=['search_vector_index', 'history'], bases=(VotableMixin,))
+    author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
 
     description = models.TextField(max_length=3048)
     parent = models.ForeignKey('Solution', null=True, blank=True, on_delete=models.CASCADE, related_name='problems')
@@ -50,6 +54,7 @@ class Problem(SluggableModelMixin, DateTimeModelMixin):
 class Solution(SluggableModelMixin, DateTimeModelMixin):
     objects = SolutionManager()
     history = HistoricalRecords(excluded_fields=['search_vector_index'])
+    author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
 
     description = models.TextField(max_length=3048)
     parent = models.ForeignKey(Problem, on_delete=models.CASCADE, related_name='solutions')
