@@ -1,6 +1,10 @@
 from django.db import models
 import tsvector_field
 
+from users.models import CustomUser
+from core.abstract_models import VotableMixin
+from edit_suggestion.models import EditSuggestion
+from simple_history.models import HistoricalRecords
 
 class Technology(models.Model):
     class LicenseType(models.IntegerChoices):
@@ -12,6 +16,7 @@ class Technology(models.Model):
         TRADE_SECRET = (5, 'trade secret')
 
     name = models.CharField(max_length=128, db_index=True)
+    author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
     description = models.TextField(max_length=1024)
     version = models.CharField(max_length=128, null=True, blank=True)
     license = models.IntegerField(default=0, choices=LicenseType.choices, db_index=True)
@@ -21,6 +26,8 @@ class Technology(models.Model):
     cons = models.TextField(max_length=1024)
     limitations = models.TextField(max_length=1024)
     ecosystem = models.ManyToManyField('Technology', related_name='related_technologies')
+
+    history = HistoricalRecords(excluded_fields=['search_vector_index', 'edit_suggestions'])
 
     search_vector_index = tsvector_field.SearchVectorField([
         tsvector_field.WeightedColumn('name', 'A'),

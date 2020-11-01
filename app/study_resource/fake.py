@@ -1,5 +1,5 @@
 from . import models
-from django.db.utils import IntegrityError
+
 from faker import Faker
 from random import randint, choice, choices
 from datetime import date
@@ -8,25 +8,8 @@ from django.template.defaultfilters import slugify
 f = Faker()
 
 def clean():
-    models.Tag.objects.all().delete()
-    models.Technology.objects.all().delete()
     models.StudyResource.objects.all().delete()
     models.Collection.objects.all().delete()
-
-
-def initial_data():
-    for t in ['frontend', 'reactJs', 'python', 'django', 'vscode', 'stuff']:
-        tobj = models.Tag(name=t)
-        tobj.save()
-
-    for t in ['reactJs', 'python', 'django', 'php', 'ruby', 'laravel', 'linux', 'docker', 'nginx']:
-        tobj = models.Technology(
-            name=t,
-            description=f.text(),
-            version=f'{randint(0, 6)}.{randint(0, 30)}',
-            url=f.url()
-        )
-        tobj.save()
 
 
 def new_study_resource(user):

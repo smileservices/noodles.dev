@@ -1,17 +1,23 @@
 from django.core.management.base import BaseCommand
-from django.db import connection, models
 
+from django.db import connection, models
+from django.template.defaultfilters import slugify
+from random import randint, choice, choices
+
+from tag.models import Tag
+from technology.models import Technology
 from users.models import CustomUser
-from study_resource import models as res_models
 from users import fake as fake_users
-import study_resource.fake as fake_res
+
+from faker import Faker
+
+f = Faker()
 
 
 class Command(BaseCommand):
     help = "Populate database with test objects"
 
     def add_arguments(self, parser):
-
         parser.add_argument(
             "--createsuperuser",
             action="store_true",
@@ -30,18 +36,6 @@ class Command(BaseCommand):
             type=int,
             default=50,
             help="How many users",
-        )
-        parser.add_argument(
-            "--resources",
-            type=int,
-            default=250,
-            help="How many resources",
-        )
-        parser.add_argument(
-            "--reviews",
-            type=int,
-            default=500,
-            help="How many reviews",
         )
 
     def make_database_faster(self):
@@ -80,41 +74,22 @@ class Command(BaseCommand):
             CustomUser.objects.exclude(pk__in=staff).delete()
             self.stdout.write("Removed all users except staff users")
             self.stdout.write('Cleaning all resources ... ')
-            fake_res.clean()
             self.stdout.write('Tabula Rasa!')
-            fake_res.initial_data()
-            self.stdout.write('Populated with initial data - tags/technologies')
 
         # create users
         fake_users.create_bulk_users(options['users'])
         self.stdout.write(" >> Created users: done")
         users = CustomUser.objects.all()
 
-        # study resources
-        fake_res.study_resources_bulk(options['resources'], users=users)
-        self.stdout.write(" >> Created study resources: done")
-
-        resources = res_models.StudyResource.objects.all()
-
-        # reviews
-        reviews = []
-        fake_res.reviews_bulk(resources, users, options['reviews'])
-        self.stdout.write(" >> Created study resources reviews: done")
-
-        # # rate reviews
-        # for user in users:
-        #     for review in choices(reviews, k=randint(0, 30)):
-        #         try:
-        #             choice([
-        #                 lambda r, u: review.vote_up(u),
-        #                 lambda r, u: review.vote_down(u),
-        #             ])(review, user)
-        #         except ValidationError:
-        #             pass
-        # self.stdout.write(" >> Rated reviews: done")
-        #
-        # # create collections
-        # for user in choices(users, k=5):
-        #     for _ in range(1, 4):
-        #         new_collection(user)
-        # self.stdout.write(" >> Create collections: done")
+        for t in ['frontend', 'reactJs', 'python', 'django', 'vscode', 'stuff']:
+            tobj = Tag(name=t)
+            tobj.save()
+        for t in ['reactJs', 'python', 'django', 'php', 'ruby', 'laravel', 'linux', 'docker', 'nginx']:
+            tobj = Technology(
+                name=t,
+                author=choice(users),
+                description=f.text(),
+                version=f'{randint(0, 6)}.{randint(0, 30)}',
+                url=f.url()
+            )
+            tobj.save()

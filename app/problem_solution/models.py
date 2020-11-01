@@ -10,6 +10,7 @@ from users.models import CustomUser
 from edit_suggestion.models import EditSuggestion
 from core.abstract_models import VotableMixin
 
+
 class ProblemQueryset(SearchAbleQuerysetMixin):
     pass
 
@@ -28,10 +29,27 @@ class SolutionManager(models.Manager):
         return SolutionQueryset(self.model, using=self.db)
 
 
-class Problem(SluggableModelMixin, DateTimeModelMixin):
+def change_status_condition(instance, user):
+    # to be passed to edit suggestion manager
+    return True
+
+
+class Problem(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     objects = ProblemManager()
     history = HistoricalRecords(excluded_fields=['search_vector_index', 'edit_suggestions'])
-    edit_suggestions = EditSuggestion(excluded_fields=['search_vector_index', 'history'], bases=(VotableMixin,))
+    edit_suggestions = EditSuggestion(
+        excluded_fields=[
+            'search_vector_index',
+            'history',
+            'author',
+            'thumbs_up_array',
+            'thumbs_down_array',
+            'created_at',
+            'updated_at'
+        ],
+        change_status_condition=change_status_condition,
+        bases=(VotableMixin,)
+    )
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
 
     description = models.TextField(max_length=3048)
@@ -51,7 +69,7 @@ class Problem(SluggableModelMixin, DateTimeModelMixin):
         return reverse('problem-detail', kwargs={'id': self.id, 'slug': self.slug})
 
 
-class Solution(SluggableModelMixin, DateTimeModelMixin):
+class Solution(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     objects = SolutionManager()
     history = HistoricalRecords(excluded_fields=['search_vector_index'])
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)

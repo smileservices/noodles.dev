@@ -1,9 +1,9 @@
 from django.utils.deprecation import MiddlewareMixin
 
-from .models import EditableSuggestion
+from .models import EditSuggestion
 
 
-class HistoryRequestMiddleware(MiddlewareMixin):
+class EditSuggestionRequestMiddleware(MiddlewareMixin):
     """Expose request to EditableSuggestion.
 
     This middleware sets request as a local thread variable, making it
@@ -12,9 +12,9 @@ class HistoryRequestMiddleware(MiddlewareMixin):
     """
 
     def process_request(self, request):
-        EditableSuggestion.thread.request = request
+        EditSuggestion.thread.request = request
 
     def process_response(self, request, response):
-        if hasattr(EditableSuggestion.thread, "request"):
-            del EditableSuggestion.thread.request
+        if hasattr(EditSuggestion.thread, "request"):
+            del EditSuggestion.thread.request
         return response
