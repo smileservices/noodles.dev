@@ -21,6 +21,7 @@ from django.contrib.auth.models import PermissionDenied
 
 registered_models = {}
 
+
 class EditSuggestion(object):
     thread = threading.local()
 
@@ -33,6 +34,9 @@ class EditSuggestion(object):
             self,
             excluded_fields,
             change_status_condition,
+            # m2m fields arg
+            # tuple of dicts with keys 'name','model','through'-optional
+            m2m_fields=None,
             user_model=None,
             verbose_name=None,
             bases=(models.Model,),
@@ -44,13 +48,14 @@ class EditSuggestion(object):
         self.change_status_condition = change_status_condition
         self.user_set_verbose_name = verbose_name
         self.user_model = user_model
+        self.m2m_fields = m2m_fields
         self.cascade_delete_edit_suggestion = cascade_delete_edit_suggestion
         self.custom_model_name = custom_model_name
         self.app = app
         self.related_name = related_name
         self.excluded_fields = excluded_fields
-        self.edit_suggestion_model = None # will be declared in finalize method
-        self.parent_updatable_fields = [] # filled up in copy fields method
+        self.edit_suggestion_model = None  # will be declared in finalize method
+        self.parent_updatable_fields = []  # filled up in copy fields method
         try:
             if isinstance(bases, six.string_types):
                 raise TypeError
@@ -73,7 +78,6 @@ class EditSuggestion(object):
 
     def finalize(self, sender, **kwargs):
         # sender is the tracked_model
-        # todo investigate why M2M fields are not present
 
         if self.cls is not sender and not issubclass(sender, self.cls):
             return  # set in abstract
@@ -115,11 +119,14 @@ class EditSuggestion(object):
             )
         )
 
-    def get_updatable_fields(self, fields):
-        for field_name in fields.keys():
-            #exclude id
-            if field_name != 'id':
-                self.parent_updatable_fields.append(field_name)
+    def get_updatable_fields(self, copied_fields):
+        m2m_fields_list = [f['name'] for f in self.m2m_fields]
+        for field_name in copied_fields.keys():
+            # exclude id
+            if field_name == 'id' or field_name in m2m_fields_list:
+                continue
+            self.parent_updatable_fields.append(field_name)
+
 
     def create_edit_suggestion_model(self, model):
         """
@@ -214,13 +221,17 @@ class EditSuggestion(object):
             else:
                 transform_field(field)
             fields[field.name] = field
+            # handle m2m fields
+            for m2m_field in self.m2m_fields:
+                fields[m2m_field['name']] = models.ManyToManyField(
+                    to=m2m_field['model'],
+                    through=m2m_field['through'] if 'through' in m2m_field else None
+                )
         return fields
-
 
     def get_extra_fields(self, model, fields):
         """
         Return dict of extra fields added to the edit suggestion record model
-        - todo manage M2M fields; create new pivot table for new model
         """
 
         def str_repr(instance):
@@ -230,6 +241,11 @@ class EditSuggestion(object):
             if self.change_status_condition(instance, user):
                 for updatable_field in self.parent_updatable_fields:
                     setattr(instance.edit_suggestion_parent, updatable_field, getattr(instance, updatable_field))
+                # set m2m fields
+                for m2m_field in self.m2m_fields:
+                    parent_m2m_field = getattr(instance.edit_suggestion_parent, m2m_field['name'])
+                    instance_m2m_field = getattr(instance, m2m_field['name'])
+                    parent_m2m_field.set(instance_m2m_field.all())
                 instance.edit_suggestion_parent.save()
                 instance.status = self.Status.PUBLISHED
                 instance.save()
@@ -242,18 +258,20 @@ class EditSuggestion(object):
                 instance.reject_reason = reason
                 instance.save()
             else:
-                raise PermissionDenied('User not allowed to publish the edit suggestion')
+                raise PermissionDenied('User not allowed to reject the edit suggestion')
 
         extra_fields = {
             "id": models.AutoField(primary_key=True),
             # edit suggestion author. if tracked model has a field with same name it should be excluded
-            "author": models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.DO_NOTHING, related_name="edit_suggestions"),
+            "author": models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.DO_NOTHING,
+                                        related_name="edit_suggestions"),
             # tracked model relationship
             "edit_suggestion_parent": models.ForeignKey(model, on_delete=models.CASCADE),
             "edit_suggestion_date_created": models.DateTimeField(auto_now_add=True),
             "edit_suggestion_date_updated": models.DateTimeField(auto_now=True),
             "edit_suggestion_reason": models.TextField(),
-            "status_change_by": models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.DO_NOTHING, related_name="edit_suggestions_moderated"),
+            "status_change_by": models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.DO_NOTHING,
+                                                  related_name="edit_suggestions_moderated"),
             "status": models.IntegerField(default=0, choices=self.Status.choices, db_index=True),
             "reject_reason": models.TextField(),
             "publish": publish,
@@ -290,6 +308,7 @@ class EditSuggestion(object):
         except self.edit_suggestion_model.DoesNotExist:
             pass
 
+
 def transform_field(field):
     """Customize field appropriately for use in edit suggestion model"""
     field.name = field.attname
@@ -323,6 +342,7 @@ class EditSuggestionChanges(object):
     todo:
     should diff against the tracked model
     '''
+
     def diff_against(self, old_edit_suggestion):
         if not isinstance(old_edit_suggestion, type(self)):
             raise TypeError(

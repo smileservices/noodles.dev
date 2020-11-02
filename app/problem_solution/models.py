@@ -47,6 +47,10 @@ class Problem(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
             'created_at',
             'updated_at'
         ],
+        m2m_fields=({
+                        'name': 'tags',
+                        'model': Tag,
+                    },),
         change_status_condition=change_status_condition,
         bases=(VotableMixin,)
     )

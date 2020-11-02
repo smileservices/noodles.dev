@@ -56,7 +56,11 @@ def create_problem_edit_suggestions(problem):
         'description': problem.description + ' edited',
     }
     edsug = problem.edit_suggestions.create(**dummy_data)
+    edsug.tags.set(random.choices(tags, k=3))
+    edsug.save()
     dummy_data.update({'name': 'second edit sug', 'author': random.choice(users)})
     edsug2 = problem.edit_suggestions.create(**dummy_data)
+    edsug2.tags.set(random.choices(tags, k=3))
+    edsug2.save()
     edsug.publish(random.choice(users))
     pass
