@@ -9,7 +9,6 @@ import six
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.fields.proxy import OrderWrt
 from django.forms.models import model_to_dict
@@ -55,7 +54,7 @@ class EditSuggestion(object):
         self.related_name = related_name
         self.excluded_fields = excluded_fields
         self.edit_suggestion_model = None  # will be declared in finalize method
-        self.parent_updatable_fields = []  # filled up in copy fields method
+        self.tracked_fields = {'simple': [], 'm2m': []}  # filled up in set_tracked_fields method
         try:
             if isinstance(bases, six.string_types):
                 raise TypeError
@@ -119,14 +118,13 @@ class EditSuggestion(object):
             )
         )
 
-    def get_updatable_fields(self, copied_fields):
-        m2m_fields_list = [f['name'] for f in self.m2m_fields]
+    def set_tracked_fields(self, copied_fields):
+        self.tracked_fields['m2m'] = [f['name'] for f in self.m2m_fields]
         for field_name in copied_fields.keys():
-            # exclude id
-            if field_name == 'id' or field_name in m2m_fields_list:
+            # exclude id and m2m fields
+            if field_name == 'id' or field_name in self.tracked_fields['m2m']:
                 continue
-            self.parent_updatable_fields.append(field_name)
-
+            self.tracked_fields['simple'].append(field_name)
 
     def create_edit_suggestion_model(self, model):
         """
@@ -149,7 +147,7 @@ class EditSuggestion(object):
             attrs["__module__"] = models_module
 
         fields = self.copy_fields(model)
-        self.get_updatable_fields(fields)
+        self.set_tracked_fields(fields)
         attrs.update(fields)
         attrs.update(self.get_extra_fields(model, fields))
         # type in python2 wants str as a first argument
@@ -238,27 +236,25 @@ class EditSuggestion(object):
             return f'Edit Suggestion by {instance.author} for "{instance.parent}"'
 
         def publish(instance, user):
-            if self.change_status_condition(instance, user):
-                for updatable_field in self.parent_updatable_fields:
-                    setattr(instance.edit_suggestion_parent, updatable_field, getattr(instance, updatable_field))
-                # set m2m fields
-                for m2m_field in self.m2m_fields:
-                    parent_m2m_field = getattr(instance.edit_suggestion_parent, m2m_field['name'])
-                    instance_m2m_field = getattr(instance, m2m_field['name'])
-                    parent_m2m_field.set(instance_m2m_field.all())
-                instance.edit_suggestion_parent.save()
-                instance.status = self.Status.PUBLISHED
-                instance.save()
-            else:
+            if not self.change_status_condition(instance, user):
                 raise PermissionDenied('User not allowed to publish the edit suggestion')
+            for updatable_field in self.tracked_fields['simple']:
+                setattr(instance.edit_suggestion_parent, updatable_field, getattr(instance, updatable_field))
+            # set m2m fields
+            for m2m_field in self.tracked_fields['m2m']:
+                parent_m2m_field = getattr(instance.edit_suggestion_parent, m2m_field)
+                instance_m2m_field = getattr(instance, m2m_field)
+                parent_m2m_field.set(instance_m2m_field.all())
+            instance.edit_suggestion_parent.save()
+            instance.status = self.Status.PUBLISHED
+            instance.save()
 
         def reject(instance, user, reason):
             if self.change_status_condition(instance, user):
-                instance.status = self.Status.REJECTED
-                instance.reject_reason = reason
-                instance.save()
-            else:
                 raise PermissionDenied('User not allowed to reject the edit suggestion')
+            instance.status = self.Status.REJECTED
+            instance.reject_reason = reason
+            instance.save()
 
         extra_fields = {
             "id": models.AutoField(primary_key=True),
@@ -277,6 +273,7 @@ class EditSuggestion(object):
             "publish": publish,
             "reject": reject,
             "__str__": str_repr,
+            "edit_suggestion_tracked_fields": self.tracked_fields,
         }
 
         return extra_fields
@@ -339,31 +336,21 @@ def transform_field(field):
 
 class EditSuggestionChanges(object):
     '''
-    todo:
     should diff against the tracked model
     '''
 
-    def diff_against(self, old_edit_suggestion):
-        if not isinstance(old_edit_suggestion, type(self)):
-            raise TypeError(
-                ("unsupported type(s) for diffing: " "'{}' and '{}'").format(
-                    type(self), type(old_edit_suggestion)
-                )
-            )
-
+    def diff_against_parent(self):
         changes = []
         changed_fields = []
-        old_values = model_to_dict(old_edit_suggestion.instance)
-        current_values = model_to_dict(self.instance)
-        for field, new_value in current_values.items():
-            if field in old_values:
-                old_value = old_values[field]
-                if old_value != new_value:
-                    change = ModelChange(field, old_value, new_value)
-                    changes.append(change)
-                    changed_fields.append(field)
+        old_values = model_to_dict(self.edit_suggestion_parent)
+        current_values = model_to_dict(self)
+        for field in self.edit_suggestion_tracked_fields['simple']+self.edit_suggestion_tracked_fields['m2m']:
+            if field in old_values and old_values[field] != current_values[field]:
+                change = ModelChange(field, old_values[field], current_values[field])
+                changes.append(change)
+                changed_fields.append(field)
 
-        return ModelDelta(changes, changed_fields, old_edit_suggestion, self)
+        return ModelDelta(changes, changed_fields, self.edit_suggestion_parent, self)
 
 
 class ModelChange(object):

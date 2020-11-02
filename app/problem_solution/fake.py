@@ -51,16 +51,17 @@ def create_problem_edit_suggestions(problem):
         'edit_suggestion_parent': problem,
         'author': random.choice(users),
         'name': problem.name + ' edited',
-        'slug': problem.slug + '-edited',
+        'slug': problem.slug,
         'edit_suggestion_reason': 'edit test',
-        'description': problem.description + ' edited',
+        'description': problem.description,
     }
     edsug = problem.edit_suggestions.create(**dummy_data)
-    edsug.tags.set(random.choices(tags, k=3))
+    edsug.tags.set(problem.tags.all())
     edsug.save()
     dummy_data.update({'name': 'second edit sug', 'author': random.choice(users)})
     edsug2 = problem.edit_suggestions.create(**dummy_data)
     edsug2.tags.set(random.choices(tags, k=3))
     edsug2.save()
+    changes = edsug.diff_against_parent()
     edsug.publish(random.choice(users))
     pass
