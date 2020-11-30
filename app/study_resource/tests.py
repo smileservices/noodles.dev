@@ -1,9 +1,14 @@
 from django.test import TestCase
 from users.fake import create_user
-from study_resource.fake import initial_data, new_study_resource, new_study_resource_review
+from study_resource.fake import new_study_resource, new_study_resource_review
 from .models import Review
 from django.core.exceptions import ValidationError
 from users.models import CustomUser
+from tag.fake import create_tags
+from technology.fake import create_technologies
+from technology.models import Technology
+from random import choice
+
 
 # Create your tests here.
 
@@ -12,7 +17,8 @@ class StudyResourceTestCase(TestCase):
     def setUp(self):
         CustomUser.objects.bulk_create([create_user() for _ in range(0, 5)])
         self.users = CustomUser.objects.all()
-        initial_data()
+        create_tags()
+        create_technologies()
 
     def create_review(self, resource_author, review_author):
         resource = new_study_resource(resource_author)

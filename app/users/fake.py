@@ -3,6 +3,10 @@ from core.random_data import email as fake_email
 from .models import CustomUser
 
 
+def clean_users():
+    CustomUser.objects.all().delete()
+
+
 def create_user(locale=False):
     fake = Faker()
     name_arr = fake.name().split(' ')
@@ -16,6 +20,11 @@ def create_user(locale=False):
     password = '123'
     new_user.set_password(password)
     return new_user
+
+def create_user_single():
+    u = create_user()
+    u.save()
+    return u
 
 
 def create_bulk_users(count):

@@ -2,7 +2,6 @@ from django.db import models
 from .manager import CustomUserManager
 from django.contrib.auth.models import AbstractUser
 
-
 class CustomUser(AbstractUser):
     """
     Creates a CustomUser object by keeping the properties of the AbstractUser.

@@ -220,6 +220,7 @@ section.header {
   }
 
   .tag:hover, .tech:hover {
+    cursor: pointer;
     color: $theme-color-accent;
     background-color: #ffffff;
   }

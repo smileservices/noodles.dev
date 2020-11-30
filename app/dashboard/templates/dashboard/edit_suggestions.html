@@ -1,0 +1,24 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div id="admin-dashboard">
+        <h1>Latest Edit Suggestions</h1>
+        <section id="latest-activity"></section>
+    </div>
+
+    <script>
+        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+        const PROBLEM_ENDPOINT = "{% url 'problem-viewset-list' %}";
+        const SOLUTION_ENDPOINT = "{% url 'solution-viewset-list' %}";
+
+        const TAGS_OPTIONS_ENDPOINT = "{% url 'tags-options-list' %}";
+        const TECH_OPTIONS_ENDPOINT = "{% url 'techs-options-list' %}";
+    </script>
+{% endblock %}
+
+
+{% block extra_js %}
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'dashboard/admin/edit-suggestions.js' %}"></script>
+{% endblock %}

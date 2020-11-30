@@ -4,8 +4,8 @@ from django.db import connection, models
 from django.template.defaultfilters import slugify
 from random import randint, choice, choices
 
-from tag.models import Tag
-from technology.models import Technology
+from tag.fake import clean_tags, create_tags
+from technology.fake import clean_technologies, create_technologies, create_technology_edit_suggestions
 from users.models import CustomUser
 from users import fake as fake_users
 
@@ -64,32 +64,25 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.make_database_faster()
-        if options["createsuperuser"]:
+
+        if options['clear']:
+            self.stdout.write('Cleaning all resources ... ')
+            clean_tags()
+            clean_technologies()
+            CustomUser.objects.all().delete()
+            self.stdout.write("Removed all users except staff users")
             credentials = {"email": "vlad@admin.com", "password": "123"}
             msg = self.create_superuser(credentials)
             self.stdout.write(msg)
-
-        if options['clear']:
-            staff = CustomUser.objects.filter(models.Q(is_staff=True) | models.Q(is_superuser=True))
-            CustomUser.objects.exclude(pk__in=staff).delete()
-            self.stdout.write("Removed all users except staff users")
-            self.stdout.write('Cleaning all resources ... ')
             self.stdout.write('Tabula Rasa!')
 
         # create users
         fake_users.create_bulk_users(options['users'])
         self.stdout.write(" >> Created users: done")
-        users = CustomUser.objects.all()
 
-        for t in ['frontend', 'reactJs', 'python', 'django', 'vscode', 'stuff']:
-            tobj = Tag(name=t)
-            tobj.save()
-        for t in ['reactJs', 'python', 'django', 'php', 'ruby', 'laravel', 'linux', 'docker', 'nginx']:
-            tobj = Technology(
-                name=t,
-                author=choice(users),
-                description=f.text(),
-                version=f'{randint(0, 6)}.{randint(0, 30)}',
-                url=f.url()
-            )
-            tobj.save()
+        create_tags()
+        self.stdout.write(" >> Created tags: done")
+        create_technologies()
+        self.stdout.write(" >> Created technologies: done")
+        create_technology_edit_suggestions()
+        self.stdout.write(" >> Created technologies edit suggestions: done")

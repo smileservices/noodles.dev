@@ -2,13 +2,13 @@ from django.db import models
 from django.urls import reverse
 from tag.models import Tag
 from technology.models import Technology
-from simple_history.models import HistoricalRecords
 import tsvector_field
 from core.abstract_models import SluggableModelMixin, DateTimeModelMixin, RequireAdminAprovalModelMixin, \
     SearchAbleQuerysetMixin
 from users.models import CustomUser
-from edit_suggestion.models import EditSuggestion
-from core.abstract_models import VotableMixin
+from django_edit_suggestion.models import EditSuggestion
+from votable.models import VotableMixin
+from core.edit_suggestions import edit_suggestion_change_status_condition, post_publish_edit, post_reject_edit
 
 
 class ProblemQueryset(SearchAbleQuerysetMixin):
@@ -29,18 +29,11 @@ class SolutionManager(models.Manager):
         return SolutionQueryset(self.model, using=self.db)
 
 
-def change_status_condition(instance, user):
-    # to be passed to edit suggestion manager
-    return True
-
-
 class Problem(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     objects = ProblemManager()
-    history = HistoricalRecords(excluded_fields=['search_vector_index', 'edit_suggestions'])
     edit_suggestions = EditSuggestion(
         excluded_fields=[
             'search_vector_index',
-            'history',
             'author',
             'thumbs_up_array',
             'thumbs_down_array',
@@ -51,7 +44,9 @@ class Problem(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
                         'name': 'tags',
                         'model': Tag,
                     },),
-        change_status_condition=change_status_condition,
+        change_status_condition=edit_suggestion_change_status_condition,
+        post_publish=post_publish_edit,
+        post_reject=post_reject_edit,
         bases=(VotableMixin,)
     )
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
@@ -75,13 +70,34 @@ class Problem(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
 
 class Solution(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     objects = SolutionManager()
-    history = HistoricalRecords(excluded_fields=['search_vector_index'])
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
 
     description = models.TextField(max_length=3048)
     parent = models.ForeignKey(Problem, on_delete=models.CASCADE, related_name='solutions')
     tags = models.ManyToManyField(Tag, related_name='solutions')
     technologies = models.ManyToManyField(Technology, related_name='solutions')
+
+    edit_suggestions = EditSuggestion(
+        excluded_fields=[
+            'search_vector_index',
+            'author',
+            'thumbs_up_array',
+            'thumbs_down_array',
+            'created_at',
+            'updated_at'
+        ],
+        m2m_fields=({
+                        'name': 'tags',
+                        'model': Tag,
+                    }, {
+                        'name': 'technologies',
+                        'model': Technology
+                    }),
+        change_status_condition=edit_suggestion_change_status_condition,
+        post_publish=post_publish_edit,
+        post_reject=post_reject_edit,
+        bases=(VotableMixin,)
+    )
 
     search_vector_index = tsvector_field.SearchVectorField([
         tsvector_field.WeightedColumn('name', 'A'),

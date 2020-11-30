@@ -10,12 +10,6 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
 
         parser.add_argument(
-            "--createsuperuser",
-            action="store_true",
-            default=False,
-            help="Create admin account",
-        )
-        parser.add_argument(
             "--clear",
             action="store_true",
             default=False,

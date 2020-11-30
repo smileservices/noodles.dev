@@ -5,8 +5,10 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.filters import OrderingFilter, SearchFilter
 
-from .serializers import TechnologySerializer, TechnologySerializerOption
+from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
+from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyEditSerializer
 from .models import Technology
 
 
@@ -29,11 +31,12 @@ def detail(request, id):
     return render(request, 'technology/detail_page.html', data)
 
 
-class TechViewset(ModelViewSet):
+class TechViewset(ModelViewsetWithEditSuggestion):
     serializer_class = TechnologySerializer
     queryset = TechnologySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
-    pagination_class = None
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['name', 'description']
 
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):

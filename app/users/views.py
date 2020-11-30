@@ -23,6 +23,8 @@ class UsersViewset(ModelViewSet):
     search_fields = ['first_name', 'last_name', 'email', 'date_joined']
     ordering_fields = ['first_name', 'last_name', 'email', 'is_active', 'date_joined']
 
+    #todo show latest users
+
 
 @login_required
 def my_profile(request):

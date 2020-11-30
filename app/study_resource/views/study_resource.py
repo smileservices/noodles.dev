@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
+from core.abstract_viewsets import ResourceVieset
 from study_resource.scrape.main import scrape_tutorial
 from study_resource import filters
 from study_resource.models import StudyResource, StudyResourceImage
@@ -68,13 +69,14 @@ def create(request):
     return render(request, 'study_resource/create_page.html')
 
 
-class StudyResourceViewset(ModelViewSet):
+class StudyResourceViewset(ResourceVieset):
     serializer_class = serializers.StudyResourceSerializer
     queryset = serializers.StudyResourceSerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
+    m2m_fields = ('tags', 'technologies')
 
     @action(methods=['GET'], detail=True)
     def reviews(self, request, *args, **kwargs):
@@ -119,9 +121,7 @@ class StudyResourceViewset(ModelViewSet):
         })
 
     def perform_create(self, serializer):
-        study_resource = serializer.save(
-            author=self.request.user,
-        )
+        study_resource = super(StudyResourceViewset, self).perform_create()
         for img_data in self.request.data['images']:
             image = StudyResourceImage(study_resource=study_resource, image_url=img_data['url'])
             image.save()

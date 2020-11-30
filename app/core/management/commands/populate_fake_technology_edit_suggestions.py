@@ -17,4 +17,4 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        fake.create_edit_suggestions()
+        fake.create_technology_edit_suggestions()

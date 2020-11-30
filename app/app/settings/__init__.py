@@ -14,6 +14,7 @@ import os
 import environ
 from django.urls import reverse_lazy
 
+
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, ["*"])
@@ -54,7 +55,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     # 3rd party apps
     'captcha',
-    'simple_history',
+    'django_edit_suggestion',
     'tsvector_field',
     'versatileimagefield',
     # our app
@@ -81,7 +82,6 @@ MIDDLEWARE = [
     'compression_middleware.middleware.CompressionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -129,7 +129,7 @@ DATABASES = {
         'PASSWORD': env('DB_PASSWORD'),
         'HOST': env('DB_HOST'),
         'PORT': env('DB_PORT'),
-    }
+    },
 }
 
 # Password validation
@@ -245,3 +245,5 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('large', 'thumbnail__320x320'),
     ],
 }
+
+MODERATOR_USER_SCORE = 300

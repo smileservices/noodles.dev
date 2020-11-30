@@ -7,7 +7,6 @@ from uuid import uuid4
 from tempfile import NamedTemporaryFile
 import tsvector_field
 from versatileimagefield.fields import VersatileImageField
-from simple_history.models import HistoricalRecords
 from users.models import CustomUser
 import requests
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
@@ -15,7 +14,10 @@ from versatileimagefield.utils import build_versatileimagefield_url_set
 from django.conf import settings
 from tag.models import Tag
 from technology.models import Technology
-from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin, VotableMixin
+from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin
+from votable.models import VotableMixin
+from django_edit_suggestion.models import EditSuggestion
+from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 
 
 class StudyResourceManager(models.Manager):
@@ -72,8 +74,6 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='resources')
     technologies = models.ManyToManyField(Technology, related_name='resources')
-    # history fields
-    history = HistoricalRecords(excluded_fields=['search_vector_index'])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # choices fields
@@ -83,7 +83,15 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     search_vector_index = tsvector_field.SearchVectorField([
         tsvector_field.WeightedColumn('name', 'A'),
         tsvector_field.WeightedColumn('summary', 'B'),
-    ], 'english')
+    ], 'english'),
+    edit_suggestions = EditSuggestion(
+        excluded_fields=('search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+        m2m_fields=[{'name': 'tags', 'model': Tag}, {'name': 'technologies', 'model': Technology}, ],
+        change_status_condition=edit_suggestion_change_status_condition,
+        post_publish=post_publish_edit,
+        post_reject=post_reject_edit,
+        bases=(VotableMixin,)
+    )
 
     class Meta:
         indexes = [

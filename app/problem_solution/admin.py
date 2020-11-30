@@ -1,11 +1,10 @@
 from django.contrib import admin
 import problem_solution.models as models
 from django.urls import reverse
-from simple_history.admin import SimpleHistoryAdmin
 
 
 @admin.register(models.Problem)
-class StudyResourceAdmin(SimpleHistoryAdmin):
+class StudyResourceAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     list_display = ('name', 'created_at', 'updated_at')
     list_filter = ('created_at', 'updated_at', 'tags')
@@ -15,7 +14,7 @@ class StudyResourceAdmin(SimpleHistoryAdmin):
 
 
 @admin.register(models.Solution)
-class StudyResourceAdmin(SimpleHistoryAdmin):
+class StudyResourceAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     list_display = ('name', 'created_at', 'updated_at')
     list_filter = ('created_at', 'updated_at', 'tags', 'technologies')

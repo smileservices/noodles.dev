@@ -45,3 +45,5 @@ VERSATILEIMAGEFIELD_SETTINGS = {
     'jpeg_resize_quality': 80,
 }
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+MODERATOR_USER_SCORE = 5

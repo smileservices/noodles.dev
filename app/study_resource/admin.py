@@ -1,11 +1,10 @@
 from django.contrib import admin
 import study_resource.models as models
 from django.urls import reverse
-from simple_history.admin import SimpleHistoryAdmin
 
 
 @admin.register(models.StudyResource)
-class StudyResourceAdmin(SimpleHistoryAdmin):
+class StudyResourceAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     list_display = ('name', 'publication_date', 'author', 'created_at', 'updated_at')
     list_filter = ('created_at', 'updated_at', 'tags', 'technologies')

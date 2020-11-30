@@ -1,12 +1,12 @@
 from django.db import models
 import tsvector_field
-
 from users.models import CustomUser
-from core.abstract_models import VotableMixin
-from edit_suggestion.models import EditSuggestion
-from simple_history.models import HistoricalRecords
+from votable.models import VotableMixin
+from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
+from django_edit_suggestion.models import EditSuggestion
 
-class Technology(models.Model):
+
+class Technology(VotableMixin):
     class LicenseType(models.IntegerChoices):
         PUBLIC_DOMAIN = (0, 'public domain')
         PERMISSIVE_LICENSE = (1, 'permissive license')
@@ -27,7 +27,14 @@ class Technology(models.Model):
     limitations = models.TextField(max_length=1024)
     ecosystem = models.ManyToManyField('Technology', related_name='related_technologies')
 
-    history = HistoricalRecords(excluded_fields=['search_vector_index', 'edit_suggestions'])
+    edit_suggestions = EditSuggestion(
+        excluded_fields=('search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+        m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, ],
+        change_status_condition=edit_suggestion_change_status_condition,
+        post_publish=post_publish_edit,
+        post_reject=post_reject_edit,
+        bases=(VotableMixin,)
+    )
 
     search_vector_index = tsvector_field.SearchVectorField([
         tsvector_field.WeightedColumn('name', 'A'),
