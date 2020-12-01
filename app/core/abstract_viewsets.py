@@ -17,18 +17,41 @@ class ResourceVieset(VotableVieset):
         self.request.user.save()
         return resource
 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if self.request.user.is_staff or instance.author == self.request.user:
+            return super(ResourceVieset, self).update(request, *args, **kwargs)
+        else:
+            raise PermissionDenied('Only staff or resource owner can update the resource.'
+                                   ' Create an edit suggestion instead.')
+
     def perform_destroy(self, instance):
-        super(ResourceVieset, self).perform_destroy(instance)
-        self.request.user.positive_score -= rewards.RESOURCE_DELETE
-        self.request.user.save()
+        if self.request.user.is_staff or instance.author == self.request.user:
+            return super(ResourceVieset, self).perform_destroy(instance)
+        else:
+            raise PermissionDenied('Only staff or resource owner can delete the resource.')
 
 
 class EditSuggestionViewset(VotableVieset):
     """
     should only permit voting, editing and detail
     """
+
     def create(self, request, *args, **kwargs):
-        return PermissionDenied('Edit suggestions are to be created through the parent resource')
+        raise PermissionDenied('Edit suggestions are to be created through the parent resource.')
 
     def list(self, request, *args, **kwargs):
-        return PermissionDenied('Edit suggestions are to be viewed through the parent resource')
+        return PermissionDenied('Edit suggestions are to be viewed through the parent resource.')
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if self.request.user.is_staff or instance.edit_suggestion_author == self.request.user:
+            return super(EditSuggestionViewset, self).update(request, *args, **kwargs)
+        else:
+            raise PermissionDenied('Only staff or resource owner can update the edit suggestion.')
+
+    def perform_destroy(self, instance):
+        if self.request.user.is_staff or instance.edit_suggestion_author == self.request.user:
+            return super(EditSuggestionViewset, self).perform_destroy(instance)
+        else:
+            raise PermissionDenied('Only staff or resource owner can delete the edit suggestion.')

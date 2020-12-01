@@ -220,3 +220,181 @@ class RestIntegrationTest(APITestCase):
         user_2 = CustomUser.objects.get(pk=user_edit_author_2.pk)
         self.assertEqual(user_1.positive_score, rewards.EDIT_SUGGESTION_PUBLISH)
         self.assertEqual(user_2.negative_score, rewards.EDIT_SUGGESTION_REJECT)
+
+    def test_resource_delete(self):
+        """
+            testing core.ResourceViewset that prevents resource being deleted
+             by anyone other than author or staff
+        """
+        user_resource_author = create_user_single()
+        user_edit_suggestion_author = create_user_single()
+        user_cannot_delete = create_user_single()
+        user_staff = create_user_single(staff=True)
+
+        self.client.force_login(user=user_resource_author)
+        response_pb = self.client.post(
+            PROBLEM_VIEWSET_URL,
+            {
+                'name': 'problem 1',
+                'description': 'bla bla',
+                'tags': [self.tags[1].pk, self.tags[2].pk]
+            },
+            format='json'
+        )
+        self.assertEqual(response_pb.status_code, 201)
+        self.client.force_login(user=user_edit_suggestion_author)
+        url = reverse('problem-viewset-edit-suggestion-create', kwargs={'pk': response_pb.data['pk']})
+        response_ed_pub_1 = self.client.post(
+            url,
+            {
+                'name': 'edit for delete by staff',
+                'description': 'bla bla',
+                'tags': [self.tags[3].pk, ],
+                'edit_suggestion_reason': 'test delete'
+            },
+            format='json'
+        )
+        response_ed_pub_2 = self.client.post(
+            url,
+            {
+                'name': 'edit for delete by owner',
+                'description': 'bla bla',
+                'tags': [self.tags[3].pk, ],
+                'edit_suggestion_reason': 'test delete'
+            },
+            format='json'
+        )
+        self.assertEqual(response_ed_pub_1.status_code, 201)
+        self.assertEqual(response_ed_pub_2.status_code, 201)
+
+        # try delete pb and edit suggestion
+        self.client.force_login(user=user_cannot_delete)
+        res_del_cannot = self.client.delete(reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}))
+        self.assertEqual(res_del_cannot.status_code, 403)
+        res_del_cannot = self.client.delete(
+            reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_ed_pub_1.data['pk']}))
+        self.assertEqual(res_del_cannot.status_code, 403)
+
+        # delete by edit sugg owner is successfull
+        self.client.force_login(user=user_edit_suggestion_author)
+        res_del_can = self.client.delete(
+            reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_ed_pub_2.data['pk']}))
+        self.assertEqual(res_del_can.status_code, 204)
+
+        # delete by staff is successfull
+        self.client.force_login(user=user_staff)
+        # delete edit suggestion by staff
+        res_del_can = self.client.delete(
+            reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_ed_pub_1.data['pk']}))
+        self.assertEqual(res_del_can.status_code, 204)
+
+        # delete resource
+        res_del_can = self.client.delete(reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}))
+        self.assertEqual(res_del_can.status_code, 204)
+
+    def test_direct_update_resource_limitations(self):
+        """
+            only resource author or staff can directly update resource
+        """
+        user_resource_author = create_user_single()
+        user_cannot_update = create_user_single()
+        user_staff = create_user_single(staff=True)
+
+        self.client.force_login(user=user_resource_author)
+        response_pb = self.client.post(
+            PROBLEM_VIEWSET_URL,
+            {
+                'name': 'problem 1',
+                'description': 'bla bla',
+                'tags': [self.tags[1].pk, self.tags[2].pk]
+            },
+            format='json'
+        )
+
+        # canot update
+        self.client.force_login(user_cannot_update)
+        res_update_cannot = self.client.put(
+            reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}),
+            {'name': 'cannot edit'},
+            format='json'
+        )
+        self.assertEqual(res_update_cannot.status_code, 403)
+
+        # can update
+        self.client.force_login(user_resource_author)
+        res_update_can = self.client.put(
+            reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}),
+            {'name': 'updated by author', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk]},
+            format='json'
+        )
+        self.assertEqual(res_update_can.status_code, 200)
+        self.assertEqual(res_update_can.data['name'], 'updated by author')
+        self.client.force_login(user_staff)
+        res_update_can = self.client.put(
+            reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}),
+            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk]},
+            format='json'
+        )
+        self.assertEqual(res_update_can.status_code, 200)
+        self.assertEqual(res_update_can.data['name'], 'updated by staff')
+
+    def test_direct_update_edit_suggestion_limitations(self):
+        """
+            only resource author or staff can directly update resource
+        """
+        user_resource_author = create_user_single()
+        user_edit_author = create_user_single()
+        user_cannot_update = create_user_single()
+        user_staff = create_user_single(staff=True)
+
+        self.client.force_login(user=user_resource_author)
+        response_pb = self.client.post(
+            PROBLEM_VIEWSET_URL,
+            {
+                'name': 'problem 1',
+                'description': 'bla bla',
+                'tags': [self.tags[1].pk, self.tags[2].pk]
+            },
+            format='json'
+        )
+        self.client.force_login(user=user_edit_author)
+        url = reverse('problem-viewset-edit-suggestion-create', kwargs={'pk': response_pb.data['pk']})
+        response_edit_sug = self.client.post(
+            url,
+            {
+                'name': 'edit for delete by staff',
+                'description': 'bla bla',
+                'tags': [self.tags[3].pk, ],
+                'edit_suggestion_reason': 'test delete'
+            },
+            format='json'
+        )
+        self.assertEqual(response_edit_sug.status_code, 201)
+
+        # canot update
+        self.client.force_login(user_cannot_update)
+        res_update_cannot = self.client.put(
+            reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_edit_sug.data['pk']}),
+            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk]},
+            format='json'
+        )
+        self.assertEqual(res_update_cannot.status_code, 403)
+
+        # can update
+        self.client.force_login(user_edit_author)
+        res_update_can = self.client.put(
+            reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_edit_sug.data['pk']}),
+            {'name': 'updated by author', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk], 'slug': 'haba-haba'},
+            format='json'
+        )
+        self.assertEqual(res_update_can.status_code, 200)
+        self.assertEqual(res_update_can.data['name'], 'updated by author')
+
+        self.client.force_login(user_staff)
+        res_update_can = self.client.put(
+            reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_edit_sug.data['pk']}),
+            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk], 'slug': 'haba-haba'},
+            format='json'
+        )
+        self.assertEqual(res_update_can.status_code, 200)
+        self.assertEqual(res_update_can.data['name'], 'updated by staff')

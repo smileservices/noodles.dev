@@ -21,8 +21,10 @@ def create_user(locale=False):
     new_user.set_password(password)
     return new_user
 
-def create_user_single():
+
+def create_user_single(staff=False):
     u = create_user()
+    u.is_staff = staff
     u.save()
     return u
 

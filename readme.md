@@ -42,6 +42,7 @@ Rewards:
 - someone votes +/- a resource, edit suggestion, the resource author gets positive/negative rating
 - an edit suggestion gets published/rejected, the author gets positive/negative rating
 
+
 # Implementation
 
 ## Done:
@@ -57,8 +58,6 @@ edit suggestions
 - users rate edit suggestions
 - users with high rating/staff publish/reject edit suggestions
 
-## In progress:
-
 integrations testing
 --------------------
 should test how everything works together and if the business logic is followed
@@ -68,6 +67,11 @@ limitations on user actions
 - direct edit   :  only staff and resource owner can directly edit  
 - delete        :  only staff and resource owner can delete
 
+## In progress:
+
+track history
+-------------
+- p/s/t/lr have history tracking
 
 ## To Do:
 
@@ -84,10 +88,6 @@ admin/staff dashboard
 rating & discussions
 --------------------
 - users can rate p/s/t/lr and can create an associated discussion thread
-
-track history
--------------
-- p/s/t/lr have history tracking
 
 report bug
 ----------

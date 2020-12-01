@@ -31,12 +31,6 @@ for app in os.listdir():
         pass
 
 # drop db and recreate
-'''sql
-UPDATE pg_database SET datallowconn = 'false' WHERE datname = 'noodlesdb';
-SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'noodlesdb';
-DROP DATABASE noodlesdb;
-'''
-
 with psycopg2.connect(**config) as conn:
     with conn.cursor() as cur:
         conn.set_isolation_level(0)
@@ -52,8 +46,3 @@ with psycopg2.connect(host=config['host'], database=database, user=config['user'
     with conn.cursor() as cur:
         cur.execute(f'CREATE EXTENSION IF NOT EXISTS pg_trgm;')
         cur.execute(f'CREATE EXTENSION IF NOT EXISTS unaccent;')
-
-# rendered_script_file = Template(open(
-#     os.path.join(os.path.dirname(__file__), 'manage_db.sh')
-# ).read()).render(config)
-# os.system(rendered_script_file)
