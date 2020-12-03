@@ -66,28 +66,30 @@ limitations on user actions
 --------------------------
 - direct edit   :  only staff and resource owner can directly edit  
 - delete        :  only staff and resource owner can delete
-
-## In progress:
+- users can rate p/s/t/lr
 
 track history
 -------------
-- p/s/t/lr have history tracking
+- p/s/t/lr have history tracking; use django-easy-audit
 
-## To Do:
+## In progress:
 
 users
 -----
 - user profile
-- user activity
+- user activity                             use easyaudit on backend
 
 admin/staff dashboard
 -----------
-- latest p/s/t/lr additions
-- latest edit suggestions for moderation
+- latest p/s/t/lr additions                 use easyaudit on backend
+- latest edit suggestions for moderation    use easyaudit on backend
+
+
+## To Do:
 
 rating & discussions
 --------------------
-- users can rate p/s/t/lr and can create an associated discussion thread
+- users can create an associated discussion thread for p/s/t/lr
 
 report bug
 ----------

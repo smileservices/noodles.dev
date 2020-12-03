@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'django_edit_suggestion',
     'tsvector_field',
     'versatileimagefield',
+    'easyaudit',
     # our app
     'core',
     'rest_framework',
@@ -82,6 +83,7 @@ MIDDLEWARE = [
     'compression_middleware.middleware.CompressionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'easyaudit.middleware.easyaudit.EasyAuditMiddleware',
 ]
 
 REST_FRAMEWORK = {

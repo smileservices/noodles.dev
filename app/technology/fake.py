@@ -37,6 +37,7 @@ def create_technologies():
 
 def create_technology_edit_suggestions():
     technologies = Technology.objects.all()
+    users = CustomUser.objects.all()
     for tech in technologies:
         edsug = tech.edit_suggestions.new({
             'name': f"{tech.name} edited",
