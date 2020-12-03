@@ -85,7 +85,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
         tsvector_field.WeightedColumn('summary', 'B'),
     ], 'english'),
     edit_suggestions = EditSuggestion(
-        excluded_fields=('search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+        excluded_fields=('created_at', 'updated_at', 'search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),
         m2m_fields=[{'name': 'tags', 'model': Tag}, {'name': 'technologies', 'model': Technology}, ],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,

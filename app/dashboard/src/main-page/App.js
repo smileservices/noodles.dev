@@ -7,6 +7,7 @@ import PaginatedLayout from "../../../src/components/PaginatedLayout";
 import SolutionItem from "../../../dashboard/src/components/SolutionItem";
 import ProblemItem from "../../../dashboard/src/components/ProblemItem";
 import TechItem from "../../../dashboard/src/components/TechItem";
+import ActivityItem from "../components/ActivityItem";
 
 function App() {
     const [problems, setProblems] = useState([]);
@@ -20,6 +21,10 @@ function App() {
     const [technologies, setTechnologies] = useState([]);
     const [technologiesAlert, setTechnologiesAlert] = useState(false);
     const [technologiesWaiting, setTechnologiesWaiting] = useState(false);
+
+    const [activity, setActivity] = useState([]);
+    const [activityAlert, setActivityAlert] = useState(false);
+    const [activityWaiting, setActivityWaiting] = useState(false);
 
     const [users, setUsers] = useState([])
 
@@ -37,6 +42,12 @@ function App() {
     });
 
     const [technologiesPagination, setTechnologiesPagination] = useState({
+        resultsPerPage: 5,
+        current: 1,
+        offset: 0
+    });
+
+    const [activityPagination, setActivityPagination] = useState({
         resultsPerPage: 5,
         current: 1,
         offset: 0
@@ -72,14 +83,36 @@ function App() {
         )
     }, [technologiesPagination])
 
-    //todo edit suggestions: get latest published
-    //todo edit suggestions: get latest rejected
-    //todo edit suggestions: get latest unmoderated
+    //todo latest activity
+    useEffect(() => {
+        apiList(
+            ACTIVITY_ENDPOINT,
+            activityPagination,
+            setActivity,
+            setActivityWaiting,
+            err => setActivityAlert(<Alert close={e => setActivityAlert(null)} text={err} type="danger"/>)
+        )
+    }, [activityPagination])
 
     //todo users: get latest registered
 
     return (
         <Fragment>
+            <div id="activity">
+                <section id="latest-activity">
+                    <h3>Latest Activity</h3>
+                    {activityWaiting}
+                    {activityAlert}
+                    <PaginatedLayout data={activity.results} resultsCount={activity.count}
+                                     pagination={activityPagination}
+                                     setPagination={setActivityPagination}
+                                     resultsContainerClass="tile-container"
+                                     mapFunction={
+                                         (item, idx) => <ActivityItem key={"activity" + item.pk} data={item}/>
+                                     }
+                    />
+                </section>
+            </div>
             <div id="added">
                 <section id="problems">
                     <h3>Latest Problems</h3>

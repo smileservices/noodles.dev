@@ -8,6 +8,8 @@ from tag.fake import clean_tags, create_tags
 from technology.fake import clean_technologies, create_technologies, create_technology_edit_suggestions
 from users.models import CustomUser
 from users import fake as fake_users
+from problem_solution import fake as fake_problem_solution
+from study_resource import fake as fake_study_resource
 
 from faker import Faker
 
@@ -67,22 +69,55 @@ class Command(BaseCommand):
 
         if options['clear']:
             self.stdout.write('Cleaning all resources ... ')
+
+            fake_study_resource.clean()
+            fake_problem_solution.clean()
             clean_tags()
             clean_technologies()
             CustomUser.objects.all().delete()
-            self.stdout.write("Removed all users except staff users")
+            self.stdout.write("Removed all p/s/sr/t/techs and users!")
             credentials = {"email": "vlad@admin.com", "password": "123"}
             msg = self.create_superuser(credentials)
             self.stdout.write(msg)
-            self.stdout.write('Tabula Rasa!')
+            self.stdout.write(f'Created super user with creds {credentials}')
 
         # create users
         fake_users.create_bulk_users(options['users'])
         self.stdout.write(" >> Created users: done")
 
+        # tags/techs
         create_tags()
         self.stdout.write(" >> Created tags: done")
         create_technologies()
         self.stdout.write(" >> Created technologies: done")
+
+        # problems/solutions
+        problems = []
+        solutions = []
+        for _ in range(10):
+            problems.append(fake_problem_solution.create_problem())
+        for p in problems:
+            solutions.append(fake_problem_solution.create_solution(p))
+        for s in solutions:
+            problems.append(fake_problem_solution.create_problem(s))
+        self.stdout.write(" >> Created problem/solutions: done")
+
+        # create edit suggestions
         create_technology_edit_suggestions()
         self.stdout.write(" >> Created technologies edit suggestions: done")
+        for p in problems:
+            fake_problem_solution.create_problem_edit_suggestions(p)
+        self.stdout.write(" >> Created problems edit suggestions: done")
+        for s in solutions:
+            fake_problem_solution.create_solution_edit_suggestions(s)
+        self.stdout.write(" >> Created solutions edit suggestions: done")
+
+        # resources, reviews, collections
+        fake_study_resource.study_resources_bulk()
+        fake_study_resource.study_resources_edits_bulk()
+        fake_study_resource.reviews_bulk()
+        fake_study_resource.collections_bulk()
+        self.stdout.write(" >> Created study resources, edit suggestions, reviews, collections: done")
+
+
+

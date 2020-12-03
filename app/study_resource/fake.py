@@ -5,7 +5,17 @@ from random import randint, choice, choices
 from datetime import date
 from django.conf import settings
 from django.template.defaultfilters import slugify
+
+from users.models import CustomUser
+from technology.models import Technology
+from tag.models import Tag
+
+tags = Tag.objects.all()
+techs = Technology.objects.all()
+users = CustomUser.objects.all()
+
 f = Faker()
+
 
 def clean():
     models.StudyResource.objects.all().delete()
@@ -39,19 +49,55 @@ def new_study_resource_review(study_resource, author):
     return review
 
 
-def study_resources_bulk(count, users):
+def new_collection(user=None):
+    collection = models.Collection(
+        owner=user if user else choice(users),
+        name=f.text(40),
+        description=f.text(),
+    )
+    collection.save()
+    collection.resources.add(*choices(models.StudyResource.objects.all(), k=randint(1, 4)))
+    collection.tags.add(*choices(tags, k=randint(1, 4)))
+    collection.technologies.add(*choices(techs, k=randint(1, 3)))
+
+
+def study_resource_edit_suggestions(resource:models.StudyResource, author=None):
+    data = {
+        'name': f'{resource.name} edit',
+        'publication_date': resource.publication_date,
+        'published_by': resource.published_by,
+        'url': resource.url,
+        'summary': resource.summary,
+        'price': resource.price,
+        'media': resource.media,
+        'experience_level': resource.experience_level,
+        'edit_suggestion_author': author if author else choice(users),
+        'edit_suggestion_reason': 'edit test',
+    }
+    edsug = resource.edit_suggestions.new(data)
+    edsug.tags.set(resource.tags.all())
+    edsug.technologies.set(resource.technologies.all())
+
+
+
+def study_resources_bulk(count=20):
     items = [new_study_resource(choice(users)) for _ in range(count)]
     models.StudyResource.objects.bulk_create(items)
-    tags = models.Tag.objects.all()
-    techs = models.Technology.objects.all()
     items = models.StudyResource.objects.all()
     for i in items:
         i.tags.add(*choices(tags, k=randint(1, 4)))
         i.technologies.add(*choices(techs, k=randint(1, 3)))
 
 
-def reviews_bulk(resources, users, count):
+def study_resources_edits_bulk(count=10):
+    resources = models.StudyResource.objects.all()
+    for _ in range(count):
+        study_resource_edit_suggestions(choice(resources))
+
+
+def reviews_bulk(count=10):
     reviews = []
+    resources = models.StudyResource.objects.all()
     older_reviews = models.Review.objects.all()
     only_one_review_per_user_check = [f'{review.study_resource.id}{review.author.id}' for review in older_reviews]
     for _ in range(count):
@@ -65,14 +111,7 @@ def reviews_bulk(resources, users, count):
         reviews.append(review)
     models.Review.objects.bulk_create(reviews)
 
-#
-# def new_collection(user):
-#     collection = models.Collection(
-#         owner=user,
-#         name=f.text(40),
-#         description=f.text(),
-#     )
-#     collection.save()
-#     collection.resources.add(*choices(models.StudyResource.objects.all(), k=randint(1, 4)))
-#     collection.tags.add(*choices(models.Tag.objects.all(), k=randint(1, 4)))
-#     collection.technologies.add(*choices(models.Technology.objects.all(), k=randint(1, 3)))
+
+def collections_bulk(count=10):
+    for _ in range(count):
+        new_collection(choice(users))
