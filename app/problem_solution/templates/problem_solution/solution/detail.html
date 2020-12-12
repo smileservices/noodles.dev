@@ -10,7 +10,12 @@
     {% for tag in result.tags.all %}
         <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"><span></span>{{ tag }}</a>
     {% endfor %}
-    {% for tech in result.technologies.all %}
-        <a class="tech" href="{% url 'search' %}?technologies={{ tech.id }}"><span></span>{{ tech }}</a>
-    {% endfor %}
+</div>
+<div class="subsection">
+    <p class="title">Technologies implementing this solution</p>
+    <div class="list">
+        {% for tech in result.technologies.all %}
+            {% include 'problem_solution/solution/technology_result.html' with result=tech %}
+        {% endfor %}
+    </div>
 </div>

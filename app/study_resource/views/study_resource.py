@@ -20,6 +20,9 @@ from study_resource import filters
 from study_resource.models import StudyResource, StudyResourceImage
 from study_resource import serializers
 
+from technology.models import Technology
+from ..models import StudyResourceTechnology
+
 
 def search(request):
     queryset = StudyResource.objects.order_by_rating_then_publishing_date()
@@ -59,9 +62,10 @@ def detail(request, id, slug):
     data = {
         'result': resource,
         'related': related,
+        'reviews': resource.reviews.order_by('-created_at').all(),
         'MAX_RATING': settings.MAX_RATING
     }
-    return render(request, 'study_resource/detail_page.html', data)
+    return render(request, 'study_resource/detail_page_seo.html', data)
 
 
 @login_required
@@ -76,7 +80,7 @@ class StudyResourceViewset(ResourceVieset):
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
-    m2m_fields = ('tags', 'technologies')
+    #technologies and tags are saved in the serializer
 
     @action(methods=['GET'], detail=True)
     def reviews(self, request, *args, **kwargs):
@@ -120,17 +124,5 @@ class StudyResourceViewset(ResourceVieset):
             'experience_level': StudyResource.ExperienceLevel.choices
         })
 
-    def perform_create(self, serializer):
-        study_resource = super(StudyResourceViewset, self).perform_create()
-        for img_data in self.request.data['images']:
-            image = StudyResourceImage(study_resource=study_resource, image_url=img_data['url'])
-            image.save()
-
     def get_success_headers(self, data):
         return {'Location': reverse_lazy('detail', kwargs={'id': data['pk'], 'slug': data['slug']})}
-
-    def perform_destroy(self, instance):
-        if self.request.user == instance.author or self.request.user.is_superuser:
-            instance.delete()
-        else:
-            raise PermissionDenied('Only owner or admin can delete.')

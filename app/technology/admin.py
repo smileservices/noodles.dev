@@ -4,4 +4,4 @@ from .models import Technology
 
 @admin.register(Technology)
 class TechnologyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'version', 'url')
+    list_display = ('name', 'url')

@@ -19,7 +19,6 @@ def create_technologies():
             name=t,
             author=choice(users),
             description=f.text(),
-            version=f'{randint(0, 6)}.{randint(0, 30)}',
             license=choice(Technology.LicenseType.choices)[0],
             url=f.url(),
             owner=f.company(),
@@ -42,7 +41,6 @@ def create_technology_edit_suggestions():
         edsug = tech.edit_suggestions.new({
             'name': f"{tech.name} edited",
             'description': tech.description,
-            'version': tech.version,
             'license': tech.license,
             'url': tech.url,
             'owner': tech.owner,

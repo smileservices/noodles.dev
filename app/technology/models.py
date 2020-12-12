@@ -2,11 +2,12 @@ from django.db import models
 import tsvector_field
 from users.models import CustomUser
 from votable.models import VotableMixin
+from core.abstract_models import SluggableModelMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 from django_edit_suggestion.models import EditSuggestion
 
 
-class Technology(VotableMixin):
+class Technology(SluggableModelMixin, VotableMixin):
     class LicenseType(models.IntegerChoices):
         PUBLIC_DOMAIN = (0, 'public domain')
         PERMISSIVE_LICENSE = (1, 'permissive license')
@@ -18,7 +19,6 @@ class Technology(VotableMixin):
     name = models.CharField(max_length=128, db_index=True)
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
     description = models.TextField(max_length=1024)
-    version = models.CharField(max_length=128, null=True, blank=True)
     license = models.IntegerField(default=0, choices=LicenseType.choices, db_index=True)
     url = models.TextField(max_length=1024)
     owner = models.CharField(max_length=128, db_index=True)
@@ -42,10 +42,7 @@ class Technology(VotableMixin):
     ], 'english')
 
     def __str__(self):
-        return f'{self.name} {self.version}' if self.version else self.name
+        return f'{self.name}'
 
     def license_label(self):
         return self.LicenseType(self.license).label
-
-    class Meta:
-        unique_together = ['name', 'version']

@@ -20,7 +20,7 @@ class ResourceInline(admin.TabularInline):
 @admin.register(models.Collection)
 class CollectionAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
-    list_display = ('name', 'owner', 'created_at')
+    list_display = ('name', 'author', 'created_at')
     list_filter = ('created_at', 'tags', 'technologies')
     inlines = [ResourceInline, ]
 

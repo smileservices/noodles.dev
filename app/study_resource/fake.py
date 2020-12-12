@@ -5,6 +5,7 @@ from random import randint, choice, choices
 from datetime import date
 from django.conf import settings
 from django.template.defaultfilters import slugify
+from django.db.utils import IntegrityError
 
 from users.models import CustomUser
 from technology.models import Technology
@@ -51,7 +52,7 @@ def new_study_resource_review(study_resource, author):
 
 def new_collection(user=None):
     collection = models.Collection(
-        owner=user if user else choice(users),
+        author=user if user else choice(users),
         name=f.text(40),
         description=f.text(),
     )
@@ -61,7 +62,7 @@ def new_collection(user=None):
     collection.technologies.add(*choices(techs, k=randint(1, 3)))
 
 
-def study_resource_edit_suggestions(resource:models.StudyResource, author=None):
+def study_resource_edit_suggestions(resource: models.StudyResource, author=None):
     data = {
         'name': f'{resource.name} edit',
         'publication_date': resource.publication_date,
@@ -79,14 +80,21 @@ def study_resource_edit_suggestions(resource:models.StudyResource, author=None):
     edsug.technologies.set(resource.technologies.all())
 
 
-
 def study_resources_bulk(count=20):
     items = [new_study_resource(choice(users)) for _ in range(count)]
     models.StudyResource.objects.bulk_create(items)
     items = models.StudyResource.objects.all()
     for i in items:
         i.tags.add(*choices(tags, k=randint(1, 4)))
-        i.technologies.add(*choices(techs, k=randint(1, 3)))
+        for tech in choices(techs, k=randint(1,3)):
+            try:
+                models.StudyResourceTechnology.objects.create(
+                    technology=tech,
+                    study_resource=i,
+                    version=f'{randint(0, 5)}.{randint(0, 9)}.{randint(0, 9)}'
+                )
+            except IntegrityError:
+                pass
 
 
 def study_resources_edits_bulk(count=10):

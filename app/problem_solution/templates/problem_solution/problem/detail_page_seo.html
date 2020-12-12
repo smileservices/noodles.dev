@@ -1,0 +1,44 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block meta_tags %}
+    <title>{{ result.name }}</title>
+    <meta name="description"
+          content="{{ result.description }}"/>
+    <meta name="keywords" content="
+            {% for tag in result.tags.all %}{{ tag }}, {% endfor %}"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
+{% block content %}
+    <div class="detail-page">
+
+        <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
+            <section id="detail" class="card" itemprop="itemReviewed" itemscope
+                     itemtype="https://schema.org/CreativeWork">
+                {% include 'problem_solution/problem/detail.html' %}
+            </section>
+            <section id="children" class="column-container">
+                <h3>Solutions:</h3>
+                {% for solution in  solutions %}
+                    {% include 'problem_solution/solution/result.html' with result=solution %}
+                {% endfor %}
+            </section>
+            <section id="create-solution" class="column-container"></section>
+        </div>
+
+
+        <section class="related column-container">
+            <h3>Related</h3>
+            <div class="tile-container">
+                {% for result in related %}
+                    {% include 'problem_solution/problem/result.html' %}
+                {% endfor %}
+            </div>
+        </section>
+
+    </div>
+{% endblock %}

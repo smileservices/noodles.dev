@@ -40,8 +40,8 @@
 <p class="tags" itemprop="keywords">{% for tag in result.tags.all %}
     <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>
 {% endfor %}
-    {% for tech in result.technologies.all %}
-        <a class="tech" href="/technologies/{{ tech.id }}">{{ tech }}</a>
+    {% for tech in result.studyresourcetechnology_set.all %}
+        <a class="tech" href="{{ tech.absolute_url }}">{{ tech }}</a>
     {% endfor %}
 </p>
 </div>

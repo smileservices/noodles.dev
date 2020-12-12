@@ -12,23 +12,21 @@ from .serializers import TechnologySerializer, TechnologySerializerOption, Techn
 from .models import Technology
 
 
-def detail(request, id):
+def detail(request, id, slug):
     queryset = Technology.objects
     detail = queryset.get(pk=id)
-    root_tech = Technology.objects.filter(Q(name=detail.name, version__isnull=True)).exclude(pk=detail.pk)
     solutions = detail.solutions
     similar_techs = []
     for tech_list in [solution.technologies.all() for solution in solutions.all()]:
         similar_techs += tech_list
-    related_resources = []
+    related_resources_techs = detail.studyresourcetechnology_set.all()
     data = {
-        'root_tech': root_tech,
         'result': detail,
         'solutions': solutions,
         'similar': similar_techs,
-        'related_resources': related_resources,
+        'related_resources_techs': related_resources_techs,
     }
-    return render(request, 'technology/detail_page.html', data)
+    return render(request, 'technology/detail_page_seo.html', data)
 
 
 class TechViewset(ModelViewsetWithEditSuggestion):

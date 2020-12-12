@@ -26,7 +26,7 @@ class TagModelManager(models.Manager):
 
 class Tag(models.Model):
     name = models.CharField(max_length=128, db_index=True)
-    description = models.TextField(max_length=1024)
+    description = models.TextField(max_length=1024, blank=True, null=True)
     search_vector_index = tsvector_field.SearchVectorField([
         tsvector_field.WeightedColumn('name', 'A'),
         tsvector_field.WeightedColumn('description', 'B'),

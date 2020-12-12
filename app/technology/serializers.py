@@ -13,13 +13,13 @@ class TechnologySerializerOption(serializers.ModelSerializer):
 
     class Meta:
         model = Technology
-        fields = ['value', 'label', 'name', 'version']
+        fields = ['value', 'label', 'name']
 
     def get_value(self, obj):
         return obj.pk
 
     def get_label(self, obj):
-        return f'{obj.name}' if not obj.version else f'{obj.name} {obj.version}'
+        return f'{obj.name}'
 
 
 class TechnologyEditSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = Technology.edit_suggestions.model
         depth = 1
-        fields = ['pk', 'name', 'description', 'version', 'url', 'license', 'owner', 'pros', 'cons', 'limitations',
+        fields = ['pk', 'name', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations',
                   'ecosystem', 'edit_suggestion_date_created', 'edit_suggestion_author', 'edit_suggestion_status',
                   'edit_suggestion_reason', 'edit_suggestion_reject_reason', 'thumbs_up', 'thumbs_down']
 
@@ -42,7 +42,7 @@ class TechnologySerializer(EditSuggestionSerializer):
     class Meta:
         model = Technology
         depth = 1
-        fields = ['pk', 'name', 'description', 'version', 'url', 'license', 'owner', 'pros', 'cons', 'limitations',
+        fields = ['pk', 'name', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations',
                   'ecosystem', 'thumbs_up', 'thumbs_down']
 
     @staticmethod

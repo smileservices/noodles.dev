@@ -45,10 +45,18 @@
             </div>
 
             <h3>Problems:</h3>
-            <div class="results-selection tile-container" id="problems-app"></div>
+            <div class="results-selection tile-container" id="problems-app">
+                {% for p in problems %}
+                    {% include 'problem_solution/problem/result.html' with result=p %}
+                {% endfor %}
+            </div>
 
             <h3>Solutions:</h3>
-            <div class="results-selection tile-container" id="solutions-app"></div>
+            <div class="results-selection tile-container" id="solutions-app">
+                {% for s in solutions %}
+                    {% include 'problem_solution/solution/result.html' with result=s %}
+                {% endfor %}
+            </div>
         </section>
 
     </section>

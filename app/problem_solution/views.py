@@ -93,8 +93,9 @@ def problem_detail(request, id, slug):
     data = {
         'result': resource,
         'related': related,
+        'solutions': resource.solutions.all(),
     }
-    return render(request, 'problem_solution/problem/detail_page.html', data)
+    return render(request, 'problem_solution/problem/detail_page_seo.html', data)
 
 
 def solution_detail(request, id, slug):
@@ -108,5 +109,6 @@ def solution_detail(request, id, slug):
     data = {
         'result': resource,
         'related': related,
+        'problems': resource.problems.all()
     }
-    return render(request, 'problem_solution/solution/detail_page.html', data)
+    return render(request, 'problem_solution/solution/detail_page_seo.html', data)

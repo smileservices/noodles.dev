@@ -18,6 +18,7 @@ from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, Sl
 from votable.models import VotableMixin
 from django_edit_suggestion.models import EditSuggestion
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
+from django.template.defaultfilters import slugify
 
 
 class StudyResourceManager(models.Manager):
@@ -73,7 +74,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     # related fields
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='resources')
-    technologies = models.ManyToManyField(Technology, related_name='resources')
+    technologies = models.ManyToManyField(Technology, related_name='resources', through='StudyResourceTechnology')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # choices fields
@@ -85,7 +86,8 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
         tsvector_field.WeightedColumn('summary', 'B'),
     ], 'english')
     edit_suggestions = EditSuggestion(
-        excluded_fields=('created_at', 'updated_at', 'search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+        excluded_fields=(
+            'created_at', 'updated_at', 'search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),
         m2m_fields=[{'name': 'tags', 'model': Tag}, {'name': 'technologies', 'model': Technology}, ],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
@@ -120,6 +122,29 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     @property
     def experience_level_label(self):
         return self.ExperienceLevel(self.experience_level).label
+
+
+class StudyResourceTechnology(models.Model):
+    technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
+    study_resource = models.ForeignKey(StudyResource, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)  # duplicate technology value for limiting queries
+    slug = models.CharField(max_length=255)
+    version = models.CharField(max_length=128, blank=True, null=True)
+
+    class Meta:
+        unique_together = ['technology', 'study_resource']
+
+    def __str__(self):
+        return f"{self.name} {self.version}"
+
+    def save(self, *args, **kwargs):
+        self.name = self.technology.name
+        self.slug = self.technology.slug
+        return super().save(*args, **kwargs)
+
+    @property
+    def absolute_url(self):
+        return reverse('tech-detail', kwargs={'id': self.technology_id, 'slug': self.slug})
 
 
 class StudyResourceImage(models.Model):
@@ -198,7 +223,7 @@ class CollectionManager(models.Manager):
 class Collection(DateTimeModelMixin, VotableMixin):
     objects = CollectionManager()
     name = models.CharField(max_length=128)
-    owner = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)
+    author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(null=True, blank=True)
     resources = models.ManyToManyField(
         StudyResource,
@@ -209,7 +234,7 @@ class Collection(DateTimeModelMixin, VotableMixin):
     technologies = models.ManyToManyField(Technology, related_name='collections')
 
     def __str__(self):
-        return f'{self.name} by {self.owner}'
+        return f'{self.name} by {self.author}'
 
 
 class CollectionResources(models.Model):

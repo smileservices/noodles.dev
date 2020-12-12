@@ -23,6 +23,7 @@ Technologies (t):
 --------------
 a specific implementation of a solution. has version number because some features may only be available for certain version
 ex: Nginx
+have root technology + version
 
 Learning Resources (lr):
 -------------------
@@ -44,6 +45,20 @@ Rewards:
 
 
 # Implementation
+
+Content Delivery Strategy
+-------------------------
+
+SEO first strategy:
+    - home/browse/detail pages should be served with content optimized for search engines.
+        - render serverside html with all data
+        - use serverside caching for speed
+        - js used for actions and forms processing
+        !!! robots can't see data from fetch requests
+    - logged in users can access pages where content is loaded using multiple fetch requests to reduce first time rendering to a minimum
+    - pages destined only for users use reactJs mini apps
+
+========================== 
 
 ## Done:
 - users (register, rating, dashboard)
@@ -68,11 +83,24 @@ limitations on user actions
 - delete        :  only staff and resource owner can delete
 - users can rate p/s/t/lr
 
+frontend
+--------
+- technology detail page
+
+
 track history
 -------------
 - p/s/t/lr have history tracking; use django-easy-audit
 
 ## In progress:
+
+frontend
+--------
+- add login popup triggered on actions (vote/post review/create edit suggestion, etc)
+
+- homepage
+- browse page
+- search page
 
 users
 -----

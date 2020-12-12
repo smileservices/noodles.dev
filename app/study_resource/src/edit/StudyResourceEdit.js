@@ -89,14 +89,14 @@ function Content() {
                                    }}
                                    cancel={e => setEditForm(false)}/>
 
+    console.log(techs);
+
     return (
         <Fragment>
             {alert ? alert : ''}
-            <DetailStatic data={data} tags={tags} techs={techs} options={options} setEditForm={setEditForm}/>
+            <DetailStatic data={data} tags={tags} techs={techs.results} options={options} setEditForm={setEditForm}/>
         </Fragment>
     );
 }
 
-ReactDOM.render(
-    <Content/>
-    , document.getElementById('detail'));
+ReactDOM.render(<Content/>, document.getElementById('detail'));

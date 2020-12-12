@@ -13,6 +13,7 @@ from app.settings import rewards
 
 PROBLEM_VIEWSET_URL = reverse('problem-viewset-list')
 SOLUTION_VIEWSET_URL = reverse('solution-viewset-list')
+STUDY_RESOURCE_VIEWSET_URL = reverse('study-resource-viewset-list')
 
 
 class RestIntegrationTest(APITestCase):
@@ -384,7 +385,8 @@ class RestIntegrationTest(APITestCase):
         self.client.force_login(user_edit_author)
         res_update_can = self.client.put(
             reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_edit_sug.data['pk']}),
-            {'name': 'updated by author', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk], 'slug': 'haba-haba'},
+            {'name': 'updated by author', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk],
+             'slug': 'haba-haba'},
             format='json'
         )
         self.assertEqual(res_update_can.status_code, 200)
@@ -393,8 +395,52 @@ class RestIntegrationTest(APITestCase):
         self.client.force_login(user_staff)
         res_update_can = self.client.put(
             reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_edit_sug.data['pk']}),
-            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk], 'slug': 'haba-haba'},
+            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk],
+             'slug': 'haba-haba'},
             format='json'
         )
         self.assertEqual(res_update_can.status_code, 200)
         self.assertEqual(res_update_can.data['name'], 'updated by staff')
+
+    def test_create_study_resource(self):
+        user_resource_author = create_user_single()
+        self.client.force_login(user=user_resource_author)
+        response_res = self.client.post(
+            STUDY_RESOURCE_VIEWSET_URL,
+            {
+                'name': 'learning resource',
+                'summary': 'bla bla bla',
+                'publication_date': '2020-09-20',
+                'published_by': 'google',
+                'url': 'www.gibberish.com',
+                'price': 0,
+                'media': 0,
+                'experience': 0,
+                'tags': [self.tags[1].pk, self.tags[2].pk],
+                'technologies': [
+                    {
+                        'pk': self.technologies[0].pk,
+                        'version': '123',
+                    },
+                    {
+                        'pk': self.technologies[1].pk,
+                        'version': '',
+                    },
+                ]
+            },
+            format='json'
+        )
+        self.assertEqual(response_res.status_code, 201)
+        return response_res.data['pk']
+
+    def test_get_study_resource(self):
+        resource_pk = self.test_create_study_resource()
+        resource_get = self.client.get(
+            reverse('study-resource-viewset-detail', kwargs={'pk': resource_pk})
+        )
+        self.assertEqual(resource_get.status_code, 200)
+        # check that the technologies are getting through the pivot table
+        self.assertEqual(resource_get.data['technologies'][0]['name'], self.technologies[0].name)
+        self.assertEqual(resource_get.data['technologies'][0]['version'], '123')
+        self.assertEqual(resource_get.data['technologies'][1]['name'], self.technologies[1].name)
+        self.assertEqual(resource_get.data['technologies'][1]['version'], '')

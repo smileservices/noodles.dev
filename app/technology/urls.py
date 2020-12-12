@@ -7,6 +7,6 @@ router.register('as-options', TechViewsetOptions, basename='techs-options')
 router.register('', TechViewset, basename='techs-viewset')
 
 urlpatterns = [
-    path('<int:id>', detail, name='tech-detail'),
+    path('<int:id>/<slug:slug>', detail, name='tech-detail'),
     path('api/', include(router.urls)),
 ]

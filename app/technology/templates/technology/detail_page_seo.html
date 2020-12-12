@@ -1,0 +1,50 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block meta_tags %}
+    <title>{{ result.name }}</title>
+    <meta name="description"
+          content="{{ result.summary }}"/>
+    <meta name="keywords" content="
+
+
+
+            {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies.all %}{{ tech }}, {% endfor %}"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
+{% block content %}
+    <div class="detail-page">
+
+        <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
+            <section id="detail" class="card" itemprop="itemReviewed" itemscope
+                     itemtype="https://schema.org/CreativeWork">
+                {% include 'technology/detail.html' %}
+            </section>
+
+            <section class="column-container">
+                <h3>Used in solutions:</h3>
+                <div class="tile-container">
+                    {% for solution in solutions.all %}
+                        {% include 'problem_solution/solution/result.html' with result=solution %}
+                    {% endfor %}
+                </div>
+            </section>
+
+        </div>
+        <section class="related column-container">
+            <h3>Learning Resources</h3>
+            <div class="tile-container">
+                {% for resource_tech in related_resources_techs %}
+                    {% include 'study_resource/result.html' with result=resource_tech.study_resource %}
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
