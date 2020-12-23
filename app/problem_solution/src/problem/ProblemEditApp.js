@@ -4,6 +4,7 @@ import ProblemForm from "./ProblemForm";
 import EditableComponent from "../../../src/components/EditableComponent";
 import {makeId} from "../../../src/components/utils";
 import Alert from "../../../src/components/Alert";
+
 function ProblemEditApp() {
 
     const [problemData, setProblemData] = useState(getProblemData(RESULT));

@@ -75,6 +75,8 @@ class ProblemSerializer(EditSuggestionSerializer):
                   'thumbs_up', 'thumbs_down']
 
     def run_validation(self, data):
+        if data['parent'] is False:
+            del data['parent']
         if 'slug' not in data:
             data['slug'] = slugify(data['name'])
         validated_data = super().run_validation(data)

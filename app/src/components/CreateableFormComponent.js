@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import apiCreate from "../api_interface/apiCreate";
 import Alert from "./Alert";
 import {makeId} from "./utils";
@@ -13,10 +13,23 @@ export default function CreateableFormComponent({endpoint, data, extraData, Form
             endpoint,
             validatedData,
             (data) => {
+                let alert_text = (
+                    <Fragment>
+                        <span>Created successfully! You can see it </span>
+                        <a href={data.absolute_url}>here</a>
+                    </Fragment>
+                )
+                setAlert(<Alert text={alert_text} type="success"/>)
                 successCallback(data);
             },
             setWaiting,
             result => {
+                if (result.status === 500) {
+                    setAlert(<Alert key={makeId()} text={result.statusText} type="danger"
+                                        stick={true}
+                                        hideable={false} close={e => setAlert(null)}/>)
+                    return;
+                }
                 result.json().then(errors => {
                     if (errors) {
                         let flattenedErrors = {};

@@ -14,6 +14,7 @@
         const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
         const PROBLEM_ENDPOINT = "{% url 'problem-viewset-list' %}";
         const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
+        const TAGS_OPTIONS_ENDPOINT = "{% url 'tags-options-list' %}";
     </script>
     <div class="create-page">
         <section class="header">

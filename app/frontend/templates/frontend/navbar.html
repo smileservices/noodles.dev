@@ -28,7 +28,13 @@
             </section>
             {% endif %}
 
-            <a rel="nofollow noopener" href="{% url "create-resource" %}">Create</a>
+            <div class="dropdown hidden">
+                    <a rel="nofollow noopener" class="dropdown-button" href="#">{% trans "Add" %} <span class="icon-angle-down"></span></a>
+                    <div class="dropdown-menu">
+                        <a rel="nofollow noopener" href="{% url "create-resource" %}">Learning Resource</a>
+                        <a rel="nofollow noopener" href="{% url "problem-create" %}">Problem</a>
+                    </div>
+                </div>
 
             {% if user.is_authenticated %}
                 <div class="dropdown hidden">
