@@ -65,6 +65,8 @@ def detail(request, id, slug):
         'reviews': resource.reviews.order_by('-created_at').all(),
         'MAX_RATING': settings.MAX_RATING
     }
+    if request.user.is_authenticated:
+        return render(request, 'study_resource/detail_page.html', data)
     return render(request, 'study_resource/detail_page_seo.html', data)
 
 

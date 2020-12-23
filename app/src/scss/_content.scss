@@ -130,17 +130,18 @@ section.header {
   flex-direction: row;
   gap: 0.35rem;
 
-  > span {
+  > a {
     font-size: 0.9rem;
     padding: 0.5rem;
+    border-radius: 1rem;
     color: $theme-color-accent;
   }
 
-  > span.delete {
+  > a.delete {
     color: $danger;
   }
 
-  > span:hover {
+  > a:hover {
     background-color: rgba($theme-color-main, 0.2);
     transition: background-color 0.5s ease-in-out;
     border-radius: 1rem;

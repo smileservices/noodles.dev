@@ -24,7 +24,7 @@ class CollectionViewset(ModelViewSet):
 
     @action(methods=['GET'], detail=False)
     def owned(self, *args, **kwargs):
-        queryset = self.queryset.filter(owner=self.request.user.id)
+        queryset = self.queryset.filter(author=self.request.user.id)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.serializer_class(page, many=True)
@@ -35,7 +35,7 @@ class CollectionViewset(ModelViewSet):
     @action(methods=['GET'], detail=False)
     def owned_resource(self, *args, **kwargs):
         # returns all user collections and which ones contain the resource
-        all_queryset = self.queryset.filter(owner=self.request.user.id)
+        all_queryset = self.queryset.filter(author=self.request.user.id)
         selected_queryset = all_queryset.filter(resources=self.request.GET['pk'])
         all_serialized = self.serializer_class(all_queryset, many=True)
         selected_serialized = self.serializer_class(selected_queryset, many=True)
@@ -48,7 +48,7 @@ class CollectionViewset(ModelViewSet):
     def set_items(self, *args, **kwargs):
         # remove resource from unselected collections
         # add resource to all selected
-        queryset = self.queryset.filter(owner=self.request.user.id)
+        queryset = self.queryset.filter(author=self.request.user.id)
         resource_id = self.request.GET['pk']
         selected_collections = self.request.data['collections']
         for collection in queryset:
@@ -60,7 +60,7 @@ class CollectionViewset(ModelViewSet):
 
     @action(methods=['POST'], detail=False)
     def update_collection_items(self, *args, **kwargs):
-        collection = self.queryset.filter(owner=self.request.user.id).values('pk').get(pk=self.request.data['pk'])
+        collection = self.queryset.filter(author=self.request.user.id).values('pk').get(pk=self.request.data['pk'])
         # clean previous resources
         CollectionResources.objects.filter(
             collection=collection['pk'],

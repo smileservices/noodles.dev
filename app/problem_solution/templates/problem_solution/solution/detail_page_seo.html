@@ -19,13 +19,21 @@
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
+                <div class="toolbar">
+                    <a href="" class="icon-pencil edit"></a>
+                </div>
                 {% include 'problem_solution/solution/detail.html' %}
             </section>
             <section id="children" class="column-container">
+                {% if problems %}
                 <h3>Problems:</h3>
                 {% for problem in problems %}
                     {% include 'problem_solution/problem/result.html' with result=problem %}
                 {% endfor %}
+                {% else %}
+                    no problems added
+                {% endif %}
+                <a href="{% url 'account_login' %}?next={{ request.get_full_path }}">login to add problem</a>
             </section>
             <section id="create-problem" class="column-container"></section>
         </div>

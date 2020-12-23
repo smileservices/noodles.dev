@@ -7,6 +7,8 @@
     <meta name="description"
           content="{{ result.summary }}"/>
     <meta name="keywords" content="
+
+
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.studyresourcetechnologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -20,7 +22,8 @@
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
                 <div class="toolbar">
-                    <div id="add_to_collection"></div>
+                    <a href="" class="icon-pencil edit"></a>
+                    <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" class="icon-bookmark"></a>
                 </div>
                 {% include 'study_resource/detail.html' %}
             </section>
@@ -28,6 +31,7 @@
                 {% for review in reviews %}
                     {% include 'study_resource/review.html' with review=review %}
                 {% endfor %}
+                <a href="{% url 'account_login' %}?next={{ request.get_full_path }}">login to review</a>
             </section>
         </div>
 

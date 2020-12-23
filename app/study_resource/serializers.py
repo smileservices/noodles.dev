@@ -99,14 +99,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class CollectionSerializer(serializers.ModelSerializer):
     queryset = Collection.objects
-    owner = UserSerializerMinimal(many=False, read_only=True)
+    author = UserSerializerMinimal(many=False, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     technologies = TechnologySerializerOption(many=True, read_only=True)
     items_count = IntegerField(read_only=True)
 
     class Meta:
         model = Collection
-        fields = ['pk', 'name', 'description', 'created_at', 'owner', 'tags', 'technologies', 'items_count']
+        fields = ['pk', 'name', 'description', 'created_at', 'author', 'tags', 'technologies', 'items_count']
 
     def run_validation(self, data):
         validated_data = super(CollectionSerializer, self).run_validation(data)

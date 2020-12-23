@@ -17,5 +17,9 @@
         {% for tech in result.technologies.all %}
             {% include 'problem_solution/solution/technology_result.html' with result=tech %}
         {% endfor %}
+    <div class="item">
+        <a href="{% url 'account_login' %}?next={{ request.get_full_path }}">login to add technology</a>
+    </div>
     </div>
 </div>
+{% include 'vote_not_logged.html' with resource=result %}

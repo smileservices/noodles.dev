@@ -97,6 +97,7 @@ track history
 frontend
 --------
 - add login popup triggered on actions (vote/post review/create edit suggestion, etc)
+- edit suggestions and history page
 
 - homepage
 - browse page

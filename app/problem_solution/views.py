@@ -95,7 +95,17 @@ def problem_detail(request, id, slug):
         'related': related,
         'solutions': resource.solutions.all(),
     }
+    if request.user.is_authenticated:
+        return render(request, 'problem_solution/problem/detail_page.html', data)
     return render(request, 'problem_solution/problem/detail_page_seo.html', data)
+
+
+def problem_edit_suggestions(request, id):
+    data = {
+        'edit_suggestions_list_url': reverse_lazy('problem-viewset-edit-suggestions', kwargs={'pk': id}),
+        'edit_suggestions_create_url': reverse_lazy('problem-viewset-edit-suggestion-create', kwargs={'pk': id}),
+    }
+    return render(request, 'problem_solution/problem/edit_suggestion.html', data)
 
 
 def solution_detail(request, id, slug):
@@ -111,4 +121,6 @@ def solution_detail(request, id, slug):
         'related': related,
         'problems': resource.problems.all()
     }
+    if request.user.is_authenticated:
+        return render(request, 'problem_solution/solution/detail_page.html', data)
     return render(request, 'problem_solution/solution/detail_page_seo.html', data)
