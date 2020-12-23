@@ -1,0 +1,27 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block meta_tags %}
+    <title>Noodles.com - add technology</title>
+    <meta name="description"
+          content="Add a technology"/>
+{% endblock %}
+
+{% block content %}
+    <script>
+        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+        const TECH_OPTIONS_ENDPOINT = "{% url 'techs-options-list' %}";
+    </script>
+    <div class="create-page">
+        <section class="header">
+            <h1>Add new technology</h1>
+        </section>
+        <section id="create-app"></section>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'technology/technology-create.js' %}"></script>
+{% endblock %}

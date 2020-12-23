@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react"
 
-import {Input, Textarea, SelectReactCreatable} from "../../src/components/form";
+import {Input, Textarea, SelectReact} from "../../src/components/form";
 import apiPost from "../../src/api_interface/apiPost";
 import {FormElement} from "../../src/components/form";
 import Alert from "../../src/components/Alert";
@@ -9,7 +9,6 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
     const emptyForm = {
         name: false,
         description: '',
-        version: '',
         url: '',
         owner: '',
         pros: '',
@@ -89,46 +88,36 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
                 return true;
             }
         }).then(valid => {
-            if (valid) callback({...formData, name: formData.name.label});
+            if (valid) callback(formData);
         })
     }
 
-    function getOptionFromTech() {
-        let names = Array.from(new Set(technologies.map(tech => tech.name.toLowerCase())));
-        return names.map(tech => {
-            return {value: tech, label: tech}
+    function normalizeData(data) {
+        let cpd = {...data};
+        cpd.ecosystem = data.ecosystem.map(t => {
+            return t.value
         });
+        return cpd
     }
 
     return (
         <FormElement
             data={formData}
             callback={
-                formData => validate(formData, submitCallback)
+                formData => validate(normalizeData(formData), submitCallback)
             }
             alert={alert}
             waiting={waiting}
         >
             <h3>{extraData.formTitle}</h3>
-            <div className="row">
-                <SelectReactCreatable
-                    id="select-name"
-                    label="Name"
-                    smallText="Can choose one name or add a new one if necessary."
-                    value={formData['name']}
-                    onChange={selected => setFormData({...formData, name: selected})}
-                    options={getOptionFromTech()}
-                    error={errors.name}
-                />
-                <Input id="version" label="Version" inputProps={{
-                    ...makeStateProps('version'),
-                    type: 'text',
-                    disabled: Boolean(waiting)
-                }}
-                       smallText="The version of tech. Leave empty if it refers to all versions or not sure."
-                       error={errors.version}
-                />
-            </div>
+            <Input id="name" label="Name" inputProps={{
+                ...makeStateProps('name'),
+                type: 'text',
+                disabled: Boolean(waiting)
+            }}
+                   smallText="The name of the technology. Don't add version."
+                   error={errors.version}
+            />
             <Textarea id="description" label={false}
                       inputProps={{
                           ...makeStateProps('description'),
@@ -136,7 +125,7 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
                           required: true,
                           disabled: Boolean(waiting)
                       }}
-                      smallText="Write about release date, what it is about or notable changes versus previous versions."
+                      smallText="Write about release date, what problem it solves, how it does it"
                       error={errors.description}
             />
             <Input id="url" label="Url" inputProps={{
@@ -145,7 +134,7 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
                 type: 'text',
                 disabled: Boolean(waiting)
             }}
-                   smallText="Url of docs or version page"
+                   smallText="Url of docs or main page"
                    error={errors.url}
             />
             <Input id="owner" label="Tech Owner/Maintainer" inputProps={{
@@ -186,6 +175,14 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
                       }}
                       smallText="What are the limitations of this tech?"
                       error={errors.limitations}
+            />
+            <SelectReact name="select-tags" label="Ecosystem"
+                                  smallText="The other technologies it's dependant on."
+                                  onChange={selectedOptions => setFormData({...formData, ecosystem: selectedOptions})}
+                                  options={technologies}
+                                  value={formData.ecosystem}
+                                  props={{isMulti: true}}
+                                  error={errors.ecosystem}
             />
         </FormElement>
     )

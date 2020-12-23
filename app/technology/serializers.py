@@ -37,14 +37,19 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
 
 class TechnologySerializer(EditSuggestionSerializer):
     queryset = Technology.objects.all()
-    ecosystem = TechnologySerializerOption(many=True)
+    ecosystem = TechnologySerializerOption(many=True, read_only=True)
 
     class Meta:
         model = Technology
         depth = 1
-        fields = ['pk', 'name', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations',
+        fields = ['pk', 'name', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations', 'absolute_url',
                   'ecosystem', 'thumbs_up', 'thumbs_down']
 
     @staticmethod
     def get_edit_suggestion_serializer():
         return TechnologyEditSerializer
+
+    def run_validation(self, data):
+        validated_data = super().run_validation(data)
+        validated_data['ecosystem'] = data['ecosystem']
+        return validated_data

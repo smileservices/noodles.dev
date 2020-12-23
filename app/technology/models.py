@@ -5,7 +5,7 @@ from votable.models import VotableMixin
 from core.abstract_models import SluggableModelMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 from django_edit_suggestion.models import EditSuggestion
-
+from django.urls import reverse
 
 class Technology(SluggableModelMixin, VotableMixin):
     class LicenseType(models.IntegerChoices):
@@ -46,3 +46,7 @@ class Technology(SluggableModelMixin, VotableMixin):
 
     def license_label(self):
         return self.LicenseType(self.license).label
+
+    @property
+    def absolute_url(self):
+        return reverse('tech-detail', kwargs={'id': self.pk, 'slug': self.name})

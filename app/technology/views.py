@@ -1,12 +1,13 @@
 import requests
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
-
+from core.abstract_viewsets import ResourceVieset
 from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
 from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyEditSerializer
 from .models import Technology
@@ -29,7 +30,12 @@ def detail(request, id, slug):
     return render(request, 'technology/detail_page_seo.html', data)
 
 
-class TechViewset(ModelViewsetWithEditSuggestion):
+@login_required
+def create(request):
+    return render(request, 'technology/create_page.html')
+
+
+class TechViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
     serializer_class = TechnologySerializer
     queryset = TechnologySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]

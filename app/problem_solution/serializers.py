@@ -106,7 +106,7 @@ class ProblemSerializerShort(ModelSerializer):
         return obj.solutions.count()
 
 
-class SolutionEditSuggestionSerializer(EditSuggestionSerializer):
+class SolutionEditSuggestionSerializer(ModelSerializer):
     queryset = models.Solution.edit_suggestions.all()
     tags = TagSerializerSelect(many=True, read_only=True)
     technologies = TechnologySerializerOption(many=True, read_only=True)

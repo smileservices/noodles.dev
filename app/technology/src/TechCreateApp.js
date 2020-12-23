@@ -1,15 +1,15 @@
 import React, {useEffect, useState, Fragment} from "react";
 import ReactDOM from "react-dom";
-import ProblemForm from "./ProblemForm";
-import CreateableFormComponent from "../../../src/components/CreateableFormComponent";
+import CreateableFormComponent from "../../src/components/CreateableFormComponent";
+import TechForm from "./TechForm";
 
 function Content() {
 
     return (
        <div className="form-container full-page-sm">
            <CreateableFormComponent
-                endpoint={PROBLEM_ENDPOINT}
-                FormViewComponent={ProblemForm}
+                endpoint={TECH_ENDPOINT}
+                FormViewComponent={TechForm}
                 successCallback={()=>{}}
                 data={{}}
                 extraData={{}}

@@ -15,7 +15,7 @@ module.exports = {
         //study resource related
         // '/static/study_resource/study-resource-detail-reviews': './app/study_resource/src/StudyResourceDetailReviews.js',
         // '/static/study_resource/study-resource-create': './app/study_resource/src/create/StudyResourceCreate.js',
-        '/static/study_resource/study-resource-edit': './app/study_resource/src/edit/StudyResourceEdit.js',
+        // '/static/study_resource/study-resource-edit': './app/study_resource/src/edit/StudyResourceEdit.js',
         // '/static/study_resource/user-collections': './app/study_resource/src/collections/UserCollections.js',
 
         //problem-related
@@ -29,8 +29,11 @@ module.exports = {
         // '/static/problem_solution/solution-edit': './app/problem_solution/src/solution/SolutionEditApp.js',
         // '/static/problem_solution/solution-children-tree': './app/problem_solution/src/solution/ChildrenTree.js',
 
+        //technology
+        '/static/technology/technology-create': './app/technology/src/TechCreateApp.js',
+
         // admin dashboard
-        '/static/dashboard/admin/dashboard': './app/dashboard/src/main-page/App.js'
+        // '/static/dashboard/admin/dashboard': './app/dashboard/src/main-page/App.js'
     },
     output: {
         filename: '[name].js',
