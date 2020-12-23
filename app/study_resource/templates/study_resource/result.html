@@ -10,8 +10,6 @@
         <span>
         (<span itemprop="ratingCount" class="pull-right">{{ result.reviews_count }}</span> reviews)
         </span>
-    {% else %}
-        not rated
     {% endif %}
     {% if result.rank %}
         <span>{{ result.rank|floatformat:3 }} relevancy</span>
