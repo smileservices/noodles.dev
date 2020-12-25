@@ -70,6 +70,13 @@ def detail(request, id, slug):
     return render(request, 'study_resource/detail_page_seo.html', data)
 
 
+def edit(request, id):
+    data = {
+        'resource_api_url': reverse_lazy('study-resource-viewset-detail', kwargs={'pk': id})
+    }
+    return render(request, 'study_resource/edit_page.html', data)
+
+
 @login_required
 def create(request):
     return render(request, 'study_resource/create_page.html')
@@ -82,7 +89,8 @@ class StudyResourceViewset(ResourceVieset):
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
-    #technologies and tags are saved in the serializer
+
+    # technologies and tags are saved in the serializer
 
     @action(methods=['GET'], detail=True)
     def reviews(self, request, *args, **kwargs):
@@ -127,4 +135,4 @@ class StudyResourceViewset(ResourceVieset):
         })
 
     def get_success_headers(self, data):
-        return {'Location': reverse_lazy('detail', kwargs={'id': data['pk'], 'slug': data['slug']})}
+        return {'Location': reverse_lazy('study-resource-detail', kwargs={'id': data['pk'], 'slug': data['slug']})}

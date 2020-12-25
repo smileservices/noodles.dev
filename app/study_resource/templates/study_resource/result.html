@@ -19,10 +19,10 @@
     {% endif %}
 </p>
 <h2 class="title" itemprop="name">
-    <a itemprop="name" href="{% url 'detail' result.id result.slug %}">{{ result.name }}</a>
+    <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">{{ result.name }}</a>
 </h2>
     {% if result.image.image_file %}
-        <a itemprop="name" href="{% url 'detail' result.id result.slug %}">
+        <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">
             <img class="primary-image" src="{{ result.image.sizes.small }}" alt="">
         </a>
     {% endif %}

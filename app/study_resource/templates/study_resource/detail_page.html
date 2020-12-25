@@ -15,58 +15,27 @@
 
 {% block content %}
     <script>
-        const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
-        const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
-        const REVIEW_API_ENDPOINT = "{% url 'review-viewset-list' %}";
-        const REVIEWS_LIST_API_ENDPOINT = "{% url 'study-resource-viewset-reviews' result.id %}";
+        const USER_ID = {{ user.id }};
         const MAX_RATING = {{ MAX_RATING }};
         const RESOURCE_ID = {{ result.id }};
-        const HOMEPAGE = "{% url 'homepage' %}";
-        const SEARCH_URL = "{% url 'search' %}";
-        const STUDY_RESOURCE_ENDPOINT = "{% url 'study-resource-viewset-list' %}";
-        const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
-        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+        const RESOURCE_AUTHOR_ID = {{ result.author.id }};
+        const RESOURCE_EDIT_URL = "{% url 'study-resource-edit' result.id %}";
+        const RESOURCE_API_DELETE = "{% url 'study-resource-viewset-detail' result.id %}";
+
+        const REVIEW_API_ENDPOINT = "{% url 'review-viewset-list' %}";
+        const REVIEWS_LIST_API_ENDPOINT = "{% url 'study-resource-viewset-reviews' result.id %}";
+
+
         const URL_USER_COLLECTIONS = "{% url 'my-collections' %}";
         const USER_COLLECTIONS_ENDPOINT = "{% url 'collection-viewset-owned-resource' %}";
         const USER_COLLECTIONS_SET_ENDPOINT = "{% url 'collection-viewset-set-items' %}";
-        const RESOURCE_IMAGE_ENDPOINT = "{% url "resource-image-viewset-list" %}"
-        const RESULT = {
-            pk: {{ result.pk }},
-            rating: {% if result.rating %}{{ result.rating }}{% else %}false{% endif %},
-            reviews_count: {{ result.reviews_count}},
-            name: "{{ result.name|escapejs }}",
-            author: "{{ result.author|escapejs }}",
-            author_id: {{ result.author.id|escapejs }},
-            url: "{{ result.url|escapejs }}",
-            publication_date: "{{ result.publication_date|escapejs }}",
-            published_by: "{{ result.published_by|escapejs }}",
-            created_at: "{{ result.created_at|escapejs }}",
-            type: {{ result.price }},
-            media: {{ result.media }},
-            experience_level: {{ result.experience_level }},
-            summary: "{{ result.summary|escapejs }}",
-            tags: [],
-            technologies: [],
-        }
-        {% if result.image %}
-            RESULT['image'] = "{{ result.image.sizes.medium }}";
-            RESULT['image_pk'] = {{ result.image.pk }};
-            RESULT['image_url'] = "{{ result.image.image_url }}";
-        {% endif %}
-        {% for tag in result.tags.all %}
-            RESULT.tags.push({{ tag.id }});
-        {% endfor %}
-        {% for tech in result.technologies.all %}
-            RESULT.technologies.push({{ tech.id }});
-        {% endfor %}
     </script>
     <div class="detail-page">
 
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
-                <div class="toolbar">
-                    <div id="add_to_collection"></div>
+                <div id="detail-toolbar" class="toolbar">
                 </div>
                 {% include 'study_resource/detail.html' %}
             </section>
@@ -88,5 +57,5 @@
 {% block extra_js %}
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'study_resource/study-resource-detail-reviews.js' %}"></script>
-    <script src="{% static 'study_resource/study-resource-edit.js' %}"></script>
+    <script src="{% static 'study_resource/detail-toolbar.js' %}"></script>
 {% endblock %}

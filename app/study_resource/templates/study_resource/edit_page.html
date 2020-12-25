@@ -1,0 +1,15 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block content %}
+    <h3>Edit Resource Page: in progress</h3>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        const RESOURCE_API_URL = "{{ resource_api_url }}";
+    </script>
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'study_resource/study-resource-detail-reviews.js' %}"></script>
+    <script src="{% static 'study_resource/detail-toolbar.js' %}"></script>
+{% endblock %}
