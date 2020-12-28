@@ -14,14 +14,13 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from core.abstract_viewsets import ResourceVieset
+from core.abstract_viewsets import ResourceVieset, EditSuggestionViewset
 from study_resource.scrape.main import scrape_tutorial
 from study_resource import filters
 from study_resource.models import StudyResource, StudyResourceImage
 from study_resource import serializers
 
-from technology.models import Technology
-from ..models import StudyResourceTechnology
+from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
 
 
 def search(request):
@@ -72,7 +71,11 @@ def detail(request, id, slug):
 
 def edit(request, id):
     data = {
-        'resource_api_url': reverse_lazy('study-resource-viewset-detail', kwargs={'pk': id})
+        'resource_detail': reverse_lazy('study-resource-viewset-detail', kwargs={'pk': id}),
+        'edit_suggestions_list': reverse_lazy('study-resource-viewset-edit-suggestions', kwargs={'pk': id}),
+        'edit_suggestions_create': reverse_lazy('study-resource-viewset-edit-suggestions-create', kwargs={'pk': id}),
+        'edit_suggestions_publish': reverse_lazy('study-resource-viewset-edit-suggestions-publish', kwargs={'pk': id}),
+        'edit_suggestions_reject': reverse_lazy('study-resource-viewset-edit-suggestions-reject', kwargs={'pk': id}),
     }
     return render(request, 'study_resource/edit_page.html', data)
 
@@ -82,7 +85,7 @@ def create(request):
     return render(request, 'study_resource/create_page.html')
 
 
-class StudyResourceViewset(ResourceVieset):
+class StudyResourceViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
     serializer_class = serializers.StudyResourceSerializer
     queryset = serializers.StudyResourceSerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
@@ -136,3 +139,9 @@ class StudyResourceViewset(ResourceVieset):
 
     def get_success_headers(self, data):
         return {'Location': reverse_lazy('study-resource-detail', kwargs={'id': data['pk'], 'slug': data['slug']})}
+
+
+class StudyResourceEditSuggestionViewset(EditSuggestionViewset):
+    serializer_class = serializers.StudyResourceEditSuggestionSerializer
+    queryset = serializers.StudyResourceEditSuggestionSerializer.queryset
+    permission_classes = [IsAuthenticatedOrReadOnly, ]

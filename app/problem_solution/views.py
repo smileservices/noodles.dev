@@ -66,18 +66,6 @@ class SolutionViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
         return Response(serializer.data)
 
 
-class ProblemEditSuggestionViewset(EditSuggestionViewset):
-    serializer_class = serializers.ProblemEditSuggestionSerializer
-    queryset = serializers.ProblemEditSuggestionSerializer.queryset
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
-
-
-class SolutionEditSuggestionViewset(EditSuggestionViewset):
-    serializer_class = serializers.SolutionEditSuggestionSerializer
-    queryset = serializers.SolutionEditSuggestionSerializer.queryset
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
-
-
 @login_required
 def problem_create(request, *args, **kwargs):
     return render(request, 'problem_solution/problem/create_page.html')

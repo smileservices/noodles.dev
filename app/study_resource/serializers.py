@@ -5,6 +5,7 @@ from users.serializers import UserSerializerMinimal
 from django.template.defaultfilters import slugify
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from django.conf import settings
+from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
 from tag.serializers import TagSerializer
 from tag.models import Tag
 from technology.serializers import TechnologySerializer, TechnologySerializerOption
@@ -35,7 +36,60 @@ class StudyResourceTechnologySerializer(serializers.ModelSerializer):
         return obj.absolute_url
 
 
-class StudyResourceSerializer(serializers.ModelSerializer):
+class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
+    queryset = StudyResource.edit_suggestions.all()
+    author = UserSerializerMinimal(many=False, read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
+    technologies = StudyResourceTechnologySerializer(source='studyresourcetechnology_set', many=True, read_only=True)
+    edit_suggestion_author = UserSerializerMinimal(read_only=True)
+    # handling images for edit suggestions is a todo
+    # images = ImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = StudyResource.edit_suggestions.model
+        fields = ['pk', 'name', 'slug', 'url', 'summary', 'price', 'media',
+                  'experience_level', 'author', 'tags',
+                  'technologies', 'published_by',
+                  'edit_suggestion_author', 'edit_suggestion_date_created', 'thumbs_up',
+                  'thumbs_down']
+
+    def run_validation(self, data):
+        if 'slug' not in data:
+            data['slug'] = slugify(data['name'])
+        validated_data = super().run_validation(data)
+        validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
+        # validate technologies, images
+        techs = []
+        for tech in data['technologies']:
+            if tech['pk'] in techs:
+                raise AttributeError('Cannot add same technology multiple times')
+            techs.append(tech['pk'])
+        validated_data['technologies'] = data['technologies']
+        validated_data['images'] = data['images'] if 'images' in data else []
+        return validated_data
+
+    def create(self, validated_data):
+        # handle technologies and images separately
+        m2m_fields = {
+            'technologies': validated_data.pop('technologies'),
+            'images': validated_data.pop('images'),
+        }
+        study_resource = super(StudyResourceEditSuggestionSerializer, self).create(validated_data)
+        techs = Technology.objects.filter(pk__in=[t['pk'] for t in m2m_fields['technologies']])
+        for tech in techs:
+            tech_post_data = list(filter(lambda t: t['pk'] == tech.pk, m2m_fields['technologies']))[0]
+            StudyResourceTechnology.objects.create(
+                study_resource=study_resource,
+                technology=tech,
+                version=tech_post_data['version'],
+            )
+        # for img_data in m2m_fields['images']:
+        #     image = StudyResourceImage(study_resource=study_resource, image_url=img_data['url'])
+        #     image.save()
+        return study_resource
+
+
+class StudyResourceSerializer(EditSuggestionSerializer):
     queryset = StudyResource.objects.all()
     author = UserSerializerMinimal(many=False, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
@@ -49,6 +103,10 @@ class StudyResourceSerializer(serializers.ModelSerializer):
         fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'price', 'media',
                   'experience_level', 'author', 'tags',
                   'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by', 'images']
+
+    @staticmethod
+    def get_edit_suggestion_serializer():
+        return StudyResourceEditSuggestionSerializer
 
     def run_validation(self, data):
         if 'slug' not in data:

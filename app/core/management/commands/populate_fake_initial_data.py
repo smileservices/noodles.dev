@@ -114,7 +114,7 @@ class Command(BaseCommand):
 
         # resources, reviews, collections
         fake_study_resource.study_resources_bulk()
-        fake_study_resource.study_resources_edits_bulk()
+        fake_study_resource.study_resources_edits_bulk(100)
         fake_study_resource.reviews_bulk()
         fake_study_resource.collections_bulk()
         self.stdout.write(" >> Created study resources, edit suggestions, reviews, collections: done")

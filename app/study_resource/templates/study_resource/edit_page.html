@@ -7,9 +7,12 @@
 
 {% block extra_js %}
     <script>
-        const RESOURCE_API_URL = "{{ resource_api_url }}";
+        const RESOURCE_DETAIL = "{{ resource_url }}";
+        const EDIT_SUGGESTION_LIST = "{{ edit_suggestions_list }}";
+        const EDIT_SUGGESTION_CREATE = "{{ edit_suggestions_create }}";
+        const EDIT_SUGGESTION_PUBLISH = "{{ edit_suggestions_publish }}";
+        const EDIT_SUGGESTION_REJECT = "{{ edit_suggestions_reject }}";
     </script>
     <script src="{% static 'js/react-bundle.js' %}"></script>
-    <script src="{% static 'study_resource/study-resource-detail-reviews.js' %}"></script>
-    <script src="{% static 'study_resource/detail-toolbar.js' %}"></script>
+    <script src="{% static 'study_resource/edit.js' %}"></script>
 {% endblock %}

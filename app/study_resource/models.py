@@ -105,7 +105,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
 
     @property
     def absolute_url(self):
-        return reverse('detail', kwargs={'id': self.id, 'slug': self.slug})
+        return reverse('study-resource-detail', kwargs={'id': self.id, 'slug': self.slug})
 
     @property
     def image(self):

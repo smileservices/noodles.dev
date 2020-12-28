@@ -115,7 +115,7 @@ class SolutionEditSuggestionSerializer(ModelSerializer):
     edit_suggestion_author = UserSerializerMinimal(read_only=True)
 
     class Meta:
-        model = models.Solution
+        model = models.Solution.edit_suggestions.model
         fields = ['pk', 'name', 'slug', 'description', 'parent', 'tags', 'technologies', 'problems',
                   'edit_suggestion_author', 'edit_suggestion_date_created', 'edit_suggestion_parent', 'thumbs_up',
                   'thumbs_down']
