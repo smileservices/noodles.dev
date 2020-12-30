@@ -444,3 +444,32 @@ class RestIntegrationTest(APITestCase):
         self.assertEqual(resource_get.data['technologies'][0]['version'], '123')
         self.assertEqual(resource_get.data['technologies'][1]['name'], self.technologies[1].name)
         self.assertEqual(resource_get.data['technologies'][1]['version'], '')
+
+    def test_create_study_resource_edit_suggestion(self):
+        resource_pk = self.test_create_study_resource()
+        edit_author = create_user_single()
+        self.client.force_login(user=edit_author)
+        edit_data = {
+            'name': 'edited',
+            'edit_suggestion_reason': 'pula mare',
+            'summary': 'bla bla bla',
+            'publication_date': '2020-09-20',
+            'published_by': 'google',
+            'url': 'www.gibberish.com',
+            'price': 0,
+            'media': 0,
+            'experience': 0,
+            'tags': [self.tags[1].pk, self.tags[2].pk],
+            'technologies': [
+                {
+                    'pk': self.technologies[2].pk,
+                    'version': '123',
+                },
+            ]
+        }
+        response_res = self.client.put(
+            reverse('study-resource-viewset-detail', kwargs={'pk': resource_pk}),
+            edit_data,
+            format='json'
+        )
+        self.assertEqual(response_res.status_code, 201)

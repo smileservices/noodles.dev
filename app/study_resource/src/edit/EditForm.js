@@ -4,70 +4,82 @@ import {Input, SelectReact, SelectReactCreatable, Textarea} from "../../../src/c
 import apiPost from "../../../src/api_interface/apiPost";
 import apiUpdate from "../../../src/api_interface/apiUpdate";
 import CreateTech from "../create/CreateTech";
+
 import EditableComponent from "../../../src/components/EditableComponent";
 import StudyResourceImageUpdateForm from "./StudyResourceImageUpdateForm";
 import StudyResourceImageCreateForm from "./StudyResourceImageCreateForm";
 import CreateableComponent from "../../../src/components/CreateableComponent";
 
-export default function EditDetailForm({data, tags, techs, addTech, options, setData, cancel}) {
+import TechnologySelect from "../TechnologySelect";
 
-    function getLabelSingleFromArray(optionsArr, id) {
-        // optionsArr [ [val, name], ... ]
-        let el = optionsArr.filter(e => e[0] === id)[0];
-        return {value: el[0], label: el[1]};
-    }
-
-    function getLabelMultiFromArrayDicts(arr, selArr) {
-        // optionsArr [ {pk: , name: }, ... ]
-        return selArr.map(id => {
-            let el = arr.filter(e => e.pk === id)[0];
-            return {value: el.pk, label: el.name};
-        })
-    }
-
-    function getTechLabelMultiFromArrayDicts(arr, selArr) {
-        // optionsArr [ {pk: , name: }, ... ]
-        return selArr.map(id => {
-            let el = arr.filter(e => e.pk === id)[0];
-            return {value: el.pk, label: el.name + ' ' + el.version};
-        })
-    }
+export default function EditDetailForm({}) {
 
 
-    const [formData, setFormData] = useState({
-        ...data,
-        tags: getLabelMultiFromArrayDicts(tags, data.tags),
-        technologies: getTechLabelMultiFromArrayDicts(techs, data.technologies),
-        type: getLabelSingleFromArray(options.type, data.type),
-        media: getLabelSingleFromArray(options.media, data.media),
-        experience_level: getLabelSingleFromArray(options.experience_level, data.experience_level),
-    });
+    const [formData, setFormData] = useState({});
+    const [tags, setTags] = useState({});
+    const [techs, setTechs] = useState({});
+    const [options, setOptions] = useState({});
+
 
     const [errors, setErrors] = useState({});
     const [waiting, setWaiting] = useState('');
     const [alert, setAlert] = useState('');
     const [techForm, setTechForm] = useState(false);
 
-    const imageData = {
-        'image_file': data.image_file,
-        'pk': data.image_pk,
-        'image_url': data.image_url,
-        'study_resource': data.study_resource,
-    }
+    useEffect(() => {
+        //get tags and technologies
+        let tagsPromise = fetch(
+            TAG_OPTIONS_ENDPOINT, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve tags" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) setTags(data);
+        })
 
-    const getOptionFromTech = data => {
-        return {value: data.pk, label: data.name + " " + data.version}
-    };
+        let techsPromise = fetch(
+            TECH_OPTIONS_ENDPOINT, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve tags" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) setTechs(data);
+        })
 
-    const getOptionFromTag = data => {
-        return {value: data.pk, label: data.name}
-    };
+        let optionsPromise = fetch(
+            STUDY_RESOURCE_ENDPOINT + 'options/', {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve options" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) setOptions(data);
+        })
 
-    function getOptions(name) {
-        return options[name].map(o => {
-            return {value: o[0], label: o[1]}
-        });
-    }
+        fetch(
+            RESOURCE_DETAIL, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve study resource" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) setFormData(data);
+        })
+    }, []);
 
     function validate(formData, callback) {
         let vErrors = {};
@@ -75,14 +87,15 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
             STUDY_RESOURCE_ENDPOINT + 'validate_url/',
             {
                 url: formData.url,
-                pk: RESOURCE_ID
+                pk: formData.pk
             },
             setWaiting,
         ).then(result => {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert text="Could not validate url" type="danger" close={e => setAlert(null)} hideable={false} />)
+                setAlert(<Alert text="Could not validate url" type="danger" close={e => setAlert(null)}
+                                hideable={false}/>)
                 return false;
             }
         }).then(data => {
@@ -91,16 +104,21 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                 return false;
             } else return data;
         }).then(valid => {
+
             if (formData.name.length < 5) vErrors.name = 'Title is too short. It has to be at least 5 characters';
             if (formData.published_by.length < 3) vErrors.published_by = 'Author name is too short. It has to be at least 3 characters';
             if (formData.summary.length < 30) vErrors.summary = 'Summary is too short. It has to be at least 30 characters';
-            if (!formData.type) vErrors.type = 'Required';
-            if (!formData.experience_level) vErrors.experience_level = 'Required';
-            if (!formData.media) vErrors.media = 'Required';
+
+            if (typeof formData.price !== 'number' ) vErrors.type = 'Required';
+            if (typeof formData.experience_level !== 'number' ) vErrors.experience_level = 'Required';
+            if (typeof formData.media !== 'number' ) vErrors.media = 'Required';
+
             if (!formData.tags || formData.tags.length === 0) vErrors.tags = 'Choose at least one tag';
             if (!formData.technologies || formData.technologies.length === 0) vErrors.technologies = 'Choose at least one technology';
+            if (!formData.edit_suggestion_reason) vErrors.edit_suggestion_reason = 'Please write a reason for editing the current resource.';
             if (!valid || Object.keys(vErrors).length > 0) {
-                setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger" hideable={false} />)
+                setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"
+                                hideable={false}/>)
                 console.log(vErrors);
                 setErrors({...vErrors});
                 return false
@@ -116,13 +134,9 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
             return t.value
         });
         cpd.technologies = data.technologies.map(t => {
-            return t.value
+            return {pk: t.value, version: t.version};
         });
-        cpd.type = data.type.value;
-        cpd.media = data.media.value;
-        cpd.experience_level = data.experience_level.value;
         cpd.publication_date = formatDate(data.publication_date);
-        delete cpd.creation_date;
         return cpd;
     }
 
@@ -130,14 +144,17 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
         setAlert('');
         apiUpdate(
             STUDY_RESOURCE_ENDPOINT,
-            RESOURCE_ID,
+            formData.pk,
             normalizeData(formData),
             data => {
-                setData(normalizeData(formData));
+                setFormData(data);
             },
             setWaiting,
             result => {
-                setAlert(<Alert close={e => setAlert(null)} text={"Could not update."} type="danger" hideable={false} stick={false}/>);
+                result.json().then(
+                    body => setAlert(<Alert close={e => setAlert(null)} text={body.detail} type="danger" hideable={false}
+                                stick={true}/>)
+                )
             }
         )
     }
@@ -156,9 +173,6 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
 
     return (
         <div className="form-container">
-            <div className="toolbar">
-                <span className="icon-close" onClick={cancel}/>
-            </div>
             <div className="header"><h3>Edit resource</h3></div>
 
             <form action="#" onSubmit={e => {
@@ -166,7 +180,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                 validate(formData, submit);
             }}>
                 <Input
-                    id={'name'}
+                    name={'name'}
                     label="Title"
                     inputProps={{
                         disabled: Boolean(waiting),
@@ -181,7 +195,7 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
 
                 <Input
                     type="text"
-                    id='inputurl'
+                    name='inputurl'
                     label="URL"
                     inputProps={{
                         disabled: Boolean(waiting),
@@ -196,20 +210,20 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
 
                 <div className="row">
                     <Input
-                        id={'publication_date'}
+                        name={'publication_date'}
                         label="Publishing Date"
                         inputProps={{
                             disabled: Boolean(waiting),
                             type: 'date',
                             required: true,
-                            value: formatDate(formData.publication_date),
+                            value: formData.publication_date,
                             onChange: e => setFormData({...formData, publication_date: e.target.value})
                         }}
                         smallText="Date the resource was published"
                         error={errors.publication_date}
                     />
                     <Input
-                        id={'published_by'}
+                        name={'published_by'}
                         label="Author"
                         inputProps={{
                             disabled: Boolean(waiting),
@@ -222,95 +236,54 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                         error={errors.published_by}
                     />
                 </div>
-                <SelectReactCreatable id="select-tags" label="Choose tags"
+                <SelectReactCreatable name="select-tags" label="Choose tags"
                                       smallText="Can choose one or multiple or add a new one if necessary."
                                       onChange={selectedOptions => setFormData({...formData, tags: selectedOptions})}
-                                      options={tags.map(tag => getOptionFromTag(tag))}
+                                      options={tags}
                                       value={formData.tags}
                                       props={{isMulti: true}}
                                       error={errors.tags}
                                       isDisabled={Boolean(waiting)}
                 />
-                <SelectReact id="select-techs" label="Choose technologies"
-                             smallText={
-                                 <span>
-                                 <span>Choose one or more technologies. </span>
-                                 <a href="" onClick={e => {
-                                     e.preventDefault();
-                                     setTechForm(true)
-                                 }}>
-                                     Add new
-                                 </a>
-                             </span>
-                             }
-                             onChange={selectedOptions => setFormData({...formData, technologies: selectedOptions})}
-                             options={techs.map(tech => getOptionFromTech(tech))}
-                             value={formData.technologies}
-                             props={{isMulti: true}}
-                             error={errors.technologies}
-                             isDisabled={Boolean(waiting)}
+
+                <TechnologySelect techs={techs}
+                                  values={formData.technologies}
+                                  setTechnologies={techs => setFormData({...formData, technologies: techs})}
+                                  waiting={waiting}
+                                  errors={errors}
                 />
+
                 <div className="row">
                     <SelectReact label='Type'
-                                 value={formData.type}
+                                 name='price-type'
+                                 value={options['price'] ? options['price'].filter(i => i.value === formData.price) : {}}
                                  error={errors.type}
-                                 options={getOptions('type')}
-                                 onChange={sel => setFormData({...formData, type: sel})}
+                                 options={options['price']}
+                                 onChange={sel => setFormData({...formData, price: sel.value})}
                                  smallText="Free or paid"
                                  isDisabled={Boolean(waiting)}
                     />
                     <SelectReact label='Media'
-                                 value={formData.media}
+                                 name='media'
+                                 value={options['media'] ? options['media'].filter(i => i.value === formData.media) : {}}
                                  error={errors.media}
-                                 options={getOptions('media')}
-                                 onChange={sel => setFormData({...formData, media: sel})}
+                                 options={options['media']}
+                                 onChange={sel => setFormData({...formData, media: sel.value})}
                                  smallText="Media type"
                                  isDisabled={Boolean(waiting)}
                     />
                     <SelectReact label='Experience level'
-                                 value={formData.experience_level}
+                                 name='experience-level'
+                                 value={options['experience_level'] ? options['experience_level'].filter(i => i.value === formData.experience_level) : {}}
                                  error={errors.experience_level}
-                                 options={getOptions('experience_level')}
-                                 onChange={sel => setFormData({...formData, experience_level: sel})}
+                                 options={options['experience_level']}
+                                 onChange={sel => setFormData({...formData, experience_level: sel.value})}
                                  smallText="Experience level required"
                                  isDisabled={Boolean(waiting)}
                     />
                 </div>
-                {imageData.pk
-                    ? <div className="images-edit">
-                        <div style={{position: "relative"}}>
-                            <EditableComponent endpoint={RESOURCE_IMAGE_ENDPOINT} data={imageData}
-                                               DisplayViewComponent={
-                                                   ({data}) => (<img src={data.image_file} alt=""/>)
-                                               }
-                                               FormViewComponent={StudyResourceImageUpdateForm}
-                                               callback={imageData => setData({
-                                                   ...data,
-                                                   image_file: imageData.image_file,
-                                                   image_url: imageData.image_url,
-                                                   image_pk: imageData.pk,
-                                               })}
-                                               deleteCallback={()=>setData({
-                                                   ...data,
-                                                   image_file: '',
-                                                   image_url: '',
-                                                   image_pk: false,
-                                               })}
-                            />
-                        </div>
-                    </div>
-                    : <CreateableComponent endpoint={RESOURCE_IMAGE_ENDPOINT} data={imageData}
-                                           FormViewComponent={StudyResourceImageCreateForm}
-                                           callback={imageData => setData({
-                                               ...data,
-                                               image_file: imageData.image_file,
-                                               image_url: imageData.image_url,
-                                               image_pk: imageData.pk,
-                                           })}
-                    />
-                }
                 <Textarea
-                    id={'summary'}
+                    name={'summary'}
                     label="Summary"
                     inputProps={{
                         disabled: Boolean(waiting),
@@ -321,6 +294,20 @@ export default function EditDetailForm({data, tags, techs, addTech, options, set
                     smallText="What is it about"
                     error={errors.summary}
                 />
+
+                <Textarea
+                    name={'edit_suggestion_reason'}
+                    label="Edit Reason"
+                    inputProps={{
+                        disabled: Boolean(waiting),
+                        required: true,
+                        value: formData.edit_suggestion_reason,
+                        onChange: e => setFormData({...formData, edit_suggestion_reason: e.target.value})
+                    }}
+                    smallText="Short reason of why create this edit"
+                    error={errors.edit_suggestion_reason}
+                />
+
                 {alert ? alert : ''}
                 {waiting
                     ? waiting

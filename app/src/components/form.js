@@ -59,14 +59,14 @@ export function FormElement({data, children, callback, alert, waiting}) {
     )
 }
 
-export const Input = ({name, value, label, inputProps, smallText, error}) => {
+export const Input = ({name, label, inputProps, smallText, error}) => {
     return (
         <div className="form-group">
             {label
                 ? (<label htmlFor={name}>{label}</label>)
                 : ''
             }
-            <input {...inputProps} id={name} name={name} aria-describedby={name + 'help'} value={value} className={handleInputClass(error)}/>
+            <input {...inputProps} id={name} name={name} aria-describedby={name + 'help'} className={handleInputClass(error)}/>
             {smallText
                 ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
                 : ''
@@ -130,7 +130,8 @@ export const SelectVanilla = ({name, label, inputProps, smallText, error, Option
     )
 }
 
-export const SelectReact = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => (
+export const SelectReact = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => {
+    return (
     <div className="form-group">
         {label
             ? (<label htmlFor={name}>{label}</label>)
@@ -147,6 +148,7 @@ export const SelectReact = ({name, label, smallText, error, options, value, onCh
         }
     </div>
 )
+}
 
 export const SelectReactCreatable = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => (
     <div className="form-group">

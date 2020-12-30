@@ -5,7 +5,7 @@ from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
 
 from . import models
 from users.serializers import UserSerializerMinimal
-from tag.serializers import TagSerializerSelect
+from tag.serializers import TagSerializerOption
 from tag.models import Tag
 from technology.serializers import TechnologySerializerOption
 from technology.models import Technology
@@ -30,7 +30,7 @@ class ProblemSerializerMinimal(ModelSerializer):
 
 class SolutionSerializerShort(ModelSerializer):
     queryset = models.Solution.objects.all()
-    tags = TagSerializerSelect(many=True, read_only=True)
+    tags = TagSerializerOption(many=True, read_only=True)
     technologies = TechnologySerializerOption(many=True, read_only=True)
     problems_count = SerializerMethodField()
     problems = ProblemSerializerMinimal(many=True, read_only=True)
@@ -47,7 +47,7 @@ class SolutionSerializerShort(ModelSerializer):
 
 class ProblemEditSuggestionSerializer(ModelSerializer):
     queryset = models.Problem.edit_suggestions.all()
-    tags = TagSerializerSelect(many=True, read_only=True)
+    tags = TagSerializerOption(many=True, read_only=True)
     solutions = SolutionSerializerShort(many=True, read_only=True)
     parent = SolutionSerializerMinimal(read_only=True)
     edit_suggestion_author = UserSerializerMinimal(read_only=True)
@@ -63,7 +63,7 @@ class ProblemEditSuggestionSerializer(ModelSerializer):
 
 class ProblemSerializer(EditSuggestionSerializer):
     queryset = models.Problem.objects.all()
-    tags = TagSerializerSelect(many=True, read_only=True)
+    tags = TagSerializerOption(many=True, read_only=True)
     solutions = SolutionSerializerShort(many=True, read_only=True)
     parent = SolutionSerializerMinimal(read_only=True)
     author = UserSerializerMinimal(read_only=True)
@@ -94,7 +94,7 @@ class ProblemSerializer(EditSuggestionSerializer):
 
 class ProblemSerializerShort(ModelSerializer):
     queryset = models.Problem.objects.all()
-    tags = TagSerializerSelect(many=True, read_only=True)
+    tags = TagSerializerOption(many=True, read_only=True)
     solutions = SolutionSerializerMinimal(many=True, read_only=True)
     solutions_count = SerializerMethodField(read_only=True)
 
@@ -108,7 +108,7 @@ class ProblemSerializerShort(ModelSerializer):
 
 class SolutionEditSuggestionSerializer(ModelSerializer):
     queryset = models.Solution.edit_suggestions.all()
-    tags = TagSerializerSelect(many=True, read_only=True)
+    tags = TagSerializerOption(many=True, read_only=True)
     technologies = TechnologySerializerOption(many=True, read_only=True)
     parent = ProblemSerializerShort(many=False, read_only=True)
     problems = ProblemSerializerShort(many=True, read_only=True)
@@ -132,7 +132,7 @@ class SolutionEditSuggestionSerializer(ModelSerializer):
 
 class SolutionSerializer(EditSuggestionSerializer):
     queryset = models.Solution.objects.all()
-    tags = TagSerializerSelect(many=True, read_only=True)
+    tags = TagSerializerOption(many=True, read_only=True)
     technologies = TechnologySerializerOption(many=True, read_only=True)
     parent = ProblemSerializerShort(many=False, read_only=True)
     problems = ProblemSerializerShort(many=True, read_only=True)

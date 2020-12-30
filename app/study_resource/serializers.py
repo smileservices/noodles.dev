@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from django.conf import settings
 from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
-from tag.serializers import TagSerializer
+from tag.serializers import TagSerializer, TagSerializerOption
 from tag.models import Tag
 from technology.serializers import TechnologySerializer, TechnologySerializerOption
 from technology.models import Technology
@@ -58,13 +58,8 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
             data['slug'] = slugify(data['name'])
         validated_data = super().run_validation(data)
         validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
-        # validate technologies, images
-        techs = []
-        for tech in data['technologies']:
-            if tech['pk'] in techs:
-                raise AttributeError('Cannot add same technology multiple times')
-            techs.append(tech['pk'])
-        validated_data['technologies'] = data['technologies']
+        # validate technologies
+        #
         validated_data['images'] = data['images'] if 'images' in data else []
         return validated_data
 
@@ -92,7 +87,7 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
 class StudyResourceSerializer(EditSuggestionSerializer):
     queryset = StudyResource.objects.all()
     author = UserSerializerMinimal(many=False, read_only=True)
-    tags = TagSerializer(many=True, read_only=True)
+    tags = TagSerializerOption(many=True, read_only=True)
     technologies = StudyResourceTechnologySerializer(source='studyresourcetechnology_set', many=True, read_only=True)
     rating = FloatField(read_only=True)
     reviews_count = IntegerField(read_only=True)

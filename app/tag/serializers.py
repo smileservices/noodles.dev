@@ -11,7 +11,7 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ['pk', 'name', 'description']
 
 
-class TagSerializerSelect(serializers.ModelSerializer):
+class TagSerializerOption(serializers.ModelSerializer):
     queryset = Tag.objects
     label = SerializerMethodField()
     value = SerializerMethodField()

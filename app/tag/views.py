@@ -13,7 +13,7 @@ class TagViewset(ModelViewSet):
 
 
 class TagViewsetSelect(ModelViewSet):
-    serializer_class = serializers.TagSerializerSelect
-    queryset = serializers.TagSerializerSelect.queryset
+    serializer_class = serializers.TagSerializerOption
+    queryset = serializers.TagSerializerOption.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     pagination_class = None

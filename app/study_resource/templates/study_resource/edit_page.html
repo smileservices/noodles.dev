@@ -2,16 +2,23 @@
 {% load static %}
 
 {% block content %}
-    <h3>Edit Resource Page: in progress</h3>
+    <div id="edit-app"></div>
 {% endblock %}
 
 {% block extra_js %}
     <script>
-        const RESOURCE_DETAIL = "{{ resource_url }}";
+        const RESOURCE_DETAIL = "{{ resource_detail }}";
         const EDIT_SUGGESTION_LIST = "{{ edit_suggestions_list }}";
         const EDIT_SUGGESTION_CREATE = "{{ edit_suggestions_create }}";
         const EDIT_SUGGESTION_PUBLISH = "{{ edit_suggestions_publish }}";
         const EDIT_SUGGESTION_REJECT = "{{ edit_suggestions_reject }}";
+
+        const STUDY_RESOURCE_ENDPOINT = "{% url 'study-resource-viewset-list' %}";
+        const RESOURCE_IMAGE_ENDPOINT = "";
+        const TECH_OPTIONS_ENDPOINT = "{% url 'techs-options-list' %}";
+        const TAG_OPTIONS_ENDPOINT = "{% url 'tags-options-list' %}";
+        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+        const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
     </script>
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'study_resource/edit.js' %}"></script>

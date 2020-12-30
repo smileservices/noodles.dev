@@ -73,9 +73,10 @@ def edit(request, id):
     data = {
         'resource_detail': reverse_lazy('study-resource-viewset-detail', kwargs={'pk': id}),
         'edit_suggestions_list': reverse_lazy('study-resource-viewset-edit-suggestions', kwargs={'pk': id}),
-        'edit_suggestions_create': reverse_lazy('study-resource-viewset-edit-suggestions-create', kwargs={'pk': id}),
-        'edit_suggestions_publish': reverse_lazy('study-resource-viewset-edit-suggestions-publish', kwargs={'pk': id}),
-        'edit_suggestions_reject': reverse_lazy('study-resource-viewset-edit-suggestions-reject', kwargs={'pk': id}),
+        'edit_suggestions_create': reverse_lazy('study-resource-viewset-edit-suggestion-create', kwargs={'pk': id}),
+        'edit_suggestions_publish': reverse_lazy('study-resource-viewset-edit-suggestion-publish', kwargs={'pk': id}),
+        'edit_suggestions_reject': reverse_lazy('study-resource-viewset-edit-suggestion-reject', kwargs={'pk': id}),
+        'edit_suggestions_vote': reverse_lazy('study-resource-viewset-edit-suggestion-vote', kwargs={'pk': id}),
     }
     return render(request, 'study_resource/edit_page.html', data)
 
@@ -92,7 +93,6 @@ class StudyResourceViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
-
     # technologies and tags are saved in the serializer
 
     @action(methods=['GET'], detail=True)
@@ -131,10 +131,11 @@ class StudyResourceViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
 
     @action(methods=['GET'], detail=False)
     def options(self, request, *args, **kwargs):
+
         return Response({
-            'type': StudyResource.Price.choices,
-            'media': StudyResource.Media.choices,
-            'experience_level': StudyResource.ExperienceLevel.choices
+            'price': [{'value': c[0], 'label': c[1]} for c in StudyResource.Price.choices],
+            'media': [{'value': c[0], 'label': c[1]} for c in StudyResource.Media.choices],
+            'experience_level': [{'value': c[0], 'label': c[1]} for c in StudyResource.ExperienceLevel.choices]
         })
 
     def get_success_headers(self, data):
