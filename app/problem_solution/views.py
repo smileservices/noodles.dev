@@ -15,14 +15,14 @@ import problem_solution.serializers as serializers
 from problem_solution.models import Problem, Solution
 from votable.viewsets import VotableVieset
 from core.abstract_viewsets import ResourceVieset, EditSuggestionViewset
-
+from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
 
 # Create your views here.
 
 class ProblemViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
     serializer_class = serializers.ProblemSerializer
     queryset = serializers.ProblemSerializer.queryset
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [AuthorOrAdminOrReadOnly, ]
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['name', 'description', 'published_by', 'tags__name']
     m2m_fields = ('tags',)
@@ -47,7 +47,7 @@ class ProblemViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
 class SolutionViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
     serializer_class = serializers.SolutionSerializer
     queryset = serializers.SolutionSerializer.queryset
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [AuthorOrAdminOrReadOnly, ]
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['name', 'description', 'published_by', 'tags__name', 'technologies__name']
     m2m_fields = ('tags', 'technologies')
@@ -112,3 +112,15 @@ def solution_detail(request, id, slug):
     if request.user.is_authenticated:
         return render(request, 'problem_solution/solution/detail_page.html', data)
     return render(request, 'problem_solution/solution/detail_page_seo.html', data)
+
+
+class ProblemEditSuggestionViewset(VotableVieset):
+    queryset = Problem.edit_suggestions
+    serializer_class = serializers.ProblemSerializer.get_edit_suggestion_serializer()
+    permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
+
+
+class SolutionEditSuggestionViewset(VotableVieset):
+    queryset = Solution.edit_suggestions
+    serializer_class = serializers.SolutionSerializer.get_edit_suggestion_serializer()
+    permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]

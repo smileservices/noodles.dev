@@ -2,6 +2,7 @@ from votable.viewsets import VotableVieset
 from app.settings import rewards
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
+from rest_framework import status
 
 
 class ResourceVieset(VotableVieset):
@@ -23,8 +24,9 @@ class ResourceVieset(VotableVieset):
         if self.request.user.is_staff or instance.author == self.request.user:
             return super(ResourceVieset, self).update(request, *args, **kwargs)
         else:
-            raise PermissionDenied('Only staff or resource owner can update the resource.'
-                                   ' Create an edit suggestion instead.')
+            edsug = self.edit_suggestion_perform_create(instance)
+            serializer = self.serializer_class.get_edit_suggestion_serializer()
+            return Response(serializer(edsug).data, status=status.HTTP_201_CREATED)
 
     def perform_destroy(self, instance):
         if self.request.user.is_staff or instance.author == self.request.user:

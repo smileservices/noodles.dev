@@ -5,7 +5,8 @@ import problem_solution.views as views
 router = DefaultRouter()
 router.register('problems', views.ProblemViewset, basename='problem-viewset')
 router.register('solutions', views.SolutionViewset, basename='solution-viewset')
-
+router.register('problem-edit-suggestion', views.ProblemEditSuggestionViewset, basename='problem-edit-suggestion-viewset')
+router.register('solutions-edit-suggestion', views.SolutionEditSuggestionViewset, basename='solution-edit-suggestion-viewset')
 
 urlpatterns = [
     path('api/', include(router.urls)),

@@ -60,6 +60,17 @@ class ProblemEditSuggestionSerializer(ModelSerializer):
                   'edit_suggestion_author', 'edit_suggestion_date_created', 'edit_suggestion_parent', 'thumbs_up',
                   'thumbs_down']
 
+    def run_validation(self, data):
+        if 'parent' in data and data['parent'] is False:
+            del data['parent']
+        if 'slug' not in data:
+            data['slug'] = slugify(data['name'])
+        validated_data = super().run_validation(data)
+        if 'parent' in data:
+            validated_data['parent_id'] = data['parent']
+        validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
+        return validated_data
+
 
 class ProblemSerializer(EditSuggestionSerializer):
     queryset = models.Problem.objects.all()
@@ -75,7 +86,7 @@ class ProblemSerializer(EditSuggestionSerializer):
                   'thumbs_up', 'thumbs_down']
 
     def run_validation(self, data):
-        if data['parent'] is False:
+        if 'parent' in data and data['parent'] is False:
             del data['parent']
         if 'slug' not in data:
             data['slug'] = slugify(data['name'])
