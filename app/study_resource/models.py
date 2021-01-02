@@ -48,6 +48,29 @@ class StudyResourceQueryset(SearchAbleQuerysetMixin):
         )
 
 
+class StudyResourceTechnology(models.Model):
+    technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
+    study_resource = models.ForeignKey('StudyResource', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)  # duplicate technology value for limiting queries
+    slug = models.CharField(max_length=255)
+    version = models.CharField(max_length=128, blank=True, null=True)
+
+    class Meta:
+        unique_together = ['technology', 'study_resource']
+
+    def __str__(self):
+        return f"{self.name} {self.version}"
+
+    def save(self, *args, **kwargs):
+        self.name = self.technology.name
+        self.slug = self.technology.slug
+        return super().save(*args, **kwargs)
+
+    @property
+    def absolute_url(self):
+        return reverse('tech-detail', kwargs={'id': self.technology_id, 'slug': self.slug})
+
+
 class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     class Price(models.IntegerChoices):
         FREE = (0, 'free')
@@ -88,7 +111,18 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     edit_suggestions = EditSuggestion(
         excluded_fields=(
             'created_at', 'updated_at', 'search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),
-        m2m_fields=[{'name': 'tags', 'model': Tag}, {'name': 'technologies', 'model': Technology}, ],
+        m2m_fields=[
+            {'name': 'tags', 'model': Tag},
+            {
+                'name': 'technologies',
+                'model': Technology,
+                'through': {
+                    'model': StudyResourceTechnology,
+                    'self_field': 'study_resource',
+                    'child_field': 'technology'
+                }
+            },
+        ],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
@@ -122,29 +156,6 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     @property
     def experience_level_label(self):
         return self.ExperienceLevel(self.experience_level).label
-
-
-class StudyResourceTechnology(models.Model):
-    technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
-    study_resource = models.ForeignKey(StudyResource, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)  # duplicate technology value for limiting queries
-    slug = models.CharField(max_length=255)
-    version = models.CharField(max_length=128, blank=True, null=True)
-
-    class Meta:
-        unique_together = ['technology', 'study_resource']
-
-    def __str__(self):
-        return f"{self.name} {self.version}"
-
-    def save(self, *args, **kwargs):
-        self.name = self.technology.name
-        self.slug = self.technology.slug
-        return super().save(*args, **kwargs)
-
-    @property
-    def absolute_url(self):
-        return reverse('tech-detail', kwargs={'id': self.technology_id, 'slug': self.slug})
 
 
 class StudyResourceImage(models.Model):

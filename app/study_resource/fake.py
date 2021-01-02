@@ -77,7 +77,17 @@ def study_resource_edit_suggestions(resource: models.StudyResource, author=None)
     }
     edsug = resource.edit_suggestions.new(data)
     edsug.tags.set(resource.tags.all())
-    edsug.technologies.set(resource.technologies.all())
+    for tech in resource.technologies.through.objects.filter(study_resource=resource.pk).all():
+        try:
+            edsug.technologies.through.objects.create(
+                technology_id=tech.technology_id,
+                name=tech.name,
+                slug=tech.slug,
+                study_resource=edsug,
+                version=tech.version
+            )
+        except IntegrityError:
+            pass
 
 
 def study_resources_bulk(count=20):

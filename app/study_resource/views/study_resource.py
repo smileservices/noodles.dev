@@ -21,6 +21,7 @@ from study_resource.models import StudyResource, StudyResourceImage
 from study_resource import serializers
 
 from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
+from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
 
 
 def search(request):
@@ -89,10 +90,11 @@ def create(request):
 class StudyResourceViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
     serializer_class = serializers.StudyResourceSerializer
     queryset = serializers.StudyResourceSerializer.queryset
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [AuthorOrAdminOrReadOnly, ]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
+
     # technologies and tags are saved in the serializer
 
     @action(methods=['GET'], detail=True)
@@ -145,4 +147,4 @@ class StudyResourceViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
 class StudyResourceEditSuggestionViewset(EditSuggestionViewset):
     serializer_class = serializers.StudyResourceEditSuggestionSerializer
     queryset = serializers.StudyResourceEditSuggestionSerializer.queryset
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
