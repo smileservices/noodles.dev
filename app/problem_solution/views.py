@@ -14,12 +14,13 @@ from . import filters
 import problem_solution.serializers as serializers
 from problem_solution.models import Problem, Solution
 from votable.viewsets import VotableVieset
-from core.abstract_viewsets import ResourceVieset, EditSuggestionViewset
+from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
+
 
 # Create your views here.
 
-class ProblemViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
+class ProblemViewset(ResourceWithEditSuggestionVieset):
     serializer_class = serializers.ProblemSerializer
     queryset = serializers.ProblemSerializer.queryset
     permission_classes = [AuthorOrAdminOrReadOnly, ]
@@ -44,7 +45,7 @@ class ProblemViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
         return Response(serializer.data)
 
 
-class SolutionViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
+class SolutionViewset(ResourceWithEditSuggestionVieset):
     serializer_class = serializers.SolutionSerializer
     queryset = serializers.SolutionSerializer.queryset
     permission_classes = [AuthorOrAdminOrReadOnly, ]
@@ -114,13 +115,13 @@ def solution_detail(request, id, slug):
     return render(request, 'problem_solution/solution/detail_page_seo.html', data)
 
 
-class ProblemEditSuggestionViewset(VotableVieset):
+class ProblemEditSuggestionViewset(EditSuggestionViewset):
     queryset = Problem.edit_suggestions
     serializer_class = serializers.ProblemSerializer.get_edit_suggestion_serializer()
     permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
 
 
-class SolutionEditSuggestionViewset(VotableVieset):
+class SolutionEditSuggestionViewset(EditSuggestionViewset):
     queryset = Solution.edit_suggestions
     serializer_class = serializers.SolutionSerializer.get_edit_suggestion_serializer()
     permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]

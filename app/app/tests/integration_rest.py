@@ -2,7 +2,7 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from random import choice, choices
 from users.models import CustomUser
-from users.fake import create_bulk_users, create_user_single
+from users.fake import create_bulk_users, create_user_single, CustomUser
 from technology.models import Technology
 from tag.models import Tag
 from tag.fake import create_tags
@@ -10,6 +10,8 @@ from technology.fake import create_technologies
 from problem_solution.fake import create_problem, create_solution
 from problem_solution.models import Problem, Solution
 from app.settings import rewards
+
+from study_resource.models import StudyResource
 
 PROBLEM_VIEWSET_URL = reverse('problem-viewset-list')
 SOLUTION_VIEWSET_URL = reverse('solution-viewset-list')
@@ -448,10 +450,11 @@ class RestIntegrationTest(APITestCase):
     def test_create_study_resource_edit_suggestion(self):
         resource_pk = self.test_create_study_resource()
         edit_author = create_user_single()
+        publish_admin = CustomUser.objects.create(email='admin@admin.com', is_staff=True)
         self.client.force_login(user=edit_author)
         edit_data = {
             'name': 'edited',
-            'edit_suggestion_reason': 'pula mare',
+            'edit_suggestion_reason': 'test edit',
             'summary': 'bla bla bla',
             'publication_date': '2020-09-20',
             'published_by': 'google',
@@ -467,9 +470,23 @@ class RestIntegrationTest(APITestCase):
                 },
             ]
         }
-        response_res = self.client.put(
+        res_edit = self.client.put(
             reverse('study-resource-viewset-detail', kwargs={'pk': resource_pk}),
             edit_data,
             format='json'
         )
-        self.assertEqual(response_res.status_code, 201)
+        self.assertEqual(res_edit.status_code, 201)
+
+        # test publish
+        self.client.force_login(user=publish_admin)
+        url = reverse('study-resource-viewset-edit-suggestion-publish', kwargs={'pk': resource_pk})
+        res_publish = self.client.post(url, {'edit_suggestion_id': res_edit.data['pk']},
+                                                  format='json')
+        self.assertEqual(res_publish.status_code, 200)
+
+        # test if publish changed the resource accordingly, especially the m2m through field
+        resource = StudyResource.objects.get(pk=resource_pk)
+        self.assertEqual(resource.name, edit_data['name'])
+        resource_techs = resource.technologies.through.objects.filter(study_resource=resource.pk).all()
+        self.assertEqual(resource_techs[0].technology, self.technologies[2])
+        self.assertEqual(resource_techs[0].version, '123')

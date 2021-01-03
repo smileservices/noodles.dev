@@ -58,8 +58,6 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
             data['slug'] = slugify(data['name'])
         validated_data = super().run_validation(data)
         validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
-        # validate technologies
-        #
         validated_data['images'] = data['images'] if 'images' in data else []
         return validated_data
 

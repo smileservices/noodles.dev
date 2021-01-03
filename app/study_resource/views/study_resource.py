@@ -14,13 +14,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from core.abstract_viewsets import ResourceVieset, EditSuggestionViewset
+from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from study_resource.scrape.main import scrape_tutorial
 from study_resource import filters
 from study_resource.models import StudyResource, StudyResourceImage
 from study_resource import serializers
 
-from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
 from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
 
 
@@ -87,10 +86,10 @@ def create(request):
     return render(request, 'study_resource/create_page.html')
 
 
-class StudyResourceViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
+class StudyResourceViewset(ResourceWithEditSuggestionVieset):
     serializer_class = serializers.StudyResourceSerializer
     queryset = serializers.StudyResourceSerializer.queryset
-    permission_classes = [AuthorOrAdminOrReadOnly, ]
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']

@@ -119,7 +119,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
                 'through': {
                     'model': StudyResourceTechnology,
                     'self_field': 'study_resource',
-                    'child_field': 'technology'
+                    'rel_field': 'technology'
                 }
             },
         ],

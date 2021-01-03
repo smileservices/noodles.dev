@@ -7,8 +7,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
-from core.abstract_viewsets import ResourceVieset
-from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
+from core.abstract_viewsets import ResourceWithEditSuggestionVieset
 from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyEditSerializer
 from .models import Technology
 
@@ -35,7 +34,7 @@ def create(request):
     return render(request, 'technology/create_page.html')
 
 
-class TechViewset(ModelViewsetWithEditSuggestion, ResourceVieset):
+class TechViewset(ResourceWithEditSuggestionVieset):
     serializer_class = TechnologySerializer
     queryset = TechnologySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]

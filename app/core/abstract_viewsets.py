@@ -1,11 +1,12 @@
 from votable.viewsets import VotableVieset
+from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
 from app.settings import rewards
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import status
 
 
-class ResourceVieset(VotableVieset):
+class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset):
     m2m_fields = None
 
     def perform_create(self, serializer):
@@ -22,7 +23,7 @@ class ResourceVieset(VotableVieset):
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         if self.request.user.is_staff or instance.author == self.request.user:
-            return super(ResourceVieset, self).update(request, *args, **kwargs)
+            return super(ResourceWithEditSuggestionVieset, self).update(request, *args, **kwargs)
         else:
             edsug = self.edit_suggestion_perform_create(instance)
             serializer = self.serializer_class.get_edit_suggestion_serializer()
@@ -30,7 +31,7 @@ class ResourceVieset(VotableVieset):
 
     def perform_destroy(self, instance):
         if self.request.user.is_staff or instance.author == self.request.user:
-            return super(ResourceVieset, self).perform_destroy(instance)
+            return super(ResourceWithEditSuggestionVieset, self).perform_destroy(instance)
         else:
             raise PermissionDenied('Only staff or resource owner can delete the resource.')
 
