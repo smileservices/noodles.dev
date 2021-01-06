@@ -10,6 +10,7 @@ from tag.serializers import TagSerializer, TagSerializerOption
 from tag.models import Tag
 from technology.serializers import TechnologySerializer, TechnologySerializerOption
 from technology.models import Technology
+from django.urls import reverse_lazy
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -36,12 +37,25 @@ class StudyResourceTechnologySerializer(serializers.ModelSerializer):
         return obj.absolute_url
 
 
+class StudyResourceEditSuggestionListingSerializer(serializers.ModelSerializer):
+    queryset = StudyResource.edit_suggestions.all()
+    edit_suggestion_author = UserSerializerMinimal(read_only=True)
+
+    class Meta:
+        model = StudyResource.edit_suggestions.model
+        fields = ['pk',
+                  'edit_suggestion_reason', 'edit_suggestion_author', 'edit_suggestion_date_created',
+                  'thumbs_up', 'thumbs_down']
+
+
 class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
     queryset = StudyResource.edit_suggestions.all()
     author = UserSerializerMinimal(many=False, read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     technologies = StudyResourceTechnologySerializer(source='studyresourcetechnology_set', many=True, read_only=True)
     edit_suggestion_author = UserSerializerMinimal(read_only=True)
+    changes = serializers.SerializerMethodField()
+
     # handling images for edit suggestions is a todo
     # images = ImageSerializer(many=True, read_only=True)
 
@@ -50,36 +64,74 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
         fields = ['pk', 'name', 'slug', 'url', 'summary', 'price', 'media',
                   'experience_level', 'author', 'tags',
                   'technologies', 'published_by',
-                  'edit_suggestion_author', 'edit_suggestion_date_created', 'thumbs_up',
-                  'thumbs_down']
+                  'edit_suggestion_reason', 'edit_suggestion_author', 'edit_suggestion_date_created', 'changes',
+                  'thumbs_up_array', 'thumbs_down_array']
 
-    def run_validation(self, data):
-        if 'slug' not in data:
-            data['slug'] = slugify(data['name'])
-        validated_data = super().run_validation(data)
-        validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
-        validated_data['images'] = data['images'] if 'images' in data else []
-        return validated_data
+    def get_changes(self, instance):
+        # return a list of dicts with changed fields and old/new values
+        delta = instance.diff_against_parent()
+        result = []
+        for change in delta.changes:
+            if change.field == 'tags':
+                result.append({'field': change.field.capitalize(),
+                               'old': ', '.join([t.name for t in change.old]),
+                               'new': ', '.join([t.name for t in change.new])
+                               })
+            elif change.field == 'technologies':
+                result.append({'field': change.field.capitalize(),
+                               'old': ', '.join([f'{t.name} {t.version}' for t in
+                                                 delta.old_record.studyresourcetechnology_set.all()]),
+                               'new': ', '.join([
+                                   f'{t.name} {t.version}' for t in
+                                   instance.technologies.through.objects.filter(study_resource=instance.pk).all()
+                               ])
+                               })
+            elif change.field == 'media':
+                result.append({'field': change.field.capitalize(),
+                               'old': delta.old_record.media_label,
+                               'new': delta.old_record.Media(instance.media).label
+                               })
+            elif change.field == 'price':
+                result.append({'field': change.field.capitalize(),
+                               'old': delta.old_record.price_label,
+                               'new': delta.old_record.Price(instance.price).label
+                               })
+            elif change.field == 'experience_level':
+                result.append({'field': 'Experience Level',
+                               'old': delta.old_record.experience_level_label,
+                               'new': delta.old_record.ExperienceLevel(instance.experience_level).label
+                               })
+            else:
+                result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
+        return result
 
-    def create(self, validated_data):
-        # handle technologies and images separately
-        m2m_fields = {
-            'technologies': validated_data.pop('technologies'),
-            'images': validated_data.pop('images'),
-        }
-        study_resource = super(StudyResourceEditSuggestionSerializer, self).create(validated_data)
-        techs = Technology.objects.filter(pk__in=[t['pk'] for t in m2m_fields['technologies']])
-        for tech in techs:
-            tech_post_data = list(filter(lambda t: t['pk'] == tech.pk, m2m_fields['technologies']))[0]
-            StudyResourceTechnology.objects.create(
-                study_resource=study_resource,
-                technology=tech,
-                version=tech_post_data['version'],
-            )
-        # for img_data in m2m_fields['images']:
-        #     image = StudyResourceImage(study_resource=study_resource, image_url=img_data['url'])
-        #     image.save()
-        return study_resource
+    # def run_validation(self, data):
+    #     if 'slug' not in data:
+    #         data['slug'] = slugify(data['name'])
+    #     validated_data = super().run_validation(data)
+    #     validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
+    #     validated_data['images'] = data['images'] if 'images' in data else []
+    #     return validated_data
+    #
+    # def create(self, validated_data):
+    #     # handle technologies and images separately
+    #     m2m_fields = {
+    #         'technologies': validated_data.pop('technologies'),
+    #         'images': validated_data.pop('images'),
+    #     }
+    #     study_resource = super(StudyResourceEditSuggestionSerializer, self).create(validated_data)
+    #     techs = Technology.objects.filter(pk__in=[t['pk'] for t in m2m_fields['technologies']])
+    #     for tech in techs:
+    #         tech_post_data = list(filter(lambda t: t['pk'] == tech.pk, m2m_fields['technologies']))[0]
+    #         StudyResourceTechnology.objects.create(
+    #             study_resource=study_resource,
+    #             technology=tech,
+    #             version=tech_post_data['version'],
+    #         )
+    #     # for img_data in m2m_fields['images']:
+    #     #     image = StudyResourceImage(study_resource=study_resource, image_url=img_data['url'])
+    #     #     image.save()
+    #     return study_resource
 
 
 class StudyResourceSerializer(EditSuggestionSerializer):
@@ -100,6 +152,10 @@ class StudyResourceSerializer(EditSuggestionSerializer):
     @staticmethod
     def get_edit_suggestion_serializer():
         return StudyResourceEditSuggestionSerializer
+
+    @staticmethod
+    def get_edit_suggestion_listing_serializer():
+        return StudyResourceEditSuggestionListingSerializer
 
     def run_validation(self, data):
         if 'slug' not in data:
@@ -135,6 +191,29 @@ class StudyResourceSerializer(EditSuggestionSerializer):
             image = StudyResourceImage(study_resource=study_resource, image_url=img_data['url'])
             image.save()
         return study_resource
+
+    def update(self, instance, validated_data):
+        # handle technologies and images separately
+        m2m_fields = {
+            'technologies': validated_data.pop('technologies'),
+            'images': validated_data.pop('images'),
+        }
+        updated_instance = super(StudyResourceSerializer, self).update(instance, validated_data)
+        updated_instance.studyresourcetechnology_set.all().delete()
+        updated_instance.images.all().delete()
+
+        techs = Technology.objects.filter(pk__in=[t['pk'] for t in m2m_fields['technologies']])
+        for tech in techs:
+            tech_post_data = list(filter(lambda t: t['pk'] == tech.pk, m2m_fields['technologies']))[0]
+            StudyResourceTechnology.objects.create(
+                study_resource=updated_instance,
+                technology=tech,
+                version=tech_post_data['version'],
+            )
+        for img_data in m2m_fields['images']:
+            image = StudyResourceImage(study_resource=instance, image_url=img_data['url'])
+            image.save()
+        return updated_instance
 
 
 class ReviewSerializer(serializers.ModelSerializer):

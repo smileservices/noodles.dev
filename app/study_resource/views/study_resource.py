@@ -69,14 +69,13 @@ def detail(request, id, slug):
     return render(request, 'study_resource/detail_page_seo.html', data)
 
 
+@login_required
 def edit(request, id):
     data = {
         'resource_detail': reverse_lazy('study-resource-viewset-detail', kwargs={'pk': id}),
         'edit_suggestions_list': reverse_lazy('study-resource-viewset-edit-suggestions', kwargs={'pk': id}),
-        'edit_suggestions_create': reverse_lazy('study-resource-viewset-edit-suggestion-create', kwargs={'pk': id}),
         'edit_suggestions_publish': reverse_lazy('study-resource-viewset-edit-suggestion-publish', kwargs={'pk': id}),
         'edit_suggestions_reject': reverse_lazy('study-resource-viewset-edit-suggestion-reject', kwargs={'pk': id}),
-        'edit_suggestions_vote': reverse_lazy('study-resource-viewset-edit-suggestion-vote', kwargs={'pk': id}),
     }
     return render(request, 'study_resource/edit_page.html', data)
 
@@ -95,6 +94,30 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
 
     # technologies and tags are saved in the serializer
+    def edit_suggestion_handle_m2m_through_field(self, instance, f):
+        # overriding the edit_suggestion method to handle technologies
+        '''
+            handles data of through in this format:
+            [{
+                'pk': {{child pk}},
+                ...extra fields
+            },]
+
+            instance  edit suggestion instance
+            f         tracked field information (the one supplied in the models when setting up edit suggestion)
+        '''
+        m2m_field = getattr(instance, f['name'])
+        through_data = self.request.data[f['name']]
+        m2m_objects_id_list = [o['pk'] for o in through_data]
+        m2m_objects = [obj for obj in f['model'].objects.filter(pk__in=m2m_objects_id_list)]
+        for idx, m2m_obj in enumerate(m2m_objects):
+            data = through_data[idx]
+            data[f['through']['self_field']] = instance
+            data[f['through']['rel_field']] = m2m_obj
+            if f['name'] == 'technologies':
+                data['name'] = m2m_obj.name
+            del data['pk']
+            m2m_field.through.objects.create(**data)
 
     @action(methods=['GET'], detail=True)
     def reviews(self, request, *args, **kwargs):

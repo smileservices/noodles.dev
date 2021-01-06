@@ -49,4 +49,4 @@ class Technology(SluggableModelMixin, VotableMixin):
 
     @property
     def absolute_url(self):
-        return reverse('tech-detail', kwargs={'id': self.pk, 'slug': self.name})
+        return reverse('tech-detail', kwargs={'id': self.pk, 'slug': self.slug})

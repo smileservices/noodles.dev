@@ -7,11 +7,13 @@
 
 {% block extra_js %}
     <script>
+        const USER_ID = {{ request.user.id }};
         const RESOURCE_DETAIL = "{{ resource_detail }}";
+
         const EDIT_SUGGESTION_LIST = "{{ edit_suggestions_list }}";
-        const EDIT_SUGGESTION_CREATE = "{{ edit_suggestions_create }}";
         const EDIT_SUGGESTION_PUBLISH = "{{ edit_suggestions_publish }}";
         const EDIT_SUGGESTION_REJECT = "{{ edit_suggestions_reject }}";
+        const EDIT_SUGGESTIONS_API = "{% url 'study-resource-edit-suggestions-viewset-list' %}"
 
         const STUDY_RESOURCE_ENDPOINT = "{% url 'study-resource-viewset-list' %}";
         const RESOURCE_IMAGE_ENDPOINT = "";

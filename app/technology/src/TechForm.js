@@ -7,7 +7,7 @@ import Alert from "../../src/components/Alert";
 
 export default function TechForm({data, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
     const emptyForm = {
-        name: false,
+        name: '',
         description: '',
         url: '',
         owner: '',

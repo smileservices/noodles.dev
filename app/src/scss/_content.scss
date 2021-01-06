@@ -149,6 +149,30 @@ section.header {
   }
 }
 
+.alert-toolbar {
+  position: absolute;
+  right: 0.1rem;
+  top: 0.1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.35rem;
+
+  > span {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    color: $theme-color-accent;
+  }
+
+  > span:hover {
+    background-color: rgba($theme-color-main, 0.2);
+    transition: background-color 0.5s ease-in-out;
+    border-radius: 1rem;
+    cursor: pointer;
+  }
+}
+
+
 .confirm {
   color: $danger;
 

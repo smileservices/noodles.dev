@@ -1,7 +1,13 @@
 import React, {useState, useEffect, Fragment} from "react";
 import {Input, SelectReact} from "../../src/components/form";
+import CreateableComponent from "../../src/components/CreateableComponent";
+import TechForm from "../../technology/src/TechForm";
 
-export default function TechnologySelect({techs, values, setTechnologies, waiting, errors}) {
+
+export default function TechnologySelect({techs, values, setTechnologies, addNewTech, waiting, errors}) {
+    // setTechnologies is for selected option including version
+    // addNewTech is for handling creation of new technology through API
+
     // use for displaying technology and adding version
     let emptyForm = {
         'name': '',
@@ -49,10 +55,17 @@ export default function TechnologySelect({techs, values, setTechnologies, waitin
                     }}>remove</a>
                 </div>)
             ) : ''}
-            <a href="" onClick={e=>{
+            <span href="" onClick={e=>{
                 e.preventDefault();
                 setTechnologies([...values, emptyForm]);
-            }}>add new</a>
+            }}>add new</span>
+            <CreateableComponent
+                endpoint={TECH_ENDPOINT}
+                data={{}}
+                extraData={{addButtonText: 'create technology', formTitle: 'Create New Technology'}}
+                FormViewComponent={TechForm}
+                successCallback={data=>addNewTech(data)}
+            />
         </Fragment>
     );
 }

@@ -4,12 +4,12 @@ import {makeId} from "./utils";
 export default function Alert({text, type, hideable = true, stick = true, close}) {
     const defaultClassName = "fade alert alert-" + type;
 
-    const id = useState(makeId(5));
+    const id = makeId(5);
     const [className, setClassName] = useState(defaultClassName);
     const [alertEl, setAlertEl] = useState((
         <div key={id} id={id} className={className} role="alert">
             {hideable
-                ? <div className="toolbar"><span className="icon-close close" onClick={e => fadeOut()}/></div>
+                ? <div className="alert-toolbar"><span className="icon-close close" onClick={e => fadeOut()}/></div>
                 : ''
             }
             {text}

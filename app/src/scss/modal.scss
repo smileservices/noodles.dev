@@ -31,3 +31,12 @@ body.modal-open {
   margin: 1.75rem auto;
   flex-grow: 1;
 }
+
+.modal-content.has-toolbar {
+  margin-top: 2rem;
+
+  .toolbar {
+    margin-top: 1.75rem;
+    margin-right: 1.75rem;
+  }
+}

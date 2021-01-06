@@ -475,7 +475,7 @@ class RestIntegrationTest(APITestCase):
             edit_data,
             format='json'
         )
-        self.assertEqual(res_edit.status_code, 201)
+        self.assertEqual(res_edit.status_code, 209)
 
         # test publish
         self.client.force_login(user=publish_admin)

@@ -5,26 +5,32 @@ import apiPost from "../../../src/api_interface/apiPost";
 import apiUpdate from "../../../src/api_interface/apiUpdate";
 import CreateTech from "../create/CreateTech";
 
-import EditableComponent from "../../../src/components/EditableComponent";
 import StudyResourceImageUpdateForm from "./StudyResourceImageUpdateForm";
 import StudyResourceImageCreateForm from "./StudyResourceImageCreateForm";
-import CreateableComponent from "../../../src/components/CreateableComponent";
 
 import TechnologySelect from "../TechnologySelect";
 
-export default function EditDetailForm({}) {
-
+export default function EditDetailForm({addEditSuggestion}) {
 
     const [formData, setFormData] = useState({});
+    const [originalData, setOriginalData] = useState({});
     const [tags, setTags] = useState({});
     const [techs, setTechs] = useState({});
     const [options, setOptions] = useState({});
-
 
     const [errors, setErrors] = useState({});
     const [waiting, setWaiting] = useState('');
     const [alert, setAlert] = useState('');
     const [techForm, setTechForm] = useState(false);
+
+    function resetForm() {
+        setFormData({
+            ...originalData,
+            'edit_suggestion_reason': ''
+        });
+
+    }
+
 
     useEffect(() => {
         //get tags and technologies
@@ -77,7 +83,10 @@ export default function EditDetailForm({}) {
                 return false;
             }
         }).then(data => {
-            if (data) setFormData(data);
+            if (data) {
+                setFormData(data);
+                setOriginalData(data);
+            }
         })
     }, []);
 
@@ -104,14 +113,13 @@ export default function EditDetailForm({}) {
                 return false;
             } else return data;
         }).then(valid => {
-
             if (formData.name.length < 5) vErrors.name = 'Title is too short. It has to be at least 5 characters';
             if (formData.published_by.length < 3) vErrors.published_by = 'Author name is too short. It has to be at least 3 characters';
             if (formData.summary.length < 30) vErrors.summary = 'Summary is too short. It has to be at least 30 characters';
 
-            if (typeof formData.price !== 'number' ) vErrors.type = 'Required';
-            if (typeof formData.experience_level !== 'number' ) vErrors.experience_level = 'Required';
-            if (typeof formData.media !== 'number' ) vErrors.media = 'Required';
+            if (typeof formData.price !== 'number') vErrors.type = 'Required';
+            if (typeof formData.experience_level !== 'number') vErrors.experience_level = 'Required';
+            if (typeof formData.media !== 'number') vErrors.media = 'Required';
 
             if (!formData.tags || formData.tags.length === 0) vErrors.tags = 'Choose at least one tag';
             if (!formData.technologies || formData.technologies.length === 0) vErrors.technologies = 'Choose at least one technology';
@@ -119,10 +127,12 @@ export default function EditDetailForm({}) {
             if (!valid || Object.keys(vErrors).length > 0) {
                 setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"
                                 hideable={false}/>)
-                console.log(vErrors);
                 setErrors({...vErrors});
                 return false
-            } else return true
+            } else {
+                setErrors({});
+                return true;
+            }
         }).then(valid => {
             if (valid) callback(formData);
         })
@@ -134,7 +144,7 @@ export default function EditDetailForm({}) {
             return t.value
         });
         cpd.technologies = data.technologies.map(t => {
-            return {pk: t.value, version: t.version};
+            return {pk: t.technology_id, version: t.version};
         });
         cpd.publication_date = formatDate(data.publication_date);
         return cpd;
@@ -147,13 +157,25 @@ export default function EditDetailForm({}) {
             formData.pk,
             normalizeData(formData),
             data => {
-                setFormData(data);
+                // handle differently if it's edit suggestion or direct update
+                if (data['edit_suggestion_author']) {
+                    setAlert(<Alert close={e => setAlert(null)} text="Successfully created an edit suggestion"
+                                    type="success"
+                                    hideable={false}/>)
+                    resetForm();
+                    addEditSuggestion(data);
+                } else {
+                    setAlert(<Alert close={e => setAlert(null)} text="Successfully edited the resource" type="success"
+                                    hideable={false}/>)
+                    setFormData(data);
+                }
             },
             setWaiting,
             result => {
                 result.json().then(
-                    body => setAlert(<Alert close={e => setAlert(null)} text={body.detail} type="danger" hideable={false}
-                                stick={true}/>)
+                    body => setAlert(<Alert close={e => setAlert(null)} text={body.detail} type="danger"
+                                            hideable={false}
+                                            stick={true}/>)
                 )
             }
         )
@@ -172,13 +194,11 @@ export default function EditDetailForm({}) {
         }}/>
 
     return (
-        <div className="form-container">
-            <div className="header"><h3>Edit resource</h3></div>
-
-            <form action="#" onSubmit={e => {
+        <form onSubmit={e => {
                 e.preventDefault();
                 validate(formData, submit);
             }}>
+            <div className="header"><h3>Edit resource</h3></div>
                 <Input
                     name={'name'}
                     label="Title"
@@ -249,6 +269,7 @@ export default function EditDetailForm({}) {
                 <TechnologySelect techs={techs}
                                   values={formData.technologies}
                                   setTechnologies={techs => setFormData({...formData, technologies: techs})}
+                                  addNewTech={data => setTechs([...techs, {value: data.pk, label: data.name}])}
                                   waiting={waiting}
                                   errors={errors}
                 />
@@ -313,7 +334,6 @@ export default function EditDetailForm({}) {
                     ? waiting
                     : <button className="btn submit" type="submit">Update</button>
                 }
-            </form>
-        </div>
+        </form>
     )
 }

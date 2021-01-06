@@ -4,6 +4,15 @@ import Alert from "../../src/components/Alert";
 
 export default function Thumbs({thumbs_obj, url_endpoint, user_id}) {
 
+    /*
+    *
+    *   thumbs_obj = {
+    *        up: int,
+    *        down: int
+    *     };
+    *
+    * */
+
     const [alert, setAlert] = useState('');
     const [waiting, setWaiting] = useState('');
     const [thumbs, setThumbs] = useState(thumbs_obj);

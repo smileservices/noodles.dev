@@ -4,6 +4,7 @@ from app.settings import rewards
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 from rest_framework import status
+from core.status import HTTP_209_EDIT_SUGGESTION_CREATED
 
 
 class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset):
@@ -27,7 +28,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
         else:
             edsug = self.edit_suggestion_perform_create(instance)
             serializer = self.serializer_class.get_edit_suggestion_serializer()
-            return Response(serializer(edsug).data, status=status.HTTP_201_CREATED)
+            return Response(serializer(edsug).data, status=HTTP_209_EDIT_SUGGESTION_CREATED)
 
     def perform_destroy(self, instance):
         if self.request.user.is_staff or instance.author == self.request.user:
