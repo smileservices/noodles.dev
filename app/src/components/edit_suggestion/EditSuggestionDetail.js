@@ -59,9 +59,9 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
         )
     }
 
-    async function edit_suggestion_action(url, rejectReason) {
+    async function edit_suggestion_action(url, type) {
         let data = {'edit_suggestion_id': pk};
-        if (rejectReason) data['edit_suggestion_reject_reason'] = rejectReason;
+        if (type==='reject') data['edit_suggestion_reject_reason'] = rejectReason;
 
         await apiPost(url, data, setWaiting)
             .then(result => {
@@ -98,7 +98,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
 
                 <a href="" onClick={e => {
                     e.preventDefault();
-                    edit_suggestion_action(api_urls['publish']);
+                    edit_suggestion_action(api_urls['publish'], 'publish');
                 }}>publish</a>
                 <a href="" onClick={e => {
                     e.preventDefault();
@@ -137,7 +137,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
             <div className="row">
                 <button className="btn submit" type="submit"
                         onClick={e => {
-                            edit_suggestion_action(api_urls['reject'], rejectReason);
+                            edit_suggestion_action(api_urls['reject'], 'reject');
                             setRejectForm(false);
                         }}>
                     Reject

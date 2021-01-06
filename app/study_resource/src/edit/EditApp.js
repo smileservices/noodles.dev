@@ -19,6 +19,7 @@ function EditApp() {
     const [editSuggestionsWaiting, setEditSuggestionsWaiting] = useState(false);
     const [editSuggestionsAlert, setEditSuggestionsAlert] = useState(false);
 
+
     useEffect(() => {
         //get edit suggestions
         apiList(
