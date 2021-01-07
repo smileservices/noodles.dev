@@ -58,6 +58,9 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
         if (formData.cons.length < 5) vErr.cons = 'Bad points cannot be empty. Add at least 5 characters';
         if (formData.limitations.length < 30) vErr.limitations = 'Limitations cannot be empty. Add at least 30 characters';
         if (formData.owner.length < 5) vErr.owner = 'Owner/Maintainer name is too short, has to be at least 5 characters';
+        if (extraData.formElements) {
+            extraData.formElements.validate(formData, vErr);
+        }
         setErrors(vErr);
         if (Object.keys(vErr).length > 0) {
             setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)
@@ -177,13 +180,14 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
                       error={errors.limitations}
             />
             <SelectReact name="select-tags" label="Ecosystem"
-                                  smallText="The other technologies it's dependant on."
-                                  onChange={selectedOptions => setFormData({...formData, ecosystem: selectedOptions})}
-                                  options={technologies}
-                                  value={formData.ecosystem}
-                                  props={{isMulti: true}}
-                                  error={errors.ecosystem}
+                         smallText="The other technologies it's dependant on."
+                         onChange={selectedOptions => setFormData({...formData, ecosystem: selectedOptions})}
+                         options={technologies}
+                         value={formData.ecosystem}
+                         props={{isMulti: true}}
+                         error={errors.ecosystem}
             />
+            {extraData.formElements ? extraData.formElements.get_list(formData, setFormData, waiting, errors) : ''}
         </FormElement>
     )
 }

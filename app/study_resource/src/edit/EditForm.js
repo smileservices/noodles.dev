@@ -12,6 +12,13 @@ import TechnologySelect from "../TechnologySelect";
 
 export default function EditDetailForm({addEditSuggestion}) {
 
+    /*
+    *   TODO refactor using the reusable FormElement + ResourceForm paradigm
+    *   TODO handle images
+    *
+    *
+    * */
+
     const [formData, setFormData] = useState({});
     const [originalData, setOriginalData] = useState({});
     const [tags, setTags] = useState({});

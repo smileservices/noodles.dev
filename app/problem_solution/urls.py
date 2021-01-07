@@ -10,7 +10,8 @@ router.register('solutions-edit-suggestion', views.SolutionEditSuggestionViewset
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('problem/<int:id>/edit-suggestions/', views.problem_edit_suggestions, name='problem-edit-suggestions'),
+    path('problem/<int:id>/edit/', views.problem_edit, name='problem-edit'),
+    path('solution/<int:id>/edit/', views.solution_edit, name='solution-edit'),
     path('problem/<int:id>/<slug:slug>', views.problem_detail, name='problem-detail'),
     path('solution/<int:id>/<slug:slug>', views.solution_detail, name='solution-detail'),
     path('create/problem/', views.problem_create, name='problem-create'),

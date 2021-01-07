@@ -20,7 +20,7 @@
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
                 <div class="toolbar">
-                    <a href="{% url 'problem-edit-suggestions' id=result.pk %}" class="icon-pencil edit"></a>
+                    <a href="{% url 'problem-edit' id=result.pk %}">edit</a>
                 </div>
                 {% include 'problem_solution/problem/detail.html' %}
             </section>

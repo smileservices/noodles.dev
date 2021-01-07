@@ -1,11 +1,12 @@
 import React, {useState, useEffect, Fragment} from "react"
 import ReactDOM from "react-dom";
 import Alert from "../../../src/components/Alert";
-import EditForm from "./EditForm";
 import apiList from "../../../src/api_interface/apiList";
 import PaginatedLayout from "../../../src/components/PaginatedLayout";
 import EditSuggestionListing from "../../../src/components/edit_suggestion/EditSuggestionListing";
 import {remove_modal_class_from_body} from "../../../src/vanilla/modal";
+
+import EditForm from "./EditForm";
 
 function EditApp() {
     const [editSuggestions, setEditSuggestions] = useState([]);
@@ -25,7 +26,8 @@ function EditApp() {
             editSuggestionsPagination,
             setEditSuggestions,
             setEditSuggestionsWaiting,
-            err => setEditSuggestionsAlert(<Alert close={e => setEditSuggestionsAlert(null)} text={err} type="danger"/>),
+            err => setEditSuggestionsAlert(<Alert close={e => setEditSuggestionsAlert(null)} text={err}
+                                                  type="danger"/>),
             {'status': 0}
         )
     }, [editSuggestionsPagination,]);
@@ -51,7 +53,7 @@ function EditApp() {
                                      (item, idx) => <EditSuggestionListing
                                          key={"edit_suggestion_" + item.pk}
                                          data={item}
-                                         deleteCallback={()=>{
+                                         deleteCallback={() => {
                                              resetEditSuggestionPagination();
                                              remove_modal_class_from_body();
                                          }}
@@ -59,7 +61,7 @@ function EditApp() {
                                              detail: EDIT_SUGGESTIONS_API,
                                              publish: EDIT_SUGGESTION_PUBLISH,
                                              reject: EDIT_SUGGESTION_REJECT,
-                                             vote: EDIT_SUGGESTIONS_API+item.pk+'/vote/'
+                                             vote: EDIT_SUGGESTIONS_API + item.pk + '/vote/'
                                          }}
                                      />
                                  }

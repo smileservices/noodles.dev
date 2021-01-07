@@ -314,14 +314,14 @@ class RestIntegrationTest(APITestCase):
             format='json'
         )
 
-        # canot update
+        # update results in edit suggestion being created
         self.client.force_login(user_cannot_update)
         res_update_cannot = self.client.put(
             reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}),
-            {'name': 'cannot edit'},
+            {'name': 'cannot edit', 'edit_suggestion_reason': 'some reason'},
             format='json'
         )
-        self.assertEqual(res_update_cannot.status_code, 403)
+        self.assertEqual(res_update_cannot.status_code, 209)
 
         # can update
         self.client.force_login(user_resource_author)

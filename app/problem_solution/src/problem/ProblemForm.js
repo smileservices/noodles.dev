@@ -4,12 +4,16 @@ import {SelectReactCreatable} from "../../../src/components/form";
 import Alert from "../../../src/components/Alert";
 
 export default function ProblemForm({data, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
+
+    //todo add PARENT dropdown
+
     const emptyData = {
         'name': '',
         'description': '',
         'tags': [],
         'parent': false,
     }
+
     const [formData, setFormData] = useState(Object.assign({}, emptyData, data));
     const [tags, setTags] = useState([]);
 
@@ -39,7 +43,6 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
                 setFormData(clonedFormData);
             }
         }
-
         return {
             onChange: updateValue(name),
             value: formData[name]
@@ -51,6 +54,8 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
         cpd.tags = data.tags.map(t => {
             return t.value
         });
+        cpd.parent_id = data.parent.pk
+        delete cpd.parent;
         return cpd
     }
 
@@ -59,6 +64,9 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
         if (normalizedData.name.length < 5) vErr.name = 'Title is too short. It has to be at least 5 characters';
         if (normalizedData.description.length < 30) vErr.description = 'Description is too short. It has to be at least 30 characters';
         if (normalizedData.tags.length === 0) vErr.tags = 'Choose at least one tag';
+        if (extraData.formElements) {
+            extraData.formElements.validate(normalizedData, vErr);
+        }
         setErrors(vErr);
         if (Object.keys(vErr).length > 0) {
             setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)
@@ -75,7 +83,7 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
                      waiting={waiting}
         >
             <Input type="text" name="name" label="Name"
-                   inputProps={{...makeStateProps('name'), defaultValue: data['name']}}
+                   inputProps={{...makeStateProps('name')}}
                    smallText="A title for the problem"
                    error={errors['name']}
             />
@@ -92,6 +100,7 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
                                   props={{isMulti: true}}
                                   error={errors.tags}
             />
+            { extraData.formElements ? extraData.formElements.get_list(formData, setFormData, waiting, errors) : '' }
         </FormElement>
     )
 }

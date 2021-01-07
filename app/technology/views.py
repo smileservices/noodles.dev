@@ -1,13 +1,15 @@
 import requests
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 from django.db.models import Q
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
-from core.abstract_viewsets import ResourceWithEditSuggestionVieset
+from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
+from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
 from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyEditSerializer
 from .models import Technology
 
@@ -34,6 +36,23 @@ def create(request):
     return render(request, 'technology/create_page.html')
 
 
+@login_required
+def edit(request, id):
+    data = {
+        'resource_detail': reverse_lazy('techs-viewset-detail', kwargs={'pk': id}),
+        'resource_endpoint': reverse_lazy('techs-viewset-list'),
+
+        'edit_suggestions_list': reverse_lazy('techs-viewset-edit-suggestions', kwargs={'pk': id}),
+        'edit_suggestions_publish': reverse_lazy('techs-viewset-edit-suggestion-publish', kwargs={'pk': id}),
+        'edit_suggestions_reject': reverse_lazy('techs-viewset-edit-suggestion-reject', kwargs={'pk': id}),
+
+        'edit_suggestions_api': reverse_lazy('techs-edit-suggestions-viewset-list'),
+        'tag_options_endpoint': reverse_lazy('tags-options-list'),
+        'tech_options_endpoint': reverse_lazy('techs-options-list'),
+    }
+    return render(request, 'technology/edit_page.html', data)
+
+
 class TechViewset(ResourceWithEditSuggestionVieset):
     serializer_class = TechnologySerializer
     queryset = TechnologySerializer.queryset
@@ -58,6 +77,12 @@ class TechViewset(ResourceWithEditSuggestionVieset):
         return Response({
             'error': False
         })
+
+
+class TechEditSuggestionViewset(EditSuggestionViewset):
+    queryset = Technology.edit_suggestions
+    serializer_class = TechnologySerializer.get_edit_suggestion_serializer()
+    permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
 
 
 class TechViewsetOptions(ModelViewSet):

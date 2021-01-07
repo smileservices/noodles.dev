@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 
 from . import filters
 import problem_solution.serializers as serializers
@@ -23,8 +24,8 @@ from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdmi
 class ProblemViewset(ResourceWithEditSuggestionVieset):
     serializer_class = serializers.ProblemSerializer
     queryset = serializers.ProblemSerializer.queryset
-    permission_classes = [AuthorOrAdminOrReadOnly, ]
-    filter_backends = [SearchFilter, OrderingFilter]
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     search_fields = ['name', 'description', 'published_by', 'tags__name']
     m2m_fields = ('tags',)
 
@@ -89,14 +90,6 @@ def problem_detail(request, id, slug):
     return render(request, 'problem_solution/problem/detail_page_seo.html', data)
 
 
-def problem_edit_suggestions(request, id):
-    data = {
-        'edit_suggestions_list_url': reverse_lazy('problem-viewset-edit-suggestions', kwargs={'pk': id}),
-        'edit_suggestions_create_url': reverse_lazy('problem-viewset-edit-suggestion-create', kwargs={'pk': id}),
-    }
-    return render(request, 'problem_solution/problem/edit_suggestion.html', data)
-
-
 def solution_detail(request, id, slug):
     queryset = Solution.objects
     resource = queryset.get(pk=id)
@@ -113,6 +106,37 @@ def solution_detail(request, id, slug):
     if request.user.is_authenticated:
         return render(request, 'problem_solution/solution/detail_page.html', data)
     return render(request, 'problem_solution/solution/detail_page_seo.html', data)
+
+
+@login_required
+def problem_edit(request, id):
+    data = {
+        'resource_detail': reverse_lazy('problem-viewset-detail', kwargs={'pk': id}),
+        'edit_suggestions_list': reverse_lazy('problem-viewset-edit-suggestions', kwargs={'pk': id}),
+        'edit_suggestions_publish': reverse_lazy('problem-viewset-edit-suggestion-publish', kwargs={'pk': id}),
+        'edit_suggestions_reject': reverse_lazy('problem-viewset-edit-suggestion-reject', kwargs={'pk': id}),
+
+        'edit_suggestions_api': reverse_lazy('problem-edit-suggestion-viewset-list'),
+        'resource_endpoint': reverse_lazy('problem-viewset-list'),
+        'tag_options_endpoint': reverse_lazy('tags-options-list'),
+    }
+    return render(request, 'problem_solution/problem/edit_page.html', data)
+
+
+@login_required
+def solution_edit(request, id):
+    data = {
+        'resource_detail': reverse_lazy('solution-viewset-detail', kwargs={'pk': id}),
+        'edit_suggestions_list': reverse_lazy('solution-viewset-edit-suggestions', kwargs={'pk': id}),
+        'edit_suggestions_publish': reverse_lazy('solution-viewset-edit-suggestion-publish', kwargs={'pk': id}),
+        'edit_suggestions_reject': reverse_lazy('solution-viewset-edit-suggestion-reject', kwargs={'pk': id}),
+
+        'edit_suggestions_api': reverse_lazy('solution-edit-suggestion-viewset-list'),
+        'resource_endpoint': reverse_lazy('solution-viewset-list'),
+        'tag_options_endpoint': reverse_lazy('tags-options-list'),
+        'tech_options_endpoint': reverse_lazy('techs-options-list'),
+    }
+    return render(request, 'problem_solution/solution/edit_page.html', data)
 
 
 class ProblemEditSuggestionViewset(EditSuggestionViewset):

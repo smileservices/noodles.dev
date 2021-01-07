@@ -52,24 +52,51 @@ class ProblemEditSuggestionSerializer(ModelSerializer):
     parent = SolutionSerializerMinimal(read_only=True)
     edit_suggestion_author = UserSerializerMinimal(read_only=True)
     edit_suggestion_parent = ProblemSerializerMinimal(read_only=True)
+    changes = SerializerMethodField()
 
     class Meta:
         model = models.Problem.edit_suggestions.model
         depth = 1
         fields = ['pk', 'name', 'slug', 'description', 'parent', 'tags', 'solutions',
-                  'edit_suggestion_author', 'edit_suggestion_date_created', 'edit_suggestion_parent', 'thumbs_up',
-                  'thumbs_down']
+                  'edit_suggestion_author', 'edit_suggestion_date_created', 'edit_suggestion_parent', 'changes',
+                  'thumbs_up_array', 'thumbs_down_array']
 
     def run_validation(self, data):
-        if 'parent' in data and data['parent'] is False:
-            del data['parent']
         if 'slug' not in data:
             data['slug'] = slugify(data['name'])
         validated_data = super().run_validation(data)
         if 'parent' in data:
-            validated_data['parent_id'] = data['parent']
+            if not data['parent']:
+                del data['parent']
+            else:
+                validated_data['parent_id'] = data['parent']
         validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
         return validated_data
+
+    def get_changes(self, instance):
+        # return a list of dicts with changed fields and old/new values
+        delta = instance.diff_against_parent()
+        result = []
+        for change in delta.changes:
+            if change.field == 'tags':
+                result.append({'field': change.field.capitalize(),
+                               'old': ', '.join([t.name for t in change.old]),
+                               'new': ', '.join([t.name for t in change.new])
+                               })
+            else:
+                result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
+        return result
+
+
+class ProblemEditSuggestionListingSerializer(ModelSerializer):
+    queryset = models.Problem.edit_suggestions.all()
+    edit_suggestion_author = UserSerializerMinimal(read_only=True)
+
+    class Meta:
+        model = models.Problem.edit_suggestions.model
+        fields = ['pk',
+                  'edit_suggestion_reason', 'edit_suggestion_author', 'edit_suggestion_date_created',
+                  'thumbs_up', 'thumbs_down']
 
 
 class ProblemSerializer(EditSuggestionSerializer):
@@ -100,6 +127,10 @@ class ProblemSerializer(EditSuggestionSerializer):
     def get_edit_suggestion_serializer():
         return ProblemEditSuggestionSerializer
 
+    @staticmethod
+    def get_edit_suggestion_listing_serializer():
+        return ProblemEditSuggestionListingSerializer
+
 
 # Solution Focused
 
@@ -117,6 +148,17 @@ class ProblemSerializerShort(ModelSerializer):
         return obj.solutions.count()
 
 
+class SolutionEditSuggestionListingSerializer(ModelSerializer):
+    queryset = models.Solution.edit_suggestions.all()
+    edit_suggestion_author = UserSerializerMinimal(read_only=True)
+
+    class Meta:
+        model = models.Solution.edit_suggestions.model
+        fields = ['pk',
+                  'edit_suggestion_reason', 'edit_suggestion_author', 'edit_suggestion_date_created',
+                  'thumbs_up', 'thumbs_down']
+
+
 class SolutionEditSuggestionSerializer(ModelSerializer):
     queryset = models.Solution.edit_suggestions.all()
     tags = TagSerializerOption(many=True, read_only=True)
@@ -124,12 +166,13 @@ class SolutionEditSuggestionSerializer(ModelSerializer):
     parent = ProblemSerializerShort(many=False, read_only=True)
     problems = ProblemSerializerShort(many=True, read_only=True)
     edit_suggestion_author = UserSerializerMinimal(read_only=True)
+    changes = SerializerMethodField()
 
     class Meta:
         model = models.Solution.edit_suggestions.model
         fields = ['pk', 'name', 'slug', 'description', 'parent', 'tags', 'technologies', 'problems',
-                  'edit_suggestion_author', 'edit_suggestion_date_created', 'edit_suggestion_parent', 'thumbs_up',
-                  'thumbs_down']
+                  'edit_suggestion_author', 'edit_suggestion_date_created', 'edit_suggestion_parent', 'changes',
+                  'thumbs_up_array', 'thumbs_down_array',]
 
     def run_validation(self, data):
         if 'slug' not in data:
@@ -139,6 +182,25 @@ class SolutionEditSuggestionSerializer(ModelSerializer):
         validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
         validated_data['technologies'] = data['technologies']
         return validated_data
+
+    def get_changes(self, instance):
+        # return a list of dicts with changed fields and old/new values
+        delta = instance.diff_against_parent()
+        result = []
+        for change in delta.changes:
+            if change.field == 'tags':
+                result.append({'field': change.field.capitalize(),
+                               'old': ', '.join([t.name for t in change.old]),
+                               'new': ', '.join([t.name for t in change.new])
+                               })
+            if change.field == 'technologies':
+                result.append({'field': change.field.capitalize(),
+                               'old': ', '.join([t.name for t in change.old]),
+                               'new': ', '.join([t.name for t in change.new])
+                               })
+            else:
+                result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
+        return result
 
 
 class SolutionSerializer(EditSuggestionSerializer):
@@ -166,3 +228,7 @@ class SolutionSerializer(EditSuggestionSerializer):
     @staticmethod
     def get_edit_suggestion_serializer():
         return SolutionEditSuggestionSerializer
+
+    @staticmethod
+    def get_edit_suggestion_listing_serializer():
+        return SolutionEditSuggestionListingSerializer

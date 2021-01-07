@@ -1,0 +1,22 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div id="edit-app"></div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        const USER_ID = {{ request.user.id }};
+        const RESOURCE_DETAIL = "{{ resource_detail }}";
+        const EDIT_SUGGESTION_LIST = "{{ edit_suggestions_list }}";
+        const EDIT_SUGGESTION_PUBLISH = "{{ edit_suggestions_publish }}";
+        const EDIT_SUGGESTION_REJECT = "{{ edit_suggestions_reject }}";
+        const EDIT_SUGGESTIONS_API = "{{ edit_suggestions_api }}"
+        const RESOURCE_ENDPOINT = "{{ resource_endpoint }}";
+        const TAGS_OPTIONS_ENDPOINT = "{{ tag_options_endpoint }}";
+        const TECH_OPTIONS_ENDPOINT = "{{ tech_options_endpoint }}";
+    </script>
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'problem_solution/solution-edit.js' %}"></script>
+{% endblock %}
