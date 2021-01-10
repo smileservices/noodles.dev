@@ -11,4 +11,3 @@
         <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"><span></span>{{ tag }}</a>
     {% endfor %}
 </div>
-{% include 'vote_not_logged.html' with resource=result %}

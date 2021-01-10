@@ -7,6 +7,8 @@
     <meta name="description"
           content="{{ result.summary }}"/>
     <meta name="keywords" content="
+
+
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -24,17 +26,9 @@
         const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
 
         const RESULT = {
-            pk: {{ result.pk }},
-            name: "{{ result.name|escapejs }}",
-            description: "{{ result.description|escapejs }}",
-            version: "{{ result.version|escapejs }}",
-            license: "{{ result.license }}",
-            url: "{{ result.url|escapejs }}",
-            owner: "{{ result.owner|escapejs }}",
-            pros: "{{ result.pros|escapejs }}",
-            cons: "{{ result.cons|escapejs }}",
-            limitations: "{{ result.limitations|escapejs }}",
-            ecosystem: "{{ result.ecosystem|escapejs }}",
+            thumbs_up_array: JSON.parse("{{ thumbs_up_array }}"),
+            thumbs_down_array: JSON.parse("{{ thumbs_down_array }}"),
+            vote_url: "{{ vote_url }}",
         }
     </script>
     <div class="detail-page">
@@ -43,19 +37,25 @@
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
                 <div class="toolbar">
-                    <a href="{% url 'technology-edit' id=result.pk %}">edit</a>
+                    <a href="{% url 'tech-edit' id=result.pk %}">edit</a>
                 </div>
                 {% include 'technology/detail.html' %}
+                <div id="votes-app" class="thumbs"></div>
             </section>
-            <section id="reviews" class="column-container"></section>
+            <section class="column-container">
+                <h3>Used in solutions:</h3>
+                <div class="tile-container">
+                    {% for solution in solutions.all %}
+                        {% include 'problem_solution/solution/result.html' with result=solution %}
+                    {% endfor %}
+                </div>
+            </section>
         </div>
-
-
         <section class="related column-container">
-            <h3>Related</h3>
+            <h3>Learning Resources</h3>
             <div class="tile-container">
-                {% for result in related_resources %}
-                    {% include 'study_resource/result.html' %}
+                {% for resource_tech in related_resources_techs %}
+                    {% include 'study_resource/result.html' with result=resource_tech.study_resource %}
                 {% endfor %}
             </div>
         </section>
@@ -63,4 +63,6 @@
 {% endblock %}
 
 {% block extra_js %}
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'votes.js' %}"></script>
 {% endblock %}

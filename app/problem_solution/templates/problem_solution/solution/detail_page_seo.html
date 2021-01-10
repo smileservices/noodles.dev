@@ -23,6 +23,7 @@
                     <a href="" class="icon-pencil edit"></a>
                 </div>
                 {% include 'problem_solution/solution/detail.html' %}
+                {% include 'vote_not_logged.html' with resource=result %}
             </section>
             <section id="children" class="column-container">
                 {% if problems %}

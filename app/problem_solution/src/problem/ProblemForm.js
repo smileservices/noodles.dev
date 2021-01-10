@@ -20,7 +20,7 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
     useEffect(() => {
         //get tags options
         fetch(
-            TAGS_OPTIONS_ENDPOINT, {method: 'GET'}
+            TAGS_OPTIONS_API, {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();
@@ -67,6 +67,7 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
         if (extraData.formElements) {
             extraData.formElements.validate(normalizedData, vErr);
         }
+
         setErrors(vErr);
         if (Object.keys(vErr).length > 0) {
             setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)

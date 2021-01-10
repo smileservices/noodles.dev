@@ -17,7 +17,7 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
     useEffect(() => {
         //get tags options
         fetch(
-            TAGS_OPTIONS_ENDPOINT, {method: 'GET'}
+            TAGS_OPTIONS_API, {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();
@@ -32,7 +32,7 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
         })
         //get technologies options
         fetch(
-            TECH_OPTIONS_ENDPOINT, {method: 'GET'}
+            TECH_OPTIONS_API, {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();
@@ -79,6 +79,9 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
         if (normalizedData.description.length < 30) vErr.description = 'Description is too short. It has to be at least 30 characters';
         if (normalizedData.tags.length === 0) vErr.tags = 'Choose at least one tag';
         if (normalizedData.technologies.length === 0) vErr.tags = 'Choose at least one technology';
+        if (extraData.formElements) {
+            extraData.formElements.validate(normalizedData, vErr);
+        }
         setErrors(vErr);
         if (Object.keys(vErr).length > 0) {
             setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)
@@ -96,8 +99,8 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
                     }
             }
             alert={alert}
-            waiting={waiting}
-        >
+            waiting={waiting}>
+
             <h3>{extraData.formTitle}</h3>
             <Input type="text" name="name" label="Name"
                    inputProps={{...makeStateProps('name'), defaultValue: data['name']}}
@@ -118,13 +121,15 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
                                   error={errors.tags}
             />
             <SelectReact name="select-techs" label="Choose technologies"
-                         smallText={<a onClick={extraData.showTechForm}><span className="icon-folder-plus"/> add tech</a>}
+                         smallText={<a onClick={extraData.showTechForm}><span className="icon-folder-plus"/> add
+                             tech</a>}
                          onChange={selectedOptions => setFormData({...formData, technologies: selectedOptions})}
                          options={technologies}
                          value={formData.technologies}
                          props={{isMulti: true}}
                          error={errors.technologies}
             />
+            {extraData.formElements ? extraData.formElements.get_list(formData, setFormData, waiting, errors) : ''}
         </FormElement>
     )
 }

@@ -28,11 +28,9 @@
         const PROBLEM_ENDPOINT = "{% url 'problem-viewset-list' %}";
         const SOLUTION_ENDPOINT = "{% url 'solution-viewset-list' %}";
         const RESULT = {
-            pk: {{ result.pk }},
-            name: "{{ result.name }}",
-            description: "{{ result.description|escapejs }}",
-            tags: [],
-            technologies: [],
+            thumbs_up_array: JSON.parse("{{ thumbs_up_array }}"),
+            thumbs_down_array: JSON.parse("{{ thumbs_down_array }}"),
+            vote_url: "{{ vote_url }}",
         }
         {% if result.parent %}
             RESULT['parent_element'] = {
@@ -60,6 +58,7 @@
                     <a href="{% url 'solution-edit' id=result.pk %}">edit</a>
                 </div>
                 {% include 'problem_solution/solution/detail.html' %}
+                <div id="votes-app" class="thumbs"></div>
             </section>
             <section id="create-problem" class="column-container"></section>
             <section id="children" class="column-container"></section>
@@ -83,4 +82,5 @@
     <script src="{% static 'problem_solution/solution-children-tree.js' %}"></script>
     <script src="{% static 'problem_solution/problem-create-modal.js' %}"></script>
     <script src="{% static 'problem_solution/solution-edit.js' %}"></script>
+    <script src="{% static 'votes.js' %}"></script>
 {% endblock %}

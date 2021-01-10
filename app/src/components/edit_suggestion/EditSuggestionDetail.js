@@ -32,7 +32,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
     useEffect(e => {
         // get data from ed sug endpoint and populate the body
         apiDetail(
-            api_urls['detail'], pk,
+            api_urls['edit_suggestions_api'], pk,
             data => {
                 setData(data);
                 setIsOwner(data.edit_suggestion_author.id === USER_ID);
@@ -47,7 +47,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
     * if user is owner, can delete
     * */
     function deleteElement() {
-        apiDelete(api_urls['detail'] + pk + '/',
+        apiDelete(api_urls['edit_suggestions_api'] + pk + '/',
             setWaiting,
             msg => {
                 deleteCallback();
@@ -175,7 +175,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
                         <Thumbs
                             thumbs_obj={{up: data.thumbs_up_array, down: data.thumbs_down_array}}
                             user_id={USER_ID}
-                            url_endpoint={api_urls.vote}
+                            url_endpoint={api_urls['edit_suggestions_api'] + pk + '/vote/'}
                         />
                     </div>
                 </div>

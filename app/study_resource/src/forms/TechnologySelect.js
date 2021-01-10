@@ -1,7 +1,7 @@
 import React, {useState, useEffect, Fragment} from "react";
-import {Input, SelectReact} from "../../src/components/form";
-import CreateableComponent from "../../src/components/CreateableComponent";
-import TechForm from "../../technology/src/TechForm";
+import {Input, SelectReact} from "../../../src/components/form";
+import CreateableComponent from "../../../src/components/CreateableComponent";
+import TechForm from "../../../technology/src/TechForm";
 
 
 export default function TechnologySelect({techs, values, setTechnologies, addNewTech, waiting, errors}) {
@@ -60,7 +60,7 @@ export default function TechnologySelect({techs, values, setTechnologies, addNew
                 setTechnologies([...values, emptyForm]);
             }}>add new</span>
             <CreateableComponent
-                endpoint={TECH_ENDPOINT}
+                endpoint={TECH_API}
                 data={{}}
                 extraData={{addButtonText: 'create technology', formTitle: 'Create New Technology'}}
                 FormViewComponent={TechForm}

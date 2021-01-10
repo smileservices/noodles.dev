@@ -23,6 +23,7 @@
                     <a href="{% url 'tech-edit' id=result.pk %}">edit</a>
                 </div>
                 {% include 'technology/detail.html' %}
+                {% include 'vote_not_logged.html' with resource=result %}
             </section>
 
             <section class="column-container">

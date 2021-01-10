@@ -30,6 +30,9 @@
             name: "{{ result.name }}",
             description: "{{ result.description|escapejs }}",
             tags: [],
+            thumbs_up_array: JSON.parse("{{ thumbs_up_array }}"),
+            thumbs_down_array: JSON.parse("{{ thumbs_down_array }}"),
+            vote_url: "{{ vote_url }}",
         }
         {% if result.parent %}
             RESULT['parent_element'] = {
@@ -54,6 +57,7 @@
                     <a href="{% url 'problem-edit' id=result.pk %}">edit</a>
                 </div>
                 {% include 'problem_solution/problem/detail.html' %}
+                <div id="votes-app" class="thumbs"></div>
             </section>
             <section id="create-solution" class="column-container"></section>
             <section id="children" class="column-container"></section>
@@ -75,5 +79,6 @@
 {% block extra_js %}
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'problem_solution/problem-children-tree.js' %}"></script>
+    <script src="{% static 'votes.js' %}"></script>
     <script src="{% static 'problem_solution/solution-create-modal.js' %}"></script>
 {% endblock %}

@@ -23,6 +23,7 @@
                     <a href="{% url 'problem-edit' id=result.pk %}">edit</a>
                 </div>
                 {% include 'problem_solution/problem/detail.html' %}
+                {% include 'vote_not_logged.html' with resource=result %}
             </section>
             <section id="children" class="column-container">
                 {% if solutions %}

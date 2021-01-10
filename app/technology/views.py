@@ -1,4 +1,5 @@
 import requests
+import json
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
@@ -27,7 +28,12 @@ def detail(request, id, slug):
         'solutions': solutions,
         'similar': similar_techs,
         'related_resources_techs': related_resources_techs,
+        'thumbs_up_array': json.dumps(detail.thumbs_up_array),
+        'thumbs_down_array': json.dumps(detail.thumbs_down_array),
+        'vote_url': reverse_lazy('techs-viewset-vote', kwargs={'pk': detail.pk}),
     }
+    if request.user.is_authenticated:
+        return render(request, 'technology/detail_page.html', data)
     return render(request, 'technology/detail_page_seo.html', data)
 
 
@@ -40,15 +46,15 @@ def create(request):
 def edit(request, id):
     data = {
         'resource_detail': reverse_lazy('techs-viewset-detail', kwargs={'pk': id}),
-        'resource_endpoint': reverse_lazy('techs-viewset-list'),
+        'resource_api': reverse_lazy('techs-viewset-list'),
 
         'edit_suggestions_list': reverse_lazy('techs-viewset-edit-suggestions', kwargs={'pk': id}),
         'edit_suggestions_publish': reverse_lazy('techs-viewset-edit-suggestion-publish', kwargs={'pk': id}),
         'edit_suggestions_reject': reverse_lazy('techs-viewset-edit-suggestion-reject', kwargs={'pk': id}),
 
         'edit_suggestions_api': reverse_lazy('techs-edit-suggestions-viewset-list'),
-        'tag_options_endpoint': reverse_lazy('tags-options-list'),
-        'tech_options_endpoint': reverse_lazy('techs-options-list'),
+        'tag_options_api': reverse_lazy('tags-options-list'),
+        'tech_options_api': reverse_lazy('techs-options-list'),
     }
     return render(request, 'technology/edit_page.html', data)
 

@@ -9,18 +9,14 @@
     <script>
         const USER_ID = {{ request.user.id }};
         const RESOURCE_DETAIL = "{{ resource_detail }}";
-
-        const EDIT_SUGGESTION_LIST = "{{ edit_suggestions_list }}";
-        const EDIT_SUGGESTION_PUBLISH = "{{ edit_suggestions_publish }}";
-        const EDIT_SUGGESTION_REJECT = "{{ edit_suggestions_reject }}";
-        const EDIT_SUGGESTIONS_API = "{% url 'study-resource-edit-suggestions-viewset-list' %}"
-
-        const STUDY_RESOURCE_ENDPOINT = "{% url 'study-resource-viewset-list' %}";
-        const RESOURCE_IMAGE_ENDPOINT = "";
-        const TECH_OPTIONS_ENDPOINT = "{% url 'techs-options-list' %}";
-        const TAG_OPTIONS_ENDPOINT = "{% url 'tags-options-list' %}";
-        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
-        const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
+        const EDIT_SUGGESTIONS_LIST = "{{ edit_suggestions_list }}";
+        const EDIT_SUGGESTIONS_PUBLISH = "{{ edit_suggestions_publish }}";
+        const EDIT_SUGGESTIONS_REJECT = "{{ edit_suggestions_reject }}";
+        const EDIT_SUGGESTIONS_API = "{{ edit_suggestions_api }}"
+        const RESOURCE_API = "{{ resource_api }}";
+        const TAGS_OPTIONS_API = "{{ tag_options_api }}";
+        const TECH_OPTIONS_API = "{{ tech_options_api }}";
+        const TECH_API = "{{ tech_api }}";
     </script>
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'study_resource/edit.js' %}"></script>

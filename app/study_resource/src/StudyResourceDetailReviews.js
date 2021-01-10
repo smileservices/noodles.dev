@@ -4,7 +4,7 @@ import Alert from "../../src/components/Alert";
 import apiList from "../../src/api_interface/apiList";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
 import Review from "./Review";
-import ReviewForm from "./ReviewForm";
+import ReviewForm from "./forms/ReviewForm";
 
 function ResourceReviewsApp() {
     const [reviews, setReviews] = useState([]);

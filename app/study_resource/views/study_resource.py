@@ -76,7 +76,14 @@ def edit(request, id):
         'edit_suggestions_list': reverse_lazy('study-resource-viewset-edit-suggestions', kwargs={'pk': id}),
         'edit_suggestions_publish': reverse_lazy('study-resource-viewset-edit-suggestion-publish', kwargs={'pk': id}),
         'edit_suggestions_reject': reverse_lazy('study-resource-viewset-edit-suggestion-reject', kwargs={'pk': id}),
+
+        'edit_suggestions_api': reverse_lazy('study-resource-edit-suggestions-viewset-list'),
+        'resource_api': reverse_lazy('study-resource-viewset-list'),
+        'tag_options_api': reverse_lazy('tags-options-list'),
+        'tech_options_api': reverse_lazy('techs-options-list'),
+        'tech_api': reverse_lazy('techs-viewset-list'),
     }
+
     return render(request, 'study_resource/edit_page.html', data)
 
 

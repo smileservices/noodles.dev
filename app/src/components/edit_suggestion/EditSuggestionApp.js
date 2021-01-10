@@ -1,13 +1,30 @@
 import React, {useState, useEffect, Fragment} from "react"
-import ReactDOM from "react-dom";
-import Alert from "../../../src/components/Alert";
-import EditForm from "./EditForm";
-import apiList from "../../../src/api_interface/apiList";
-import PaginatedLayout from "../../../src/components/PaginatedLayout";
-import EditSuggestionListing from "../../../src/components/edit_suggestion/EditSuggestionListing";
-import {remove_modal_class_from_body} from "../../../src/vanilla/modal";
+import Alert from "../../components/Alert";
+import apiList from "../../api_interface/apiList";
+import PaginatedLayout from "../../components/PaginatedLayout";
+import EditSuggestionListing from "../../components/edit_suggestion/EditSuggestionListing";
+import {remove_modal_class_from_body} from "../../vanilla/modal";
 
-function EditApp() {
+import EditSuggestionForm from "./EditSuggestionForm";
+
+/*
+*  Displays the edit form for resource and the paginated edit suggestion listings
+*
+*  it receives the resource form and the api_urls obj
+*
+* */
+
+export default function EditApp({ResourceForm, api_urls}) {
+
+    // ResourceForm -> standardized resource form
+    // api_urls -> must have keys for
+    //                      resource_detail,
+    //                      resource_api,
+    //                      edit_suggestions_api,
+    //                      publish,
+    //                      reject,
+
+
     const [editSuggestions, setEditSuggestions] = useState([]);
     const [editSuggestionsPagination, setEditSuggestionsPagination] = useState({
         resultsPerPage: 5,
@@ -21,11 +38,12 @@ function EditApp() {
     useEffect(() => {
         //get edit suggestions
         apiList(
-            EDIT_SUGGESTION_LIST,
+            api_urls['edit_suggestions_list'],
             editSuggestionsPagination,
             setEditSuggestions,
             setEditSuggestionsWaiting,
-            err => setEditSuggestionsAlert(<Alert close={e => setEditSuggestionsAlert(null)} text={err} type="danger"/>),
+            err => setEditSuggestionsAlert(<Alert close={e => setEditSuggestionsAlert(null)} text={err}
+                                                  type="danger"/>),
             {'status': 0}
         )
     }, [editSuggestionsPagination,]);
@@ -37,7 +55,7 @@ function EditApp() {
     return (
         <div className="detail-page">
             <div className="column-container card">
-                <EditForm addEditSuggestion={resetEditSuggestionPagination}/>
+                <EditSuggestionForm addEditSuggestion={resetEditSuggestionPagination} ResourceForm={ResourceForm} api_urls={api_urls}/>
             </div>
             <section className="related column-container">
                 <h3>Edit Suggestions</h3>
@@ -51,16 +69,11 @@ function EditApp() {
                                      (item, idx) => <EditSuggestionListing
                                          key={"edit_suggestion_" + item.pk}
                                          data={item}
-                                         deleteCallback={()=>{
+                                         deleteCallback={() => {
                                              resetEditSuggestionPagination();
                                              remove_modal_class_from_body();
                                          }}
-                                         api_urls={{
-                                             detail: EDIT_SUGGESTIONS_API,
-                                             publish: EDIT_SUGGESTION_PUBLISH,
-                                             reject: EDIT_SUGGESTION_REJECT,
-                                             vote: EDIT_SUGGESTIONS_API+item.pk+'/vote/'
-                                         }}
+                                         api_urls={api_urls}
                                      />
                                  }
                 />
@@ -68,5 +81,3 @@ function EditApp() {
         </div>
     );
 }
-
-ReactDOM.render(<EditApp/>, document.getElementById('edit-app'));

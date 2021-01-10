@@ -1,8 +1,8 @@
 import React, {Fragment, useState} from "react";
-import Alert from "../../src/components/Alert";
-import apiCreate from "../../src/api_interface/apiCreate";
-import StarRating from "../../src/components/StarRating";
-import {Textarea} from "../../src/components/form";
+import Alert from "../../../src/components/Alert";
+import apiCreate from "../../../src/api_interface/apiCreate";
+import StarRating from "../../../src/components/StarRating";
+import {Textarea} from "../../../src/components/form";
 
 export default function ReviewForm({createReviewCallback}) {
     const emptyForm = {

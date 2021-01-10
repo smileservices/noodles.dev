@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
-
+import json
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -82,6 +82,9 @@ def problem_detail(request, id, slug):
     )[:5]
     data = {
         'result': resource,
+        'thumbs_up_array': json.dumps(resource.thumbs_up_array),
+        'thumbs_down_array': json.dumps(resource.thumbs_down_array),
+        'vote_url': reverse_lazy('problem-viewset-vote', kwargs={'pk': resource.pk}),
         'related': related,
         'solutions': resource.solutions.all(),
     }
@@ -101,7 +104,10 @@ def solution_detail(request, id, slug):
     data = {
         'result': resource,
         'related': related,
-        'problems': resource.problems.all()
+        'problems': resource.problems.all(),
+        'thumbs_up_array': json.dumps(resource.thumbs_up_array),
+        'thumbs_down_array': json.dumps(resource.thumbs_down_array),
+        'vote_url': reverse_lazy('solution-viewset-vote', kwargs={'pk': resource.pk}),
     }
     if request.user.is_authenticated:
         return render(request, 'problem_solution/solution/detail_page.html', data)
@@ -112,13 +118,14 @@ def solution_detail(request, id, slug):
 def problem_edit(request, id):
     data = {
         'resource_detail': reverse_lazy('problem-viewset-detail', kwargs={'pk': id}),
+
         'edit_suggestions_list': reverse_lazy('problem-viewset-edit-suggestions', kwargs={'pk': id}),
         'edit_suggestions_publish': reverse_lazy('problem-viewset-edit-suggestion-publish', kwargs={'pk': id}),
         'edit_suggestions_reject': reverse_lazy('problem-viewset-edit-suggestion-reject', kwargs={'pk': id}),
 
+        'resource_api': reverse_lazy('problem-viewset-list'),
         'edit_suggestions_api': reverse_lazy('problem-edit-suggestion-viewset-list'),
-        'resource_endpoint': reverse_lazy('problem-viewset-list'),
-        'tag_options_endpoint': reverse_lazy('tags-options-list'),
+        'tag_options_api': reverse_lazy('tags-options-list'),
     }
     return render(request, 'problem_solution/problem/edit_page.html', data)
 
@@ -132,9 +139,9 @@ def solution_edit(request, id):
         'edit_suggestions_reject': reverse_lazy('solution-viewset-edit-suggestion-reject', kwargs={'pk': id}),
 
         'edit_suggestions_api': reverse_lazy('solution-edit-suggestion-viewset-list'),
-        'resource_endpoint': reverse_lazy('solution-viewset-list'),
-        'tag_options_endpoint': reverse_lazy('tags-options-list'),
-        'tech_options_endpoint': reverse_lazy('techs-options-list'),
+        'resource_api': reverse_lazy('solution-viewset-list'),
+        'tag_options_api': reverse_lazy('tags-options-list'),
+        'tech_options_api': reverse_lazy('techs-options-list'),
     }
     return render(request, 'problem_solution/solution/edit_page.html', data)
 

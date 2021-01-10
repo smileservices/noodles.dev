@@ -21,7 +21,7 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
     useEffect(() => {
         //get technologies options
         fetch(
-            TECH_OPTIONS_ENDPOINT, {method: 'GET'}
+            TECH_OPTIONS_API, {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();
@@ -69,7 +69,7 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
             setAlert('');
         }
         apiPost(
-            TECH_ENDPOINT + 'validate_url/',
+            TECH_API + 'validate_url/',
             {
                 url: formData.url
             },

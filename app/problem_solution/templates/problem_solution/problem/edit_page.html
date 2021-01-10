@@ -9,12 +9,14 @@
     <script>
         const USER_ID = {{ request.user.id }};
         const RESOURCE_DETAIL = "{{ resource_detail }}";
-        const EDIT_SUGGESTION_LIST = "{{ edit_suggestions_list }}";
-        const EDIT_SUGGESTION_PUBLISH = "{{ edit_suggestions_publish }}";
-        const EDIT_SUGGESTION_REJECT = "{{ edit_suggestions_reject }}";
+        const RESOURCE_API = "{{ resource_api }}";
+
+        const EDIT_SUGGESTIONS_LIST = "{{ edit_suggestions_list }}";
+        const EDIT_SUGGESTIONS_PUBLISH = "{{ edit_suggestions_publish }}";
+        const EDIT_SUGGESTIONS_REJECT = "{{ edit_suggestions_reject }}";
         const EDIT_SUGGESTIONS_API = "{{ edit_suggestions_api }}"
-        const PROBLEM_ENDPOINT = "{{ resource_endpoint }}";
-        const TAGS_OPTIONS_ENDPOINT = "{{ tag_options_endpoint }}";
+
+        const TAGS_OPTIONS_API = "{{ tag_options_api }}";
     </script>
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'problem_solution/problem-edit.js' %}"></script>
