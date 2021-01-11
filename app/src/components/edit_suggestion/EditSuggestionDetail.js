@@ -158,7 +158,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
                 <div className="edit-suggestion-details">
                     <h4>Changes:</h4>
                     {data.changes.map(c =>
-                        <div className="edit-change">
+                        <div key={"change"+c.field} className="edit-change">
                             <p>Field name: "{c.field}"</p>
                             <p>Old value:</p>
                             <p>"{c.old}"</p>
