@@ -3,19 +3,27 @@ import ReactDOM from "react-dom";
 import Modal from "../../../src/components/Modal";
 import ProblemForm from "./ProblemForm";
 import CreateableFormComponent from "../../../src/components/CreateableFormComponent";
+import {remove_modal_class_from_body} from "../../../src/vanilla/modal";
 
 function CreateProblemApp() {
     const [showModal, setShowModal] = useState(false);
 
+    const initialData = {
+        'name': '',
+        'description': '',
+        'tags': [],
+        'parent': RESULT.pk,
+    }
+
     function getModalContent() {
         return (<CreateableFormComponent
-            endpoint={PROBLEM_ENDPOINT}
-            data={{parent: RESULT.pk}}
+            endpoint={PROBLEM_API}
+            data={initialData}
             extraData={{}}
             FormViewComponent={ProblemForm}
             successCallback={data=>{
                 setShowModal(false);
-                document.body.classList.remove('modal-open');
+                remove_modal_class_from_body();
                 window.refreshChildren();
             }}
         />);

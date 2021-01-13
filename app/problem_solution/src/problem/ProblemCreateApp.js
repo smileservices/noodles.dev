@@ -5,13 +5,20 @@ import CreateableFormComponent from "../../../src/components/CreateableFormCompo
 
 function Content() {
 
+    const initialData = {
+        'name': '',
+        'description': '',
+        'tags': [],
+        'parent': false,
+    }
+
     return (
        <div className="form-container full-page-sm">
            <CreateableFormComponent
                 endpoint={RESOURCE_API}
                 FormViewComponent={ProblemForm}
                 successCallback={()=>{}}
-                data={{}}
+                data={initialData}
                 extraData={{}}
            />
         </div>

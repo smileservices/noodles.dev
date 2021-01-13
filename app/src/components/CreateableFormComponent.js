@@ -7,12 +7,7 @@ export default function CreateableFormComponent({endpoint, data, extraData, Form
     const [waiting, setWaiting] = useState(false);
     const [alert, setAlert] = useState(false);
     const [errors, setErrors] = useState({});
-    const [formData, setFormData] = useState({
-        'name': '',
-        'description': '',
-        'tags': [],
-        'parent': false,
-    });
+    const [formData, setFormData] = useState(data);
 
     function createElement(validatedData) {
         apiCreate(

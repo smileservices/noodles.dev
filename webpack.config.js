@@ -21,12 +21,12 @@ module.exports = {
 
         //problem-related
         '/static/problem_solution/problem-create': './app/problem_solution/src/problem/ProblemCreateApp.js',
-        // '/static/problem_solution/problem-children-tree': './app/problem_solution/src/problem/ChildrenTree.js',
-        // '/static/problem_solution/solution-create-modal': './app/problem_solution/src/solution/CreateSolutionModalApp.js',
+        '/static/problem_solution/problem-children-tree': './app/problem_solution/src/problem/ChildrenTree.js',
+        '/static/problem_solution/solution-create-modal': './app/problem_solution/src/solution/CreateSolutionModalApp.js',
 
         //solution-related
         '/static/problem_solution/problem-create-modal': './app/problem_solution/src/problem/CreateProblemModalApp.js',
-        // '/static/problem_solution/solution-children-tree': './app/problem_solution/src/solution/ChildrenTree.js',
+        '/static/problem_solution/solution-children-tree': './app/problem_solution/src/solution/ChildrenTree.js',
 
         //technology
         '/static/technology/technology-create': './app/technology/src/TechCreateApp.js',
@@ -36,10 +36,10 @@ module.exports = {
 
 
         //edit suggestions
-        '/static/problem_solution/problem-edit': './app/problem_solution/src/problem/EditApp.js',
-        '/static/problem_solution/solution-edit': './app/problem_solution/src/solution/EditApp.js',
-        '/static/technology/edit': './app/technology/src/EditApp.js',
-        '/static/study_resource/edit': './app/study_resource/src/EditApp.js',
+        // '/static/problem_solution/problem-edit': './app/problem_solution/src/problem/EditApp.js',
+        // '/static/problem_solution/solution-edit': './app/problem_solution/src/solution/EditApp.js',
+        // '/static/technology/edit': './app/technology/src/EditApp.js',
+        // '/static/study_resource/edit': './app/study_resource/src/EditApp.js',
 
         // admin dashboard
         // '/static/dashboard/admin/dashboard': './app/dashboard/src/main-page/App.js'

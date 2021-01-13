@@ -111,7 +111,12 @@ def solution_detail(request, id, slug):
         'problems': resource.problems.all(),
         'thumbs_up_array': json.dumps(resource.thumbs_up_array),
         'thumbs_down_array': json.dumps(resource.thumbs_down_array),
-        'vote_url': reverse_lazy('solution-viewset-vote', kwargs={'pk': resource.pk}),
+        'urls': {
+            'vote_api': reverse_lazy('solution-viewset-vote', kwargs={'pk': resource.pk}),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'problems_list': reverse_lazy('solution-viewset-problems', kwargs={'pk': resource.pk}),
+            'problem_api': reverse_lazy('problem-viewset-list')
+        }
     }
     if request.user.is_authenticated:
         return render(request, 'problem_solution/solution/detail_page.html', data)

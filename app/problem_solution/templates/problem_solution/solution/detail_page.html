@@ -16,38 +16,22 @@
 {% block content %}
     <script>
         const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
-        const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
+        const USER_ID = {{ user.id }};
+
         const HOMEPAGE = "{% url 'homepage' %}";
         const SEARCH_URL = "{% url 'search' %}";
 
-        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
-        const TAGS_OPTIONS_ENDPOINT = "{% url 'tags-options-list' %}";
-        const TECH_OPTIONS_ENDPOINT = "{% url 'techs-options-list' %}";
+        const SOLUTION_PROBLEMS_LIST = "{{ urls.problems_list }}";
+        const PROBLEM_API = "{{ urls.problem_api }}";
+        const TAGS_OPTIONS_API = "{{ urls.tag_options_api }}"
 
-        const SOLUTION_PROBLEMS_ENDPOINT = "{% url 'solution-viewset-problems' result.pk %}";
-        const PROBLEM_ENDPOINT = "{% url 'problem-viewset-list' %}";
         const SOLUTION_ENDPOINT = "{% url 'solution-viewset-list' %}";
         const RESULT = {
+            pk: {{ result.pk }},
             thumbs_up_array: JSON.parse("{{ thumbs_up_array }}"),
             thumbs_down_array: JSON.parse("{{ thumbs_down_array }}"),
-            vote_url: "{{ vote_url }}",
+            vote_url: "{{ urls.vote_api }}",
         }
-        {% if result.parent %}
-            RESULT['parent_element'] = {
-                pk: {{ result.parent.pk }},
-                absolute_url: "{{ result.parent.absolute_url }}",
-                name: "{{ result.parent.name }}",
-                description: "{{ result.parent.description|escapejs }}",
-            }
-        {% else %}
-            RESULT['parent'] = false;
-        {% endif %}
-        {% for tag in result.tags.all %}
-            RESULT.tags.push({value: {{ tag.pk }}, label: "{{ tag.name }}"});
-        {% endfor %}
-        {% for tech in result.technologies.all %}
-            RESULT.technologies.push({value: {{ tech.pk }}, label: "{{ tech }}"});
-        {% endfor %}
     </script>
     <div class="detail-page">
 
@@ -81,6 +65,5 @@
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'problem_solution/solution-children-tree.js' %}"></script>
     <script src="{% static 'problem_solution/problem-create-modal.js' %}"></script>
-    <script src="{% static 'problem_solution/solution-edit.js' %}"></script>
     <script src="{% static 'votes.js' %}"></script>
 {% endblock %}
