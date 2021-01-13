@@ -5,15 +5,6 @@ import Alert from "../../../src/components/Alert";
 
 export default function ProblemForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors}) {
 
-    //todo add PARENT dropdown
-
-    const emptyData = {
-        'name': '',
-        'description': '',
-        'tags': [],
-        'parent': false,
-    }
-
     // const [formData, setFormData] = useState(Object.assign({}, emptyData, data));
     const [tags, setTags] = useState([]);
 

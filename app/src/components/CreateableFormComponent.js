@@ -7,6 +7,12 @@ export default function CreateableFormComponent({endpoint, data, extraData, Form
     const [waiting, setWaiting] = useState(false);
     const [alert, setAlert] = useState(false);
     const [errors, setErrors] = useState({});
+    const [formData, setFormData] = useState({
+        'name': '',
+        'description': '',
+        'tags': [],
+        'parent': false,
+    });
 
     function createElement(validatedData) {
         apiCreate(
@@ -52,7 +58,8 @@ export default function CreateableFormComponent({endpoint, data, extraData, Form
 
     return (
         <FormViewComponent
-            data={data}
+            formData={formData}
+            setFormData={setFormData}
             extraData={extraData}
             submitCallback={createElement}
             waiting={waiting}

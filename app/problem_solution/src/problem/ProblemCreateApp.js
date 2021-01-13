@@ -8,7 +8,7 @@ function Content() {
     return (
        <div className="form-container full-page-sm">
            <CreateableFormComponent
-                endpoint={PROBLEM_ENDPOINT}
+                endpoint={RESOURCE_API}
                 FormViewComponent={ProblemForm}
                 successCallback={()=>{}}
                 data={{}}

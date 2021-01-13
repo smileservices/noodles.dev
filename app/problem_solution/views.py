@@ -70,7 +70,11 @@ class SolutionViewset(ResourceWithEditSuggestionVieset):
 
 @login_required
 def problem_create(request, *args, **kwargs):
-    return render(request, 'problem_solution/problem/create_page.html')
+    data = {
+        'resource_api': reverse_lazy('problem-viewset-list'),
+        'tag_options_api': reverse_lazy('tags-options-list'),
+    }
+    return render(request, 'problem_solution/problem/create_page.html', data)
 
 
 def problem_detail(request, id, slug):
