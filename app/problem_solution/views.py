@@ -49,7 +49,7 @@ class ProblemViewset(ResourceWithEditSuggestionVieset):
 class SolutionViewset(ResourceWithEditSuggestionVieset):
     serializer_class = serializers.SolutionSerializer
     queryset = serializers.SolutionSerializer.queryset
-    permission_classes = [AuthorOrAdminOrReadOnly, ]
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['name', 'description', 'published_by', 'tags__name', 'technologies__name']
     m2m_fields = ('tags', 'technologies')
@@ -142,6 +142,7 @@ def solution_edit(request, id):
         'resource_api': reverse_lazy('solution-viewset-list'),
         'tag_options_api': reverse_lazy('tags-options-list'),
         'tech_options_api': reverse_lazy('techs-options-list'),
+        'tech_api': reverse_lazy('techs-viewset-list'),
     }
     return render(request, 'problem_solution/solution/edit_page.html', data)
 

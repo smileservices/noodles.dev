@@ -5,7 +5,7 @@ import apiPost from "../../src/api_interface/apiPost";
 import {FormElement} from "../../src/components/form";
 import Alert from "../../src/components/Alert";
 
-export default function TechForm({data, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
+export default function TechForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
     const emptyForm = {
         name: '',
         description: '',
@@ -15,7 +15,6 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
         cons: '',
         limitations: '',
     };
-    const [formData, setFormData] = useState(Object.assign(emptyForm, data));
     const [technologies, setTechnologies] = useState([]);
 
     useEffect(() => {
@@ -112,7 +111,6 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
             alert={alert}
             waiting={waiting}
         >
-            <h3>{extraData.formTitle}</h3>
             <Input id="name" label="Name" inputProps={{
                 ...makeStateProps('name'),
                 type: 'text',
@@ -187,7 +185,7 @@ export default function TechForm({data, extraData, submitCallback, waiting, aler
                          props={{isMulti: true}}
                          error={errors.ecosystem}
             />
-            {extraData.formElements ? extraData.formElements.get_list(formData, setFormData, waiting, errors) : ''}
+            {extraData.formElements ? extraData.formElements.get_list(waiting, errors) : ''}
         </FormElement>
     )
 }

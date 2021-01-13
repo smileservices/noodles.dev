@@ -3,7 +3,7 @@ import {FormElement, Input, Textarea} from "../../../src/components/form";
 import {SelectReactCreatable} from "../../../src/components/form";
 import Alert from "../../../src/components/Alert";
 
-export default function ProblemForm({data, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
+export default function ProblemForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors}) {
 
     //todo add PARENT dropdown
 
@@ -14,7 +14,7 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
         'parent': false,
     }
 
-    const [formData, setFormData] = useState(Object.assign({}, emptyData, data));
+    // const [formData, setFormData] = useState(Object.assign({}, emptyData, data));
     const [tags, setTags] = useState([]);
 
     useEffect(() => {
@@ -54,8 +54,9 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
         cpd.tags = data.tags.map(t => {
             return t.value
         });
-        cpd.parent_id = data.parent.pk
-        delete cpd.parent;
+        if (data.parent && data.parent.pk) {
+            cpd.parent = data.parent.pk
+        }
         return cpd
     }
 
@@ -101,7 +102,7 @@ export default function ProblemForm({data, extraData, submitCallback, waiting, a
                                   props={{isMulti: true}}
                                   error={errors.tags}
             />
-            { extraData.formElements ? extraData.formElements.get_list(formData, setFormData, waiting, errors) : '' }
+            { extraData.formElements ? extraData.formElements.get_list(waiting, errors) : '' }
         </FormElement>
     )
 }

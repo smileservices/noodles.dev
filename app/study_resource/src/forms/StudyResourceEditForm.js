@@ -6,7 +6,7 @@ import CreateTech from "../create/CreateTech";
 
 import TechnologySelect from "../forms/TechnologySelect";
 
-export default function StudyResourceEditForm({data, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
+export default function StudyResourceEditForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
 
     const emptyData = {
         'name': '',
@@ -21,7 +21,6 @@ export default function StudyResourceEditForm({data, extraData, submitCallback, 
         'experience_level': 0,
     }
 
-    const [formData, setFormData] = useState(Object.assign({}, emptyData, data))
     const [tags, setTags] = useState({});
     const [techs, setTechs] = useState({});
     const [options, setOptions] = useState({});
@@ -259,7 +258,7 @@ export default function StudyResourceEditForm({data, extraData, submitCallback, 
                 smallText="What is it about"
                 error={errors.summary}
             />
-            {extraData.formElements ? extraData.formElements.get_list(formData, setFormData, waiting, errors) : ''}
+            {extraData.formElements ? extraData.formElements.get_list(waiting, errors) : ''}
         </FormElement>
     )
 }

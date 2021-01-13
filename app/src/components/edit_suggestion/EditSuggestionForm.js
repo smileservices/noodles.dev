@@ -7,7 +7,7 @@ import {Textarea} from "../form";
 import Waiting from "../Waiting";
 
 
-export default function EditForm({addEditSuggestion, ResourceForm, api_urls}) {
+export default function EditForm({addEditSuggestionCallback, ResourceForm, api_urls, mustReload}) {
     /*
     * Handle the edit suggestion form
     * use ResourceForm and extend it with reason textfield and the toolbar
@@ -32,6 +32,7 @@ export default function EditForm({addEditSuggestion, ResourceForm, api_urls}) {
     useEffect(() => {
         //get tags and technologies
         setWaiting(<Waiting text="Retrieving resource"/>);
+        setAlert('');
         fetch(
             api_urls['resource_detail'], {method: 'GET'}
         ).then(result => {
@@ -48,7 +49,7 @@ export default function EditForm({addEditSuggestion, ResourceForm, api_urls}) {
                 setOriginalData(data);
             }
         })
-    }, []);
+    }, [mustReload]);
 
 
     function submitEdit(normalizedData) {
@@ -64,7 +65,7 @@ export default function EditForm({addEditSuggestion, ResourceForm, api_urls}) {
                                     type="success"
                                     hideable={false}/>)
                     resetForm();
-                    addEditSuggestion(data);
+                    addEditSuggestionCallback();
                 } else {
                     setAlert(<Alert close={e => setAlert(null)} text="Successfully edited the resource" type="success"
                                     hideable={false}/>)
@@ -82,10 +83,9 @@ export default function EditForm({addEditSuggestion, ResourceForm, api_urls}) {
         )
     }
 
-
     const extraData = {
         formElements: {
-            get_list: (formData, setFormData, waiting, errors) =>
+            get_list: (waiting, errors) =>
                 (<Textarea
                     key={'edit_suggestion_reason_form_elem'}
                     name={'edit_suggestion_reason'}
@@ -112,9 +112,10 @@ export default function EditForm({addEditSuggestion, ResourceForm, api_urls}) {
             <div className="toolbar">
                 <a href={originalData.absolute_url}>back to detail view</a>
             </div>
-            <h3>Edit Problem</h3>
+            <h3>{TITLE}</h3>
             <ResourceForm
-                data={formData}
+                formData={formData}
+                setFormData={setFormData}
                 submitCallback={submitEdit}
                 extraData={extraData}
 

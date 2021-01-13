@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from "react"
+import React, {useState, useEffect, createContext} from "react"
 import Alert from "../../components/Alert";
 import apiList from "../../api_interface/apiList";
 import PaginatedLayout from "../../components/PaginatedLayout";
@@ -34,6 +34,9 @@ export default function EditApp({ResourceForm, api_urls}) {
     const [editSuggestionsWaiting, setEditSuggestionsWaiting] = useState(false);
     const [editSuggestionsAlert, setEditSuggestionsAlert] = useState(false);
 
+    const [reloadResourceForm, setReloadResourceForm] = useState(false);
+
+
 
     useEffect(() => {
         //get edit suggestions
@@ -55,7 +58,11 @@ export default function EditApp({ResourceForm, api_urls}) {
     return (
         <div className="detail-page">
             <div className="column-container card">
-                <EditSuggestionForm addEditSuggestion={resetEditSuggestionPagination} ResourceForm={ResourceForm} api_urls={api_urls}/>
+                <EditSuggestionForm addEditSuggestionCallback={resetEditSuggestionPagination}
+                                    ResourceForm={ResourceForm}
+                                    api_urls={api_urls}
+                                    mustReload={reloadResourceForm}
+                />
             </div>
             <section className="related column-container">
                 <h3>Edit Suggestions</h3>
@@ -74,6 +81,9 @@ export default function EditApp({ResourceForm, api_urls}) {
                                              remove_modal_class_from_body();
                                          }}
                                          api_urls={api_urls}
+                                         publishCallback={()=>{
+                                             setReloadResourceForm(true)
+                                         }}
                                      />
                                  }
                 />

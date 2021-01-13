@@ -50,9 +50,6 @@ class StudyResourceEditSuggestionListingSerializer(serializers.ModelSerializer):
 
 class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
     queryset = StudyResource.edit_suggestions.all()
-    author = UserSerializerMinimal(many=False, read_only=True)
-    tags = TagSerializer(many=True, read_only=True)
-    technologies = StudyResourceTechnologySerializer(source='studyresourcetechnology_set', many=True, read_only=True)
     edit_suggestion_author = UserSerializerMinimal(read_only=True)
     changes = serializers.SerializerMethodField()
 
@@ -61,10 +58,10 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudyResource.edit_suggestions.model
-        fields = ['pk', 'name', 'slug', 'url', 'summary', 'price', 'media',
-                  'experience_level', 'author', 'tags',
-                  'technologies', 'published_by',
-                  'edit_suggestion_reason', 'edit_suggestion_author', 'edit_suggestion_date_created', 'changes',
+        fields = ['pk',
+                  'edit_suggestion_date_created', 'edit_suggestion_author', 'edit_suggestion_status',
+                  'edit_suggestion_reason', 'edit_suggestion_reject_reason',
+                  'changes',
                   'thumbs_up_array', 'thumbs_down_array']
 
     def get_changes(self, instance):
@@ -104,34 +101,6 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
             else:
                 result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
         return result
-
-    # def run_validation(self, data):
-    #     if 'slug' not in data:
-    #         data['slug'] = slugify(data['name'])
-    #     validated_data = super().run_validation(data)
-    #     validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
-    #     validated_data['images'] = data['images'] if 'images' in data else []
-    #     return validated_data
-    #
-    # def create(self, validated_data):
-    #     # handle technologies and images separately
-    #     m2m_fields = {
-    #         'technologies': validated_data.pop('technologies'),
-    #         'images': validated_data.pop('images'),
-    #     }
-    #     study_resource = super(StudyResourceEditSuggestionSerializer, self).create(validated_data)
-    #     techs = Technology.objects.filter(pk__in=[t['pk'] for t in m2m_fields['technologies']])
-    #     for tech in techs:
-    #         tech_post_data = list(filter(lambda t: t['pk'] == tech.pk, m2m_fields['technologies']))[0]
-    #         StudyResourceTechnology.objects.create(
-    #             study_resource=study_resource,
-    #             technology=tech,
-    #             version=tech_post_data['version'],
-    #         )
-    #     # for img_data in m2m_fields['images']:
-    #     #     image = StudyResourceImage(study_resource=study_resource, image_url=img_data['url'])
-    #     #     image.save()
-    #     return study_resource
 
 
 class StudyResourceSerializer(EditSuggestionSerializer):

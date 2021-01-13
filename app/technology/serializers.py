@@ -35,16 +35,17 @@ class TechnologyEditSuggestionListingSerializer(serializers.ModelSerializer):
 
 class TechnologyEditSerializer(serializers.ModelSerializer):
     queryset = Technology.edit_suggestions
-    ecosystem = TechnologySerializerOption(many=True)
     edit_suggestion_author = UserSerializerMinimal()
     changes = SerializerMethodField()
 
     class Meta:
         model = Technology.edit_suggestions.model
         depth = 1
-        fields = ['pk', 'name', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations',
-                  'ecosystem', 'edit_suggestion_date_created', 'edit_suggestion_author', 'edit_suggestion_status', 'changes',
-                  'edit_suggestion_reason', 'edit_suggestion_reject_reason', 'thumbs_up_array', 'thumbs_down_array']
+        fields = ['pk',
+                  'edit_suggestion_date_created', 'edit_suggestion_author', 'edit_suggestion_status',
+                  'edit_suggestion_reason', 'edit_suggestion_reject_reason', 'edit_suggestion_parent',
+                  'changes',
+                  'thumbs_up_array', 'thumbs_down_array']
 
     def run_validation(self, data):
         validated_data = super().run_validation(data)

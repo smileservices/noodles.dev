@@ -7,6 +7,7 @@
 
 {% block extra_js %}
     <script>
+        const TITLE = "Edit Solution";
         const USER_ID = {{ request.user.id }};
         const RESOURCE_DETAIL = "{{ resource_detail }}";
         const EDIT_SUGGESTIONS_LIST = "{{ edit_suggestions_list }}";
@@ -16,6 +17,8 @@
         const RESOURCE_API = "{{ resource_api }}";
         const TAGS_OPTIONS_API = "{{ tag_options_api }}";
         const TECH_OPTIONS_API = "{{ tech_options_api }}";
+        const TECH_API = "{{ tech_api }}";
+
     </script>
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'problem_solution/solution-edit.js' %}"></script>

@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {FormElement, Input, Textarea, SelectReact, SelectReactCreatable} from "../../../src/components/form";
 import Alert from "../../../src/components/Alert";
+import TechForm from "../../../technology/src/TechForm";
+import CreateableComponent from "../../../src/components/CreateableComponent";
 
-export default function SolutionForm({data, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
+export default function SolutionForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors}) {
     const emptyData = {
         'name': '',
         'description': '',
@@ -10,7 +12,7 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
         'technologies': [],
         'parent': null,
     }
-    const [formData, setFormData] = useState(Object.assign({}, emptyData, data));
+
     const [tags, setTags] = useState([]);
     const [technologies, setTechnologies] = useState([]);
 
@@ -70,6 +72,9 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
         cpd.technologies = data.technologies.map(t => {
             return t.value
         });
+        if (data.parent && data.parent.pk) {
+            cpd.parent = data.parent.pk
+        }
         return cpd
     }
 
@@ -95,15 +100,12 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
             callback={
                 formData => validate(normalizeData(formData))
                     ? submitCallback(normalizeData(formData))
-                    : formData => {
-                    }
+                    : () => {}
             }
             alert={alert}
             waiting={waiting}>
-
-            <h3>{extraData.formTitle}</h3>
             <Input type="text" name="name" label="Name"
-                   inputProps={{...makeStateProps('name'), defaultValue: data['name']}}
+                   inputProps={{...makeStateProps('name')}}
                    smallText="A title for the solution"
                    error={errors['name']}
             />
@@ -121,15 +123,21 @@ export default function SolutionForm({data, extraData, submitCallback, waiting, 
                                   error={errors.tags}
             />
             <SelectReact name="select-techs" label="Choose technologies"
-                         smallText={<a onClick={extraData.showTechForm}><span className="icon-folder-plus"/> add
-                             tech</a>}
+                         smallText="Can choose one or multiple."
                          onChange={selectedOptions => setFormData({...formData, technologies: selectedOptions})}
                          options={technologies}
                          value={formData.technologies}
                          props={{isMulti: true}}
                          error={errors.technologies}
             />
-            {extraData.formElements ? extraData.formElements.get_list(formData, setFormData, waiting, errors) : ''}
+            <CreateableComponent
+                endpoint={TECH_API}
+                data={{}}
+                extraData={{addButtonText: 'create technology', formTitle: 'Create New Technology'}}
+                FormViewComponent={TechForm}
+                successCallback={data=>setTechnologies([...technologies, {value: data.pk, label: data.name}])}
+            />
+            {extraData.formElements ? extraData.formElements.get_list(waiting, errors) : ''}
         </FormElement>
     )
 }

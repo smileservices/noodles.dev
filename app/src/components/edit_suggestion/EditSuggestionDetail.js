@@ -8,7 +8,7 @@ import apiPost from "../../api_interface/apiPost";
 import {getCsrfToken, makeId} from "../utils";
 import {Input} from "../form";
 
-export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
+export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publishCallback}) {
     /*
     *   A compositor component for displaying edit suggestions
     *   just need the edit suggestion endpoint, the voting endpoint and the body to be populated
@@ -61,7 +61,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
 
     async function edit_suggestion_action(url, type) {
         let data = {'edit_suggestion_id': pk};
-        if (type==='reject') data['edit_suggestion_reject_reason'] = rejectReason;
+        if (type === 'reject') data['edit_suggestion_reject_reason'] = rejectReason;
 
         await apiPost(url, data, setWaiting)
             .then(result => {
@@ -70,11 +70,18 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
                             let content = (
                                 <Fragment>
                                     <p>{data.message}</p>
-                                    <button className="btn" onClick={e=>{e.preventDefault(); deleteCallback()}}>Ok</button>
+                                    <button className="btn" onClick={e => {
+                                        e.preventDefault();
+                                        if (type === 'publish') publishCallback();
+                                        deleteCallback();
+                                    }}>Ok
+                                    </button>
                                 </Fragment>
                             );
                             setAlertDisplay(<Alert text={content} type="success" hideable={false}
-                                                   close={e => setAlertDisplay('')}/>)
+                                                   close={e => {
+                                                       setAlertDisplay('');
+                                                   }}/>)
                         }
                     );
                 } else {
@@ -158,7 +165,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback}) {
                 <div className="edit-suggestion-details">
                     <h4>Changes:</h4>
                     {data.changes.map(c =>
-                        <div key={"change"+c.field} className="edit-change">
+                        <div key={"change" + c.field} className="edit-change">
                             <p>Field name: "{c.field}"</p>
                             <p>Old value:</p>
                             <p>"{c.old}"</p>

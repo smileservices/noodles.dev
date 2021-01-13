@@ -32,7 +32,7 @@ module.exports = {
         // '/static/technology/technology-create': './app/technology/src/TechCreateApp.js',
 
         //vote app
-        '/static/votes': './app/src/core/VotesApp.js',
+        // '/static/votes': './app/src/core/VotesApp.js',
 
 
         //edit suggestions

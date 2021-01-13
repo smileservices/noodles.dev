@@ -6,7 +6,7 @@ import {makeId} from "../utils";
 import Modal from "../Modal";
 import EditSuggestionDetail from "./EditSuggestionDetail";
 
-export default function EditSuggestionListing({data, api_urls, deleteCallback}) {
+export default function EditSuggestionListing({data, api_urls, deleteCallback, publishCallback}) {
     // this should be used as a composition component where it gets an "edit suggestion form/extended display";
     // once expanded, it should retrieve full edit sugg data from rest endpoint.
     // if the resource is owned, display the form. if the resource is not owned, just extended display
@@ -29,7 +29,7 @@ export default function EditSuggestionListing({data, api_urls, deleteCallback}) 
         //     : <EditSuggestionDetail api_urls={api_urls} pk={data.pk} DisplayElement={DisplayElement}/>
         return (
             <Modal close={e => setShowModal(false)}>
-                <EditSuggestionDetail api_urls={api_urls} pk={data.pk} deleteCallback={deleteCallback}/>
+                <EditSuggestionDetail api_urls={api_urls} pk={data.pk} deleteCallback={deleteCallback} publishCallback={publishCallback}/>
             </Modal>
         )
     }
