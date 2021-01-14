@@ -8,13 +8,13 @@ import Alert from "../../../src/components/Alert";
 import apiCreate from "../../../src/api_interface/apiCreate";
 import FormatDate from "../../../src/vanilla/date";
 
-function Content() {
+function StudyResourceCreateApp() {
     const emptyDataStep1 = {
         url: '',
     }
     const emptyDataStep2 = {
         tags: [],
-        technologies: []
+        technologies: [],
     }
     const emptyDataStep3 = {
         name: '',
@@ -52,13 +52,13 @@ function Content() {
 
     useEffect(() => {
         //get tags and technologies
-        let tagsPromise = fetch(
-            TAGS_ENDPOINT, {method: 'GET'}
+        fetch(
+            TAGS_OPTIONS_API, {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve tags" type="danger"/>);
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve tags" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -66,13 +66,13 @@ function Content() {
                 setTags(data);
             }
         })
-        let techsPromise = fetch(
-            TECH_ENDPOINT, {method: 'GET'}
+        fetch(
+            TECH_OPTIONS_API, {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve tags" type="danger"/>);
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve tags" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -81,12 +81,12 @@ function Content() {
             }
         })
         let optionsPromise = fetch(
-            STUDY_RESOURCE_ENDPOINT + 'options/', {method: 'GET'}
+            STUDY_RESOURCE_API + 'options/', {method: 'GET'}
         ).then(result => {
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert close={e=>setAlert(null)} text="Could not retrieve options" type="danger"/>);
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve options" type="danger"/>);
                 return false;
             }
         }).then(data => {
@@ -97,14 +97,25 @@ function Content() {
     }, []);
 
 
-    function addTech(tech) {
-        setTechs([...techs, tech]);
+    function addTechToOptions(data) {
+        //data is serialized detail tech data
+        //add newly created tech to existing technologies
+        const techOption = {'value': data.pk, 'label': data.name};
+        setTechs([...techs, techOption]);
     }
 
     function extractData(dataStep1, dataStep2, dataStep3) {
         let data = {...dataStep1, ...dataStep3};
         data.tags = dataStep2.tags.map(arr => arr.value);
-        data.technologies = dataStep2.technologies.map(arr => arr.value);
+        /*
+        !! selected techs should be a list containing this structure:
+
+        'name': '',
+        'technology_id': false,
+        'version': '',
+
+        * */
+        data.technologies = dataStep2.technologies;
         data.type = dataStep3.type.value;
         data.media = dataStep3.media.value;
         data.experience_level = dataStep3.experience_level.value;
@@ -115,27 +126,35 @@ function Content() {
     function submit(dataStep1, dataStep2, dataStep3) {
         setAlert('');
         apiCreate(
-            STUDY_RESOURCE_ENDPOINT,
+            STUDY_RESOURCE_API,
             extractData(dataStep1, dataStep2, dataStep3),
             data => {
+                setCreated({url: data.absolute_url})
             },
             setWaiting,
             result => {
-                setAlert(<Alert close={e=>setAlert(null)} text={"Could not create."} type="danger"/>)
-            },
-            successHeaders => {
-                setCreated({
-                    url: successHeaders.get('Location')
-                })
+                setAlert(<Alert close={e => setAlert(null)} text={"Could not create."} type="danger"/>)
             }
         )
     }
 
     function handleStepOne(formData, scraped_data) {
+        // will scrape the data from url and prepopulate next steps with it
+
         setDataStep1(formData);
-        setDataStep2({
-            tags: scraped_data['tags'] ? scraped_data['tags'].map(tag => {return {value: tag, label: tag}}) : []
-        })
+        let dataObjStep2 = {};
+
+        scraped_data['tags']
+            ? dataObjStep2['tags'] = scraped_data['tags']
+                .map(tag => {return {value: tag, label: tag}})
+            : dataObjStep2['tags'] = [];
+
+        scraped_data['technologies']
+            ? dataObjStep2['technologies'] = scraped_data['technologies']
+                .map(tech => {return {name: tech.name, technology_id: tech.pk, version: tech.version}})
+            : dataObjStep2['technologies'] = [{name: '', technology_id: '', version: ''},];
+        setDataStep2(dataObjStep2);
+
         setDataStep3({
             name: scraped_data['name'],
             publication_date: FormatDate(scraped_data['publishing_date'], 'html-date'),
@@ -173,7 +192,8 @@ function Content() {
                     <CreateFormStep1 data={dataStep1} submit={handleStepOne}/>
                 );
             case 1:
-                return (<CreateFormStep2 data={dataStep2} tags={tags} techs={techs} addTech={addTech}
+                return (<CreateFormStep2 data={dataStep2} tags={tags} techs={techs}
+                                         addTechToOptions={addTechToOptions}
                                          submit={formData => submitStep(step, setDataStep2, formData)}
                 />);
             case 2:
@@ -210,7 +230,8 @@ function Content() {
                     if (stepStatus[step] === 'ok' || stepStatus[step] === 'current') {
                         setStep(step);
                     } else {
-                        setAlert(<Alert close={e=>setAlert(null)} text="Please submit current form before going to next steps." type="warning"
+                        setAlert(<Alert close={e => setAlert(null)}
+                                        text="Please submit current form before going to next steps." type="warning"
                                         stick={false} hideable={false}/>)
                     }
                 }}
@@ -221,4 +242,4 @@ function Content() {
     );
 }
 
-ReactDOM.render(<Content/>, document.getElementById('create-app'));
+ReactDOM.render(<StudyResourceCreateApp/>, document.getElementById('create-app'));

@@ -16,7 +16,7 @@ export default function Review({review}) {
 
     function remove() {
         apiDelete(
-            REVIEW_API_ENDPOINT + review.pk + '/',
+            REVIEW_API + review.pk + '/',
             setWaiting,
             text => setDeleted(text),
             data => setAlert(<Alert close={e=>setAlert(null)} text='An error occured' type='danger'/>)

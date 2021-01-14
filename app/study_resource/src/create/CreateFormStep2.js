@@ -1,89 +1,55 @@
 import React, {useState, useEffect, Fragment} from "react"
-import CreateTech from "./CreateTech";
-
-import apiPost from "../../../src/api_interface/apiPost";
 import Alert from "../../../src/components/Alert";
-import {Input} from "../../../src/components/form";
-import {SelectReact, SelectReactCreatable} from "../../../src/components/form";
+import {SelectReactCreatable, FormElement} from "../../../src/components/form";
+import TechnologySelect from "../forms/TechnologySelect";
 
-export default function CreateFormStep2({data, submit, techs, tags, addTech}) {
+export default function CreateFormStep2({data, submit, techs, tags, addTechToOptions}) {
+
     const [formData, setFormData] = useState(data);
     const [errors, setErrors] = useState({});
     const [waiting, setWaiting] = useState('');
     const [alert, setAlert] = useState('');
 
-    const [techForm, setTechForm] = useState(false);
-
-    function validate(formData, callback) {
+    function validate(formData) {
         let vErrors = {}
         if (formData.tags.length === 0) vErrors.tags = 'Choose at least one tag';
         if (formData.technologies.length === 0) vErrors.technologies = 'Choose at least one technology';
         if (Object.keys(vErrors).length > 0) {
-            setAlert(<Alert close={e=>setAlert(null)} text="Please fix the form errors" type="danger"/>)
+            setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)
             setErrors(vErrors);
-        } else callback(formData)
+        } else submit(formData)
     }
 
-    const getOptionFromTech = data => {
-        return {value: data.pk, label: data.name + " " + data.version}
-    };
-    const getOptionFromTag = data => {
-        return {value: data.pk, label: data.name}
-    };
-
-    if (techForm) return (
-        <CreateTech
-            techs={techs}
-            createdCallback={data => {
-                addTech(data);
-                setTechForm(false);
-                setFormData({...formData, technologies: [...formData.technologies, getOptionFromTech(data)]});
-                setAlert(<Alert close={e=>setAlert(null)} text="Created new technology version successfully." type="success"/>)
-            }}
-            cancel={e => {
-                setTechForm(false);
-            }}
-        />
-    )
+    function addTechToSelected(data) {
+        // add to the selected techs but with no version info
+        const resourceTechOption = {'name': data.name, 'technology_id': data.pk, 'version': ''};
+        setFormData({...formData, technologies: [...formData.technologies, resourceTechOption]});
+    }
 
     return (
         <div className="form-container">
-            <form action="#" onSubmit={e => {
-                e.preventDefault();
-                validate(formData, submit);
-            }}>
-                <SelectReactCreatable id="select-tags" label="Choose tags"
-                                      smallText="Can choose one or multiple or add a new one if necessary."
-                                      onChange={selectedOptions => setFormData({...formData, tags: selectedOptions})}
-                                      options={tags.map(tag => getOptionFromTag(tag))}
-                                      value={formData.tags}
-                                      props={{isMulti: true}}
-                                      error={errors.tags}
-                />
-                <SelectReact id="select-techs" label="Choose technologies"
-                             smallText={
-                                 <span>
-                                 <span>Choose one or more technologies. </span>
-                                 <a href="" onClick={e => {
-                                     e.preventDefault();
-                                     setTechForm(true)
-                                 }}>
-                                     Add new
-                                 </a>
-                             </span>
-                             }
-                             onChange={selectedOptions => setFormData({...formData, technologies: selectedOptions})}
-                             options={techs.map(tech => getOptionFromTech(tech))}
-                             value={formData.technologies}
-                             props={{isMulti: true}}
-                             error={errors.technologies}
-                />
-                {alert}
-                {waiting
-                    ? waiting
-                    : <button className="btn submit" type="submit">Next</button>
-                }
-            </form>
+        <FormElement
+            data={formData}
+            callback={validate}
+            alert={alert}
+            waiting={waiting} >
+            <SelectReactCreatable id="select-tags" label="Choose tags"
+                                  smallText="Can choose one or multiple or add a new one if necessary."
+                                  onChange={selectedOptions => setFormData({...formData, tags: selectedOptions})}
+                                  options={tags}
+                                  value={formData.tags}
+                                  props={{isMulti: true}}
+                                  error={errors.tags}
+            />
+            <TechnologySelect
+                techs={techs}
+                values={formData.technologies}
+                setValues={ values => setFormData({...formData, technologies: values}) }
+                addNewTech={ data => {addTechToOptions(data); addTechToSelected(data)} }
+                waiting={waiting}
+                errors={errors.technologies}
+            />
+        </FormElement>
         </div>
     )
 }

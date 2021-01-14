@@ -1,20 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, Fragment} from "react";
 import {FormElement, Input, Textarea, SelectReact, SelectReactCreatable} from "../../../src/components/form";
 import Alert from "../../../src/components/Alert";
 import TechForm from "../../../technology/src/TechForm";
-import CreateableComponent from "../../../src/components/CreateableComponent";
+import CreateableFormComponent from "../../../src/components/CreateableFormComponent";
 
 export default function SolutionForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors}) {
-    const emptyData = {
-        'name': '',
-        'description': '',
-        'tags': [],
-        'technologies': [],
-        'parent': null,
-    }
 
     const [tags, setTags] = useState([]);
     const [technologies, setTechnologies] = useState([]);
+    const [showAddTechForm, setShowAddTechForm] = useState(false);
 
     useEffect(() => {
         //get tags options
@@ -94,16 +88,47 @@ export default function SolutionForm({formData, setFormData, extraData, submitCa
         } else return true;
     }
 
+    if (showAddTechForm) return (
+        <Fragment>
+            <a href="" onClick={e=>{
+                e.preventDefault();
+                setShowAddTechForm(false);
+            }}>back to add solution form</a>
+            <CreateableFormComponent
+                endpoint={TECH_API}
+                data={{
+                    'name': '',
+                    'description': '',
+                    'url': '',
+                    'owner': '',
+                    'pros': '',
+                    'cons': '',
+                    'limitations': '',
+                }}
+                extraData={{addButtonText: 'create technology', formTitle: 'Create New Technology'}}
+                FormViewComponent={TechForm}
+                successCallback={data => {
+                    const newTechOption = {value: data.pk, label: data.name};
+                    setShowAddTechForm(false);
+                    setTechnologies([...technologies, newTechOption]);
+                    setFormData({...formData, technologies: [...formData.technologies, newTechOption]});
+                }}
+            />
+        </Fragment>
+    )
+
     return (
         <FormElement
             data={formData}
             callback={
                 formData => validate(normalizeData(formData))
                     ? submitCallback(normalizeData(formData))
-                    : () => {}
+                    : () => {
+                    }
             }
             alert={alert}
             waiting={waiting}>
+            {extraData.formTitle ? <h3>{extraData.formTitle}</h3> : ''}
             <Input type="text" name="name" label="Name"
                    inputProps={{...makeStateProps('name')}}
                    smallText="A title for the solution"
@@ -130,13 +155,7 @@ export default function SolutionForm({formData, setFormData, extraData, submitCa
                          props={{isMulti: true}}
                          error={errors.technologies}
             />
-            <CreateableComponent
-                endpoint={TECH_API}
-                data={{}}
-                extraData={{addButtonText: 'create technology', formTitle: 'Create New Technology'}}
-                FormViewComponent={TechForm}
-                successCallback={data=>setTechnologies([...technologies, {value: data.pk, label: data.name}])}
-            />
+            <a href="" onClick={e=>{e.preventDefault(); setShowAddTechForm(true)}}>add new tech</a>
             {extraData.formElements ? extraData.formElements.get_list(waiting, errors) : ''}
         </FormElement>
     )

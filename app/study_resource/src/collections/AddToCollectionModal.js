@@ -44,7 +44,7 @@ export default function AddToCollectionModal({close}) {
 
     function submit(data) {
         apiPost(
-            USER_COLLECTIONS_SET_ENDPOINT + '?pk=' + RESOURCE_ID,
+            USER_COLLECTIONS_SET_API + '?pk=' + RESOURCE_ID,
             data,
             setWaiting,
         ).then(result => {

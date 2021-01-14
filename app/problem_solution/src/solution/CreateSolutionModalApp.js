@@ -4,46 +4,38 @@ import Modal from "../../../src/components/Modal";
 import SolutionForm from "./SolutionForm";
 import CreateableFormComponent from "../../../src/components/CreateableFormComponent";
 import TechForm from "../../../technology/src/TechForm";
+import {makeId} from "../../../src/components/utils";
 
 function CreateSolutionApp() {
     const [showModal, setShowModal] = useState(false);
-    const [modalContent, setModalContent] = useState('solution');
 
-    function getModalContent() {
-        switch (modalContent) {
-            case "solution":
-                return (<CreateableFormComponent
-                    endpoint={SOLUTIONS_ENDPOINT}
-                    data={{parent: RESULT.pk}}
-                    extraData={{formTitle: "Add Solution for "+RESULT.name, showTechForm: e=>setModalContent('technology')}}
-                    FormViewComponent={SolutionForm}
-                    successCallback={data=>{
-                        setShowModal(false);
-                        document.body.classList.remove('modal-open');
-                        window.refreshChildren();
-                    }}
-                />);
-            case "technology":
-                return (<CreateableFormComponent
-                    endpoint={TECH_ENDPOINT}
-                    data={{}}
-                    extraData={{formTitle: "Create new technology"}}
-                    FormViewComponent={TechForm}
-                    successCallback={data=> {
-                        setModalContent('solution')
-                    }}
-                />)
-        }
+    const initialSolutionData = {
+        'name': '',
+        'description': '',
+        'tags': [],
+        'technologies': [],
+        'parent': RESULT.pk,
     }
 
     function displayFormModal() {
         return (
             <Modal close={e => {
                 setShowModal(false);
-                setModalContent('solution');
             }}>
-                { modalContent==='technology' ? <a onClick={e=>setModalContent('solution')}><span className="icon-close"/> back to solution form</a> : ''}
-                {getModalContent()}
+                <CreateableFormComponent
+                    key={makeId(5)}
+                    endpoint={SOLUTION_API}
+                    data={initialSolutionData}
+                    extraData={{
+                        formTitle: "Add Solution for "+'"'+RESULT.name + '"',
+                    }}
+                    FormViewComponent={SolutionForm}
+                    successCallback={data=>{
+                        setShowModal(false);
+                        document.body.classList.remove('modal-open');
+                        window.refreshChildren();
+                    }}
+                />
             </Modal>
         )
     }

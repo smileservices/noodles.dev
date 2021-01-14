@@ -75,6 +75,7 @@ export default function ProblemForm({formData, setFormData, extraData, submitCal
                      alert={alert}
                      waiting={waiting}
         >
+            { extraData.formTitle ? <h3>{extraData.formTitle}</h3> : ''}
             <Input type="text" name="name" label="Name"
                    inputProps={{...makeStateProps('name')}}
                    smallText="A title for the problem"

@@ -1,15 +1,13 @@
 import React, {useState, useEffect, Fragment} from "react"
-
-import apiPost from "../../../src/api_interface/apiPost";
 import Alert from "../../../src/components/Alert";
-import {Input, Textarea, SelectReact} from "../../../src/components/form";
+import {Input, Textarea, SelectReact, FormElement} from "../../../src/components/form";
 
 export default function CreateFormStep3({data, options, submit, waiting}) {
     const [formData, setFormData] = useState(data);
     const [errors, setErrors] = useState({});
     const [alert, setAlert] = useState('');
 
-    function validate(formData, callback) {
+    function validate(formData) {
         let vErrors = {}
         if (formData.name.length < 5) vErrors.name = 'Title is too short. It has to be at least 5 characters';
         if (formData.published_by.length < 3) vErrors.author = 'Author name is too short. It has to be at least 3 characters';
@@ -18,23 +16,19 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
         if (!formData.experience_level) vErrors.experience_level = 'Required';
         if (!formData.media) vErrors.media = 'Required';
         if (Object.keys(vErrors).length > 0) {
-            setAlert(<Alert close={e=>setAlert(null)} text="Please fix the form errors" type="danger"/>)
+            setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)
             setErrors(vErrors);
-        } else callback(formData);
-    }
-
-    function getOptions(name) {
-        return options[name].map(o => {
-            return {value: o[0], label: o[1]}
-        });
+        } else submit(formData);
     }
 
     return (
         <div className="form-container">
-            <form action="#" onSubmit={e => {
-                e.preventDefault();
-                validate(formData, submit);
-            }}>
+            <FormElement
+                data={formData}
+                callback={validate}
+                alert={alert}
+                waiting={waiting}>
+
                 <Input
                     id={'name'}
                     label="Title"
@@ -80,7 +74,7 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
                     <SelectReact label='Type'
                                  value={formData.type}
                                  error={errors.type}
-                                 options={getOptions('type')}
+                                 options={options.type}
                                  onChange={sel => setFormData({...formData, type: sel})}
                                  props={{disabled: Boolean(waiting)}}
                                  smallText="Free or paid"
@@ -88,7 +82,7 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
                     <SelectReact label='Media'
                                  value={formData.media}
                                  error={errors.media}
-                                 options={getOptions('media')}
+                                 options={options.media}
                                  onChange={sel => setFormData({...formData, media: sel})}
                                  props={{disabled: Boolean(waiting)}}
                                  smallText="Media type"
@@ -96,7 +90,7 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
                     <SelectReact label='Experience level'
                                  value={formData.experience_level}
                                  error={errors.experience_level}
-                                 options={getOptions('experience_level')}
+                                 options={options.experience_level}
                                  onChange={sel => setFormData({...formData, experience_level: sel})}
                                  props={{disabled: Boolean(waiting)}}
                                  smallText="Experience level required"
@@ -129,12 +123,7 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
                     smallText="What is it about"
                     error={errors.summary}
                 />
-                {alert}
-                {waiting
-                    ? waiting
-                    : <button className="btn submit" type="submit">Publish</button>
-                }
-            </form>
+            </FormElement>
         </div>
     )
 }

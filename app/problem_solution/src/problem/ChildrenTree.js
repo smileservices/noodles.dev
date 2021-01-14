@@ -21,7 +21,7 @@ function SolutionChildrenApp() {
 
     useEffect(e => {
         apiList(
-            PROBLEM_SOLUTIONS_ENDPOINT,
+            PROBLEM_SOLUTIONS_LIST,
             pagination,
             setSolutions,
             setWaiting,

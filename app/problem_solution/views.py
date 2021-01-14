@@ -88,9 +88,16 @@ def problem_detail(request, id, slug):
         'result': resource,
         'thumbs_up_array': json.dumps(resource.thumbs_up_array),
         'thumbs_down_array': json.dumps(resource.thumbs_down_array),
-        'vote_url': reverse_lazy('problem-viewset-vote', kwargs={'pk': resource.pk}),
         'related': related,
         'solutions': resource.solutions.all(),
+        'urls': {
+            'tech_api': reverse_lazy('techs-viewset-list'),
+            'vote_api': reverse_lazy('problem-viewset-vote', kwargs={'pk': resource.pk}),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'tech_options_api': reverse_lazy('techs-options-list'),
+            'solutions_list': reverse_lazy('problem-viewset-solutions', kwargs={'pk': resource.pk}),
+            'solution_api': reverse_lazy('solution-viewset-list')
+        }
     }
     if request.user.is_authenticated:
         return render(request, 'problem_solution/problem/detail_page.html', data)

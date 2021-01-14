@@ -12,11 +12,6 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
 
     def perform_create(self, serializer):
         resource = serializer.save(author=self.request.user)
-        # todo we should handle m2m in serializer.run_validation, don't need this here
-        if self.m2m_fields:
-            for m2m_field in self.m2m_fields:
-                if m2m_field in self.request.data:
-                    getattr(resource, m2m_field).add(*self.request.data[m2m_field])
         self.request.user.positive_score += rewards.RESOURCE_CREATE
         self.request.user.save()
         return resource

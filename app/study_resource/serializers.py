@@ -134,9 +134,9 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         # validate technologies, images
         techs = []
         for tech in data['technologies']:
-            if tech['pk'] in techs:
+            if tech['technology_id'] in techs:
                 raise AttributeError('Cannot add same technology multiple times')
-            techs.append(tech['pk'])
+            techs.append(tech['technology_id'])
         validated_data['technologies'] = data['technologies']
         validated_data['images'] = data['images'] if 'images' in data else []
         return validated_data
@@ -147,19 +147,9 @@ class StudyResourceSerializer(EditSuggestionSerializer):
             'technologies': validated_data.pop('technologies'),
             'images': validated_data.pop('images'),
         }
-        study_resource = super(StudyResourceSerializer, self).create(validated_data)
-        techs = Technology.objects.filter(pk__in=[t['pk'] for t in m2m_fields['technologies']])
-        for tech in techs:
-            tech_post_data = list(filter(lambda t: t['pk'] == tech.pk, m2m_fields['technologies']))[0]
-            StudyResourceTechnology.objects.create(
-                study_resource=study_resource,
-                technology=tech,
-                version=tech_post_data['version'],
-            )
-        for img_data in m2m_fields['images']:
-            image = StudyResourceImage(study_resource=study_resource, image_url=img_data['url'])
-            image.save()
-        return study_resource
+        created_instance = super(StudyResourceSerializer, self).create(validated_data)
+        self.handle_m2m_fields(created_instance, m2m_fields)
+        return created_instance
 
     def update(self, instance, validated_data):
         # handle technologies and images separately
@@ -170,19 +160,21 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         updated_instance = super(StudyResourceSerializer, self).update(instance, validated_data)
         updated_instance.studyresourcetechnology_set.all().delete()
         updated_instance.images.all().delete()
+        self.handle_m2m_fields(updated_instance, m2m_fields)
+        return updated_instance
 
-        techs = Technology.objects.filter(pk__in=[t['pk'] for t in m2m_fields['technologies']])
+    def handle_m2m_fields(self, instance, m2m_fields):
+        techs = Technology.objects.filter(pk__in=[t['technology_id'] for t in m2m_fields['technologies']])
         for tech in techs:
-            tech_post_data = list(filter(lambda t: t['pk'] == tech.pk, m2m_fields['technologies']))[0]
+            tech_post_data = list(filter(lambda t: t['technology_id'] == tech.pk, m2m_fields['technologies']))[0]
             StudyResourceTechnology.objects.create(
-                study_resource=updated_instance,
+                study_resource=instance,
                 technology=tech,
                 version=tech_post_data['version'],
             )
         for img_data in m2m_fields['images']:
             image = StudyResourceImage(study_resource=instance, image_url=img_data['url'])
             image.save()
-        return updated_instance
 
 
 class ReviewSerializer(serializers.ModelSerializer):

@@ -39,7 +39,13 @@ def detail(request, id, slug):
 
 @login_required
 def create(request):
-    return render(request, 'technology/create_page.html')
+    data = {
+        'urls': {
+            'tech_api': reverse_lazy('techs-viewset-list'),
+            'tech_options_api': reverse_lazy('techs-options-list'),
+        }
+    }
+    return render(request, 'technology/create_page.html', data)
 
 
 @login_required

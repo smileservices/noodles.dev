@@ -10,8 +10,8 @@
 
 {% block content %}
     <script>
-        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
-        const TECH_OPTIONS_ENDPOINT = "{% url 'techs-options-list' %}";
+        const TECH_API = "{{ urls.tech_api }}";
+        const TECH_OPTIONS_API = "{{ urls.tech_options_api }}";
     </script>
     <div class="create-page">
         <section class="header">

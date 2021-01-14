@@ -4,8 +4,11 @@ import CreateableComponent from "../../../src/components/CreateableComponent";
 import TechForm from "../../../technology/src/TechForm";
 
 
-export default function TechnologySelect({techs, values, setTechnologies, addNewTech, waiting, errors}) {
-    // setTechnologies is for selected option including version
+export default function TechnologySelect({techs, values, setValues, addNewTech, waiting, errors}) {
+    //techs - option list of existing techs
+    //values - actual selected techs of resource
+    // setValues is for selected option including version
+    //
     // addNewTech is for handling creation of new technology through API
 
     // use for displaying technology and adding version
@@ -22,7 +25,7 @@ export default function TechnologySelect({techs, values, setTechnologies, addNew
         } else {
             ct[idx]['version'] = selected;
         }
-        setTechnologies(ct);
+        setValues(ct);
     }
 
     return (
@@ -51,13 +54,13 @@ export default function TechnologySelect({techs, values, setTechnologies, addNew
                     />
                     <a onClick={e=>{
                         e.preventDefault();
-                        setTechnologies(values.filter((t,ridx) => ridx!==idx));
+                        setValues(values.filter((t,ridx) => ridx!==idx));
                     }}>remove</a>
                 </div>)
             ) : ''}
             <span href="" onClick={e=>{
                 e.preventDefault();
-                setTechnologies([...values, emptyForm]);
+                setValues([...values, emptyForm]);
             }}>add new</span>
             <CreateableComponent
                 endpoint={TECH_API}

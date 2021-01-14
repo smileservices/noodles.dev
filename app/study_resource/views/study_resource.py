@@ -62,7 +62,14 @@ def detail(request, id, slug):
         'result': resource,
         'related': related,
         'reviews': resource.reviews.order_by('-created_at').all(),
-        'MAX_RATING': settings.MAX_RATING
+        'MAX_RATING': settings.MAX_RATING,
+        'urls': {
+            'review_api': reverse_lazy('review-viewset-list'),
+            'reviews_list': reverse_lazy('study-resource-viewset-reviews', kwargs={'pk': resource.pk}),
+            'collections': reverse_lazy('my-collections'),
+            'user_collections_api': reverse_lazy('collection-viewset-owned-resource'),
+            'user_collections_set_api': reverse_lazy('collection-viewset-set-items'),
+        }
     }
     if request.user.is_authenticated:
         return render(request, 'study_resource/detail_page.html', data)
@@ -89,7 +96,16 @@ def edit(request, id):
 
 @login_required
 def create(request):
-    return render(request, 'study_resource/create_page.html')
+    data = {
+        'urls': {
+            'study_resource_api': reverse_lazy('study-resource-viewset-list'),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'tech_options_api': reverse_lazy('techs-options-list'),
+            'tech_api': reverse_lazy('techs-viewset-list'),
+
+        }
+    }
+    return render(request, 'study_resource/create_page.html', data)
 
 
 class StudyResourceViewset(ResourceWithEditSuggestionVieset):
@@ -168,9 +184,9 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
             'media': [{'value': c[0], 'label': c[1]} for c in StudyResource.Media.choices],
             'experience_level': [{'value': c[0], 'label': c[1]} for c in StudyResource.ExperienceLevel.choices]
         })
-
-    def get_success_headers(self, data):
-        return {'Location': reverse_lazy('study-resource-detail', kwargs={'id': data['pk'], 'slug': data['slug']})}
+    #
+    # def get_success_headers(self, data):
+    #     return {'Location': reverse_lazy('study-resource-detail', kwargs={'id': data['pk'], 'slug': data['slug']})}
 
 
 class StudyResourceEditSuggestionViewset(EditSuggestionViewset):

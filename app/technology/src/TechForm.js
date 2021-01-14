@@ -6,15 +6,7 @@ import {FormElement} from "../../src/components/form";
 import Alert from "../../src/components/Alert";
 
 export default function TechForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
-    const emptyForm = {
-        name: '',
-        description: '',
-        url: '',
-        owner: '',
-        pros: '',
-        cons: '',
-        limitations: '',
-    };
+
     const [technologies, setTechnologies] = useState([]);
 
     useEffect(() => {
@@ -111,6 +103,7 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
             alert={alert}
             waiting={waiting}
         >
+            { extraData.formTitle ? <h3>{extraData.formTitle}</h3> : ''}
             <Input id="name" label="Name" inputProps={{
                 ...makeStateProps('name'),
                 type: 'text',

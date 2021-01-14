@@ -22,13 +22,11 @@
         const RESOURCE_EDIT_URL = "{% url 'study-resource-edit' result.id %}";
         const RESOURCE_API_DELETE = "{% url 'study-resource-viewset-detail' result.id %}";
 
-        const REVIEW_API_ENDPOINT = "{% url 'review-viewset-list' %}";
-        const REVIEWS_LIST_API_ENDPOINT = "{% url 'study-resource-viewset-reviews' result.id %}";
-
-
-        const URL_USER_COLLECTIONS = "{% url 'my-collections' %}";
-        const USER_COLLECTIONS_ENDPOINT = "{% url 'collection-viewset-owned-resource' %}";
-        const USER_COLLECTIONS_SET_ENDPOINT = "{% url 'collection-viewset-set-items' %}";
+        const REVIEW_API = "{{ urls.review_api }}";
+        const REVIEWS_LIST = "{{ urls.reviews_list }}";
+        const USER_COLLECTIONS_LIST = "{{ urls.collections }}";
+        const USER_COLLECTIONS_API = "{{ urls.user_collections_api }}";
+        const USER_COLLECTIONS_SET_API = "{{ urls.user_collections_set_api }}";
     </script>
     <div class="detail-page">
 

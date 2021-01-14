@@ -12,7 +12,7 @@ export default function Collection({data, handleSelect, setEdit, handleDelete}) 
 
     function remove() {
         apiDelete(
-            COLLECTIONS_ENDPOINT + data.pk + '/',
+            USER_COLLECTIONS_LIST + data.pk + '/',
             setWaiting,
             text => {
                 handleDelete();

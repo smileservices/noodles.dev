@@ -20,7 +20,7 @@ function ResourceReviewsApp() {
 
     useEffect(e => {
         apiList(
-            REVIEWS_LIST_API_ENDPOINT,
+            REVIEWS_LIST,
             pagination,
             setReviews,
             setWaiting,

@@ -2,8 +2,6 @@ import React, {useState, useEffect, Fragment} from "react";
 import Alert from "../../../src/components/Alert";
 import {FormElement, Input, SelectReact, SelectReactCreatable, Textarea} from "../../../src/components/form";
 import apiPost from "../../../src/api_interface/apiPost";
-import CreateTech from "../create/CreateTech";
-
 import TechnologySelect from "../forms/TechnologySelect";
 
 export default function StudyResourceEditForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
@@ -24,8 +22,6 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
     const [tags, setTags] = useState({});
     const [techs, setTechs] = useState({});
     const [options, setOptions] = useState({});
-
-    const [techForm, setTechForm] = useState(false);
 
     function makeStateProps(name) {
         function updateValue(name) {
@@ -154,13 +150,6 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
         })
     }
 
-    if (techForm) return <CreateTech
-        techs={techs} cancel={e => setTechForm(false)}
-        createdCallback={tech => {
-            addTech(tech);
-            setTechForm(false);
-        }}/>
-
     return (
         <FormElement
             data={formData}
@@ -216,7 +205,7 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
 
             <TechnologySelect techs={techs}
                               values={formData.technologies}
-                              setTechnologies={techs => setFormData({...formData, technologies: techs})}
+                              setValues={techs => setFormData({...formData, technologies: techs})}
                               addNewTech={data => setTechs([...techs, {value: data.pk, label: data.name}])}
                               waiting={waiting}
                               errors={errors}
