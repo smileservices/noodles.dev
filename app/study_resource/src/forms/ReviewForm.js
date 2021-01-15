@@ -1,83 +1,53 @@
 import React, {Fragment, useState} from "react";
 import Alert from "../../../src/components/Alert";
-import apiCreate from "../../../src/api_interface/apiCreate";
 import StarRating from "../../../src/components/StarRating";
-import {Textarea} from "../../../src/components/form";
+import {Textarea, FormElement} from "../../../src/components/form";
 
-export default function ReviewForm({createReviewCallback}) {
-    const emptyForm = {
-        'study_resource': RESOURCE_ID,
-        'rating': 0,
-        'text': ''
-    }
-    const [formData, setFormData] = useState(emptyForm);
-    const [waiting, setWaiting] = useState('');
-    const [alert, setAlert] = useState('');
-    const [errors, setErrors] = useState({})
-
+export default function ReviewForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
 
     function validateForm(formData) {
-        let errs = {}
+        let vErrors = {}
         if (!formData.rating) {
-            errs['rating'] = 'Please give the resource a rating score';
+            vErrors['rating'] = 'Please give the resource a rating score';
         }
         if (formData.text.length < 50) {
-            errs['text'] = 'Your review is too short. Please use at least 50 characters.';
+            vErrors['text'] = 'Your review is too short. Please use at least 50 characters.';
         }
-        if (Object.keys(errs).length > 0) {
-            setErrors(errs);
-            return false;
+        if (Object.keys(vErrors).length > 0) {
+            setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"
+                            hideable={false}/>)
+            setErrors({...vErrors});
         }
-        return true;
+        submitCallback(formData)
     }
 
-    function handleSuccess(data) {
-        createReviewCallback(data);
-    }
-
-    function handleError(result) {
-        result.json().then(data => {
-            if (data.detail) {
-                setAlert(<Alert close={e=>setAlert(null)} text={data.detail} type={'danger'}/>);
-            }
-        })
-    }
 
     return (
-        <Fragment>
-            <form id="review_form" method="POST" onSubmit={e => {
-                e.preventDefault();
-                if (validateForm(formData)) {
-                    setAlert('');
-                    apiCreate(REVIEW_API_ENDPOINT, formData, handleSuccess, setWaiting, handleError);
-                }
-            }
-            }>
-                <div className="form-group">
-                    <div id="form_rating_stars">
-                        <StarRating rating={formData.rating} maxRating={MAX_RATING}
-                                    ratingChange={r => setFormData({...formData, rating: r})}
-                                    isDisabled={Boolean(waiting)}
-                        />
-                        {errors.rating ? (<div className="invalid-feedback">{errors.rating}</div>) : ''}
-                    </div>
+        <FormElement
+            data={formData}
+            callback={validateForm}
+            alert={alert}
+            waiting={waiting}
+        >
+            <div className="form-group">
+                <div id="form_rating_stars">
+                    <StarRating rating={formData.rating} maxRating={MAX_RATING}
+                                ratingChange={r => setFormData({...formData, rating: r})}
+                                isDisabled={Boolean(waiting)}
+                    />
+                    {errors.rating ? (<div className="invalid-feedback">{errors.rating}</div>) : ''}
                 </div>
-                <Textarea id="text" label={false}
-                          inputProps={{
-                              placeholder: "Write your review here",
-                              required: true,
-                              value: formData.text,
-                              onChange: e => setFormData({...formData, text: e.target.value}),
-                              disabled: Boolean(waiting),
-                          }}
-                          error={errors.text}
-                />
-                {alert}
-                {USER_ID
-                    ? waiting ? waiting : <button type="submit" className="btn submit">Submit</button>
-                    : <a className="login" href={LOGIN_URL}>Sign in to write review</a>
-                }
-            </form>
-        </Fragment>
+            </div>
+            <Textarea id="text" label={false}
+                      inputProps={{
+                          placeholder: "Write your review here",
+                          required: true,
+                          value: formData.text,
+                          onChange: e => setFormData({...formData, text: e.target.value}),
+                          disabled: Boolean(waiting),
+                      }}
+                      error={errors.text}
+            />
+        </FormElement>
     )
 }

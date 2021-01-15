@@ -11,7 +11,7 @@ export default function Review({review}) {
     const [confirm, setConfirm] = useState('');
 
     const author_full_name = review.author.get_full_name;
-    const api_vote_url_endpoint = REVIEW_API_ENDPOINT + review.pk + '/vote/';
+    const api_vote_url_endpoint = REVIEW_API + review.pk + '/vote/';
     const current_owner = review.author.id === USER_ID;
 
     function remove() {

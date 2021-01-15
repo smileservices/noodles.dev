@@ -4,7 +4,7 @@ import Alert from "../../src/components/Alert";
 import apiList from "../../src/api_interface/apiList";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
 import Review from "./Review";
-import ReviewForm from "./forms/ReviewForm";
+import ReviewCreateController from "./forms/ReviewCreateController";
 
 function ResourceReviewsApp() {
     const [reviews, setReviews] = useState([]);
@@ -54,7 +54,7 @@ function ResourceReviewsApp() {
                     <div className="header">
                         <h3>Write Review</h3>
                     </div>
-                    <ReviewForm createReviewCallback={createReviewCallback}/>
+                    <ReviewCreateController data={{resource_id: RESOURCE_ID}} successCallback={createReviewCallback}/>
                 </div>
             }
         </Fragment>
