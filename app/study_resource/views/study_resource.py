@@ -66,9 +66,15 @@ def detail(request, id, slug):
         'urls': {
             'review_api': reverse_lazy('review-viewset-list'),
             'reviews_list': reverse_lazy('study-resource-viewset-reviews', kwargs={'pk': resource.pk}),
-            'collections': reverse_lazy('my-collections'),
-            'user_collections_api': reverse_lazy('collection-viewset-owned-resource'),
-            'user_collections_set_api': reverse_lazy('collection-viewset-set-items'),
+            # options
+            'study_resource_options': reverse_lazy('study-resource-viewset-options'),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'tech_options_api': reverse_lazy('techs-options-list'),
+            # collections urls
+            'collections_api': reverse_lazy('collection-viewset-list'),
+            'user_collections_list': reverse_lazy('collection-viewset-owned'),
+            'user_collections_with_resource': f"{reverse_lazy('collection-viewset-owned-with-resource')}?pk={resource.pk}",
+            'user_collections_set_resource_to_collections': reverse_lazy('collection-viewset-set-resource-to-collections'),
         }
     }
     if request.user.is_authenticated:

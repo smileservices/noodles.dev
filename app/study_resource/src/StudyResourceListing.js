@@ -3,7 +3,7 @@ import FormatDate from "../../src/vanilla/date";
 import Waiting from "../../src/components/Waiting";
 import ResourceRating from "./ResourceRating";
 
-export default function StudyResourceListing({data, options, remove}) {
+export default function StudyResourceListing({data, remove}) {
     return (
         <div className="result resource">
             <div className="toolbar">
@@ -19,26 +19,13 @@ export default function StudyResourceListing({data, options, remove}) {
             </p>
             <div className="group-muted">
                 <p className="publication-date">{FormatDate(data.publication_date, 'date')} by {data.published_by}</p>
-                {!options
-                    ? <Waiting text={"Loading options"}/>
-                    : <Fragment>
-                        <p className="experience-level">Difficulty {options.experience_level.map(opt => {
-                            if (opt[0] === data.experience_level) return opt[1];
-                        })}</p>
-                        <p className="type">
-                            {options.type.map(opt => {
-                                if (opt[0] === data.price) return opt[1];
-                            })} {options.media.map(opt => {
-                            if (opt[0] === data.media) return opt[1];
-                        })}
-                        </p>
-                    </Fragment>
-                }
+                    <p className="experience-level">Difficulty {data.experience_level}</p>
+                <p className="type">{data.price} {data.media}</p>
             </div>
 
             <p className="tags">
-                {data.tags.map(t => <span key={'tag' + t.pk} className="tag">{t.name}</span>)}
-                {data.technologies.map(t => <span key={'tech' + t.pk} className="tech">{t.name}</span>)}
+                {data.tags.map(t => <span key={'tag' + t.value} className="tag">{t.label}</span>)}
+                {data.technologies.map(t => <a key={'tech' + t.pk} href={t.url} className="tech">{t.name} {t.version}</a>)}
             </p>
         </div>
     )

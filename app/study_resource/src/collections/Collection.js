@@ -2,7 +2,6 @@ import React, {useState, Fragment} from "react";
 import apiDelete from "../../../src/api_interface/apiDelete";
 import Alert from "../../../src/components/Alert";
 import FormatDate from "../../../src/vanilla/date";
-import Waiting from "../../../src/components/Waiting";
 
 export default function Collection({data, handleSelect, setEdit, handleDelete}) {
 
@@ -12,7 +11,7 @@ export default function Collection({data, handleSelect, setEdit, handleDelete}) 
 
     function remove() {
         apiDelete(
-            USER_COLLECTIONS_LIST + data.pk + '/',
+            COLLECTIONS_API + data.pk + '/',
             setWaiting,
             text => {
                 handleDelete();

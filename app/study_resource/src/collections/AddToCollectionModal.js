@@ -18,10 +18,15 @@ export default function AddToCollectionModal({close}) {
     const [waiting, setWaiting] = useState('');
 
     useEffect(e => {
+
+        // make a single request for getting the user collections
+        // and if the resource belongs to one of it
+        // should get data in select options format
+
         setWaiting(<Waiting text="Retrieving your collections"/>);
         //get collections
-        let colP = fetch(
-            USER_COLLECTIONS_ENDPOINT + '?pk=' + RESOURCE_ID
+        fetch(
+            USER_COLLECTIONS_WITH_RESOURCE
         ).then(result => {
             setWaiting('');
             if (result.ok) {
@@ -30,14 +35,10 @@ export default function AddToCollectionModal({close}) {
                 setAlert(<Alert close={e => setAlert(null)} text={result.statusText} type='danger'/>)
             }
         }).then(data => {
-            setCollections(data.all.map(c => {
-                return {value: c.pk, label: c.name}
-            }))
+            setCollections(data.all)
             setFormData({
                 ...formData,
-                collections: data.selected.map(c => {
-                    return {value: c.pk, label: c.name}
-                })
+                collections: data.selected
             })
         });
     }, [])
@@ -86,7 +87,7 @@ export default function AddToCollectionModal({close}) {
                         smallText={
                             <span>
                                     <p>Select one or more collections for this resource.</p>
-                                    <p><a href={URL_USER_COLLECTIONS}>Manage your collections here</a></p>
+                                    <p><a href={MANAGE_COLLECTIONS_URL}>Manage your collections here</a></p>
                                 </span>
 
                         }

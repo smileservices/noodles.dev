@@ -5,13 +5,14 @@
 {% block content %}
     <script>
         const USER_ID = {{ user.id }};
-        const COLLECTIONS_ENDPOINT = "{% url 'collection-viewset-list' %}";
-        const USER_COLLECTIONS_ENDPOINT = "{% url 'collection-viewset-owned' %}";
-        const STUDY_RESOURCE_OPTIONS_ENDPOINT = "{% url 'study-resource-viewset-options' %}";
-        const USER_COLLECTIONS_UPDATE_ITEMS_ENDPOINT = "{% url 'collection-viewset-update-collection-items' %}";
         const RESOURCE_URL = "/tutorials/"
-        const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
-        const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+        const TAGS_OPTIONS_API = "{{ urls.tag_options_api }}";
+        const TECH_OPTIONS_API = "{{ urls.tech_options_api }}";
+        const STUDY_RESOURCE_OPTIONS_URL = "{{ urls.study_resource_options }}"
+
+        const COLLECTIONS_API = "{{ urls.collections_api }}";
+        const USER_COLLECTIONS_LIST = "{{ urls.user_collections_list }}";
+        const USER_COLLECTIONS_UPDATE_ITEMS_API = "{{ urls.update_collection_items }}";
         const MAX_RATING = 5;
     </script>
     <div class="my-collections-page column-container">

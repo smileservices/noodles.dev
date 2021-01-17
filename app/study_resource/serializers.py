@@ -188,6 +188,22 @@ class ReviewSerializer(serializers.ModelSerializer):
                   'created_at', 'updated_at', 'thumbs_up_array', 'thumbs_down_array']
 
 
+class CollectionSelectOptionSerializer(serializers.ModelSerializer):
+    queryset = Collection.objects
+    value = serializers.SerializerMethodField()
+    label = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Collection
+        fields = ['value', 'label']
+
+    def get_value(self, obj):
+        return obj.pk
+
+    def get_label(self, obj):
+        return obj.name
+
+
 class CollectionSerializer(serializers.ModelSerializer):
     queryset = Collection.objects
     author = UserSerializerMinimal(many=False, read_only=True)
@@ -206,3 +222,24 @@ class CollectionSerializer(serializers.ModelSerializer):
         if 'resources' in data:
             validated_data['resources'] = data['resources']
         return validated_data
+
+    @staticmethod
+    def select_options_data(data):
+        return CollectionSelectOptionSerializer(data, many=True)
+
+
+class StudyResourceListingSerializer(serializers.ModelSerializer):
+    queryset = StudyResource.objects.all()
+    tags = TagSerializerOption(many=True, read_only=True)
+    technologies = StudyResourceTechnologySerializer(source='studyresourcetechnology_set', many=True, read_only=True)
+    rating = FloatField(read_only=True)
+    reviews_count = IntegerField(read_only=True)
+
+    class Meta:
+        model = StudyResource
+        fields = [
+            'pk', 'rating', 'reviews_count', 'absolute_url', 'name',
+            'price_label', 'media_label', 'experience_level_label',
+            'publication_date',
+            'tags', 'technologies'
+        ]

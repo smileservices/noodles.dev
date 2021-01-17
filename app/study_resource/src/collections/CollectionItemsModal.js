@@ -6,8 +6,9 @@ import PaginatedLayout from "../../../src/components/PaginatedLayout";
 import Modal from "../../../src/components/Modal";
 import StudyResourceListing from "../StudyResourceListing";
 import apiPost from "../../../src/api_interface/apiPost";
+import {FormElement} from "../../../src/components/form";
 
-export default function CollectionItemsModal({collection, options, close}) {
+export default function CollectionItemsModal({collection, setMainAlert, close}) {
 
     const [items, setItems] = useState([]);
     const [formData, setFormData] = useState({
@@ -26,11 +27,11 @@ export default function CollectionItemsModal({collection, options, close}) {
 
     useEffect(e => {
         apiList(
-            COLLECTIONS_ENDPOINT + collection.pk + "/resources/",
+            COLLECTIONS_API + collection.pk + "/resources/",
             pagination,
             setItems,
             setWaiting,
-            err => setAlert(<Alert close={e=>setAlert(null)} text={err} type="danger"/>),
+            err => setAlert(<Alert close={e => setAlert(null)} text={err} type="danger"/>),
         )
     }, [pagination, collection])
 
@@ -43,27 +44,28 @@ export default function CollectionItemsModal({collection, options, close}) {
         setFormData({...formData, remove: [...formData.remove, data.pk]});
     }
 
-    function submit(formData) {
+    function submit(data) {
         apiPost(
-            USER_COLLECTIONS_UPDATE_ITEMS_ENDPOINT,
-            formData,
+            USER_COLLECTIONS_UPDATE_ITEMS_API,
+            data,
             setWaiting,
         ).then(result => {
-            if (result.ok) close();
-            setAlert(<Alert close={e=>setAlert(null)} text="Something went wrong" type="danger" stick={true}/>)
+            if (result.ok) {
+                setMainAlert(<Alert text={'Collection '+collection.name+' updated'} type='success' hideable={true}/>);
+                close();
+            }
+            setAlert(<Alert close={e => setAlert(null)} text="Something went wrong" type="danger" stick={true}/>)
         })
-    }
-
-    function validate(formData, callback) {
-        callback(formData);
     }
 
     return (
         <Modal close={close}>
-            <form action="" onSubmit={e => {
-                e.preventDefault();
-                validate(formData, submit);
-            }}>
+            <FormElement
+                data={formData}
+                callback={submit}
+                alert={alert}
+                waiting={waiting}
+            >
                 <div className="column-container">
                     <div className="header">
                         <h3>Collection {collection.name} items:</h3>
@@ -72,16 +74,10 @@ export default function CollectionItemsModal({collection, options, close}) {
                                      setPagination={setPagination}
                                      resultsContainerClass="column-container items-container"
                                      mapFunction={item => <StudyResourceListing key={'resource' + item.pk} data={item}
-                                                                                options={options}
                                                                                 remove={e => handleDelete(item)}/>}
                     />
                 </div>
-                {alert}
-                {waiting
-                    ? waiting
-                    : <button className="btn submit">Update</button>
-                }
-            </form>
+            </FormElement>
         </Modal>
     );
 }

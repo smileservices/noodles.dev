@@ -19,11 +19,18 @@ class CollectionViewset(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(
-            owner=self.request.user,
+            author=self.request.user,
         )
+
+    def perform_destroy(self, instance):
+        if self.request.user.is_staff or instance.author == self.request.user:
+            instance.delete()
+        else:
+            raise PermissionDenied('Only collection author or staff can delete')
 
     @action(methods=['GET'], detail=False)
     def owned(self, *args, **kwargs):
+        # get all user collections
         queryset = self.queryset.filter(author=self.request.user.id)
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -33,19 +40,19 @@ class CollectionViewset(ModelViewSet):
         return Response(serializer.data)
 
     @action(methods=['GET'], detail=False)
-    def owned_resource(self, *args, **kwargs):
-        # returns all user collections and which ones contain the resource
+    def owned_with_resource(self, *args, **kwargs):
+        # returns all user collections and which contain the resource
         all_queryset = self.queryset.filter(author=self.request.user.id)
         selected_queryset = all_queryset.filter(resources=self.request.GET['pk'])
-        all_serialized = self.serializer_class(all_queryset, many=True)
-        selected_serialized = self.serializer_class(selected_queryset, many=True)
+        all_serialized = self.serializer_class.select_options_data(all_queryset)
+        selected_serialized = self.serializer_class.select_options_data(selected_queryset)
         return Response({
             'all': all_serialized.data,
             'selected': selected_serialized.data
         })
 
     @action(methods=['POST'], detail=False)
-    def set_items(self, *args, **kwargs):
+    def set_resource_to_collections(self, *args, **kwargs):
         # remove resource from unselected collections
         # add resource to all selected
         queryset = self.queryset.filter(author=self.request.user.id)
@@ -77,10 +84,11 @@ class CollectionViewset(ModelViewSet):
 
     @action(methods=['GET'], detail=True)
     def resources(self, *args, **kwargs):
+        # get all resources of a specific collection
         queryset = self.queryset.get(pk=kwargs['pk']).resources.annotate(reviews_count=models.Count('reviews'))
         page = self.paginate_queryset(queryset.all())
         if page is not None:
-            serializer = serializers.StudyResourceSerializer(page, many=True)
+            serializer = serializers.StudyResourceListingSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-        serializer = serializers.StudyResourceSerializer(queryset, many=True)
+        serializer = serializers.StudyResourceListingSerializer(queryset, many=True)
         return Response(serializer.data)
