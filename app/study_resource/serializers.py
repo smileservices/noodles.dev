@@ -9,6 +9,7 @@ from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
 from tag.serializers import TagSerializer, TagSerializerOption
 from tag.models import Tag
 from category.serializers import CategorySerializerOption
+from category.models import Category
 from technology.serializers import TechnologySerializer, TechnologySerializerOption
 from technology.models import Technology
 from django.urls import reverse_lazy
@@ -140,6 +141,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
                 raise AttributeError('Cannot add same technology multiple times')
             techs.append(tech['technology_id'])
         validated_data['technologies'] = data['technologies']
+        validated_data['category_id'] = Category.objects.validate_category(data['category'])
         validated_data['images'] = data['images'] if 'images' in data else []
         return validated_data
 

@@ -7,6 +7,7 @@ from . import models
 from users.serializers import UserSerializerMinimal
 from tag.serializers import TagSerializerOption
 from tag.models import Tag
+from category.models import Category
 from technology.serializers import TechnologySerializerOption
 from category.serializers import CategorySerializerOption
 
@@ -80,6 +81,11 @@ class ProblemEditSuggestionSerializer(ModelSerializer):
                                'old': ', '.join([t.name for t in change.old]),
                                'new': ', '.join([t.name for t in change.new])
                                })
+            elif change.field == 'category':
+                result.append({'field': change.field.capitalize(),
+                               'old': Category.objects.get(pk=change.old).name,
+                               'new': Category.objects.get(pk=change.new).name
+                               })
             else:
                 result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
         return result
@@ -103,7 +109,7 @@ class ProblemSerializer(EditSuggestionSerializer):
     solutions = SolutionSerializerShort(many=True, read_only=True)
     parent = SolutionSerializerMinimal(read_only=True)
     author = UserSerializerMinimal(read_only=True)
-    category = CategorySerializerOption()
+    category = CategorySerializerOption(read_only=True)
 
     class Meta:
         model = models.Problem
@@ -119,6 +125,7 @@ class ProblemSerializer(EditSuggestionSerializer):
         validated_data = super().run_validation(data)
         if 'parent' in data:
             validated_data['parent_id'] = data['parent']
+        validated_data['category_id'] = Category.objects.validate_category(data['category'])
         validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
         return validated_data
 
@@ -138,7 +145,7 @@ class ProblemSerializerShort(ModelSerializer):
     tags = TagSerializerOption(many=True, read_only=True)
     solutions = SolutionSerializerMinimal(many=True, read_only=True)
     solutions_count = SerializerMethodField(read_only=True)
-    category = CategorySerializerOption()
+    category = CategorySerializerOption(read_only=True)
 
     class Meta:
         model = models.Problem

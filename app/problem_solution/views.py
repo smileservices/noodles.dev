@@ -71,8 +71,11 @@ class SolutionViewset(ResourceWithEditSuggestionVieset):
 @login_required
 def problem_create(request, *args, **kwargs):
     data = {
-        'resource_api': reverse_lazy('problem-viewset-list'),
-        'tag_options_api': reverse_lazy('tags-options-list'),
+        'urls': {
+            'resource_api': reverse_lazy('problem-viewset-list'),
+            'categories_options_api': reverse_lazy('categories-options-list'),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+        }
     }
     return render(request, 'problem_solution/problem/create_page.html', data)
 
@@ -93,6 +96,7 @@ def problem_detail(request, id, slug):
         'urls': {
             'tech_api': reverse_lazy('techs-viewset-list'),
             'vote_api': reverse_lazy('problem-viewset-vote', kwargs={'pk': resource.pk}),
+            'categories_options_api': reverse_lazy('categories-options-list'),
             'tag_options_api': reverse_lazy('tags-options-list'),
             'tech_options_api': reverse_lazy('techs-options-list'),
             'solutions_list': reverse_lazy('problem-viewset-solutions', kwargs={'pk': resource.pk}),
@@ -133,15 +137,18 @@ def solution_detail(request, id, slug):
 @login_required
 def problem_edit(request, id):
     data = {
-        'resource_detail': reverse_lazy('problem-viewset-detail', kwargs={'pk': id}),
+        'urls': {
+            'resource_detail': reverse_lazy('problem-viewset-detail', kwargs={'pk': id}),
 
-        'edit_suggestions_list': reverse_lazy('problem-viewset-edit-suggestions', kwargs={'pk': id}),
-        'edit_suggestions_publish': reverse_lazy('problem-viewset-edit-suggestion-publish', kwargs={'pk': id}),
-        'edit_suggestions_reject': reverse_lazy('problem-viewset-edit-suggestion-reject', kwargs={'pk': id}),
+            'edit_suggestions_list': reverse_lazy('problem-viewset-edit-suggestions', kwargs={'pk': id}),
+            'edit_suggestions_publish': reverse_lazy('problem-viewset-edit-suggestion-publish', kwargs={'pk': id}),
+            'edit_suggestions_reject': reverse_lazy('problem-viewset-edit-suggestion-reject', kwargs={'pk': id}),
 
-        'resource_api': reverse_lazy('problem-viewset-list'),
-        'edit_suggestions_api': reverse_lazy('problem-edit-suggestion-viewset-list'),
-        'tag_options_api': reverse_lazy('tags-options-list'),
+            'resource_api': reverse_lazy('problem-viewset-list'),
+            'edit_suggestions_api': reverse_lazy('problem-edit-suggestion-viewset-list'),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'categories_options_api': reverse_lazy('categories-options-list'),
+        }
     }
     return render(request, 'problem_solution/problem/edit_page.html', data)
 

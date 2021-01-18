@@ -7,8 +7,24 @@ export default function ProblemForm({formData, setFormData, extraData, submitCal
 
     // const [formData, setFormData] = useState(Object.assign({}, emptyData, data));
     const [tags, setTags] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
+        //get categories options
+        fetch(
+            CATEGORIES_OPTIONS_API, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve categories" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) {
+                setCategories(data);
+            }
+        })
         //get tags options
         fetch(
             TAGS_OPTIONS_API, {method: 'GET'}
@@ -45,6 +61,7 @@ export default function ProblemForm({formData, setFormData, extraData, submitCal
         cpd.tags = data.tags.map(t => {
             return t.value
         });
+        cpd.category = data.category.value;
         if (data.parent && data.parent.pk) {
             cpd.parent = data.parent.pk
         }
@@ -85,6 +102,14 @@ export default function ProblemForm({formData, setFormData, extraData, submitCal
                       inputProps={{...makeStateProps('description')}}
                       smallText="A short description"
                       error={errors['description']}
+            />
+            <SelectReactCreatable name="select-category" label="Choose Category"
+                                  smallText="Can choose or add a new one if necessary."
+                                  onChange={selectedOptions => setFormData({...formData, category: selectedOptions})}
+                                  options={categories}
+                                  value={formData.category}
+                                  props={{isMulti: false, required: true}}
+                                  error={errors.category}
             />
             <SelectReactCreatable name="select-tags" label="Choose tags"
                                   smallText="Can choose one or multiple or add a new one if necessary."

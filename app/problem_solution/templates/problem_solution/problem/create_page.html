@@ -10,10 +10,10 @@
 
 {% block content %}
     <script>
-        const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
-        const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
-        const RESOURCE_API = "{{ resource_api }}";
-        const TAGS_OPTIONS_API = "{{ tag_options_api }}";
+        const USER_ID = {{ user.id }};
+        const RESOURCE_API = "{{ urls.resource_api }}";
+        const TAGS_OPTIONS_API = "{{ urls.tag_options_api }}";
+        const CATEGORIES_OPTIONS_API = "{{ urls.categories_options_api }}";
     </script>
     <div class="create-page">
         <section class="header">

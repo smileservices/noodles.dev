@@ -13,6 +13,7 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
     path('tutorials/', include('study_resource.urls')),
     path('problems-solutions/', include('problem_solution.urls')),
+    path('categories/', include('category.urls')),
     path('tags/', include('tag.urls')),
     path('technologies/', include('technology.urls')),
     path('users/', include('users.urls')),

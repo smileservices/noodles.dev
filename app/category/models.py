@@ -4,6 +4,17 @@ import tsvector_field
 
 class CategoryModelManager(models.Manager):
 
+    def validate_category(self, category):
+        if type(category) == int:
+            return category
+        else:
+            normalized = category.lower()
+            try:
+                return self.get(name=normalized).pk
+            except self.model.DoesNotExist:
+                created = self.create(name=normalized)
+                return created.pk
+
     def validate_categories(self, categories_to_validate):
         # check if text categories already exist. if not, create them
         create_categories = set()

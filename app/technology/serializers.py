@@ -4,6 +4,7 @@ from rest_framework.serializers import SerializerMethodField
 from .models import Technology
 from users.serializers import UserSerializerMinimal
 from category.serializers import CategorySerializerOption
+from category.models import Category
 from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
 
 
@@ -90,4 +91,5 @@ class TechnologySerializer(EditSuggestionSerializer):
     def run_validation(self, data):
         validated_data = super().run_validation(data)
         validated_data['ecosystem'] = data['ecosystem']
+        validated_data['category_id'] = Category.objects.validate_category(data['category'])
         return validated_data
