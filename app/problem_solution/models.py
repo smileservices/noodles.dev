@@ -9,6 +9,7 @@ from users.models import CustomUser
 from django_edit_suggestion.models import EditSuggestion
 from votable.models import VotableMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_publish_edit, post_reject_edit
+from category.models import Category
 
 
 class ProblemQueryset(SearchAbleQuerysetMixin):
@@ -50,6 +51,7 @@ class Problem(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
         bases=(VotableMixin,)
     )
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.DO_NOTHING)
 
     description = models.TextField(max_length=3048)
     parent = models.ForeignKey('Solution', null=True, blank=True, on_delete=models.CASCADE, related_name='problems')

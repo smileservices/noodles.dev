@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     'problem_solution',
     'tag',
     'technology',
+    'category',
     'study_resource',
 ]
 

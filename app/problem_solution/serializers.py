@@ -8,7 +8,7 @@ from users.serializers import UserSerializerMinimal
 from tag.serializers import TagSerializerOption
 from tag.models import Tag
 from technology.serializers import TechnologySerializerOption
-from technology.models import Technology
+from category.serializers import CategorySerializerOption
 
 
 # Problem Focused
@@ -103,11 +103,12 @@ class ProblemSerializer(EditSuggestionSerializer):
     solutions = SolutionSerializerShort(many=True, read_only=True)
     parent = SolutionSerializerMinimal(read_only=True)
     author = UserSerializerMinimal(read_only=True)
+    category = CategorySerializerOption(read_only=True)
 
     class Meta:
         model = models.Problem
         depth = 1
-        fields = ['pk', 'name', 'author', 'slug', 'description', 'parent', 'tags', 'solutions', 'absolute_url',
+        fields = ['pk', 'name', 'author', 'slug', 'description', 'parent', 'tags', 'category', 'solutions', 'absolute_url',
                   'thumbs_up', 'thumbs_down']
 
     def run_validation(self, data):
@@ -137,10 +138,11 @@ class ProblemSerializerShort(ModelSerializer):
     tags = TagSerializerOption(many=True, read_only=True)
     solutions = SolutionSerializerMinimal(many=True, read_only=True)
     solutions_count = SerializerMethodField(read_only=True)
+    category = CategorySerializerOption(read_only=True)
 
     class Meta:
         model = models.Problem
-        fields = ['pk', 'name', 'slug', 'description', 'tags', 'solutions', 'solutions_count', 'absolute_url']
+        fields = ['pk', 'name', 'slug', 'description', 'tags', 'category', 'solutions', 'solutions_count', 'absolute_url']
 
     def get_solutions_count(self, obj):
         return obj.solutions.count()
