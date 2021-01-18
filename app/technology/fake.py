@@ -3,8 +3,10 @@ from random import choice, randint, choices
 from faker import Faker
 from .models import Technology
 from users.fake import create_user_single, create_bulk_users
+from category.models import Category
 
 f = Faker()
+categories = Category.objects.all()
 
 
 def clean_technologies():
@@ -25,6 +27,7 @@ def create_technologies():
             pros=f.text(),
             cons=f.text(),
             limitations=f.text(),
+            category=choice(categories)
         )
         tobj.save()
         created_tech[t] = tobj
@@ -46,6 +49,7 @@ def create_technology_edit_suggestions():
             'owner': tech.owner,
             'pros': tech.pros,
             'cons': tech.cons,
+            'category': tech.category,
             'limitations': tech.limitations,
             'edit_suggestion_author': choice(users)
         })

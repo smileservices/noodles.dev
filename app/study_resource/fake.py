@@ -10,9 +10,11 @@ from django.db.utils import IntegrityError
 from users.models import CustomUser
 from technology.models import Technology
 from tag.models import Tag
+from category.models import Category
 
 tags = Tag.objects.all()
 techs = Technology.objects.all()
+categories = Category.objects.all()
 users = CustomUser.objects.all()
 
 f = Faker()
@@ -36,6 +38,7 @@ def new_study_resource(user):
         media=choice(models.StudyResource.Media.choices)[0],
         experience_level=choice(models.StudyResource.ExperienceLevel.choices)[0],
         author=user,
+        category=choice(categories)
     )
     return sr
 
@@ -71,6 +74,7 @@ def study_resource_edit_suggestions(resource: models.StudyResource, author=None)
         'summary': resource.summary,
         'price': resource.price,
         'media': resource.media,
+        'category': resource.category,
         'experience_level': resource.experience_level,
         'edit_suggestion_author': author if author else choice(users),
         'edit_suggestion_reason': 'edit test',
