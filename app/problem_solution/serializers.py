@@ -103,7 +103,7 @@ class ProblemSerializer(EditSuggestionSerializer):
     solutions = SolutionSerializerShort(many=True, read_only=True)
     parent = SolutionSerializerMinimal(read_only=True)
     author = UserSerializerMinimal(read_only=True)
-    category = CategorySerializerOption(read_only=True)
+    category = CategorySerializerOption()
 
     class Meta:
         model = models.Problem
@@ -138,7 +138,7 @@ class ProblemSerializerShort(ModelSerializer):
     tags = TagSerializerOption(many=True, read_only=True)
     solutions = SolutionSerializerMinimal(many=True, read_only=True)
     solutions_count = SerializerMethodField(read_only=True)
-    category = CategorySerializerOption(read_only=True)
+    category = CategorySerializerOption()
 
     class Meta:
         model = models.Problem

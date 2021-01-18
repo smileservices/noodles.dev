@@ -3,6 +3,7 @@ from rest_framework import fields
 from rest_framework.serializers import SerializerMethodField
 from .models import Technology
 from users.serializers import UserSerializerMinimal
+from category.serializers import CategorySerializerOption
 from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
 
 
@@ -70,11 +71,12 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
 class TechnologySerializer(EditSuggestionSerializer):
     queryset = Technology.objects.all()
     ecosystem = TechnologySerializerOption(many=True, read_only=True)
+    category = CategorySerializerOption()
 
     class Meta:
         model = Technology
         depth = 1
-        fields = ['pk', 'name', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations', 'absolute_url',
+        fields = ['pk', 'name', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations', 'absolute_url', 'category',
                   'ecosystem', 'thumbs_up', 'thumbs_down']
 
     @staticmethod

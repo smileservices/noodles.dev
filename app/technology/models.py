@@ -6,6 +6,8 @@ from core.abstract_models import SluggableModelMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 from django_edit_suggestion.models import EditSuggestion
 from django.urls import reverse
+from category.models import Category
+
 
 class Technology(SluggableModelMixin, VotableMixin):
     class LicenseType(models.IntegerChoices):
@@ -25,6 +27,7 @@ class Technology(SluggableModelMixin, VotableMixin):
     pros = models.TextField(max_length=1024)
     cons = models.TextField(max_length=1024)
     limitations = models.TextField(max_length=1024)
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.DO_NOTHING)
     ecosystem = models.ManyToManyField('Technology', related_name='related_technologies')
 
     edit_suggestions = EditSuggestion(
