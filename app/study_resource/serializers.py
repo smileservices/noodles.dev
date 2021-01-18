@@ -8,6 +8,7 @@ from django.conf import settings
 from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
 from tag.serializers import TagSerializer, TagSerializerOption
 from tag.models import Tag
+from category.serializers import CategorySerializerOption
 from technology.serializers import TechnologySerializer, TechnologySerializerOption
 from technology.models import Technology
 from django.urls import reverse_lazy
@@ -111,11 +112,12 @@ class StudyResourceSerializer(EditSuggestionSerializer):
     rating = FloatField(read_only=True)
     reviews_count = IntegerField(read_only=True)
     images = ImageSerializer(many=True, read_only=True)
+    category = CategorySerializerOption()
 
     class Meta:
         model = StudyResource
         fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'price', 'media',
-                  'experience_level', 'author', 'tags',
+                  'experience_level', 'author', 'tags', 'category',
                   'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by', 'images']
 
     @staticmethod
@@ -234,6 +236,7 @@ class StudyResourceListingSerializer(serializers.ModelSerializer):
     technologies = StudyResourceTechnologySerializer(source='studyresourcetechnology_set', many=True, read_only=True)
     rating = FloatField(read_only=True)
     reviews_count = IntegerField(read_only=True)
+    category = CategorySerializerOption()
 
     class Meta:
         model = StudyResource
@@ -241,5 +244,5 @@ class StudyResourceListingSerializer(serializers.ModelSerializer):
             'pk', 'rating', 'reviews_count', 'absolute_url', 'name',
             'price_label', 'media_label', 'experience_level_label',
             'publication_date',
-            'tags', 'technologies'
+            'tags', 'technologies', 'category',
         ]

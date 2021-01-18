@@ -14,6 +14,7 @@ from versatileimagefield.utils import build_versatileimagefield_url_set
 from django.conf import settings
 from tag.models import Tag
 from technology.models import Technology
+from category.models import Category
 from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin
 from votable.models import VotableMixin
 from django_edit_suggestion.models import EditSuggestion
@@ -97,6 +98,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     # related fields
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='resources')
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.DO_NOTHING, related_name='resources')
     technologies = models.ManyToManyField(Technology, related_name='resources', through='StudyResourceTechnology')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
