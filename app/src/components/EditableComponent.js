@@ -38,7 +38,7 @@ export default function EditableComponent({endpoint, data, extraData, DisplayVie
         if (waiting) return waiting;
         if (alertDisplay) return alertDisplay;
         return (
-            <span className="toolbar">
+            <span className="toolbar" onClick={e => e.preventDefault()}>
                 {confirmDelete
                     ? <div className="confirm">
                         <span className="text">Are you sure?</span>
@@ -47,8 +47,8 @@ export default function EditableComponent({endpoint, data, extraData, DisplayVie
                     </div>
                     :
                     <Fragment>
-                        <span className="icon-pencil edit" onClick={toggleShowForm}/>
-                        <span className="icon-close delete" onClick={e => setConfirmDelete(true)}/>
+                        <a className="icon-pencil edit" onClick={toggleShowForm}/>
+                        <a className="icon-close delete" onClick={e => setConfirmDelete(true)}/>
                     </Fragment>
                 }
             </span>
@@ -78,8 +78,7 @@ export default function EditableComponent({endpoint, data, extraData, DisplayVie
 
     return (
         <Fragment>
-            {displayToolbar()}
-            <DisplayViewComponent data={resourceData}/>
+            <DisplayViewComponent data={data} extraData={{...extraData, toolbar: displayToolbar()}} />
             {showForm ? displayFormModal() : ''}
         </Fragment>
     )

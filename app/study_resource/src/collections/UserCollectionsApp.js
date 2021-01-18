@@ -4,10 +4,11 @@ import Waiting from "../../../src/components/Waiting";
 import Alert from "../../../src/components/Alert";
 import apiList from "../../../src/api_interface/apiList";
 import PaginatedLayout from "../../../src/components/PaginatedLayout";
-import Collection from "./Collection";
+import CollectionListing from "./CollectionListing";
 import CreateableComponent from "../../../src/components/CreateableComponent";
-import CollectionItemsModal from "./CollectionItemsModal";
 import CollectionForm from "../forms/CollectionForm";
+import EditableComponent from "../../../src/components/EditableComponent";
+
 
 function UserCollectionsApp() {
 
@@ -39,7 +40,7 @@ function UserCollectionsApp() {
             pagination,
             setCollections,
             setWaiting,
-            err => setAlert(<Alert close={e=>setAlert(null)} text={err} type="danger"/>),
+            err => setAlert(<Alert close={e => setAlert(null)} text={err} type="danger"/>),
         )
     }, [pagination])
 
@@ -49,7 +50,8 @@ function UserCollectionsApp() {
             count: collections.count - 1,
             results: collections.results.filter(c => data.pk !== c.pk)
         });
-        setAlert(<Alert close={e=>setAlert(null)} text={"Deleted collection " + data.name} type="warning" stick={false}/>);
+        setAlert(<Alert close={e => setAlert(null)} text={"Deleted collection " + data.name} type="warning"
+                        stick={false}/>);
     }
 
     return (
@@ -57,7 +59,7 @@ function UserCollectionsApp() {
             <CreateableComponent
                 endpoint={COLLECTIONS_API}
                 data={{}}
-                extraData={{addButtonText: 'Create Collection'}}
+                extraData={{addButtonText: 'Create Collection', formTitle: 'Create Collection'}}
                 FormViewComponent={CollectionForm}
                 successCallback={data => setPagination({...pagination, current: 1})}
             />
@@ -66,15 +68,18 @@ function UserCollectionsApp() {
                 {alert}
                 <PaginatedLayout data={collections.results} resultsCount={collections.count} pagination={pagination}
                                  setPagination={setPagination}
-                                 mapFunction={item =>
-                                     <Collection key={'collection' + item.pk}
-                                                 data={item}
-                                                 handleSelect={e => {
-                                                     setDetailModal(<CollectionItemsModal collection={item}  setMainAlert={setAlert} close={e=>setDetailModal(false)}/>);
-                                                 }}
-                                                 handleDelete={() => handleDelete(item)}
-                                                 setEdit={() => {}}
-                                     />}
+                                 mapFunction={item => {
+                                     return (<EditableComponent
+                                         key={'collection' + item.pk}
+                                         endpoint={COLLECTIONS_API}
+                                         data={item}
+                                         extraData={{setModal: setDetailModal, setAlert: setAlert, formTitle: 'Edit Collection'}}
+                                         DisplayViewComponent={CollectionListing}
+                                         FormViewComponent={CollectionForm}
+                                         updateCallback={data => setPagination({...pagination, current: 1})}
+                                         deleteCallback={() => handleDelete(item)}
+                                     />)
+                                 }}
                                  resultsContainerClass="tile-container"
                 />
             </div>

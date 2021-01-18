@@ -207,7 +207,7 @@ class CollectionSelectOptionSerializer(serializers.ModelSerializer):
 class CollectionSerializer(serializers.ModelSerializer):
     queryset = Collection.objects
     author = UserSerializerMinimal(many=False, read_only=True)
-    tags = TagSerializer(many=True, read_only=True)
+    tags = TagSerializerOption(many=True, read_only=True)
     technologies = TechnologySerializerOption(many=True, read_only=True)
     items_count = IntegerField(read_only=True)
 

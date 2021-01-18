@@ -89,6 +89,7 @@ export default function CollectionForm({formData, setFormData, extraData, submit
             alert={alert}
             waiting={waiting}
         >
+            <h3>{ extraData.formTitle }</h3>
             <Input
                 name={'name'}
                 label="Name"

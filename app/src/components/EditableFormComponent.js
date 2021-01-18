@@ -8,6 +8,8 @@ export default function EditableFormComponent({endpoint, data, extraData, FormVi
     const [alert, setAlert] = useState(false);
     const [errors, setErrors] = useState({});
 
+    const [formData, setFormData] = useState(data);
+
     function updateElement(updatedData) {
         apiUpdate(
             endpoint, data.pk, updatedData,
@@ -38,7 +40,8 @@ export default function EditableFormComponent({endpoint, data, extraData, FormVi
 
     return (
         <FormViewComponent
-            data={data}
+            formData={formData}
+            setFormData={setFormData}
             extraData={extraData}
             submitCallback={updateElement}
             waiting={waiting}
