@@ -43,6 +43,7 @@ def create(request):
         'urls': {
             'tech_api': reverse_lazy('techs-viewset-list'),
             'tech_options_api': reverse_lazy('techs-options-list'),
+            'categories_options_api': reverse_lazy('categories-options-list'),
         }
     }
     return render(request, 'technology/create_page.html', data)
@@ -51,16 +52,19 @@ def create(request):
 @login_required
 def edit(request, id):
     data = {
-        'resource_detail': reverse_lazy('techs-viewset-detail', kwargs={'pk': id}),
-        'resource_api': reverse_lazy('techs-viewset-list'),
+        'urls': {
+            'resource_detail': reverse_lazy('techs-viewset-detail', kwargs={'pk': id}),
+            'resource_api': reverse_lazy('techs-viewset-list'),
 
-        'edit_suggestions_list': reverse_lazy('techs-viewset-edit-suggestions', kwargs={'pk': id}),
-        'edit_suggestions_publish': reverse_lazy('techs-viewset-edit-suggestion-publish', kwargs={'pk': id}),
-        'edit_suggestions_reject': reverse_lazy('techs-viewset-edit-suggestion-reject', kwargs={'pk': id}),
+            'edit_suggestions_list': reverse_lazy('techs-viewset-edit-suggestions', kwargs={'pk': id}),
+            'edit_suggestions_publish': reverse_lazy('techs-viewset-edit-suggestion-publish', kwargs={'pk': id}),
+            'edit_suggestions_reject': reverse_lazy('techs-viewset-edit-suggestion-reject', kwargs={'pk': id}),
 
-        'edit_suggestions_api': reverse_lazy('techs-edit-suggestions-viewset-list'),
-        'tag_options_api': reverse_lazy('tags-options-list'),
-        'tech_options_api': reverse_lazy('techs-options-list'),
+            'edit_suggestions_api': reverse_lazy('techs-edit-suggestions-viewset-list'),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'tech_options_api': reverse_lazy('techs-options-list'),
+            'categories_options_api': reverse_lazy('categories-options-list'),
+        }
     }
     return render(request, 'technology/edit_page.html', data)
 

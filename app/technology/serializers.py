@@ -52,6 +52,7 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
     def run_validation(self, data):
         validated_data = super().run_validation(data)
         validated_data['ecosystem'] = data['ecosystem']
+        validated_data['category_id'] = Category.objects.validate_category(data['category'])
         return validated_data
 
     def get_changes(self, instance):
@@ -64,6 +65,11 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
                                'old': ', '.join([t.name for t in change.old]),
                                'new': ', '.join([t.name for t in change.new])
                                })
+            elif change.field == 'category':
+                result.append({'field': change.field.capitalize(),
+                               'old': Category.objects.get(pk=change.old).name,
+                               'new': Category.objects.get(pk=change.new).name
+                               })
             else:
                 result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
         return result
@@ -72,7 +78,7 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
 class TechnologySerializer(EditSuggestionSerializer):
     queryset = Technology.objects.all()
     ecosystem = TechnologySerializerOption(many=True, read_only=True)
-    category = CategorySerializerOption()
+    category = CategorySerializerOption(read_only=True)
 
     class Meta:
         model = Technology

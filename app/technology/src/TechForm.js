@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react"
 
-import {Input, Textarea, SelectReact} from "../../src/components/form";
+import {Input, Textarea, SelectReact, SelectReactCreatable} from "../../src/components/form";
 import apiPost from "../../src/api_interface/apiPost";
 import {FormElement} from "../../src/components/form";
 import Alert from "../../src/components/Alert";
@@ -8,8 +8,25 @@ import Alert from "../../src/components/Alert";
 export default function TechForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
 
     const [technologies, setTechnologies] = useState([]);
+    const [categories, setCategories] = useState([]);
+
 
     useEffect(() => {
+        //get categories options
+        fetch(
+            CATEGORIES_OPTIONS_API, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve categories" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) {
+                setCategories(data);
+            }
+        })
         //get technologies options
         fetch(
             TECH_OPTIONS_API, {method: 'GET'}
@@ -91,6 +108,7 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
         cpd.ecosystem = data.ecosystem.map(t => {
             return t.value
         });
+        cpd.category = data.category.value;
         return cpd
     }
 
@@ -169,6 +187,14 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
                       }}
                       smallText="What are the limitations of this tech?"
                       error={errors.limitations}
+            />
+            <SelectReactCreatable name="select-category" label="Choose Category"
+                                  smallText="Can choose or add a new one if necessary."
+                                  onChange={selectedOptions => setFormData({...formData, category: selectedOptions})}
+                                  options={categories}
+                                  value={formData.category}
+                                  props={{isMulti: false, required: true}}
+                                  error={errors.category}
             />
             <SelectReact name="select-tags" label="Ecosystem"
                          smallText="The other technologies it's dependant on."
