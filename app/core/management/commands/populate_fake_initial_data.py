@@ -4,6 +4,7 @@ from django.db import connection, models
 from django.template.defaultfilters import slugify
 from random import randint, choice, choices
 
+from category.fake import clean_categories, create_categories
 from tag.fake import clean_tags, create_tags
 from technology.fake import clean_technologies, create_technologies, create_technology_edit_suggestions
 from users.models import CustomUser
@@ -72,6 +73,7 @@ class Command(BaseCommand):
 
             fake_study_resource.clean()
             fake_problem_solution.clean()
+            clean_categories()
             clean_tags()
             clean_technologies()
             CustomUser.objects.all().delete()
@@ -85,7 +87,9 @@ class Command(BaseCommand):
         fake_users.create_bulk_users(options['users'])
         self.stdout.write(" >> Created users: done")
 
-        # tags/techs
+        # categories/tags/techs
+        create_categories()
+        self.stdout.write(" >> Created categories: done")
         create_tags()
         self.stdout.write(" >> Created tags: done")
         create_technologies()
