@@ -22,6 +22,7 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
     const [tags, setTags] = useState({});
     const [techs, setTechs] = useState({});
     const [options, setOptions] = useState({});
+    const [categories, setCategories] = useState([]);
 
     function makeStateProps(name) {
         function updateValue(name) {
@@ -40,6 +41,21 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
 
 
     useEffect(() => {
+        //get categories options
+        fetch(
+            CATEGORIES_OPTIONS_API, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve categories" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) {
+                setCategories(data);
+            }
+        })
         //get tags, technologies and learning resource options (price/media/experience)
         fetch(
             TAGS_OPTIONS_API, {method: 'GET'}
@@ -92,8 +108,9 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
             return t.value
         });
         cpd.technologies = data.technologies.map(t => {
-            return {pk: t.technology_id, version: t.version};
+            return {technology_id: t.technology_id, version: t.version};
         });
+        cpd.category = data.category.value;
         cpd.publication_date = formatDate(data.publication_date);
         return cpd;
     }
@@ -209,6 +226,15 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
                               addNewTech={data => setTechs([...techs, {value: data.pk, label: data.name}])}
                               waiting={waiting}
                               errors={errors}
+            />
+
+            <SelectReactCreatable name="select-category" label="Choose Category"
+                                  smallText="Can choose or add a new one if necessary."
+                                  onChange={selectedOptions => setFormData({...formData, category: selectedOptions})}
+                                  options={categories}
+                                  value={formData.category}
+                                  props={{isMulti: false, required: true}}
+                                  error={errors.category}
             />
 
             <div className="row">

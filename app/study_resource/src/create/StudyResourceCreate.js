@@ -20,6 +20,7 @@ function StudyResourceCreateApp() {
         name: '',
         publication_date: '',
         published_by: '',
+        category: '',
         type: false,
         media: false,
         experience_level: false,
@@ -27,6 +28,7 @@ function StudyResourceCreateApp() {
         image_url: '',
     }
     const [step, setStep] = useState(0);
+    const [categories, setCategories] = useState([]);
     const [tags, setTags] = useState([]);
     const [techs, setTechs] = useState([]);
     const [options, setOptions] = useState({});
@@ -51,6 +53,21 @@ function StudyResourceCreateApp() {
     ]
 
     useEffect(() => {
+        //get categories options
+        fetch(
+            CATEGORIES_OPTIONS_API, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve categories" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) {
+                setCategories(data);
+            }
+        })
         //get tags and technologies
         fetch(
             TAGS_OPTIONS_API, {method: 'GET'}
@@ -115,6 +132,7 @@ function StudyResourceCreateApp() {
         'version': '',
 
         * */
+        data.category = dataStep3.category.value;
         data.technologies = dataStep2.technologies;
         data.type = dataStep3.type.value;
         data.media = dataStep3.media.value;
@@ -159,6 +177,7 @@ function StudyResourceCreateApp() {
             name: scraped_data['name'],
             publication_date: FormatDate(scraped_data['publishing_date'], 'html-date'),
             published_by: scraped_data['created_by'] ? scraped_data['created_by'].join(', ') : '',
+            category: null,
             type: {label: 'free', value: 0},
             media: {label: 'article', value: 0},
             experience_level: false,
@@ -197,7 +216,7 @@ function StudyResourceCreateApp() {
                                          submit={formData => submitStep(step, setDataStep2, formData)}
                 />);
             case 2:
-                return (<CreateFormStep3 data={dataStep3} options={options}
+                return (<CreateFormStep3 data={dataStep3} options={options} categories={categories}
                                          submit={formData => {
                                              submitStep(step, setDataStep3, formData);
                                              submit(dataStep1, dataStep2, formData);

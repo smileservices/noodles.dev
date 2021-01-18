@@ -36,7 +36,7 @@
     <p class="type">Type <span itemprop="learningResourceType">{{ result.media_label }}</span>, {{ result.price_label }}
     </p>
 </div>
-
+<p>Category: {{ result.category }}</p>
 <p class="tags" itemprop="keywords">{% for tag in result.tags.all %}
     <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>
 {% endfor %}

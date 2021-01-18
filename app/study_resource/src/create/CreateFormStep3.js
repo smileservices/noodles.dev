@@ -1,8 +1,8 @@
 import React, {useState, useEffect, Fragment} from "react"
 import Alert from "../../../src/components/Alert";
-import {Input, Textarea, SelectReact, FormElement} from "../../../src/components/form";
+import {Input, Textarea, SelectReact, FormElement, SelectReactCreatable} from "../../../src/components/form";
 
-export default function CreateFormStep3({data, options, submit, waiting}) {
+export default function CreateFormStep3({data, options, categories, submit, waiting}) {
     const [formData, setFormData] = useState(data);
     const [errors, setErrors] = useState({});
     const [alert, setAlert] = useState('');
@@ -70,6 +70,17 @@ export default function CreateFormStep3({data, options, submit, waiting}) {
                         error={errors.published_by}
                     />
                 </div>
+                <SelectReactCreatable name="select-category" label="Choose Category"
+                                      smallText="Can choose or add a new one if necessary."
+                                      onChange={selectedOptions => setFormData({
+                                          ...formData,
+                                          category: selectedOptions
+                                      })}
+                                      options={categories}
+                                      value={formData.category}
+                                      props={{isMulti: false, required: true}}
+                                      error={errors.category}
+                />
                 <div className="row">
                     <SelectReact label='Type'
                                  value={formData.type}

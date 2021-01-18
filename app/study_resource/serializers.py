@@ -100,6 +100,11 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
                                'old': delta.old_record.experience_level_label,
                                'new': delta.old_record.ExperienceLevel(instance.experience_level).label
                                })
+            elif change.field == 'category':
+                result.append({'field': change.field.capitalize(),
+                               'old': Category.objects.get(pk=change.old).name,
+                               'new': Category.objects.get(pk=change.new).name
+                               })
             else:
                 result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
         return result
@@ -113,7 +118,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
     rating = FloatField(read_only=True)
     reviews_count = IntegerField(read_only=True)
     images = ImageSerializer(many=True, read_only=True)
-    category = CategorySerializerOption()
+    category = CategorySerializerOption(read_only=True)
 
     class Meta:
         model = StudyResource
@@ -177,7 +182,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
                 version=tech_post_data['version'],
             )
         for img_data in m2m_fields['images']:
-            image = StudyResourceImage(study_resource=instance, image_url=img_data['url'])
+            image = StudyResourceImage(study_resource=instance, image_url=img_data['image_url'])
             image.save()
 
 

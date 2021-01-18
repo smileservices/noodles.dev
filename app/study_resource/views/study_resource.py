@@ -74,7 +74,8 @@ def detail(request, id, slug):
             'collections_api': reverse_lazy('collection-viewset-list'),
             'user_collections_list': reverse_lazy('collection-viewset-owned'),
             'user_collections_with_resource': f"{reverse_lazy('collection-viewset-owned-with-resource')}?pk={resource.pk}",
-            'user_collections_set_resource_to_collections': reverse_lazy('collection-viewset-set-resource-to-collections'),
+            'user_collections_set_resource_to_collections': reverse_lazy(
+                'collection-viewset-set-resource-to-collections'),
         }
     }
     if request.user.is_authenticated:
@@ -85,16 +86,20 @@ def detail(request, id, slug):
 @login_required
 def edit(request, id):
     data = {
-        'resource_detail': reverse_lazy('study-resource-viewset-detail', kwargs={'pk': id}),
-        'edit_suggestions_list': reverse_lazy('study-resource-viewset-edit-suggestions', kwargs={'pk': id}),
-        'edit_suggestions_publish': reverse_lazy('study-resource-viewset-edit-suggestion-publish', kwargs={'pk': id}),
-        'edit_suggestions_reject': reverse_lazy('study-resource-viewset-edit-suggestion-reject', kwargs={'pk': id}),
+        'urls': {
+            'resource_detail': reverse_lazy('study-resource-viewset-detail', kwargs={'pk': id}),
+            'edit_suggestions_list': reverse_lazy('study-resource-viewset-edit-suggestions', kwargs={'pk': id}),
+            'edit_suggestions_publish': reverse_lazy('study-resource-viewset-edit-suggestion-publish',
+                                                     kwargs={'pk': id}),
+            'edit_suggestions_reject': reverse_lazy('study-resource-viewset-edit-suggestion-reject', kwargs={'pk': id}),
 
-        'edit_suggestions_api': reverse_lazy('study-resource-edit-suggestions-viewset-list'),
-        'resource_api': reverse_lazy('study-resource-viewset-list'),
-        'tag_options_api': reverse_lazy('tags-options-list'),
-        'tech_options_api': reverse_lazy('techs-options-list'),
-        'tech_api': reverse_lazy('techs-viewset-list'),
+            'edit_suggestions_api': reverse_lazy('study-resource-edit-suggestions-viewset-list'),
+            'resource_api': reverse_lazy('study-resource-viewset-list'),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'tech_options_api': reverse_lazy('techs-options-list'),
+            'tech_api': reverse_lazy('techs-viewset-list'),
+            'categories_options_api': reverse_lazy('categories-options-list'),
+        }
     }
 
     return render(request, 'study_resource/edit_page.html', data)
@@ -108,7 +113,7 @@ def create(request):
             'tag_options_api': reverse_lazy('tags-options-list'),
             'tech_options_api': reverse_lazy('techs-options-list'),
             'tech_api': reverse_lazy('techs-viewset-list'),
-
+            'categories_options_api': reverse_lazy('categories-options-list'),
         }
     }
     return render(request, 'study_resource/create_page.html', data)

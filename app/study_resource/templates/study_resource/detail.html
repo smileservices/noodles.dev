@@ -30,7 +30,7 @@
     <p class="source_url"><a href="{{ result.url }}">resource url</a></p>
 </div>
 <p class="summary" itemProp="abstract">{{ result.summary }}</p>
-
+<p>Category: {{ result.category }}</p>
 <div class="tags" itemProp="keywords">
     <span>Tags: </span>
     {% for tag in result.tags.all %}
