@@ -137,7 +137,7 @@ function StudyResourceCreateApp() {
         data.type = dataStep3.type.value;
         data.media = dataStep3.media.value;
         data.experience_level = dataStep3.experience_level.value;
-        data.images = [{url: dataStep3.image_url}];
+        data.images = [{image_url: dataStep3.image_url}];
         return data;
     }
 
