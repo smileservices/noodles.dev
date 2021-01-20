@@ -1,5 +1,5 @@
 import rest_framework.fields as fields
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField
 from django.template.defaultfilters import slugify
 from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
 
@@ -50,6 +50,7 @@ class ProblemEditSuggestionSerializer(ModelSerializer):
     queryset = models.Problem.edit_suggestions.all()
     edit_suggestion_author = UserSerializerMinimal(read_only=True)
     edit_suggestion_parent = ProblemSerializerMinimal(read_only=True)
+    edit_suggestion_reject_reason = CharField(allow_null=True, allow_blank=True, default='')
     changes = SerializerMethodField()
 
     class Meta:

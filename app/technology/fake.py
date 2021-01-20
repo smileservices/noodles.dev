@@ -6,8 +6,6 @@ from users.fake import create_user_single, create_bulk_users
 from category.models import Category
 
 f = Faker()
-categories = Category.objects.all()
-
 
 def clean_technologies():
     Technology.objects.all().delete()
@@ -16,6 +14,7 @@ def clean_technologies():
 def create_technologies():
     created_tech = {}
     user = create_user_single()
+    categories = Category.objects.all()
     for t in ['reactJs', 'python', 'django', 'php', 'ruby', 'laravel', 'linux', 'docker', 'nginx']:
         tobj = Technology(
             name=t,

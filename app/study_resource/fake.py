@@ -11,10 +11,6 @@ from users.models import CustomUser
 from technology.models import Technology
 from tag.models import Tag
 from category.models import Category
-
-tags = Tag.objects.all()
-techs = Technology.objects.all()
-categories = Category.objects.all()
 users = CustomUser.objects.all()
 
 f = Faker()
@@ -27,6 +23,7 @@ def clean():
 
 def new_study_resource(user):
     name = f.text().split('.')[0]
+    categories = Category.objects.all()
     sr = models.StudyResource(
         name=name,
         slug=slugify(name),
@@ -54,6 +51,8 @@ def new_study_resource_review(study_resource, author):
 
 
 def new_collection(user=None):
+    tags = Tag.objects.all()
+    techs = Technology.objects.all()
     collection = models.Collection(
         author=user if user else choice(users),
         name=f.text(40),
@@ -95,6 +94,8 @@ def study_resource_edit_suggestions(resource: models.StudyResource, author=None)
 
 
 def study_resources_bulk(count=20):
+    tags = Tag.objects.all()
+    techs = Technology.objects.all()
     items = [new_study_resource(choice(users)) for _ in range(count)]
     models.StudyResource.objects.bulk_create(items)
     items = models.StudyResource.objects.all()

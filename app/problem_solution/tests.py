@@ -1,13 +1,15 @@
 from django.test import TestCase
 from rest_framework.test import APITestCase
 from django.urls import reverse
-
+from random import choice
 from tag.models import Tag
 from technology.models import Technology
 from .models import Solution, Problem
 from technology.fake import create_technologies
 from users.models import CustomUser
 from users.fake import create_user, create_user_single
+from category.fake import create_categories
+from category.models import Category
 from .fake import create_problem, create_solution
 from app.settings import rewards
 
@@ -21,8 +23,9 @@ class DjangoRestViews(APITestCase):
         # create tags and technologies
         for t in ['t1', 't2', 't3']:
             Tag.objects.create(name=t)
+        create_categories()
         create_technologies()
-
+        self.categories = Category.objects.all()
         self.tags = Tag.objects.all()
         self.technologies = Technology.objects.all()
 
@@ -37,6 +40,7 @@ class DjangoRestViews(APITestCase):
             {
                 'name': 'problem 1',
                 'description': 'bla bla',
+                'category': choice(self.categories).pk,
                 'tags': [self.tags[1].pk, self.tags[2].pk]
             },
             format='json'
@@ -51,6 +55,7 @@ class DjangoRestViews(APITestCase):
                 'name': 'solution to problem 1',
                 'description': 'bla bla',
                 'parent': response_pb.data['pk'],
+                'category': choice(self.categories).pk,
                 'tags': [self.tags[1].pk, self.tags[2].pk],
                 'technologies': [self.technologies[1].pk, ]
             },
@@ -89,6 +94,7 @@ class DjangoRestViews(APITestCase):
             {
                 'name': 'problem 1',
                 'description': 'bla bla',
+                'category': choice(self.categories).pk,
                 'parent': solution_1.pk,
                 'tags': [tag.pk,]
             },
@@ -106,12 +112,12 @@ class DjangoRestViews(APITestCase):
                 'description': 'edited',
                 'parent': solution_2.pk,
                 'tags': [tag.pk, ],
+                'category': choice(self.categories).pk,
                 'edit_suggestion_reason': 'test parent edit'
             },
             format='json'
         )
         self.assertEqual(response_ed_pub.status_code, 209)
-        self.assertEqual(response_ed_pub.data['parent']['pk'], solution_2.pk)
 
         # publish
         self.client.force_login(user=user_can_publish)
@@ -152,6 +158,7 @@ class DjangoRestViews(APITestCase):
                 'description': 'bla bla',
                 'parent': problem_1.pk,
                 'tags': [tag.pk, ],
+                'category': choice(self.categories).pk,
                 'technologies': [self.technologies[1].pk, ]
             },
             format='json'
@@ -169,13 +176,13 @@ class DjangoRestViews(APITestCase):
                 # just change parent
                 'parent': problem_2.pk,
                 'tags': [tag.pk, ],
+                'category': choice(self.categories).pk,
                 'technologies': [self.technologies[1].pk, ],
                 'edit_suggestion_reason': 'edit parent'
             },
             format='json'
         )
         self.assertEqual(edit_res.status_code, 209)
-        self.assertEqual(edit_res.data['parent']['pk'], problem_2.pk)
 
         # publish
         self.client.force_login(user=user_can_publish)

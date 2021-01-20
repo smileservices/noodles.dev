@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from users.models import CustomUser
 from tag.fake import create_tags
 from technology.fake import create_technologies
+from category.fake import create_categories
 from technology.models import Technology
 from random import choice
 
@@ -17,6 +18,7 @@ class StudyResourceTestCase(TestCase):
     def setUp(self):
         CustomUser.objects.bulk_create([create_user() for _ in range(0, 5)])
         self.users = CustomUser.objects.all()
+        create_categories()
         create_tags()
         create_technologies()
 

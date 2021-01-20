@@ -6,6 +6,8 @@ from users.fake import create_bulk_users, create_user_single, CustomUser
 from technology.models import Technology
 from tag.models import Tag
 from tag.fake import create_tags
+from category.fake import create_categories
+from category.models import Category
 from technology.fake import create_technologies
 from problem_solution.fake import create_problem, create_solution
 from problem_solution.models import Problem, Solution
@@ -39,10 +41,11 @@ class RestIntegrationTest(APITestCase):
 
     def setUp(self) -> None:
         create_bulk_users(5)
+        create_categories()
         create_tags()
         create_technologies()
         self.tags = Tag.objects.all()
-        # self.users = CustomUser.objects.all()
+        self.categories = Category.objects.all()
         self.technologies = Technology.objects.all()
 
     def test_problem_votable_rewards(self):
@@ -56,7 +59,8 @@ class RestIntegrationTest(APITestCase):
 
         self.client.force_login(user=p_u)
         c_r = self.client.post(PROBLEM_VIEWSET_URL,
-                               {'name': 'problem 1', 'description': 'test', 'tags': [self.tags[1].pk, ]},
+                               {'name': 'problem 1', 'description': 'test', 'category': choice(self.categories).pk,
+                                'tags': [self.tags[1].pk, ]},
                                format='json')
         self.assertEqual(c_r.status_code, 201)
         p_u = CustomUser.objects.get(pk=p_u.pk)
@@ -94,6 +98,7 @@ class RestIntegrationTest(APITestCase):
             {
                 'name': 'problem 1',
                 'description': 'bla bla',
+                'category': choice(self.categories).pk,
                 'tags': [self.tags[1].pk, self.tags[2].pk]
             },
             format='json'
@@ -106,6 +111,7 @@ class RestIntegrationTest(APITestCase):
                 'name': 'edited',
                 'description': 'bla bla',
                 'tags': [self.tags[3].pk, ],
+                'category': choice(self.categories).pk,
                 'edit_suggestion_reason': 'test'
             },
             format='json'
@@ -160,6 +166,7 @@ class RestIntegrationTest(APITestCase):
             {
                 'name': 'problem 1',
                 'description': 'bla bla',
+                'category': choice(self.categories).pk,
                 'tags': [self.tags[1].pk, self.tags[2].pk]
             },
             format='json'
@@ -172,6 +179,7 @@ class RestIntegrationTest(APITestCase):
                 'name': 'edit for publish',
                 'description': 'bla bla',
                 'tags': [self.tags[3].pk, ],
+                'category': choice(self.categories).pk,
                 'edit_suggestion_reason': 'test publish'
             },
             format='json'
@@ -186,6 +194,7 @@ class RestIntegrationTest(APITestCase):
                 'name': 'edit for reject',
                 'description': 'bla bla',
                 'tags': [self.tags[3].pk, ],
+                'category': choice(self.categories).pk,
                 'edit_suggestion_reason': 'test rejection'
             },
             format='json'
@@ -240,6 +249,7 @@ class RestIntegrationTest(APITestCase):
             {
                 'name': 'problem 1',
                 'description': 'bla bla',
+                'category': choice(self.categories).pk,
                 'tags': [self.tags[1].pk, self.tags[2].pk]
             },
             format='json'
@@ -253,6 +263,7 @@ class RestIntegrationTest(APITestCase):
                 'name': 'edit for delete by staff',
                 'description': 'bla bla',
                 'tags': [self.tags[3].pk, ],
+                'category': choice(self.categories).pk,
                 'edit_suggestion_reason': 'test delete'
             },
             format='json'
@@ -263,6 +274,7 @@ class RestIntegrationTest(APITestCase):
                 'name': 'edit for delete by owner',
                 'description': 'bla bla',
                 'tags': [self.tags[3].pk, ],
+                'category': choice(self.categories).pk,
                 'edit_suggestion_reason': 'test delete'
             },
             format='json'
@@ -309,6 +321,7 @@ class RestIntegrationTest(APITestCase):
             {
                 'name': 'problem 1',
                 'description': 'bla bla',
+                'category': choice(self.categories).pk,
                 'tags': [self.tags[1].pk, self.tags[2].pk]
             },
             format='json'
@@ -318,7 +331,7 @@ class RestIntegrationTest(APITestCase):
         self.client.force_login(user_cannot_update)
         res_update_cannot = self.client.put(
             reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}),
-            {'name': 'cannot edit', 'edit_suggestion_reason': 'some reason'},
+            {'name': 'cannot edit', 'edit_suggestion_reason': 'some reason', 'category': choice(self.categories).pk,},
             format='json'
         )
         self.assertEqual(res_update_cannot.status_code, 209)
@@ -327,7 +340,7 @@ class RestIntegrationTest(APITestCase):
         self.client.force_login(user_resource_author)
         res_update_can = self.client.put(
             reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}),
-            {'name': 'updated by author', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk]},
+            {'name': 'updated by author', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk], 'category': choice(self.categories).pk,},
             format='json'
         )
         self.assertEqual(res_update_can.status_code, 200)
@@ -335,7 +348,7 @@ class RestIntegrationTest(APITestCase):
         self.client.force_login(user_staff)
         res_update_can = self.client.put(
             reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}),
-            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk]},
+            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk], 'category': choice(self.categories).pk,},
             format='json'
         )
         self.assertEqual(res_update_can.status_code, 200)
@@ -350,12 +363,15 @@ class RestIntegrationTest(APITestCase):
         user_cannot_update = create_user_single()
         user_staff = create_user_single(staff=True)
 
+        category = choice(self.categories)
+
         self.client.force_login(user=user_resource_author)
         response_pb = self.client.post(
             PROBLEM_VIEWSET_URL,
             {
                 'name': 'problem 1',
                 'description': 'bla bla',
+                'category': category.pk,
                 'tags': [self.tags[1].pk, self.tags[2].pk]
             },
             format='json'
@@ -367,6 +383,7 @@ class RestIntegrationTest(APITestCase):
             {
                 'name': 'edit for delete by staff',
                 'description': 'bla bla',
+                'category': category.pk,
                 'tags': [self.tags[3].pk, ],
                 'edit_suggestion_reason': 'test delete'
             },
@@ -374,11 +391,19 @@ class RestIntegrationTest(APITestCase):
         )
         self.assertEqual(response_edit_sug.status_code, 201)
 
-        # canot update
+        update_data = {
+            'name': 'updated', 'description': 'updated',
+            'category': category.pk,
+            'tags': [self.tags[1].pk, self.tags[2].pk],
+            'edit_suggestion_reason': 'just test',
+            'slug': 'haba-haba'
+        }
+
+        # cannot update
         self.client.force_login(user_cannot_update)
         res_update_cannot = self.client.put(
             reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_edit_sug.data['pk']}),
-            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk]},
+            update_data,
             format='json'
         )
         self.assertEqual(res_update_cannot.status_code, 403)
@@ -387,22 +412,20 @@ class RestIntegrationTest(APITestCase):
         self.client.force_login(user_edit_author)
         res_update_can = self.client.put(
             reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_edit_sug.data['pk']}),
-            {'name': 'updated by author', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk],
-             'slug': 'haba-haba'},
+            update_data,
             format='json'
         )
         self.assertEqual(res_update_can.status_code, 200)
-        self.assertEqual(res_update_can.data['name'], 'updated by author')
+        # todo test changes
 
         self.client.force_login(user_staff)
         res_update_can = self.client.put(
             reverse('problem-edit-suggestion-viewset-detail', kwargs={'pk': response_edit_sug.data['pk']}),
-            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk],
-             'slug': 'haba-haba'},
+            update_data,
             format='json'
         )
         self.assertEqual(res_update_can.status_code, 200)
-        self.assertEqual(res_update_can.data['name'], 'updated by staff')
+        # todo test changes
 
     def test_create_study_resource(self):
         user_resource_author = create_user_single()
@@ -418,14 +441,15 @@ class RestIntegrationTest(APITestCase):
                 'price': 0,
                 'media': 0,
                 'experience': 0,
+                'category': self.categories[0].pk,
                 'tags': [self.tags[1].pk, self.tags[2].pk],
                 'technologies': [
                     {
-                        'pk': self.technologies[0].pk,
+                        'technology_id': self.technologies[0].pk,
                         'version': '123',
                     },
                     {
-                        'pk': self.technologies[1].pk,
+                        'technology_id': self.technologies[1].pk,
                         'version': '',
                     },
                 ]
@@ -442,6 +466,7 @@ class RestIntegrationTest(APITestCase):
         )
         self.assertEqual(resource_get.status_code, 200)
         # check that the technologies are getting through the pivot table
+        self.assertEqual(resource_get.data['category']['label'], self.categories[0].name)
         self.assertEqual(resource_get.data['technologies'][0]['name'], self.technologies[0].name)
         self.assertEqual(resource_get.data['technologies'][0]['version'], '123')
         self.assertEqual(resource_get.data['technologies'][1]['name'], self.technologies[1].name)
@@ -462,10 +487,11 @@ class RestIntegrationTest(APITestCase):
             'price': 0,
             'media': 0,
             'experience': 0,
+            'category': choice(self.categories).pk,
             'tags': [self.tags[1].pk, self.tags[2].pk],
             'technologies': [
                 {
-                    'pk': self.technologies[2].pk,
+                    'technology_id': self.technologies[2].pk,
                     'version': '123',
                 },
             ]
@@ -481,7 +507,7 @@ class RestIntegrationTest(APITestCase):
         self.client.force_login(user=publish_admin)
         url = reverse('study-resource-viewset-edit-suggestion-publish', kwargs={'pk': resource_pk})
         res_publish = self.client.post(url, {'edit_suggestion_id': res_edit.data['pk']},
-                                                  format='json')
+                                       format='json')
         self.assertEqual(res_publish.status_code, 200)
 
         # test if publish changed the resource accordingly, especially the m2m through field

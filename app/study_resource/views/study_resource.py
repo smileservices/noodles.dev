@@ -142,7 +142,7 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
         '''
         m2m_field = getattr(instance, f['name'])
         through_data = self.request.data[f['name']]
-        m2m_objects_id_list = [o['pk'] for o in through_data]
+        m2m_objects_id_list = [o['technology_id'] for o in through_data]
         m2m_objects = [obj for obj in f['model'].objects.filter(pk__in=m2m_objects_id_list)]
         for idx, m2m_obj in enumerate(m2m_objects):
             data = through_data[idx]
@@ -150,7 +150,7 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
             data[f['through']['rel_field']] = m2m_obj
             if f['name'] == 'technologies':
                 data['name'] = m2m_obj.name
-            del data['pk']
+            del data['technology_id']
             m2m_field.through.objects.create(**data)
 
     @action(methods=['GET'], detail=True)
