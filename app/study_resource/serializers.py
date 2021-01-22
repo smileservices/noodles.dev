@@ -253,3 +253,23 @@ class StudyResourceListingSerializer(serializers.ModelSerializer):
             'publication_date',
             'tags', 'technologies', 'category',
         ]
+
+
+class StudyResourceListingMinimalSerializer(serializers.ModelSerializer):
+    queryset = StudyResource.objects.all()
+    rating = FloatField(read_only=True)
+    reviews_count = IntegerField(read_only=True)
+
+    class Meta:
+        model = StudyResource
+        fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', ]
+
+
+class CollectionResourceListingSerializer(serializers.ModelSerializer):
+    # to be used in collection items
+    queryset = Collection.resources.through.objects.all()
+    study_resource = StudyResourceListingMinimalSerializer(read_only=True)
+
+    class Meta:
+        model = Collection.resources.through
+        fields = ['study_resource', 'order']

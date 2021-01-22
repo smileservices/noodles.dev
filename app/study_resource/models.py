@@ -249,8 +249,18 @@ class Collection(DateTimeModelMixin, VotableMixin):
     def __str__(self):
         return f'{self.name} by {self.author}'
 
+    def add_resource(self, resource_id):
+        self.resources.through.objects.create(
+            collection=self,
+            study_resource_id=resource_id,
+            order=None
+        )
+
 
 class CollectionResources(models.Model):
     study_resource = models.ForeignKey(StudyResource, on_delete=models.CASCADE)
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     order = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f'study resource {self.study_resource_id} order {self.order} in collection {self.collection_id}'

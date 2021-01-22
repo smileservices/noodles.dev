@@ -1,83 +1,142 @@
 import React, {useState, useEffect, Fragment} from "react"
+
+import {
+    sortableContainer,
+    sortableElement,
+    sortableHandle,
+} from 'react-sortable-hoc';
+
 import Waiting from "../../../src/components/Waiting";
 import Alert from "../../../src/components/Alert";
 import apiList from "../../../src/api_interface/apiList";
 import PaginatedLayout from "../../../src/components/PaginatedLayout";
 import Modal from "../../../src/components/Modal";
-import StudyResourceListing from "../StudyResourceListing";
+import StudyResourceListingCompact from "./StudyResourceListingCompact";
 import apiPost from "../../../src/api_interface/apiPost";
-import {FormElement} from "../../../src/components/form";
 
 export default function CollectionItemsModal({collection, setMainAlert, close}) {
 
     const [items, setItems] = useState([]);
-    const [formData, setFormData] = useState({
-        pk: collection.pk,
-        remove: [],
-    })
+    const [formData, setFormData] = useState([]);
 
-    const [pagination, setPagination] = useState({
-        resultsPerPage: 10,
-        current: 1,
-        offset: 0
-    });
+    const [changed, setChanged] = useState(false);
 
     const [waiting, setWaiting] = useState('');
     const [alert, setAlert] = useState('');
 
-    useEffect(e => {
-        apiList(
-            COLLECTIONS_API + collection.pk + "/resources/",
-            pagination,
-            setItems,
-            setWaiting,
-            err => setAlert(<Alert close={e => setAlert(null)} text={err} type="danger"/>),
-        )
-    }, [pagination, collection])
-
-    function handleDelete(data) {
-        setItems({
-            ...items,
-            count: items.count - 1,
-            results: items.results.filter(c => data.pk !== c.pk)
-        });
-        setFormData({...formData, remove: [...formData.remove, data.pk]});
+    function setOrder(items) {
+        let cloned_items = JSON.parse(JSON.stringify(items));
+        cloned_items.map((res, i) => {
+            res.order = i;
+        })
+        return cloned_items;
     }
 
-    function submit(data) {
+    function reset() {
+        setFormData(setOrder(items));
+        setChanged(false);
+    }
+
+
+    useEffect(e => {
+        setWaiting(<Waiting text="Retrieving items"/>)
+        fetch(
+            COLLECTIONS_API + collection.pk + "/resources/", {method: 'GET'}
+        ).then(result => {
+            setWaiting('');
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve collection items" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) {
+                setItems(data);
+                setFormData(setOrder(data));
+            }
+        })
+    }, [collection,])
+
+    function handleSoftDelete(data) {
+        let new_list = formData.filter(c => data.pk !== c.study_resource.pk);
+        setFormData(setOrder(new_list));
+        if (!changed) setChanged(true);
+    }
+
+    function changeOrder(source_idx, dest_idx) {
+        let new_list = JSON.parse(JSON.stringify(formData));
+        new_list.splice(dest_idx, 0, new_list.splice(source_idx, 1)[0]);
+        setFormData(setOrder(new_list));
+        setChanged(true);
+    }
+
+    function submit() {
+        const submit_data = {
+            pk: collection.pk,
+            resources: formData.map( item=> {return {pk: item.study_resource.pk, order: item.order}} )
+        }
         apiPost(
             USER_COLLECTIONS_UPDATE_ITEMS_API,
-            data,
+            submit_data,
             setWaiting,
         ).then(result => {
             if (result.ok) {
-                setMainAlert(<Alert text={'Collection '+collection.name+' updated'} type='success' hideable={true}/>);
+                setMainAlert(<Alert text={'Collection ' + collection.name + ' updated'} type='success'
+                                    hideable={true}/>);
                 close();
             }
             setAlert(<Alert close={e => setAlert(null)} text="Something went wrong" type="danger" stick={true}/>)
         })
     }
 
+    const DragHandle = sortableHandle(() => <span>::</span>);
+
+    const SortableItem = sortableElement(({value}) => (
+        <div>
+            <DragHandle/>
+            {value}
+        </div>
+    ));
+
+    const SortableContainer = sortableContainer(({children}) => {
+        return <div className="column-container items-container">{children}</div>;
+    });
+
+    const onSortEnd = ({oldIndex, newIndex}) => {
+        changeOrder(oldIndex, newIndex);
+    };
+
     return (
         <Modal close={close}>
-            <FormElement
-                data={formData}
-                callback={submit}
-                alert={alert}
-                waiting={waiting}
-            >
-                <div className="column-container">
-                    <div className="header">
-                        <h3>Collection {collection.name} items:</h3>
-                    </div>
-                    <PaginatedLayout data={items.results} resultsCount={items.count} pagination={pagination}
-                                     setPagination={setPagination}
-                                     resultsContainerClass="column-container items-container"
-                                     mapFunction={item => <StudyResourceListing key={'resource' + item.pk} data={item}
-                                                                                remove={e => handleDelete(item)}/>}
-                    />
+            <div className="column-container">
+                <div className="header">
+                    <h3>Collection {collection.name} items:</h3>
                 </div>
-            </FormElement>
+                {alert}
+                {waiting}
+                <SortableContainer onSortEnd={onSortEnd} useDragHandle helperClass='sortableHelper'>
+                    {formData.map((item, index) => {
+                            const value = (
+                                <StudyResourceListingCompact
+                                    key={'resource' + item.study_resource.pk}
+                                    data={item.study_resource}
+                                    remove={e => handleSoftDelete(item.study_resource)}
+                                />
+                            );
+                            return <SortableItem key={`item-`+index} index={index} value={value}/>
+                        }
+                    )}
+                </SortableContainer>
+
+            </div>
+            {changed
+                ? <Fragment>
+                    <button className="btn" onClick={submit}>Apply</button>
+                    <button className="btn" onClick={reset}>Reset</button>
+                </Fragment>
+                : ''
+            }
         </Modal>
     );
 }

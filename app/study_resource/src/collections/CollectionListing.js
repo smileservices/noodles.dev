@@ -26,7 +26,7 @@ export default function CollectionListing({data, extraData}) {
                 <span>Tags: </span>
                     {data.tags.map(t => <a key={'tag' + t.value} className="tag">{t.label}</a>)}
                     <span>Tech: </span>
-                    {data.technologies.map(t => <a key={'tech' + t.pk} className="tech">{t.name}</a>)}
+                    {data.technologies.map(t => <a key={'tech' + t.value} className="tech">{t.name}</a>)}
                 </span>
             </div>
         </div>

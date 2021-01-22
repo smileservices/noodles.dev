@@ -23,11 +23,11 @@
 </h2>
 
 
-{#    {% if result.image.image_file %}#}
-{#        <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">#}
-{#            <img class="primary-image" src="{{ result.image.sizes.small }}" alt="">#}
-{#        </a>#}
-{#    {% endif %}#}
+    {% if result.image %}
+        <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">
+            <img class="primary-image" src="{{ result.image.sizes.small }}" alt="">
+        </a>
+    {% endif %}
 
     <div class="group-muted">
     <p class="publication-date">{{ result.publication_date }}</p>

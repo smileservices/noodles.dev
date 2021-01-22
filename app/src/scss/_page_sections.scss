@@ -131,3 +131,7 @@ section.results-container {
   display: flex;
   gap: 0.3rem;
 }
+
+.sortableHelper {
+  z-index: $modal-content-zindex;
+}

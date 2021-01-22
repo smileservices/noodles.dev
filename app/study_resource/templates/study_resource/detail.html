@@ -17,7 +17,9 @@
     {{ result.name }}
 </h1>
 
-{#<img class="primary-image" src="{{ result.image.sizes.medium }}" alt="">#}
+{% if result.image %}
+    <img class="primary-image" src="{{ result.image.sizes.medium }}" alt="">
+{% endif %}
 
 <div class="group">
     <p class="publication-date">Published on {{ result.publication_date }} by {{ result.published_by }}</p>

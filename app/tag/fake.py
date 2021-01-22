@@ -6,6 +6,9 @@ def clean_tags():
 
 
 def create_tags():
+    tags = []
     for t in ['frontend', 'reactJs', 'python', 'django', 'vscode', 'stuff']:
         tobj = Tag(name=t)
         tobj.save()
+        tags.append(tobj)
+    return tags

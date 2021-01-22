@@ -18,9 +18,9 @@ export default function StudyResourceListing({data, remove}) {
                 <a href={data.absolute_url} target="new">{data.name}</a>
             </p>
             <div className="group-muted">
-                <p className="publication-date">{FormatDate(data.publication_date, 'date')} by {data.published_by}</p>
-                    <p className="experience-level">Difficulty {data.experience_level}</p>
-                <p className="type">{data.price} {data.media}</p>
+                <p className="publication-date">{FormatDate(data.publication_date, 'date')}</p>
+                    <p className="experience-level">Difficulty {data.experience_level_label}</p>
+                <p className="type">{data.price_label} {data.media_label}</p>
             </div>
 
             <p className="tags">

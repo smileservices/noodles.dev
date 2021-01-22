@@ -35,6 +35,9 @@ def create_technologies():
     created_tech['laravel'].ecosystem.add(created_tech['php'])
     created_tech['nginx'].ecosystem.add(created_tech['linux'])
 
+    return created_tech
+
+
 
 def create_technology_edit_suggestions():
     technologies = Technology.objects.all()

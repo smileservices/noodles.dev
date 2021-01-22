@@ -60,35 +60,34 @@ class CollectionViewset(ModelViewSet):
         selected_collections = self.request.data['collections']
         for collection in queryset:
             if collection.pk in selected_collections:
-                collection.resources.add(resource_id)
+                collection.add_resource(resource_id)
             else:
                 collection.resources.remove(resource_id)
         return Response(status=200)
 
     @action(methods=['POST'], detail=False)
     def update_collection_items(self, *args, **kwargs):
+        # endpoint for updating collection items: remove/set order
         collection = self.queryset.filter(author=self.request.user.id).values('pk').get(pk=self.request.data['pk'])
         # clean previous resources
         CollectionResources.objects.filter(
             collection=collection['pk'],
-            study_resource_id__in=self.request.data['remove']
         ).delete()
-        # todo handle update
-        # updated_resources = [CollectionResources(
-        #     collection_id=collection.pk,
-        #     study_resource_id=resource['pk'],
-        #     order=resource['order'],
-        # ) for resource in self.request.data['resources']]
-        # CollectionResources.objects.bulk_create(updated_resources)
+        updated_resources = [CollectionResources(
+            collection_id=collection['pk'],
+            study_resource_id=resource['pk'],
+            order=resource['order'],
+        ) for resource in self.request.data['resources']]
+        CollectionResources.objects.bulk_create(updated_resources)
         return Response(status=204)
 
     @action(methods=['GET'], detail=True)
     def resources(self, *args, **kwargs):
         # get all resources of a specific collection
-        queryset = self.queryset.get(pk=kwargs['pk']).resources.annotate(reviews_count=models.Count('reviews'))
-        page = self.paginate_queryset(queryset.all())
-        if page is not None:
-            serializer = serializers.StudyResourceListingSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = serializers.StudyResourceListingSerializer(queryset, many=True)
+        # queryset = self.queryset.get(pk=kwargs['pk']).resources.annotate(reviews_count=models.Count('reviews'))
+        queryset = self.queryset.get(pk=kwargs['pk']).resources.through.objects\
+            .filter(collection_id=kwargs['pk'])\
+            .all()\
+            .order_by('order')
+        serializer = serializers.CollectionResourceListingSerializer(queryset, many=True)
         return Response(serializer.data)
