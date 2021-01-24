@@ -8,7 +8,7 @@ from study_collection.models import Collection
 def homepage(request):
     queryset = StudyResource.objects.order_by('-publication_date')
     latest = queryset[:5]
-    collections = Collection.objects.all()[:5]
+    collections = Collection.objects.filter(is_public=True).all()[:5]
     most_appreciated = queryset.filter(~Q(reviews=None)).order_by('-rating')[:5]
     data = {
         'hide_navbar_search': True,
