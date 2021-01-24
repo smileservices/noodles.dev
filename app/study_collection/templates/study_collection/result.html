@@ -1,0 +1,22 @@
+<span class="card" itemscope itemtype="https://schema.org/AggregateRating">
+<div class="result" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
+
+<h2 class="title" itemprop="name">
+    <a itemprop="name" href="{% url 'collection-detail' result.id result.slug %}">{{ result.name }}</a>
+</h2>
+
+    <div class="group-muted">
+        <p>{{ result.items_count }} Items</p>
+    </div>
+
+</div>
+    <p class="tags" itemprop="keywords">
+        {% for tag in result.tags.all %}
+            <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>
+        {% endfor %}
+        {% for tech in result.technologies.all %}
+            <a class="tech" href="{{ tech.absolute_url }}">{{ tech }}</a>
+        {% endfor %}
+    </p>
+    {% include 'vote_display.html' with resource=result %}
+</span>
