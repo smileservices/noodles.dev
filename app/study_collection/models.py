@@ -1,4 +1,8 @@
 from django.db import models
+from django.urls import reverse
+from django.contrib.postgres.indexes import GinIndex
+import tsvector_field
+
 from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin
 from votable.models import VotableMixin
 
@@ -7,7 +11,8 @@ from tag.models import Tag
 from technology.models import Technology
 from study_resource.models import StudyResource
 
-class CollectionQueryset(models.QuerySet):
+
+class CollectionQueryset(SearchAbleQuerysetMixin):
     def annotate_with_items_count(self):
         return self.annotate(items_count=models.Count('resources'))
 
@@ -17,9 +22,8 @@ class CollectionManager(models.Manager):
         return CollectionQueryset(self.model, using=self.db).annotate_with_items_count()
 
 
-class Collection(DateTimeModelMixin, VotableMixin):
+class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     objects = CollectionManager()
-    name = models.CharField(max_length=128)
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)
     is_public = models.BooleanField(default=False)
     description = models.TextField(null=True, blank=True)
@@ -30,6 +34,15 @@ class Collection(DateTimeModelMixin, VotableMixin):
     )
     tags = models.ManyToManyField(Tag, related_name='collections')
     technologies = models.ManyToManyField(Technology, related_name='collections')
+    search_vector_index = tsvector_field.SearchVectorField([
+        tsvector_field.WeightedColumn('name', 'A'),
+        tsvector_field.WeightedColumn('description', 'B'),
+    ], 'english')
+
+    class Meta:
+        indexes = [
+            GinIndex(fields=['name', 'description'], name='gintrgm_collection_index', opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
+        ]
 
     def __str__(self):
         return f'{self.name} by {self.author}'
@@ -40,6 +53,10 @@ class Collection(DateTimeModelMixin, VotableMixin):
             study_resource_id=resource_id,
             order=None
         )
+
+    @property
+    def absolute_url(self):
+        return reverse('collection-detail', kwargs={'id': self.pk, 'slug': self.slug})
 
 
 class CollectionResources(models.Model):

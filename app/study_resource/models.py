@@ -135,7 +135,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
 
     class Meta:
         indexes = [
-            GinIndex(fields=['name', 'summary'], name='gintrgm_index', opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
+            GinIndex(fields=['name', 'summary'], name='gintrgm_study_resource_index', opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
         ]
 
     def __str__(self):

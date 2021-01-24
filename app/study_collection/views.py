@@ -19,7 +19,7 @@ def browse(request, **kwargs):
     return True
 
 
-def detail(request, **kwargs):
+def detail(request, id, slug):
     return True
 
 

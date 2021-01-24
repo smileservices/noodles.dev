@@ -1,12 +1,31 @@
 from django.db import models
 import tsvector_field
 from users.models import CustomUser
+from django.contrib.postgres.indexes import GinIndex
+
 from votable.models import VotableMixin
-from core.abstract_models import SluggableModelMixin
+from core.abstract_models import SluggableModelMixin, SearchAbleQuerysetMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 from django_edit_suggestion.models import EditSuggestion
 from django.urls import reverse
 from category.models import Category
+
+
+class TechnologyManager(models.Manager):
+
+    def get_queryset(self):
+        return TechnologyQueryset(self.model, using=self.db)
+
+    def order_by_rating_then_publishing_date(self):
+        return TechnologyQueryset(self.model, using=self.db).order_by(
+            models.F('rating').desc(nulls_last=True),
+            '-reviews_count',
+            'publication_date'
+        )
+
+
+class TechnologyQueryset(SearchAbleQuerysetMixin):
+    pass
 
 
 class Technology(SluggableModelMixin, VotableMixin):
@@ -18,6 +37,7 @@ class Technology(SluggableModelMixin, VotableMixin):
         PROPRIETARY = (4, 'proprietary')
         TRADE_SECRET = (5, 'trade secret')
 
+    objects = TechnologyManager()
     name = models.CharField(max_length=128, db_index=True)
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
     description = models.TextField(max_length=1024)
@@ -43,6 +63,12 @@ class Technology(SluggableModelMixin, VotableMixin):
         tsvector_field.WeightedColumn('name', 'A'),
         tsvector_field.WeightedColumn('description', 'B'),
     ], 'english')
+
+    class Meta:
+        indexes = [
+            GinIndex(fields=['name', 'description'], name='gintrgm_technology_index',
+                     opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
+        ]
 
     def __str__(self):
         return f'{self.name}'
