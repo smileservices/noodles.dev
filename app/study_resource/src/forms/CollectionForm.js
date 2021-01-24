@@ -89,13 +89,19 @@ export default function CollectionForm({formData, setFormData, extraData, submit
             alert={alert}
             waiting={waiting}
         >
-            <h3>{ extraData.formTitle }</h3>
+            <h3>{extraData.formTitle}</h3>
             <Input
                 name={'name'}
                 label="Name"
                 inputProps={{...makeStateProps('name')}}
                 error={errors.name}
             />
+            <div>
+                <input type="checkbox" id="is_public" name="is_public" value={formData.is_public} onChange={e =>
+                    setFormData({...formData, is_public: !formData.is_public})
+                }/>
+                <label htmlFor="is_public"> Is Public</label>
+            </div>
             <Textarea
                 name={'description'}
                 label="Description"
@@ -126,5 +132,5 @@ export default function CollectionForm({formData, setFormData, extraData, submit
             />
             {extraData.formElements ? extraData.formElements.get_list(waiting, errors) : ''}
         </FormElement>
-    );
+);
 }

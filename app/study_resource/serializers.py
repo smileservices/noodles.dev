@@ -222,7 +222,10 @@ class CollectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Collection
-        fields = ['pk', 'name', 'description', 'created_at', 'author', 'tags', 'technologies', 'items_count']
+        fields = [
+            'pk', 'name', 'description', 'created_at', 'author', 'tags', 'technologies', 'items_count', 'is_public',
+            'thumbs_up', 'thumbs_down',
+        ]
 
     def run_validation(self, data):
         validated_data = super(CollectionSerializer, self).run_validation(data)
@@ -268,8 +271,14 @@ class StudyResourceListingMinimalSerializer(serializers.ModelSerializer):
 class CollectionResourceListingSerializer(serializers.ModelSerializer):
     # to be used in collection items
     queryset = Collection.resources.through.objects.all()
-    study_resource = StudyResourceListingMinimalSerializer(read_only=True)
+    study_resource = serializers.SerializerMethodField()
 
     class Meta:
         model = Collection.resources.through
         fields = ['study_resource', 'order']
+
+    def get_study_resource(self, obj):
+        # need to bypass the normal foreign object retrieving mechanism because it uses the default Manager
+        # therefore we don't have access to the custom Manager
+        res = StudyResource.objects.get(pk=obj.study_resource_id)
+        return StudyResourceListingMinimalSerializer(res).data

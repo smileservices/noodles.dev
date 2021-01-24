@@ -21,6 +21,7 @@ export default function CollectionListing({data, extraData}) {
                         {/*<span className="items">{data.items_count} items</span>*/}
                     </div>
                     <p className="summary">{data.description}</p>
+                    <p>has {data.items_count} items</p>
                 </div>
                 <span className="tags">
                 <span>Tags: </span>
@@ -28,6 +29,16 @@ export default function CollectionListing({data, extraData}) {
                     <span>Tech: </span>
                     {data.technologies.map(t => <a key={'tech' + t.value} className="tech">{t.name}</a>)}
                 </span>
+                <div className="thumbs">
+                    { data.is_public ?
+                        <Fragment>
+                            <div>is public</div>
+                            <div className="down"><span className="icon-thumbs-o-down"> </span><span>{data.thumbs_down}</span></div>
+                            <div className="up"><span className="icon-thumbs-o-up"> </span><span>{data.thumbs_up}</span></div>
+                        </Fragment>
+                        : <div>not public</div>
+                    }
+                </div>
             </div>
         </div>
     )

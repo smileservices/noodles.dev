@@ -38,8 +38,11 @@ class StudyResourceManager(models.Manager):
 class StudyResourceQueryset(SearchAbleQuerysetMixin):
 
     def annotate_with_rating(self):
-        return self.annotate(rating=models.Avg('reviews__rating')).annotate(
-            reviews_count=models.Count('reviews', distinct=True))
+        return self.annotate(
+            rating=models.Avg('reviews__rating')
+        ).annotate(
+            reviews_count=models.Count('reviews', distinct=True)
+        )
 
     def order_by_rating_then_publishing_date(self):
         return self.annotate_with_rating().order_by(
@@ -237,6 +240,7 @@ class Collection(DateTimeModelMixin, VotableMixin):
     objects = CollectionManager()
     name = models.CharField(max_length=128)
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)
+    is_public = models.BooleanField(default=False)
     description = models.TextField(null=True, blank=True)
     resources = models.ManyToManyField(
         StudyResource,

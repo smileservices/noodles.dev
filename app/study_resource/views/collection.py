@@ -31,7 +31,7 @@ class CollectionViewset(ModelViewSet):
     @action(methods=['GET'], detail=False)
     def owned(self, *args, **kwargs):
         # get all user collections
-        queryset = self.queryset.filter(author=self.request.user.id)
+        queryset = self.queryset.filter(author=self.request.user.id).all().order_by('created_at')
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.serializer_class(page, many=True)
