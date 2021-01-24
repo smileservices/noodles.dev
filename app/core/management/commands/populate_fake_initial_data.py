@@ -10,6 +10,7 @@ from technology.fake import clean_technologies, create_technologies, create_tech
 from users.models import CustomUser
 from users import fake as fake_users
 from problem_solution import fake as fake_problem_solution
+from study_collection import fake as fake_collections
 from study_resource import fake as fake_study_resource
 
 from faker import Faker
@@ -120,7 +121,7 @@ class Command(BaseCommand):
         fake_study_resource.study_resources_bulk()
         fake_study_resource.study_resources_edits_bulk(100)
         fake_study_resource.reviews_bulk()
-        fake_study_resource.collections_bulk()
+        fake_collections.collections_bulk()
         self.stdout.write(" >> Created study resources, edit suggestions, reviews, collections: done")
 
 

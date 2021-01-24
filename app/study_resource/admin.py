@@ -13,18 +13,6 @@ class StudyResourceAdmin(admin.ModelAdmin):
         return reverse('detail', kwargs={'id': obj.id, 'slug': obj.slug})
 
 
-class ResourceInline(admin.TabularInline):
-    model = models.CollectionResources
-
-
-@admin.register(models.Collection)
-class CollectionAdmin(admin.ModelAdmin):
-    date_hierarchy = 'created_at'
-    list_display = ('name', 'author', 'created_at')
-    list_filter = ('created_at', 'tags', 'technologies')
-    inlines = [ResourceInline, ]
-
-
 @admin.register(models.Review)
 class ReviewAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'

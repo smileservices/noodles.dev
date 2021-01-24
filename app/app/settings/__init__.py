@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'technology',
     'category',
     'study_resource',
+    'study_collection',
 ]
 
 MIDDLEWARE = [

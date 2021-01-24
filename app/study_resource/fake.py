@@ -11,14 +11,12 @@ from users.models import CustomUser
 from technology.models import Technology
 from tag.models import Tag
 from category.models import Category
-users = CustomUser.objects.all()
 
 f = Faker()
 
 
 def clean():
     models.StudyResource.objects.all().delete()
-    models.Collection.objects.all().delete()
 
 
 def new_study_resource(user):
@@ -50,21 +48,8 @@ def new_study_resource_review(study_resource, author):
     return review
 
 
-def new_collection(user=None):
-    tags = Tag.objects.all()
-    techs = Technology.objects.all()
-    collection = models.Collection(
-        author=user if user else choice(users),
-        name=f.text(40),
-        description=f.text(),
-    )
-    collection.save()
-    collection.resources.add(*choices(models.StudyResource.objects.all(), k=randint(1, 4)))
-    collection.tags.add(*choices(tags, k=randint(1, 4)))
-    collection.technologies.add(*choices(techs, k=randint(1, 3)))
-
-
 def study_resource_edit_suggestions(resource: models.StudyResource, author=None):
+    users = CustomUser.objects.all()
     data = {
         'name': f'{resource.name} edit',
         'publication_date': resource.publication_date,
@@ -94,6 +79,7 @@ def study_resource_edit_suggestions(resource: models.StudyResource, author=None)
 
 
 def study_resources_bulk(count=20):
+    users = CustomUser.objects.all()
     tags = Tag.objects.all()
     techs = Technology.objects.all()
     items = [new_study_resource(choice(users)) for _ in range(count)]
@@ -120,6 +106,7 @@ def study_resources_edits_bulk(count=10):
 
 def reviews_bulk(count=10):
     reviews = []
+    users = CustomUser.objects.all()
     resources = models.StudyResource.objects.all()
     older_reviews = models.Review.objects.all()
     only_one_review_per_user_check = [f'{review.study_resource.id}{review.author.id}' for review in older_reviews]
@@ -133,8 +120,3 @@ def reviews_bulk(count=10):
         only_one_review_per_user_check.append(identificator)
         reviews.append(review)
     models.Review.objects.bulk_create(reviews)
-
-
-def collections_bulk(count=10):
-    for _ in range(count):
-        new_collection(choice(users))

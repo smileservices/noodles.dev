@@ -1,14 +1,13 @@
 import React, {useState, useEffect, Fragment} from "react"
 import ReactDOM from "react-dom";
-import Waiting from "../../../src/components/Waiting";
-import Alert from "../../../src/components/Alert";
-import apiList from "../../../src/api_interface/apiList";
-import PaginatedLayout from "../../../src/components/PaginatedLayout";
-import CollectionListing from "./CollectionListing";
-import CreateableComponent from "../../../src/components/CreateableComponent";
-import CollectionForm from "../forms/CollectionForm";
-import EditableComponent from "../../../src/components/EditableComponent";
+import Alert from "../../src/components/Alert";
+import apiList from "../../src/api_interface/apiList";
+import PaginatedLayout from "../../src/components/PaginatedLayout";
+import CreateableComponent from "../../src/components/CreateableComponent";
+import EditableComponent from "../../src/components/EditableComponent";
 
+import CollectionForm from "./CollectionForm";
+import CollectionListing from "./CollectionListing";
 
 function UserCollectionsApp() {
 

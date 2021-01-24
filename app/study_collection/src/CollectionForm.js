@@ -1,7 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react"
-import Alert from "../../../src/components/Alert";
-import apiCreate from "../../../src/api_interface/apiCreate";
-import {Input, SelectReact, SelectReactCreatable, Textarea, FormElement} from "../../../src/components/form";
+import Alert from "../../src/components/Alert";
+import {Input, SelectReact, SelectReactCreatable, Textarea, FormElement} from "../../src/components/form";
 
 export default function CollectionForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
 
@@ -55,7 +54,7 @@ export default function CollectionForm({formData, setFormData, extraData, submit
     function validate(normalizedData, callback) {
         let vErrors = {};
         if (normalizedData.name.length < 5) vErrors.name = 'Name is too short. It has to be at least 5 characters';
-        if (normalizedData.description.length < 20) vErrors.summary = 'Description is too short. It has to be at least 20 characters';
+        if (normalizedData.description.length < 20) vErrors.description = 'Description is too short. It has to be at least 20 characters';
         if (!normalizedData.tags || normalizedData.tags.length === 0) vErrors.tags = 'Choose at least one tag';
         if (!normalizedData.technologies || normalizedData.technologies.length === 0) vErrors.technologies = 'Choose at least one technology';
         if (Object.keys(vErrors).length > 0) {

@@ -1,6 +1,9 @@
 import requests
 
 from django.db import IntegrityError, models
+from django.urls import reverse_lazy
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.viewsets import ModelViewSet
@@ -8,8 +11,33 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from study_resource import serializers
-from study_resource.models import CollectionResources
+from . import serializers
+from .models import CollectionResources
+
+
+def browse(request, **kwargs):
+    return True
+
+
+def detail(request, **kwargs):
+    return True
+
+
+@login_required
+def my_collections(request):
+    data = {
+        'urls': {
+            'study_resource_options': reverse_lazy('study-resource-viewset-options'),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'tech_options_api': reverse_lazy('techs-options-list'),
+
+            'collections_api': reverse_lazy('collection-viewset-list'),
+            'user_collections_list': reverse_lazy('collection-viewset-owned'),
+            'update_collection_items': reverse_lazy('collection-viewset-update-collection-items'),
+
+        }
+    }
+    return render(request, 'study_collection/my_collections.html', data)
 
 
 class CollectionViewset(ModelViewSet):
@@ -85,9 +113,9 @@ class CollectionViewset(ModelViewSet):
     def resources(self, *args, **kwargs):
         # get all resources of a specific collection
         # queryset = self.queryset.get(pk=kwargs['pk']).resources.annotate(reviews_count=models.Count('reviews'))
-        queryset = self.queryset.get(pk=kwargs['pk']).resources.through.objects\
-            .filter(collection_id=kwargs['pk'])\
-            .all()\
+        queryset = self.queryset.get(pk=kwargs['pk']).resources.through.objects \
+            .filter(collection_id=kwargs['pk']) \
+            .all() \
             .order_by('order')
         serializer = serializers.CollectionResourceListingSerializer(queryset, many=True)
         return Response(serializer.data)

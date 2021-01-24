@@ -17,7 +17,9 @@ module.exports = {
         '/static/study_resource/study-resource-create': './app/study_resource/src/create/StudyResourceCreate.js',
         '/static/study_resource/detail-toolbar': './app/study_resource/src/detail/ToolbarApp.js',
         '/static/study_resource/study-resource-edit': './app/study_resource/src/EditApp.js',
-        '/static/study_resource/user-collections': './app/study_resource/src/collections/UserCollectionsApp.js',
+
+        //study resource collections
+        '/static/user-study-collections': './app/study_collection/src/UserCollectionsApp.js',
 
         //problem-related
         '/static/problem_solution/problem-create': './app/problem_solution/src/problem/ProblemCreateApp.js',

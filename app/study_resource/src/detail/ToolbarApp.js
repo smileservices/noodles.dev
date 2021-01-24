@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react"
 import ReactDOM from "react-dom";
-import AddToCollectionModal from "../collections/AddToCollectionModal";
+import AddToCollectionModal from "../../../study_collection/src/AddToCollectionModal";
 import apiDelete from "../../../src/api_interface/apiDelete";
 import Alert from "../../../src/components/Alert";
 

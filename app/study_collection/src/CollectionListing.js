@@ -1,6 +1,7 @@
 import React, {useState, Fragment} from "react";
-import FormatDate from "../../../src/vanilla/date";
+import FormatDate from "../../src/vanilla/date";
 import CollectionItemsModal from "./CollectionItemsModal";
+import Alert from "../../src/components/Alert";
 
 export default function CollectionListing({data, extraData}) {
 
@@ -8,6 +9,13 @@ export default function CollectionListing({data, extraData}) {
         <div className="result card">
             {extraData.toolbar}
             <div className="selectable" onClick={e => {
+                if (!data.items_count) {
+                    extraData.setAlert(<Alert stick={false} hideable={false} type='warning'
+                                              text='The selected collection is empty'
+                                              close={e=>extraData.setAlert('')}
+                    />)
+                    return false;
+                }
                 extraData.setModal(
                     <CollectionItemsModal collection={data}
                                           setMainAlert={extraData.setAlert}

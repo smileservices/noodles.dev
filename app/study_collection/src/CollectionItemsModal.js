@@ -6,13 +6,11 @@ import {
     sortableHandle,
 } from 'react-sortable-hoc';
 
-import Waiting from "../../../src/components/Waiting";
-import Alert from "../../../src/components/Alert";
-import apiList from "../../../src/api_interface/apiList";
-import PaginatedLayout from "../../../src/components/PaginatedLayout";
-import Modal from "../../../src/components/Modal";
+import Waiting from "../../src/components/Waiting";
+import Alert from "../../src/components/Alert";
+import Modal from "../../src/components/Modal";
 import StudyResourceListingCompact from "./StudyResourceListingCompact";
-import apiPost from "../../../src/api_interface/apiPost";
+import apiPost from "../../src/api_interface/apiPost";
 
 export default function CollectionItemsModal({collection, setMainAlert, close}) {
 
@@ -82,9 +80,9 @@ export default function CollectionItemsModal({collection, setMainAlert, close}) 
             setWaiting,
         ).then(result => {
             if (result.ok) {
-                setMainAlert(<Alert text={'Collection ' + collection.name + ' updated'} type='success'
-                                    hideable={true}/>);
-                close();
+                setAlert(<Alert text={'Collection ' + collection.name + ' updated'} type='success'
+                                    hideable={false} stick={false} close={e=>setAlert('')}/>);
+                setChanged(false);
             }
             setAlert(<Alert close={e => setAlert(null)} text="Something went wrong" type="danger" stick={true}/>)
         })

@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from "react";
-import {SelectReact} from "../../../src/components/form";
-import Waiting from "../../../src/components/Waiting";
-import Alert from "../../../src/components/Alert";
-import apiPost from "../../../src/api_interface/apiPost";
-import Modal from "../../../src/components/Modal";
+import {SelectReact} from "../../src/components/form";
+import Waiting from "../../src/components/Waiting";
+import Alert from "../../src/components/Alert";
+import apiPost from "../../src/api_interface/apiPost";
+import Modal from "../../src/components/Modal";
 
 
 export default function AddToCollectionModal({close}) {
