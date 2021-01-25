@@ -8,7 +8,6 @@
           content="{{ result.summary }}"/>
     <meta name="keywords" content="
 
-
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -21,48 +20,35 @@
         const MAX_RATING = {{ MAX_RATING }};
         const RESOURCE_ID = {{ result.id }};
         const RESOURCE_AUTHOR_ID = {{ result.author.id }};
-        const RESOURCE_EDIT_URL = "{% url 'study-resource-edit' result.id %}";
-        const RESOURCE_API_DELETE = "{% url 'study-resource-viewset-detail' result.id %}";
 
         const TAGS_OPTIONS_API = "{{ urls.tag_options_api }}";
         const TECH_OPTIONS_API = "{{ urls.tech_options_api }}";
 
-        const STUDY_RESOURCE_OPTIONS_URL = "{{ urls.study_resource_options }}";
-        const REVIEW_API = "{{ urls.review_api }}";
-        const REVIEWS_LIST = "{{ urls.reviews_list }}";
-
         const MANAGE_COLLECTIONS_URL = "{% url 'my-collections' %}"
         const COLLECTIONS_API = "{{ urls.collections_api }}";
-        const USER_COLLECTIONS_LIST = "{{ urls.user_collections_list }}";
-        const USER_COLLECTIONS_WITH_RESOURCE = "{{ urls.user_collections_with_resource }}";
-        const USER_COLLECTIONS_SET_API = "{{ urls.user_collections_set_resource_to_collections }}";
     </script>
     <div class="detail-page">
 
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
-                <div id="detail-toolbar" class="toolbar">
-                </div>
-                {% include 'study_resource/detail.html' %}
+                <div class="toolbar" id="toolbar-app"></div>
+                {% include 'study_collection/detail.html' with result=result %}
             </section>
-            <section id="reviews" class="column-container"></section>
+            <section id="items" class="column-container">
+                <h3>Collection Items:</h3>
+                {% for item in  study_resources %}
+                    {% include 'study_resource/result.html' with result=item %}
+                {% endfor %}
+            </section>
         </div>
 
 
         <section class="related column-container">
-            {% if collections %}
-                <h3>Collections</h3>
-                <div class="tile-container">
-                    {% for result in collections %}
-                        {% include 'study_collection/result.html' %}
-                    {% endfor %}
-                </div>
-            {% endif %}
             <h3>Related</h3>
             <div class="tile-container">
                 {% for result in related %}
-                    {% include 'study_resource/result.html' %}
+                    {% include 'study_collection/result.html' %}
                 {% endfor %}
             </div>
         </section>
@@ -71,6 +57,4 @@
 
 {% block extra_js %}
     <script src="{% static 'js/react-bundle.js' %}"></script>
-    <script src="{% static 'study_resource/study-resource-detail-reviews.js' %}"></script>
-    <script src="{% static 'study_resource/detail-toolbar.js' %}"></script>
 {% endblock %}

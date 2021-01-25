@@ -41,11 +41,28 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
 
     class Meta:
         indexes = [
-            GinIndex(fields=['name', 'description'], name='gintrgm_collection_index', opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
+            GinIndex(fields=['name', 'description'], name='gintrgm_collection_index',
+                     opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
         ]
 
     def __str__(self):
         return f'{self.name} by {self.author}'
+
+    def get_study_resources(self):
+        # return study resources of the collection ordered
+        # and got through the StudyResourceManager
+        pivot_items = self.resources.through.objects \
+            .filter(collection=self) \
+            .all() \
+            .order_by('order')
+        resources = list(StudyResource.objects.filter(pk__in=[i.study_resource_id for i in pivot_items]).all())
+        ordered_resources = []
+        for i in pivot_items:
+            for idx, r in enumerate(resources):
+                if i.study_resource_id == r.pk:
+                    ordered_resources.append(r)
+                    del resources[idx]
+        return ordered_resources
 
     def add_resource(self, resource_id):
         self.resources.through.objects.create(

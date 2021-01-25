@@ -1,6 +1,7 @@
 import requests
 
 from django.db import IntegrityError, models
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -12,7 +13,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from . import serializers
-from .models import CollectionResources
+from .models import CollectionResources, Collection
 
 
 def browse(request, **kwargs):
@@ -20,7 +21,29 @@ def browse(request, **kwargs):
 
 
 def detail(request, id, slug):
-    return True
+    queryset = Collection.objects
+    resource = queryset.get(pk=id)
+    study_resources = resource.get_study_resources()
+    related = queryset.filter(
+        Q(tags__in=resource.tags.all()),
+        Q(technologies__in=resource.technologies.all()),
+        ~Q(id=resource.id)
+    ).all()[:5]
+    data = {
+        'result': resource,
+        'study_resources': study_resources,
+        'related': related,
+        'urls': {
+            # options
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'tech_options_api': reverse_lazy('techs-options-list'),
+            # collections urls
+            'collections_api': reverse_lazy('collection-viewset-list'),
+        }
+    }
+    if request.user.is_authenticated:
+        return render(request, 'study_collection/detail_page.html', data)
+    return render(request, 'study_collection/detail_page.seo.html', data)
 
 
 @login_required

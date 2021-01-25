@@ -11,6 +11,9 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
+
+from study_collection.models import Collection
+
 from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyEditSerializer
 from .models import Technology
 
@@ -19,12 +22,14 @@ def detail(request, id, slug):
     queryset = Technology.objects
     detail = queryset.get(pk=id)
     solutions = detail.solutions
+    collections = Collection.objects.filter(technologies=detail).all()[:5]
     similar_techs = []
     for tech_list in [solution.technologies.all() for solution in solutions.all()]:
         similar_techs += tech_list
     related_resources_techs = detail.studyresourcetechnology_set.all()
     data = {
         'result': detail,
+        'collections': collections,
         'solutions': solutions,
         'similar': similar_techs,
         'related_resources_techs': related_resources_techs,

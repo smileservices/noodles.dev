@@ -9,6 +9,7 @@
     <meta name="keywords" content="
 
 
+
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -52,6 +53,14 @@
             </section>
         </div>
         <section class="related column-container">
+            {% if collections %}
+                <h3>Collections</h3>
+                <div class="tile-container">
+                    {% for result in collections %}
+                        {% include 'study_collection/result.html' %}
+                    {% endfor %}
+                </div>
+            {% endif %}
             <h3>Learning Resources</h3>
             <div class="tile-container">
                 {% for resource_tech in related_resources_techs %}

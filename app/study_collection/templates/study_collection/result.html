@@ -2,7 +2,7 @@
 <div class="result" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
 
 <h2 class="title" itemprop="name">
-    <a itemprop="name" href="{% url 'collection-detail' result.id result.slug %}">{{ result.name }}</a>
+    <a itemprop="name" href="{% url 'collection-detail' result.pk result.slug %}">{{ result.name }}</a>
 </h2>
 
     <div class="group-muted">

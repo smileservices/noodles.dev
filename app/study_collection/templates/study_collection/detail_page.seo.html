@@ -9,7 +9,6 @@
     <meta name="keywords" content="
 
 
-
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.studyresourcetechnologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -23,33 +22,24 @@
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
                 <div class="toolbar">
-                    <a href="{% url 'study-resource-edit' result.pk %}" class="icon-pencil edit"></a>
-                    <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" class="icon-bookmark"></a>
+                    <a href="{% url 'account_login' %}?next={{ request.get_full_path }}">add to favorites</a>
                 </div>
-                {% include 'study_resource/detail.html' %}
+                {% include 'study_collection/detail.html' %}
             </section>
-            <section id="reviews" class="column-container">
-                {% for review in reviews %}
-                    {% include 'study_resource/review.html' with review=review %}
+            <section id="items" class="column-container">
+                <h3>Collection Items:</h3>
+                {% for item in  study_resources %}
+                    {% include 'study_resource/result.html' with result=item %}
                 {% endfor %}
-                <a href="{% url 'account_login' %}?next={{ request.get_full_path }}">login to review</a>
             </section>
         </div>
 
 
         <section class="related column-container">
-            {% if collections %}
-                <h3>Collections</h3>
-                <div class="tile-container">
-                    {% for result in collections %}
-                        {% include 'study_collection/result.html' %}
-                    {% endfor %}
-                </div>
-            {% endif %}
             <h3>Related</h3>
             <div class="tile-container">
                 {% for result in related %}
-                    {% include 'study_resource/result.html' %}
+                    {% include 'study_collection/result.html' %}
                 {% endfor %}
             </div>
         </section>
