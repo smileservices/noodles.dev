@@ -9,12 +9,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
-from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
+from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset, SearchableModelViewset
 from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
 
 from study_collection.models import Collection
-
-from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyEditSerializer
+from . import filters
+from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyListing
 from .models import Technology
 
 
@@ -74,12 +74,25 @@ def edit(request, id):
     return render(request, 'technology/edit_page.html', data)
 
 
-class TechViewset(ResourceWithEditSuggestionVieset):
+class TechViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
     serializer_class = TechnologySerializer
     queryset = TechnologySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     filter_backends = [SearchFilter, OrderingFilter]
+    filterset_class = filters.TechnologyFilterRest
     search_fields = ['name', 'description']
+
+    @action(methods=['GET'], detail=False)
+    def filter(self, request, *args, **kwargs):
+        queryset = self.queryset
+        return self.filtered_response(
+            request,
+            ['name', 'description'],
+            self.filterset_class,
+            TechnologyListing,
+            queryset
+        )
+
 
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):

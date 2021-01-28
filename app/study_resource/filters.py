@@ -10,9 +10,9 @@ class StudyResourceFilterRest(RestFilterSet):
     class Meta:
         model = models.StudyResource
         fields = {
-            'name': ['icontains'],
             'tags': ['exact'],
             'technologies': ['exact'],
+            'category': ['exact'],
             'publication_date': ['lt', 'gt'],
             'price': ['exact'],
             'media': ['exact'],

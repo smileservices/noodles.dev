@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
+from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset, SearchableModelViewset
 from study_resource.scrape.main import scrape_tutorial
 from study_resource import filters
 from study_resource.models import StudyResource, StudyResourceImage
@@ -121,13 +121,24 @@ def create(request):
     return render(request, 'study_resource/create_page.html', data)
 
 
-class StudyResourceViewset(ResourceWithEditSuggestionVieset):
+class StudyResourceViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
     serializer_class = serializers.StudyResourceSerializer
     queryset = serializers.StudyResourceSerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
-    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
+
+    @action(methods=['GET'], detail=False)
+    def filter(self, request, *args, **kwargs):
+        queryset = self.queryset
+        return self.filtered_response(
+            request, ['name', 'summary'],
+            self.filterset_class,
+            serializers.StudyResourceListingSerializer,
+            queryset
+        )
+
 
     # technologies and tags are saved in the serializer
     def edit_suggestion_handle_m2m_through_field(self, instance, f):

@@ -68,3 +68,17 @@ class CollectionResourceListingSerializer(serializers.ModelSerializer):
         # therefore we don't have access to the custom Manager
         res = StudyResource.objects.get(pk=obj.study_resource_id)
         return StudyResourceListingMinimalSerializer(res).data
+
+
+class CollectionSerializerListing(serializers.ModelSerializer):
+    queryset = Collection.objects
+    tags = TagSerializerOption(many=True, read_only=True)
+    technologies = TechnologySerializerOption(many=True, read_only=True)
+    items_count = IntegerField(read_only=True)
+
+    class Meta:
+        model = Collection
+        fields = [
+            'pk', 'name', 'tags', 'technologies', 'items_count', 'is_public', 'absolute_url',
+            'thumbs_up', 'thumbs_down',
+        ]

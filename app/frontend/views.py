@@ -21,3 +21,8 @@ def homepage(request):
     }
     return render(request, 'frontend/homepage.html', data)
 
+
+def search(request):
+    return render(request, 'frontend/homepage.html')
+
+

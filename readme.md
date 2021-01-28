@@ -116,6 +116,12 @@ admin/staff dashboard
 
 ## To Do:
 
+collections can be editable
+---------------------------
+- a public collection's items list is open to edits
+- users can edit items/order
+- users can follow 
+
 rating & discussions
 --------------------
 - users can create an associated discussion thread for p/s/t/lr
@@ -130,6 +136,13 @@ report bug
 - link technologies together. make a sort of wiki tree for each of them
 - bring into moderation p/s/t/lr with many thumbs down
 - resource views stats - use redis then have a task to update views table
+
+## Browser Extension
+- scan current url to see if tutorial or course exists on noodles
+- exists: retrieve rating/reviews for the user to know if it worth the time to go through
+- doesn't exist: allow the user to add it
+- can add to user collections
+- can rate resource and add review
 
 User badges
 -----------

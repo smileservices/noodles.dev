@@ -99,3 +99,17 @@ class TechnologySerializer(EditSuggestionSerializer):
         validated_data['ecosystem'] = data['ecosystem']
         validated_data['category_id'] = Category.objects.validate_category(data['category'])
         return validated_data
+
+
+class TechnologyListing(serializers.ModelSerializer):
+    queryset = Technology.objects.all()
+    category = CategorySerializerOption(read_only=True)
+    ecosystem = TechnologySerializerOption(read_only=True, many=True)
+
+    class Meta:
+        model = Technology
+        fields = ['pk', 'name', 'license','absolute_url', 'category', 'ecosystem',
+                  'thumbs_up', 'thumbs_down']
+
+
+

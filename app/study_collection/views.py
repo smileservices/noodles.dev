@@ -12,7 +12,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from . import serializers
+from core.abstract_viewsets import SearchableModelViewset
+from . import serializers, filters
 from .models import CollectionResources, Collection
 
 
@@ -63,10 +64,25 @@ def my_collections(request):
     return render(request, 'study_collection/my_collections.html', data)
 
 
-class CollectionViewset(ModelViewSet):
+class CollectionViewset(SearchableModelViewset):
     serializer_class = serializers.CollectionSerializer
     queryset = serializers.CollectionSerializer.queryset.order_by('-created_at')
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filterset_class = filters.CollectionFilterRest
+
+    @action(methods=['GET'], detail=False)
+    def filter_public(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(
+            items_count__gt=0,
+            is_public=True
+        )
+        return self.filtered_response(
+            request,
+            ['name', 'description'],
+            self.filterset_class,
+            serializers.CollectionSerializerListing,
+            queryset
+        )
 
     def perform_create(self, serializer):
         serializer.save(

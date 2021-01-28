@@ -7,7 +7,7 @@ INTERNAL_IPS = [
 INSTALLED_APPS.append('debug_toolbar')
 INSTALLED_APPS.append('django_extensions')
 
-# MIDDLEWARE.insert(9, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+MIDDLEWARE.insert(9, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 
 LOGGING = {
     'version': 1,
