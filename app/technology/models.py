@@ -94,6 +94,8 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
                 "owner": {"type": "text"},
                 "category": {"type": "keyword"},
                 "ecosystem": {"type": "keyword"},
+                "thumbs_up": {"type": "short"},
+                "thumbs_down": {"type": "short"},
 
                 "suggest": {
                     "type": "completion",
@@ -110,6 +112,8 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
             "owner": self.owner,
             "category": self.category.name,
             "ecosystem": [t.name for t in self.ecosystem.all()],
+            "thumbs_up": self.thumbs_up,
+            "thumbs_down": self.thumbs_down,
         }
         return index_name, data
 

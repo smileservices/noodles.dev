@@ -87,6 +87,8 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
                 "author": {"type": "nested"},
                 "tags": {"type": "keyword"},
                 "technologies": {"type": "keyword"},
+                "thumbs_up": {"type": "short"},
+                "thumbs_down": {"type": "short"},
 
                 "suggest": {
                     "type": "completion",
@@ -106,6 +108,8 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
             },
             "tags": [t.name for t in self.tags.all()],
             "technologies": [t.name for t in self.technologies.all()],
+            "thumbs_up": self.thumbs_up,
+            "thumbs_down": self.thumbs_down,
         }
         return index_name, data
 

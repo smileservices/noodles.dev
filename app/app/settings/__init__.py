@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'django_filters',
     'dashboard',
     'frontend',
+    'search',
     #
     'users',
     'problem_solution',

@@ -18,6 +18,7 @@ urlpatterns = [
     path('tags/', include('tag.urls')),
     path('technologies/', include('technology.urls')),
     path('users/', include('users.urls')),
+    path('search/', include('search.urls')),
     path('admin/', admin.site.urls),
 ]
 

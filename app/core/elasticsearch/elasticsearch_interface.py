@@ -39,18 +39,15 @@ class ElasticSearchInterface:
         connection = Elasticsearch()
         connection.indices.delete('_all')
 
-    def search(self, term, page=0, page_size=10):
+    def search(self, fields, term, page=0, page_size=10):
         page_offset = page * page_size
         q = {
             "from": page_offset,
             "size": page_size,
-            "sort": {
-                "date": {"order": "desc", "missing": "_last", "unmapped_type": "long"}
-            },
             "query": {
                 "multi_match": {
                     "query": term,
-                    "fields": ["title", "description", "skills", "location"],
+                    "fields": fields,
                     "fuzziness": 1
                 }
             }
@@ -63,11 +60,11 @@ class ElasticSearchInterface:
     def suggest(self, prefix):
         q = {
             "suggest": {
-                "job-suggest": {
-                    "prefix": prefix,
+                "text": prefix,
+                "search-suggest": {
                     "completion": {
                         "field": "suggest",
-                        "size": 5
+                        "size": 5,
                     }
                 }
             }
@@ -101,8 +98,7 @@ class ElasticSearchInterface:
                 }
             }
         elif type == 'suggest':
-            extracted = [{'text': r['text'], 'title': r['_source']['title']} for r in
-                         res['suggest']['job-suggest'][0]['options']]
+            extracted = [r['text'] for r in res['suggest']['search-suggest'][0]['options']]
         return extracted
 
 

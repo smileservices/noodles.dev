@@ -36,8 +36,8 @@ def task_sync_technologies_related(pk, TechnologyModel):
     related_technologies = technology.related_technologies.all()
     for resource in related_resources:
         set_to_sync(resource)
-    # for resource in related_collections:
-    #     set_to_sync(resource)
+    for resource in related_collections:
+        set_to_sync(resource)
     for resource in related_technologies:
         set_to_sync(resource)
 
