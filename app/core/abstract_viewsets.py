@@ -11,8 +11,8 @@ from rest_framework.viewsets import ModelViewSet
 class SearchableModelViewset(ModelViewSet):
 
     def filtered_response(self, request, search_fields, filterset_class, listing_serializer, queryset):
-        if 'term' in request.GET:
-            queryset = queryset.search_similar(search_fields, request.GET['term'], 0.1)
+        if 'search' in request.GET:
+            queryset = queryset.search_similar(search_fields, request.GET['search'], 0.1)
         else:
             queryset = queryset
         filtered_queryset = filterset_class(request.GET, queryset)

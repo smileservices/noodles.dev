@@ -116,6 +116,12 @@ admin/staff dashboard
 
 ## To Do:
 
+
+resources
+---------
+show "contributors" counter that measures how many people are contributing/following
+
+
 collections can be editable
 ---------------------------
 - a public collection's items list is open to edits

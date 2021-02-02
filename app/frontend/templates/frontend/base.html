@@ -92,6 +92,13 @@
         })
     })
 </script>
+    <script>
+        const STUDY_COLLECTION_FILTER_URL = "{% url 'collection-viewset-filter-public' %}";
+        const STUDY_RESOURCE_FILTER_URL = "{% url 'study-resource-viewset-filter' %}";
+        const TECHNOLOGIES_FILTER_URL = "{% url 'techs-viewset-filter' %}";
+    </script>
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'search.js' %}"></script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>

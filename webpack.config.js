@@ -36,6 +36,8 @@ module.exports = {
         //vote app
         '/static/votes': './app/src/core/VotesApp.js',
 
+        //search app
+        '/static/search': './app/src/core/SearchApp.js',
 
         //edit suggestions
         '/static/problem_solution/problem-edit': './app/problem_solution/src/problem/EditApp.js',

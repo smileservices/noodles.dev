@@ -34,6 +34,9 @@ def create_technologies():
     created_tech['django'].ecosystem.add(created_tech['python'])
     created_tech['laravel'].ecosystem.add(created_tech['php'])
     created_tech['nginx'].ecosystem.add(created_tech['linux'])
+    created_tech['django'].save()
+    created_tech['laravel'].save()
+    created_tech['nginx'].save()
 
     return created_tech
 

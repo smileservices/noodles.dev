@@ -61,6 +61,12 @@
     padding: 0.5rem !important;
   }
 
+  nav {
+    #logo {
+      display: none;
+    }
+  }
+
   nav .collapsible {
     display: flex;
     flex-direction: row;

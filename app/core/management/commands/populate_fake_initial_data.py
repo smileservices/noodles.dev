@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from django.db import connection, models
 from django.template.defaultfilters import slugify
 from random import randint, choice, choices
-
+from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from category.fake import clean_categories, create_categories
 from tag.fake import clean_tags, create_tags
 from technology.fake import clean_technologies, create_technologies, create_technology_edit_suggestions
@@ -70,13 +70,16 @@ class Command(BaseCommand):
         self.make_database_faster()
 
         if options['clear']:
-            self.stdout.write('Cleaning all resources ... ')
 
+            self.stdout.write('Cleaning elasticsearch indices ... ')
+            ElasticSearchInterface.clean()
+            self.stdout.write('Cleaning all resources ... ')
+            fake_collections.clean()
             fake_study_resource.clean()
             fake_problem_solution.clean()
-            clean_categories()
             clean_tags()
             clean_technologies()
+            clean_categories()
             CustomUser.objects.all().delete()
             self.stdout.write("Removed all p/s/sr/t/techs and users!")
             credentials = {"email": "vlad@admin.com", "password": "123"}

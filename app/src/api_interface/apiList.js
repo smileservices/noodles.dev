@@ -6,11 +6,11 @@ export default async function apiList(
     pagination,
     setData,
     setWaiting, setError,
-    queryFilter, querySort, querySearch
+    queryFilter, querySort, querySearch, abortSignal
 ) {
-    setWaiting(<Waiting text={'Retrieving data'} />);
+    setWaiting(<Waiting text={'Retrieving data'}/>);
     let url = list_endpoint;
-    url += '?limit='+pagination.resultsPerPage+'&offset='+pagination.offset;
+    url += '?limit=' + pagination.resultsPerPage + '&offset=' + pagination.offset;
     // parse filter query
     if (queryFilter) {
         Object.keys(queryFilter).map(key => {
@@ -28,10 +28,11 @@ export default async function apiList(
         url += orderArr.join(',');
     }
     // parse search query
-    if (querySearch) url += '&search='+querySearch;
+    if (querySearch) url += '&search=' + querySearch;
 
     await fetch(url, {
-        method: "GET"
+        method: "GET",
+        signal: abortSignal
     }).then(result => {
         setWaiting('');
         if (result.ok) {
@@ -41,5 +42,9 @@ export default async function apiList(
         }
     }).then(data => {
         setData(data);
-    })
+    }).catch(err => {
+        if (err.name === 'AbortError') {
+            console.log('Fetch was aborted');
+        }
+    });
 }

@@ -19,7 +19,8 @@ from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, Sl
 from votable.models import VotableMixin
 from django_edit_suggestion.models import EditSuggestion
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
-
+from core.abstract_models import ElasticSearchIndexableMixin
+from core.tasks import sync_to_elastic
 
 class StudyResourceManager(models.Manager):
 
@@ -74,7 +75,7 @@ class StudyResourceTechnology(models.Model):
         return reverse('tech-detail', kwargs={'id': self.technology_id, 'slug': self.slug})
 
 
-class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
+class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
     class Price(models.IntegerChoices):
         FREE = (0, 'free')
         PAID = (1, 'paid')
@@ -99,7 +100,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     summary = models.TextField(max_length=2048)
     # related fields
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
-    tags = models.ManyToManyField(Tag, related_name='resources')
+    tags = models.ManyToManyField(Tag, related_name='tags')
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.DO_NOTHING, related_name='resources')
     technologies = models.ManyToManyField(Technology, related_name='resources', through='StudyResourceTechnology')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -135,7 +136,8 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
 
     class Meta:
         indexes = [
-            GinIndex(fields=['name', 'summary'], name='gintrgm_study_resource_index', opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
+            GinIndex(fields=['name', 'summary'], name='gintrgm_study_resource_index',
+                     opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
         ]
 
     def __str__(self):
@@ -160,6 +162,79 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     @property
     def experience_level_label(self):
         return self.ExperienceLevel(self.experience_level).label
+
+    def get_technologies(self):
+        return self.technologies.through.objects.filter(study_resource=self).all()
+
+    @staticmethod
+    def get_elastic_mapping() -> {}:
+        return {
+            "properties": {
+                "pk": {"type": "integer"},
+
+                # model fields
+                "name": {"type": "text", "copy_to": "suggest"},
+                "summary": {"type": "text", "copy_to": "suggest"},
+                "publication_date": {"type": "date", "format": "yyyy-MM-dd"},
+                "published_by": {"type": "text"},
+                "url": {"type": "text"},
+
+                "category": {"type": "keyword"},
+                "tags": {"type": "keyword"},
+                "technologies": {"type": "keyword"},
+
+                "author": {"type": "nested"},
+                "price": {"type": "keyword"},
+                "media": {"type": "keyword"},
+                "experience_level": {"type": "keyword"},
+
+                # compound
+                "rating": {"type": "half_float"},
+                "reviews_count": {"type": "integer"},
+                "votes_up": {"type": "short"},
+                "votes_down": {"type": "short"},
+                "edit_suggestions_count": {"type": "integer"},
+
+                "suggest": {
+                    "type": "completion",
+                }
+            }
+        }
+
+    def get_elastic_data(self) -> (str, list):
+        index_name = 'study_resources'
+        instance_from_manager = StudyResource.objects.values('rating', 'reviews_count').get(pk=self.pk)
+        rating = instance_from_manager['rating'] if instance_from_manager['rating'] else 0
+        data = {
+            "pk": self.pk,
+
+            # model fields
+            "name": self.name,
+            "summary": self.summary,
+            "publication_date": self.publication_date.isoformat(),
+            "published_by": self.published_by,
+            "url": self.url,
+
+            "category": self.category.name,
+            "tags": [t.name for t in self.tags.all()],
+            "technologies": [str(t) for t in self.get_technologies()],
+
+            "author": {
+                "pk": self.author.pk,
+                "full_name": self.author.get_full_name()
+            },
+            "price": self.price_label,
+            "media": self.media_label,
+            "experience_level": self.experience_level_label,
+
+            # compound
+            "rating": rating,
+            "reviews_count": instance_from_manager['reviews_count'],
+            "votes_up": self.thumbs_up,
+            "votes_down": self.thumbs_down,
+            "edit_suggestions_count": self.edit_suggestions.filter(edit_suggestion_status=0).count(),
+        }
+        return index_name, data
 
 
 class StudyResourceImage(models.Model):

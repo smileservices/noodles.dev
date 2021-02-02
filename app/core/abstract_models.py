@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
+from core.tasks import sync_to_elastic
 
 
 class DateTimeModelMixin(models.Model):
@@ -50,3 +51,20 @@ class SearchAbleQuerysetMixin(models.QuerySet):
         ) \
             .filter(models.Q(similarity__gte=min_sim)) \
             .order_by('-similarity')
+
+
+class ElasticSearchIndexableMixin(models.Model):
+    class Meta:
+        abstract = True
+
+    @staticmethod
+    def get_elastic_mapping() -> {}:
+        raise NotImplemented
+
+    def get_elastic_data(self) -> (str, list):
+        raise NotImplemented
+
+    @classmethod
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        models.signals.post_save.connect(sync_to_elastic, sender=cls, weak=False)

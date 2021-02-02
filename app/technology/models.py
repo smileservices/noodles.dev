@@ -4,11 +4,13 @@ from users.models import CustomUser
 from django.contrib.postgres.indexes import GinIndex
 
 from votable.models import VotableMixin
-from core.abstract_models import SluggableModelMixin, SearchAbleQuerysetMixin
+from core.abstract_models import SluggableModelMixin, SearchAbleQuerysetMixin, ElasticSearchIndexableMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 from django_edit_suggestion.models import EditSuggestion
 from django.urls import reverse
 from category.models import Category
+
+from core import tasks
 
 
 class TechnologyManager(models.Manager):
@@ -28,7 +30,7 @@ class TechnologyQueryset(SearchAbleQuerysetMixin):
     pass
 
 
-class Technology(SluggableModelMixin, VotableMixin):
+class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin):
     class LicenseType(models.IntegerChoices):
         PUBLIC_DOMAIN = (0, 'public domain')
         PERMISSIVE_LICENSE = (1, 'permissive license')
@@ -79,3 +81,54 @@ class Technology(SluggableModelMixin, VotableMixin):
     @property
     def absolute_url(self):
         return reverse('tech-detail', kwargs={'id': self.pk, 'slug': self.slug})
+
+    @staticmethod
+    def get_elastic_mapping() -> {}:
+        return {
+            "properties": {
+                "pk": {"type": "integer"},
+
+                # model fields
+                "name": {"type": "text", "copy_to": "suggest"},
+                "description": {"type": "text", "copy_to": "suggest"},
+                "owner": {"type": "text"},
+                "category": {"type": "keyword"},
+                "ecosystem": {"type": "keyword"},
+
+                "suggest": {
+                    "type": "completion",
+                }
+            }
+        }
+
+    def get_elastic_data(self) -> (str, list):
+        index_name = 'technologies'
+        data = {
+            "pk": self.pk,
+            "name": self.name,
+            "description": self.description,
+            "owner": self.owner,
+            "category": self.category.name,
+            "ecosystem": [t.name for t in self.ecosystem.all()],
+        }
+        return index_name, data
+
+    def save(self, *args, **kwargs):
+        # override the save method to add the updated fields
+        if self.pk:
+            # If self.pk is not None then it's an update.
+            # This will get the current model state since super().save() isn't called yet.
+            new = self  # This gets the newly instantiated Mode object with the new values.
+            old = self.__class__.objects.get(pk=self.pk)
+            changed_fields = []
+            for field in self.__class__._meta.get_fields():
+                try:
+                    if getattr(old, field.name) != getattr(new, field.name):
+                        changed_fields.append(field.name)
+                except Exception as ex:  # Catch field does not exist exception
+                    pass
+            kwargs['update_fields'] = changed_fields
+        super().save(*args, **kwargs)
+
+
+models.signals.post_save.connect(tasks.sync_technology_resources_to_elastic, sender=Technology, weak=False)

@@ -96,6 +96,7 @@ def study_resources_bulk(count=20):
                 )
             except IntegrityError:
                 pass
+        i.save()
 
 
 def study_resources_edits_bulk(count=10):

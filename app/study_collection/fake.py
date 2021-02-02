@@ -28,7 +28,7 @@ def new_collection(user=None):
     collection.resources.add(*choices(StudyResource.objects.all(), k=randint(1, 4)))
     collection.tags.add(*choices(tags, k=randint(1, 4)))
     collection.technologies.add(*choices(techs, k=randint(1, 3)))
-
+    collection.save()
 
 def collections_bulk(count=10):
     users = CustomUser.objects.all()

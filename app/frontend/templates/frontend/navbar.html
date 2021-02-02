@@ -11,14 +11,13 @@
                 </svg>
             </a>
         {% endif %}
-        <a href="{% url "homepage" %}">noodles</a>
+        <a id="logo" href="{% url "homepage" %}">noodles</a>
     </div>
 
     <div class="right-side collapsible">
-        <a rel="nofollow noopener" href="#" class="collapse-toggle"><span class="icon-angle-down"></span></a>
-        <div class="right-side collapsible-links">
+
             {% if not hide_navbar_search %}
-            <section class="navbar-search-bar">
+            <section class="navbar-search-bar" id="search-app">
                 <form action="{% url 'search' %}" method="GET">
                     <input type="text" name="contains"
                            placeholder="Search for a tutorial or course..."
@@ -28,6 +27,8 @@
             </section>
             {% endif %}
 
+        <a rel="nofollow noopener" href="#" class="collapse-toggle"><span class="icon-angle-down"></span></a>
+        <div class="right-side collapsible-links">
             <div class="dropdown hidden">
                     <a rel="nofollow noopener" class="dropdown-button" href="#">{% trans "Add" %} <span class="icon-angle-down"></span></a>
                     <div class="dropdown-menu">

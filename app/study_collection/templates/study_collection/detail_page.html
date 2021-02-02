@@ -17,7 +17,6 @@
 {% block content %}
     <script>
         const USER_ID = {{ user.id }};
-        const MAX_RATING = {{ MAX_RATING }};
         const RESOURCE_ID = {{ result.id }};
         const RESOURCE_AUTHOR_ID = {{ result.author.id }};
 
@@ -56,5 +55,5 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'js/react-bundle.js' %}"></script>
+
 {% endblock %}

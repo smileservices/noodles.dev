@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'tsvector_field',
     'versatileimagefield',
     'easyaudit',
+    'huey.contrib.djhuey',
     # our app
     'core',
     'rest_framework',
@@ -134,6 +135,11 @@ DATABASES = {
         'HOST': env('DB_HOST'),
         'PORT': env('DB_PORT'),
     },
+}
+
+HUEY = {
+    'name': 'huey-noodles',
+    'immediate': False,
 }
 
 # Password validation
@@ -251,3 +257,4 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 }
 
 MODERATOR_USER_SCORE = 300
+ELASTICSEARCH_PREFIX = 'noodles'

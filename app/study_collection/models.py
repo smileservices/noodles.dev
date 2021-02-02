@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.postgres.indexes import GinIndex
 import tsvector_field
 
-from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin
+from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexableMixin
 from votable.models import VotableMixin
 
 from users.models import CustomUser
@@ -22,7 +22,7 @@ class CollectionManager(models.Manager):
         return CollectionQueryset(self.model, using=self.db).annotate_with_items_count()
 
 
-class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
+class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
     objects = CollectionManager()
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)
     is_public = models.BooleanField(default=False)
@@ -74,6 +74,40 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     @property
     def absolute_url(self):
         return reverse('collection-detail', kwargs={'id': self.pk, 'slug': self.slug})
+
+    @staticmethod
+    def get_elastic_mapping() -> {}:
+        return {
+            "properties": {
+                "pk": {"type": "integer"},
+
+                # model fields
+                "name": {"type": "text", "copy_to": "suggest"},
+                "description": {"type": "text", "copy_to": "suggest"},
+                "author": {"type": "nested"},
+                "tags": {"type": "keyword"},
+                "technologies": {"type": "keyword"},
+
+                "suggest": {
+                    "type": "completion",
+                }
+            }
+        }
+
+    def get_elastic_data(self) -> (str, list):
+        index_name = 'collections'
+        data = {
+            "pk": self.pk,
+            "name": self.name,
+            "description": self.description,
+            "author": {
+                "pk": self.author.pk,
+                "full_name": self.author.get_full_name()
+            },
+            "tags": [t.name for t in self.tags.all()],
+            "technologies": [t.name for t in self.technologies.all()],
+        }
+        return index_name, data
 
 
 class CollectionResources(models.Model):

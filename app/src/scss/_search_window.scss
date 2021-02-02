@@ -1,0 +1,26 @@
+#search-window {
+  z-index: $modal-content-zindex;
+  position: absolute;
+
+  left: 0;
+  top: 50px;
+  width: 100%;
+
+  background-color: $theme-color-main;
+  color: $nav-text;
+
+  .results {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+
+    a.result {
+      display: block;
+
+      //.rating {
+      //  font-size: 0.85rem;
+      //  color: #309287;
+      //}
+    }
+  }
+}
