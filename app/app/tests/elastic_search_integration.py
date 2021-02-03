@@ -26,8 +26,8 @@ class ElasticSearchIntegration(TestCase):
         self.techs = Technology.objects.all()
 
     def tearDown(self) -> None:
-        self.es.indices.delete('noodles_study_resources')
-        self.es.indices.delete('noodles_technologies')
+        self.es.indices.delete('noodles_study_resources', ignore=[400, 404])
+        self.es.indices.delete('noodles_technologies', ignore=[400, 404])
 
     def test_create_study_resource(self):
         # tests creating a study resource signals

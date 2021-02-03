@@ -8,19 +8,12 @@ def get_index_name(index):
 
 
 def save_to_elastic(index, mapping, data):
-    connection = Elasticsearch()
-    index_name = get_index_name(index)
-    if connection.indices.exists(index=index_name):
-        connection.index(index=index_name, doc_type='_doc', id=data['pk'], body=data)
+    esi = ElasticSearchIndexInterface(mapping=mapping, index=index)
+    if esi.exists():
+        esi.save(data, data['pk'])
     else:
-        body = {
-            'settings': {
-                'number_of_shards': 1
-            },
-            'mappings': mapping
-        }
-        connection.indices.create(index_name, body=body)
-        connection.index(index=index_name, doc_type='_doc', id=data['pk'], body=data)
+        esi.create_index()
+        esi.save(data, data['pk'])
 
 
 class ElasticSearchInterface:
@@ -104,7 +97,30 @@ class ElasticSearchInterface:
 
 class ElasticSearchIndexInterface(ElasticSearchInterface):
     index_settings = {
-        'number_of_shards': 1
+        "number_of_shards": 1,
+        "analysis": {
+            "analyzer": {
+                "autocomplete": {
+                    "tokenizer": "autocomplete",
+                    "filter": [
+                        "lowercase"
+                    ]
+                },
+                "autocomplete_search": {
+                    "tokenizer": "lowercase"
+                }
+            },
+            "tokenizer": {
+                "autocomplete": {
+                    "type": "edge_ngram",
+                    "min_gram": 2,
+                    "max_gram": 10,
+                    "token_chars": [
+                        "letter"
+                    ]
+                }
+            }
+        }
     }
 
     def __init__(self, mapping, index):
@@ -112,7 +128,7 @@ class ElasticSearchIndexInterface(ElasticSearchInterface):
         :param mapping: [] config for mapping
         :param index: index name
         '''
-        super().__init__(indexes=[get_index_name(index), ])
+        super().__init__(indexes=[index, ])
         self.mapping = mapping
 
     @property
@@ -124,12 +140,13 @@ class ElasticSearchIndexInterface(ElasticSearchInterface):
             'settings': self.index_settings,
             'mappings': self.mapping
         }
-        if 'analyzer' in self.index_settings:
-            body['settings']['analyzer'] = self.index_settings['analyzer']
-        self.connection.indices.create(self.index_name, body=body)
+        self.connection.indices.create(index=self.index_name, body=body)
 
     def save(self, obj, id):
         self.connection.index(index=self.index_name, doc_type='_doc', id=id, body=obj)
+
+    def exists(self):
+        return self.connection.indices.exists(index=self.index_name)
 
     def record_exists(self, id):
         q = {

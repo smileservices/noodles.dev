@@ -22,6 +22,7 @@ from core.edit_suggestions import edit_suggestion_change_status_condition, post_
 from core.abstract_models import ElasticSearchIndexableMixin
 from core.tasks import sync_to_elastic
 
+
 class StudyResourceManager(models.Manager):
 
     def get_queryset(self):
@@ -173,8 +174,14 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
                 "pk": {"type": "integer"},
 
                 # model fields
-                "name": {"type": "text", "copy_to": "suggest"},
-                "summary": {"type": "text", "copy_to": "suggest"},
+                "name": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                },
+                "summary": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                },
                 "publication_date": {"type": "date", "format": "yyyy-MM-dd"},
                 "published_by": {"type": "text"},
                 "url": {"type": "text"},
