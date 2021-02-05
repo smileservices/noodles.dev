@@ -32,3 +32,14 @@ export function getCookie(name) {
 export function getCsrfToken() {
     return getCookie('csrftoken');
 }
+
+export function extractURLParams(str) {
+    if (str === '') return false;
+    let params = {};
+    const unparsed_params = str.split("?").pop().split("&");
+    unparsed_params.map(p=>{
+        const p_arr = p.split('=');
+        if (p_arr[1] !== '') params[p_arr[0]] = p_arr[1];
+    })
+    return params;
+}

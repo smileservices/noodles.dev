@@ -92,7 +92,7 @@ def study_resources_bulk(count=20):
                 models.StudyResourceTechnology.objects.create(
                     technology=tech,
                     study_resource=i,
-                    version=f'{randint(0, 5)}.{randint(0, 9)}.{randint(0, 9)}'
+                    version=float(f'{randint(0, 5)}.{randint(0, 90)}')
                 )
             except IntegrityError:
                 pass

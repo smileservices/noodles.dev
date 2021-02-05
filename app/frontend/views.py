@@ -11,7 +11,7 @@ def homepage(request):
     collections = Collection.objects.filter(is_public=True).all()[:5]
     most_appreciated = queryset.filter(~Q(reviews=None)).order_by('-rating')[:5]
     data = {
-        'hide_navbar_search': True,
+        'hide_navbar_search': False,
         'filter': filters.StudyResourceFilter,
         'latest': latest,
         'collections': collections,
@@ -20,9 +20,5 @@ def homepage(request):
         'solutions': Solution.objects.order_by('-created_at')[:5],
     }
     return render(request, 'frontend/homepage.html', data)
-
-
-def search(request):
-    return render(request, 'frontend/homepage.html')
 
 

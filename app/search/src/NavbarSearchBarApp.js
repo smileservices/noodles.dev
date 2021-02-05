@@ -5,12 +5,9 @@ import StarRating from "../../src/components/StarRating";
 import ResourceRating from "../../study_resource/src/ResourceRating";
 import {makeId, extractURLParams} from "../../src/components/utils";
 
-function SearchApp() {
+function NavbarSearchBarApp() {
 
-    let searchTerm = document.location.pathname === '/search/' ? extractURLParams(document.location.search)['q'] : '';
-
-    const [formData, setFormData] = useState(searchTerm);
-    const [doSearch, setDoSearch] = useState(false);
+    const [formData, setFormData] = useState('');
     const [results, setResults] = useState([]);
     const [waiting, setWaiting] = useState('');
 
@@ -19,19 +16,11 @@ function SearchApp() {
     const controller = new AbortController();
 
     function redirectToSearchPage(term) {
-        if (document.location.pathname === '/search/') {
-            //trigger the new query on unified search app
-            console.log('trigger search for ' + term);
-            history.pushState({q: term}, 'Search for '+term, '?q='+term);
-            setShowSearchWindow(false);
-            setFormData(term);
-        } else {
-            document.location = '/search/?q=' + term;
-        }
+        document.location = '/search/?q=' + term;
     }
 
     useEffect(e => {
-        if (formData.length > 1 && doSearch) {
+        if (formData.length > 1) {
             fetch('/search/api/autocomplete/' + formData + '/', {
                 method: "GET",
                 signal: controller.signal
@@ -62,7 +51,6 @@ function SearchApp() {
 
     function handleClickOnSuggestion(r) {
         return e => {
-            setDoSearch(false);
             redirectToSearchPage(r);
         }
     }
@@ -87,7 +75,6 @@ function SearchApp() {
                        placeholder="Search for a tutorial or course..."
                        value={formData}
                        onChange={e => {
-                           setDoSearch(true);
                            setFormData(e.target.value)
                        }}
                 />
@@ -98,4 +85,4 @@ function SearchApp() {
     )
 }
 
-ReactDOM.render(<SearchApp/>, document.getElementById('search-app'));
+ReactDOM.render(<NavbarSearchBarApp/>, document.getElementById('search-bar-app'));

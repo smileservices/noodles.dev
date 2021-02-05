@@ -1,0 +1,24 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block meta_tags %}
+    <title>Search</title>
+    <meta name="keywords" content="" />
+    <meta name="robots" content="noindex"/>
+    <meta name="googlebot" content="noindex"/>
+    <meta name="bingbot" content="noindex"/>
+{% endblock %}
+
+{% block content %}
+    <script>
+        const SEARCH_RESOURCES_URL = "{{ search_resources_url }}";
+        const SEARCH_COLLECTIONS_URL = "{{ search_collections_url }}";
+        const SEARCH_TECHNOLOGIES_URL = "{{ search_technologies_url }}";
+    </script>
+    <section class="search-page" id="search-app"></section>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'search-app.js' %}"></script>
+{% endblock %}

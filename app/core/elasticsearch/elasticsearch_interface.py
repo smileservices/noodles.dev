@@ -32,19 +32,25 @@ class ElasticSearchInterface:
         connection = Elasticsearch()
         connection.indices.delete('_all')
 
-    def search(self, fields, term, page=0, page_size=10):
+    def search(self, fields, term, filter, page=0, page_size=10):
         page_offset = page * page_size
         q = {
             "from": page_offset,
             "size": page_size,
             "query": {
+                "bool": {
+                    "filter": filter
+                }
+            }
+        }
+        if term:
+            q["query"]["bool"]["must"] = [{
                 "multi_match": {
                     "query": term,
                     "fields": fields,
                     "fuzziness": 1
                 }
-            }
-        }
+            }]
         res = self.connection.search(self.indexes, body=q)
         extracted_response = self._extract_results(res, 'search')
         extracted_response['stats']['page_size'] = page_size

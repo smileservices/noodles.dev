@@ -58,7 +58,7 @@ class StudyResourceTechnology(models.Model):
     study_resource = models.ForeignKey('StudyResource', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)  # duplicate technology value for limiting queries
     slug = models.CharField(max_length=255)
-    version = models.CharField(max_length=128, blank=True, null=True)
+    version = models.FloatField(max_length=128, blank=True, null=True)
 
     class Meta:
         unique_together = ['technology', 'study_resource']
@@ -188,7 +188,13 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
 
                 "category": {"type": "keyword"},
                 "tags": {"type": "keyword"},
-                "technologies": {"type": "keyword"},
+                "technologies": {
+                    "type": "nested",
+                    "properties": {
+                        "name": {"type": "keyword"},
+                        "version": {"type": "float"},
+                    }
+                },
 
                 "author": {"type": "nested"},
                 "price": {"type": "keyword"},
@@ -224,7 +230,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
 
             "category": self.category.name,
             "tags": [t.name for t in self.tags.all()],
-            "technologies": [str(t) for t in self.get_technologies()],
+            "technologies": [{"name": t.name, "version": t.version} for t in self.get_technologies()],
 
             "author": {
                 "pk": self.author.pk,
