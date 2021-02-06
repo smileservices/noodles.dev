@@ -16,7 +16,9 @@ function NavbarSearchBarApp() {
     const controller = new AbortController();
 
     function redirectToSearchPage(term) {
-        document.location = '/search/?q=' + term;
+        let params = new URLSearchParams();
+        params.append('search', term);
+        document.location = '/search/?'+params.toString();
     }
 
     useEffect(e => {

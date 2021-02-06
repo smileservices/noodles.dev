@@ -60,11 +60,11 @@ def _search_technologies(term, filter, page, page_size):
 
 
 def search_specific(request, index):
-    term = request.GET.get('q', '')
-    page = int(request.GET.get('page', 0))
-    page_size = int(request.GET.get('page_size', 10))
+    term = request.GET.get('search', '')
+    page = int(request.GET.get('offset', 0))
+    page_size = int(request.GET.get('limit', 10))
     filter = extract_filters(request)
-    if index == 'study_resources':
+    if index == 'resources':
         results = _search_study_resources(term, filter, page, page_size)
     elif index == 'collections':
         results = _search_collections(term, filter, page, page_size)

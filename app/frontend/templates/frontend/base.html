@@ -98,7 +98,9 @@
         const TECHNOLOGIES_FILTER_URL = "{% url 'techs-viewset-filter' %}";
     </script>
     <script src="{% static 'js/react-bundle.js' %}"></script>
-    <script src="{% static 'navbar-search-bar-app.js' %}"></script>
+    {% if not hide_navbar_search %}
+        <script src="{% static 'navbar-search-bar-app.js' %}"></script>
+    {% endif %}
 {% block extra_js %}{% endblock %}
 </body>
 </html>
