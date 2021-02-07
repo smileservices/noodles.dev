@@ -7,6 +7,38 @@ import {makeId, extractURLParams} from "../../src/components/utils";
 
 import SearchBarComponent from "./SearchBarComponent";
 
+const urlParamNames = {
+    pagination: ['resultsPerPage', 'current', 'offset'],
+}
+
+function filtersFromUrl() {
+    const urlParams = new URLSearchParams(document.location.search);
+    urlParams.delete('search');
+    urlParams.delete('tab');
+    return Array.from(urlParams, ([key, value]) => {
+        const f = {};
+        f[key] = value;
+        return f;
+    });
+}
+
+function paginationFromUrl() {
+    const urlParams = new URLSearchParams(document.location.search);
+    urlParams.delete('search');
+    urlParams.delete('tab');
+    return Array.from(urlParams, ([key, value]) => {
+        const f = {};
+        f[key] = value;
+        return f;
+    });
+}
+
+function addFiltersToParams(params, filters) {
+    filters.map(f => {
+        params.append(Object.keys(f)[0], Object.values(f)[0]);
+    })
+}
+
 function SearchApp() {
 
     /*
@@ -25,13 +57,20 @@ function SearchApp() {
     *       . have index name, pagination, search term, filters
     * */
 
+    // todo function for url from and and into parameters
+
     const urlParams = new URLSearchParams(document.location.search);
 
     const defaultTab = urlParams.get('tab') ? urlParams.get('tab') : 'resources';
     const defaultTabState = {
         filters: [],
         results: [],
-        waiting: false
+        waiting: false,
+        pagination: {
+            resultsPerPage: 5,
+            current: 1,
+            offset: 0
+        }
     };
 
     const [searchbarState, setSearchbarState] = useState({
@@ -39,27 +78,18 @@ function SearchApp() {
         q: urlParams.get('search') ? urlParams.get('search').split('+').join(' ') : '',
     });
 
+    function initialTabState(tabname) {
+        let state = JSON.parse(JSON.stringify(defaultTabState));
+        if (tabname === defaultTab) {
+            state.filters = filtersFromUrl();
+        }
+        return state;
+    }
+
     const [currentTab, setCurrentTab] = useState(defaultTab);
-    const [resources, setResources] = useState(defaultTabState);
-    const [collections, setCollections] = useState(defaultTabState);
-    const [technologies, setTechnologies] = useState(defaultTabState);
-
-    function filtersFromUrl() {
-        const urlParams = new URLSearchParams(document.location.search);
-        urlParams.delete('search');
-        urlParams.delete('tab');
-        return Array.from(urlParams, ([key, value]) => {
-            const f = {};
-            f[key] = value;
-            return f;
-        });
-    }
-
-    function addFiltersToParams(params, filters) {
-        filters.map(f => {
-            params.append(Object.keys(f)[0], Object.values(f)[0]);
-        })
-    }
+    const [resources, setResources] = useState(initialTabState('resources'));
+    const [collections, setCollections] = useState(initialTabState('collections'));
+    const [technologies, setTechnologies] = useState(initialTabState('technologies'));
 
     function setSearch(term) {
         let params = new URLSearchParams(location.search);
@@ -70,17 +100,21 @@ function SearchApp() {
             q: term.split('+').join(' '),
             showSuggestions: false
         })
-        search(term, getTabState(currentTab).filters);
+        searchInTab(term, currentTab);
+        getOtherTabs(currentTab).map(
+            tab => searchInTab(searchbarState.q, tab)
+        );
     }
 
-    function search(term, filters) {
-        const url = '/search/api/' + currentTab + '?';
+    function searchInTab(term, tab) {
+        const url = '/search/api/' + tab + '?';
         let params = new URLSearchParams();
         if (term !== '') {
             params.set('search', term);
         }
-        const [tabState, setTabState] = getTabState(currentTab);
-        addFiltersToParams(params, filters)
+        const [tabState, setTabState] = getTabState(tab);
+        addFiltersToParams(params, tabState.filters)
+
         fetch(url + params.toString(), {
             method: 'GET',
         }).then(result => {
@@ -88,8 +122,12 @@ function SearchApp() {
                 return result.json();
             }
         }).then(data => {
-            setTabState({...tabState, filters: filters, results: data});
+            setTabState({...tabState, results: data});
         })
+    }
+
+    function getOtherTabs(tabname) {
+        return ['resources', 'collections', 'technologies'].filter(i => i !== tabname);
     }
 
     function getTabState(tabname) {
@@ -104,15 +142,10 @@ function SearchApp() {
     }
 
     useEffect(e => {
-        /*
-        *   RUNS FIRST: get filters from url, initates search
-        *
-        * */
-        // we parse the url and set the state: current tab, search term, filters
-        const filters = filtersFromUrl();
-        const [tabState, setTabState] = getTabState(currentTab);
-        setTabState({...tabState, filters: filters});
-        search(searchbarState.q, filters);
+        searchInTab(searchbarState.q, currentTab);
+        getOtherTabs(currentTab).map(
+            tab => searchInTab(searchbarState.q, tab)
+        );
     }, []);
 
     function changeTab(tabname) {
@@ -153,12 +186,21 @@ function SearchApp() {
         }
     }
 
+    function getCounter(state) {
+        if (state.waiting) return 'wait..';
+        if (state.results.stats) {
+            return state.results.stats.total;
+        } else {
+            return 'error';
+        }
+    }
+
     return (
         <div className="container">
             <div className="tab-select">
-                <span onClick={e => changeTab('resources')}>Resources ({resources.results.stats?.total})</span>
-                <span onClick={e => changeTab('collections')}>Collections ({collections.results.stats?.total})</span>
-                <span onClick={e => changeTab('technologies')}>Technologies ({technologies.results.stats?.total})</span>
+                <span onClick={e => changeTab('resources')}>Resources ({getCounter(resources)})</span>
+                <span onClick={e => changeTab('collections')}>Collections ({getCounter(collections)})</span>
+                <span onClick={e => changeTab('technologies')}>Technologies ({getCounter(technologies)})</span>
             </div>
             <SearchBarComponent search={setSearch} state={searchbarState}/>
             {showCurrentTab(currentTab)}
