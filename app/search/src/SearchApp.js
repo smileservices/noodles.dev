@@ -74,7 +74,7 @@ function SearchApp() {
     };
 
     const [searchbarState, setSearchbarState] = useState({
-        placeholder: 'Search For Resources',
+        placeholder: 'Search For Something Specific',
         q: urlParams.get('search') ? urlParams.get('search').split('+').join(' ') : '',
     });
 
@@ -102,7 +102,7 @@ function SearchApp() {
         })
         searchInTab(term, currentTab);
         getOtherTabs(currentTab).map(
-            tab => searchInTab(searchbarState.q, tab)
+            tab => searchInTab(term, tab)
         );
     }
 
