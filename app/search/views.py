@@ -61,8 +61,9 @@ def _search_technologies(term, filter, page, page_size):
 
 def search_specific(request, index):
     term = request.GET.get('search', '')
-    page = int(request.GET.get('offset', 0))
-    page_size = int(request.GET.get('limit', 10))
+    page_size = int(request.GET.get('resultsPerPage', 10))
+    offset_results = int(request.GET.get('offset', 0))
+    page = 0 if not offset_results else offset_results/page_size;
     filter = extract_filters(request)
     if index == 'resources':
         results = _search_study_resources(term, filter, page, page_size)

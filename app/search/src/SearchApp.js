@@ -3,41 +3,41 @@ import ReactDOM from "react-dom";
 import apiList from "../../src/api_interface/apiList";
 import StarRating from "../../src/components/StarRating";
 import ResourceRating from "../../study_resource/src/ResourceRating";
+import PaginatedLayout from "../../src/components/PaginatedLayout";
+
 import {makeId, extractURLParams} from "../../src/components/utils";
 
 import SearchBarComponent from "./SearchBarComponent";
 
-const urlParamNames = {
-    pagination: ['resultsPerPage', 'current', 'offset'],
-}
-
-function filtersFromUrl() {
-    const urlParams = new URLSearchParams(document.location.search);
-    urlParams.delete('search');
-    urlParams.delete('tab');
-    return Array.from(urlParams, ([key, value]) => {
-        const f = {};
-        f[key] = value;
-        return f;
-    });
-}
-
-function paginationFromUrl() {
-    const urlParams = new URLSearchParams(document.location.search);
-    urlParams.delete('search');
-    urlParams.delete('tab');
-    return Array.from(urlParams, ([key, value]) => {
-        const f = {};
-        f[key] = value;
-        return f;
-    });
-}
-
-function addFiltersToParams(params, filters) {
-    filters.map(f => {
+function codeParamsToUrl(params, data) {
+    data.map(f => {
         params.append(Object.keys(f)[0], Object.values(f)[0]);
     })
 }
+
+function decodeParamsFromUrl() {
+    let filters = [];
+    let sorting = [];
+    let pagination = {};
+    const paginationParamNames = ['resultsPerPage', 'current', 'offset'];
+    const urlParams = new URLSearchParams(document.location.search);
+    urlParams.delete('search');
+    urlParams.delete('tab');
+    sorting = urlParams.get('sort_by')
+    urlParams.delete('sort_by');
+    Array.from(urlParams, ([key, value]) => {
+        const f = {};
+        if (paginationParamNames.indexOf(key) > -1) {
+            pagination[key] = Number(value);
+        } else {
+            let filter = {}
+            filter[key] = value;
+            filters.push(filter);
+        }
+    });
+    return [filters, sorting, pagination]
+}
+
 
 function SearchApp() {
 
@@ -57,21 +57,20 @@ function SearchApp() {
     *       . have index name, pagination, search term, filters
     * */
 
-    // todo function for url from and and into parameters
-
     const urlParams = new URLSearchParams(document.location.search);
 
     const defaultTab = urlParams.get('tab') ? urlParams.get('tab') : 'resources';
     const defaultTabState = {
-        filters: [],
         results: [],
         waiting: false,
-        pagination: {
-            resultsPerPage: 5,
-            current: 1,
-            offset: 0
-        }
+        filters: [],
+        sorting: [],
     };
+    const defaultPagination = {
+        resultsPerPage: 10,
+        current: 1,
+        offset: 0
+    }
 
     const [searchbarState, setSearchbarState] = useState({
         placeholder: 'Search For Something Specific',
@@ -80,21 +79,42 @@ function SearchApp() {
 
     function initialTabState(tabname) {
         let state = JSON.parse(JSON.stringify(defaultTabState));
+        let paginationState = JSON.parse(JSON.stringify(defaultPagination));
         if (tabname === defaultTab) {
-            state.filters = filtersFromUrl();
+            const [filters, sorting, pagination] = decodeParamsFromUrl();
+            state.filters = filters;
+            state.sorting = sorting;
+            paginationState = {...paginationState, ...pagination}
         }
-        return state;
+        return [state, paginationState];
     }
 
+    const [initiaResources, initialResourcesPagination] = initialTabState('resources')
+    const [initiaCollections, initialCollectionsPagination] = initialTabState('colections')
+    const [initiaTechnologies, initialTechnologiesPagination] = initialTabState('technologies')
+
     const [currentTab, setCurrentTab] = useState(defaultTab);
-    const [resources, setResources] = useState(initialTabState('resources'));
-    const [collections, setCollections] = useState(initialTabState('collections'));
-    const [technologies, setTechnologies] = useState(initialTabState('technologies'));
+
+    const [resources, setResources] = useState(initiaResources);
+    const [resourcesResultsPagination, setResourcesResultsPagination] = useState(initialResourcesPagination);
+
+    const [collections, setCollections] = useState(initiaCollections);
+    const [collectionsResultsPagination, setCollectionsResultsPagination] = useState(initialCollectionsPagination);
+
+    const [technologies, setTechnologies] = useState(initiaTechnologies);
+    const [technologiesResultsPagination, setTechnologiesResultsPagination] = useState(initialTechnologiesPagination);
+
 
     function setSearch(term) {
         let params = new URLSearchParams(location.search);
-        params.set('search', term);
-        history.pushState(null, 'Search for ' + term, '?' + params.toString())
+
+        if (term !== '') {
+            params.set('search', term);
+        } else {
+            params.delete('search');
+        }
+
+        history.pushState(null, 'Search', '?' + params.toString())
         setSearchbarState({
             ...searchbarState,
             q: term.split('+').join(' '),
@@ -112,9 +132,10 @@ function SearchApp() {
         if (term !== '') {
             params.set('search', term);
         }
-        const [tabState, setTabState] = getTabState(tab);
-        addFiltersToParams(params, tabState.filters)
-
+        const [tabState, setTabState, pagination] = getTabState(tab);
+        const paginationList = Object.keys(pagination).map(k=>{let d={}; d[k]=pagination[k]; return d});
+        codeParamsToUrl(params, tabState.filters)
+        codeParamsToUrl(params, paginationList)
         fetch(url + params.toString(), {
             method: 'GET',
         }).then(result => {
@@ -133,11 +154,11 @@ function SearchApp() {
     function getTabState(tabname) {
         switch (tabname) {
             case 'resources':
-                return [resources, setResources]
+                return [resources, setResources, resourcesResultsPagination, setResourcesResultsPagination]
             case 'collections':
-                return [collections, setCollections]
+                return [collections, setCollections, collectionsResultsPagination, setCollectionsResultsPagination]
             case 'technologies':
-                return [technologies, setTechnologies]
+                return [technologies, setTechnologies, technologiesResultsPagination, setTechnologiesResultsPagination]
         }
     }
 
@@ -148,15 +169,20 @@ function SearchApp() {
         );
     }, []);
 
+    useEffect(e=> {
+        console.log(resourcesResultsPagination);
+        searchInTab(searchbarState.q, currentTab);
+    }, [resourcesResultsPagination, collectionsResultsPagination, technologiesResultsPagination])
+
     function changeTab(tabname) {
         setCurrentTab(tabname);
-        const [tabState, setTabState] = getTabState(tabname);
+        const [tabState, setTabState, pagination, setPagination] = getTabState(tabname);
         let params = new URLSearchParams();
         params.set('tab', tabname);
         if (searchbarState.q !== '') {
             params.set('search', searchbarState.q);
         }
-        addFiltersToParams(params, tabState.filters)
+        codeParamsToUrl(params, tabState.filters)
         history.pushState(null, 'Search for ' + tabname, '?' + params.toString())
     }
 
@@ -164,23 +190,47 @@ function SearchApp() {
         switch (currentTab) {
             case 'resources':
                 return (
-                    <div className="results resources">
+                    <div className="resources">
                         <h1>res</h1>
-                        {resources.results.items?.map(i => <p key={i.pk}>{i.name}</p>)}
+                        {resources.results.items ?
+                            <PaginatedLayout
+                                pagination={resourcesResultsPagination}
+                                resultsCount={resources.results.stats.total}
+                                data={resources.results.items}
+                                resultsContainerClass="results"
+                                setPagination={setResourcesResultsPagination}
+                                mapFunction={(item, idx) => <p key={item.pk}>{item.name}</p>}
+                            /> : ''}
                     </div>
                 );
             case 'collections':
                 return (
-                    <div className="results resources">
+                    <div className="collections">
                         <h1>col</h1>
-                        {collections.results.items?.map(i => <p key={i.pk}>{i.name}</p>)}
+                        {collections.results.items ?
+                            <PaginatedLayout
+                                pagination={collectionsResultsPagination}
+                                resultsCount={collections.results.stats.total}
+                                data={collections.results.items}
+                                resultsContainerClass="results"
+                                setPagination={setCollectionsResultsPagination}
+                                mapFunction={(item, idx) => <p key={item.pk}>{item.name}</p>}
+                            /> : ''}
                     </div>
                 );
             case 'technologies':
                 return (
-                    <div className="results resources">
+                    <div className="technologies">
                         <h1>tec</h1>
-                        {technologies.results.items?.map(i => <p key={i.pk}>{i.name}</p>)}
+                        {technologies.results.items ?
+                            <PaginatedLayout
+                                pagination={technologiesResultsPagination}
+                                resultsCount={technologies.results.stats.total}
+                                data={technologies.results.items}
+                                resultsContainerClass="results"
+                                setPagination={setTechnologiesResultsPagination}
+                                mapFunction={(item, idx) => <p key={item.pk}>{item.name}</p>}
+                            /> : ''}
                     </div>
                 );
         }
