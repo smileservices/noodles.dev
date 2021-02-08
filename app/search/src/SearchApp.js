@@ -4,6 +4,7 @@ import apiList from "../../src/api_interface/apiList";
 import StarRating from "../../src/components/StarRating";
 import ResourceRating from "../../study_resource/src/ResourceRating";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
+import {FilterComponent} from "../../src/components/FilterComponent";
 
 import {makeId, extractURLParams} from "../../src/components/utils";
 
@@ -107,7 +108,6 @@ function SearchApp() {
 
     function setSearch(term) {
         let params = new URLSearchParams(location.search);
-
         if (term !== '') {
             params.set('search', term);
         } else {
@@ -133,7 +133,11 @@ function SearchApp() {
             params.set('search', term);
         }
         const [tabState, setTabState, pagination] = getTabState(tab);
-        const paginationList = Object.keys(pagination).map(k=>{let d={}; d[k]=pagination[k]; return d});
+        const paginationList = Object.keys(pagination).map(k => {
+            let d = {};
+            d[k] = pagination[k];
+            return d
+        });
         codeParamsToUrl(params, tabState.filters)
         codeParamsToUrl(params, paginationList)
         fetch(url + params.toString(), {
@@ -169,8 +173,7 @@ function SearchApp() {
         );
     }, []);
 
-    useEffect(e=> {
-        console.log(resourcesResultsPagination);
+    useEffect(e => {
         searchInTab(searchbarState.q, currentTab);
     }, [resourcesResultsPagination, collectionsResultsPagination, technologiesResultsPagination])
 
