@@ -190,6 +190,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
                 "tags": {"type": "keyword"},
                 "technologies": {
                     "type": "nested",
+                    "include_in_parent": True,
                     "properties": {
                         "name": {"type": "keyword"},
                         "version": {"type": "float"},

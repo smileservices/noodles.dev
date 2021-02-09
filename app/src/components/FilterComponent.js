@@ -68,6 +68,8 @@ export function FilterComponent({fields, queryFilter, setQueryFilter}) {
                 }
                 return filterFactory(fields[name].type, data)
             })}
+            { Object.keys(queryFilter).length > 0
+                ? <button className="btn btn-primary" onClick={e=>setQueryFilter({})}>Reset All</button> : ''}
         </div>
     )
 }

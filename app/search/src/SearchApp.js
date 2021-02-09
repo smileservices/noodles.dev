@@ -21,9 +21,28 @@ function codeParamsToUrl(params, data) {
     }
 }
 
+function updateUrl(params) {
+    /*
+    * params = {search: searchTerm, tab: tabName, filters: filters,...}
+    * */
+    let url = '/search/?';                   //the url root
+    let paramsObj = new URLSearchParams();  // this is to be populated from scratch
+    if (params['tab'] !== '') {
+        paramsObj.set('tab', params['tab']);
+        // process filters per tab only!
+        if (Object.keys(params['filters']).length > 0) {
+            codeParamsToUrl(paramsObj, params['filters'])
+        }
+    }
+    if (params['search'] !== '') {
+        paramsObj.set('search', params['search']);
+    }
+    history.pushState(null, 'Search', url + paramsObj.toString())
+}
+
 function decodeParamsFromUrl() {
-    let filters = [];
-    let sorting = [];
+    let filters = {};
+    let sorting = '';
     let pagination = {};
     const paginationParamNames = ['resultsPerPage', 'current', 'offset'];
     const urlParams = new URLSearchParams(document.location.search);
@@ -36,9 +55,7 @@ function decodeParamsFromUrl() {
         if (paginationParamNames.indexOf(key) > -1) {
             pagination[key] = Number(value);
         } else {
-            let filter = {}
-            filter[key] = value;
-            filters.push(filter);
+            filters[key] = value;
         }
     });
     return [filters, sorting, pagination]
@@ -104,30 +121,29 @@ function SearchApp() {
         let paginationState = JSON.parse(JSON.stringify(defaultPagination));
         if (tabname === defaultTab) {
             const [filters, sorting, pagination] = decodeParamsFromUrl();
-            state.filters = filters;
-            state.sorting = sorting;
             paginationState = {...paginationState, ...pagination}
+            return [state, paginationState, filters, sorting];
         }
-        return [state, paginationState];
+        return [state, paginationState, {}, {}];
     }
 
-    const [initiaResources, initialResourcesPagination] = initialTabState('resources')
-    const [initiaCollections, initialCollectionsPagination] = initialTabState('colections')
-    const [initiaTechnologies, initialTechnologiesPagination] = initialTabState('technologies')
+    const [initialResources, initialResourcesPagination, resourcesFilterInitial, resourcesSortInitial] = initialTabState('resources')
+    const [initialCollections, initialCollectionsPagination, collectionsFilterInitial, collectionsSortInitial] = initialTabState('colections')
+    const [initialTechnologies, initialTechnologiesPagination, technologiesFilterInitial, technologiesSortInitial] = initialTabState('technologies')
 
     const [currentTab, setCurrentTab] = useState(defaultTab);
 
-    const [resources, setResources] = useState(initiaResources);
+    const [resources, setResources] = useState(initialResources);
     const [resourcesResultsPagination, setResourcesResultsPagination] = useState(initialResourcesPagination);
-    const [resourcesFilters, setResourcesFilters] = useState([]);
+    const [resourcesFilters, setResourcesFilters] = useState(resourcesFilterInitial);
 
-    const [collections, setCollections] = useState(initiaCollections);
+    const [collections, setCollections] = useState(initialCollections);
     const [collectionsResultsPagination, setCollectionsResultsPagination] = useState(initialCollectionsPagination);
-    const [collectionsFilters, setCollectionsFilters] = useState([]);
+    const [collectionsFilters, setCollectionsFilters] = useState(collectionsFilterInitial);
 
-    const [technologies, setTechnologies] = useState(initiaTechnologies);
+    const [technologies, setTechnologies] = useState(initialTechnologies);
     const [technologiesResultsPagination, setTechnologiesResultsPagination] = useState(initialTechnologiesPagination);
-    const [technologiesFilters, setTechnologiesFilters] = useState([]);
+    const [technologiesFilters, setTechnologiesFilters] = useState(technologiesFilterInitial);
 
     let firstRun = true;
 
@@ -196,6 +212,7 @@ function SearchApp() {
         switch (tabname) {
             case 'resources':
                 return {
+                    'tech_v': getAvailableFilters(resultsFilters['technologies'], 'Technologies', 'simple-select'),
                     'price': getAvailableFilters(resultsFilters['price'], 'Price', 'simple-select'),
                     'media': getAvailableFilters(resultsFilters['media'], 'Media', 'simple-select'),
                     'experience_level': getAvailableFilters(resultsFilters['experience_level'], 'Experience Level', 'simple-select'),
@@ -214,16 +231,22 @@ function SearchApp() {
     }
 
     useEffect(e => {
-        searchInTab(searchbarState.q, 'resources')
-    }, [resourcesFilters,])
+        const [tab, setTabstate, pagination, setPagination, filters] = getTabState(currentTab);
+        updateUrl({
+           search: searchbarState.q,
+           tab: currentTab,
+           filters: filters
+        });
+        searchInTab(searchbarState.q, currentTab)
+    }, [resourcesFilters, collectionsFilters, technologiesFilters])
 
-    useEffect(e => {
-        searchInTab(searchbarState.q, 'collections')
-    }, [collectionsFilters,])
-
-    useEffect(e => {
-        searchInTab(searchbarState.q, 'technologies')
-    }, [technologiesFilters,])
+    // useEffect(e => {
+    //     searchInTab(searchbarState.q, 'collections')
+    // }, [collectionsFilters,])
+    //
+    // useEffect(e => {
+    //     searchInTab(searchbarState.q, 'technologies')
+    // }, [technologiesFilters,])
 
     useEffect(e => {
         searchInTab(searchbarState.q, currentTab);

@@ -16,7 +16,7 @@ def _search_study_resources(term, filter, page, page_size):
         "price": {"terms": {"field": "price"}},
         "media": {"terms": {"field": "media"}},
         "experience_level": {"terms": {"field": "experience_level"}},
-        "technologies": {"nested" : {"path": "technologies.name"}},
+        "technologies": {"terms": {"field": "technologies.name"}},
         "tags": {"terms": {"field": "tags", "size": 20}},
         "category": {"terms": {"field": "category"}},
     }
@@ -145,7 +145,7 @@ def extract_filters(request) -> []:
                     p_filter["nested"]["query"]["bool"]["filter"].append(
                         {"range": {"technologies.version": {version_arr[0]: float(version_arr[1])}}}
                     )
-                    filter.append(p_filter)
+                filter.append(p_filter)
     return filter
 
 
