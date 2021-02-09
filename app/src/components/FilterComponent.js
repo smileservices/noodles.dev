@@ -51,7 +51,7 @@ export function FilterComponent({fields, queryFilter, setQueryFilter}) {
             case 'simple-select':
                 return <SelectFilter key={"filter-" + data.name} {...data} />
             default:
-                console.error('filterFactory ERROR: could not find matching filter component!');
+                console.error('filterFactory ERROR: could not find matching filter component:', type);
         }
     }
 

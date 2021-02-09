@@ -12,10 +12,19 @@ def autocomplete(request, prefix):
 def _search_study_resources(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['study_resources'])
     resources_fields = ['name', 'summary', 'category', 'technologies', 'tags']
+    aggregates = {
+        "price": {"terms": {"field": "price"}},
+        "media": {"terms": {"field": "media"}},
+        "experience_level": {"terms": {"field": "experience_level"}},
+        "technologies": {"nested" : {"path": "technologies.name"}},
+        "tags": {"terms": {"field": "tags", "size": 20}},
+        "category": {"terms": {"field": "category"}},
+    }
     results = es_res.search(
         fields=resources_fields,
         term=term,
         filter=filter,
+        aggregates=aggregates,
         page=page,
         page_size=page_size
     )
@@ -25,10 +34,15 @@ def _search_study_resources(term, filter, page, page_size):
 def _search_collections(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['collections'])
     collections_fields = ['name', 'description', 'technologies', 'tags']
+    aggregates = {
+        "technologies": {"terms": {"field": "technologies", "size": 20}},
+        "tags": {"terms": {"field": "tags", "size": 20}},
+    }
     results = es_res.search(
         fields=collections_fields,
         term=term,
         filter=filter,
+        aggregates=aggregates,
         page=page,
         page_size=page_size
     )
@@ -37,11 +51,16 @@ def _search_collections(term, filter, page, page_size):
 
 def _search_technologies(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['technologies'])
-    technologies_fields = ['name', 'description', 'technologies', 'tags']
+    technologies_fields = ['name', 'description', 'ecosystem', 'tags']
+    aggregates = {
+        "ecosystem": {"terms": {"field": "ecosystem", "size": 20}},
+        "category": {"terms": {"field": "category"}},
+    }
     results = es_res.search(
         fields=technologies_fields,
         term=term,
         filter=filter,
+        aggregates=aggregates,
         page=page,
         page_size=page_size
     )
@@ -85,15 +104,10 @@ def extract_filters(request) -> []:
             filter.append({
                 "term": {param: request.GET.get(param)}
             })
-        elif param in ['tech', 'tag']:
-            param_name = param
-            if param == 'tech':
-                param_name = 'technologies'
-            elif param == 'tag':
-                param_name = 'tags'
+        elif param in ['tag', 'ecosystem', 'technologies']:
             for value in request.GET.getlist(param):
                 filter.append({
-                    "term": {param_name: value}
+                    "term": {param: value}
                 })
         elif param in ['publication_date', 'rating', 'reviews_count', 'votes_up', 'votes_down',
                        'edit_suggestions_count']:

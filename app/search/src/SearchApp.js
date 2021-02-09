@@ -6,14 +6,19 @@ import ResourceRating from "../../study_resource/src/ResourceRating";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
 import {FilterComponent} from "../../src/components/FilterComponent";
 
-import {makeId, extractURLParams} from "../../src/components/utils";
+import {makeId, extractURLParams, whatType} from "../../src/components/utils";
 
 import SearchBarComponent from "./SearchBarComponent";
 
 function codeParamsToUrl(params, data) {
-    data.map(f => {
-        params.append(Object.keys(f)[0], Object.values(f)[0]);
-    })
+    switch (whatType(data)) {
+        case 'object':
+            return Object.keys(data).map(name => params.append(name, data[name]));
+        case 'array':
+            return data.map(f => {
+                params.append(Object.keys(f)[0], Object.values(f)[0]);
+            })
+    }
 }
 
 function decodeParamsFromUrl() {
@@ -37,6 +42,21 @@ function decodeParamsFromUrl() {
         }
     });
     return [filters, sorting, pagination]
+}
+
+function getAvailableFilters(aggregated, label, type) {
+    if (!aggregated) return {};
+    /*
+    * filtername: string
+    * aggregated: [{value: itemsCount}, ...]
+    *
+    * returns {label: string, type: string, options: [[value, text],...]}, ...}
+    * */
+    return {
+        label: label,
+        type: type,
+        options: Object.keys(aggregated).map(value => [value, value + '(' + aggregated[value] + ')'])
+    };
 }
 
 
@@ -65,6 +85,7 @@ function SearchApp() {
         results: [],
         waiting: false,
         filters: [],
+        availableFilters: {},
         sorting: [],
     };
     const defaultPagination = {
@@ -98,12 +119,17 @@ function SearchApp() {
 
     const [resources, setResources] = useState(initiaResources);
     const [resourcesResultsPagination, setResourcesResultsPagination] = useState(initialResourcesPagination);
+    const [resourcesFilters, setResourcesFilters] = useState([]);
 
     const [collections, setCollections] = useState(initiaCollections);
     const [collectionsResultsPagination, setCollectionsResultsPagination] = useState(initialCollectionsPagination);
+    const [collectionsFilters, setCollectionsFilters] = useState([]);
 
     const [technologies, setTechnologies] = useState(initiaTechnologies);
     const [technologiesResultsPagination, setTechnologiesResultsPagination] = useState(initialTechnologiesPagination);
+    const [technologiesFilters, setTechnologiesFilters] = useState([]);
+
+    let firstRun = true;
 
 
     function setSearch(term) {
@@ -132,14 +158,14 @@ function SearchApp() {
         if (term !== '') {
             params.set('search', term);
         }
-        const [tabState, setTabState, pagination] = getTabState(tab);
+        const [tabState, setTabState, pagination, setPagination, filters] = getTabState(tab);
         const paginationList = Object.keys(pagination).map(k => {
             let d = {};
             d[k] = pagination[k];
             return d
         });
-        codeParamsToUrl(params, tabState.filters)
-        codeParamsToUrl(params, paginationList)
+        codeParamsToUrl(params, filters);
+        codeParamsToUrl(params, paginationList);
         fetch(url + params.toString(), {
             method: 'GET',
         }).then(result => {
@@ -147,7 +173,7 @@ function SearchApp() {
                 return result.json();
             }
         }).then(data => {
-            setTabState({...tabState, results: data});
+            setTabState({...tabState, availableFilters: getTabFilters(tab, data.filters), results: data});
         })
     }
 
@@ -158,13 +184,46 @@ function SearchApp() {
     function getTabState(tabname) {
         switch (tabname) {
             case 'resources':
-                return [resources, setResources, resourcesResultsPagination, setResourcesResultsPagination]
+                return [resources, setResources, resourcesResultsPagination, setResourcesResultsPagination, resourcesFilters]
             case 'collections':
-                return [collections, setCollections, collectionsResultsPagination, setCollectionsResultsPagination]
+                return [collections, setCollections, collectionsResultsPagination, setCollectionsResultsPagination, collectionsFilters]
             case 'technologies':
-                return [technologies, setTechnologies, technologiesResultsPagination, setTechnologiesResultsPagination]
+                return [technologies, setTechnologies, technologiesResultsPagination, setTechnologiesResultsPagination, technologiesFilters]
         }
     }
+
+    function getTabFilters(tabname, resultsFilters) {
+        switch (tabname) {
+            case 'resources':
+                return {
+                    'price': getAvailableFilters(resultsFilters['price'], 'Price', 'simple-select'),
+                    'media': getAvailableFilters(resultsFilters['media'], 'Media', 'simple-select'),
+                    'experience_level': getAvailableFilters(resultsFilters['experience_level'], 'Experience Level', 'simple-select'),
+                    'category': getAvailableFilters(resultsFilters['category'], 'Category', 'simple-select'),
+                }
+            case 'collections':
+                return {
+                    'technologies': getAvailableFilters(resultsFilters['technologies'], 'Technologies', 'simple-select'),
+                }
+            case 'technologies':
+                return {
+                    'ecosystem': getAvailableFilters(resultsFilters['ecosystem'], 'Technologies Ecosystem', 'simple-select'),
+                    'category': getAvailableFilters(resultsFilters['category'], 'Category', 'simple-select'),
+                }
+        }
+    }
+
+    useEffect(e => {
+        searchInTab(searchbarState.q, 'resources')
+    }, [resourcesFilters,])
+
+    useEffect(e => {
+        searchInTab(searchbarState.q, 'collections')
+    }, [collectionsFilters,])
+
+    useEffect(e => {
+        searchInTab(searchbarState.q, 'technologies')
+    }, [technologiesFilters,])
 
     useEffect(e => {
         searchInTab(searchbarState.q, currentTab);
@@ -194,6 +253,12 @@ function SearchApp() {
             case 'resources':
                 return (
                     <div className="resources">
+                        <FilterComponent
+                            key="resources-filters"
+                            fields={resources.availableFilters}
+                            queryFilter={resourcesFilters}
+                            setQueryFilter={setResourcesFilters}
+                        />
                         <h1>res</h1>
                         {resources.results.items ?
                             <PaginatedLayout
@@ -209,6 +274,12 @@ function SearchApp() {
             case 'collections':
                 return (
                     <div className="collections">
+                        <FilterComponent
+                            key="collections-filters"
+                            fields={collections.availableFilters}
+                            queryFilter={collectionsFilters}
+                            setQueryFilter={setCollectionsFilters}
+                        />
                         <h1>col</h1>
                         {collections.results.items ?
                             <PaginatedLayout
@@ -224,6 +295,12 @@ function SearchApp() {
             case 'technologies':
                 return (
                     <div className="technologies">
+                        <FilterComponent
+                            key="technologies-filters"
+                            fields={technologies.availableFilters}
+                            queryFilter={technologiesFilters}
+                            setQueryFilter={setTechnologiesFilters}
+                        />
                         <h1>tec</h1>
                         {technologies.results.items ?
                             <PaginatedLayout

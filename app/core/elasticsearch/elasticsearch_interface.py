@@ -32,7 +32,7 @@ class ElasticSearchInterface:
         connection = Elasticsearch()
         connection.indices.delete('_all')
 
-    def search(self, fields, term, filter, page=0, page_size=10):
+    def search(self, fields, term, filter, aggregates=None, page=0, page_size=10):
         page_offset = page * page_size
         q = {
             "from": page_offset,
@@ -51,6 +51,8 @@ class ElasticSearchInterface:
                     "fuzziness": 1
                 }
             }]
+        if aggregates:
+            q["aggs"] = aggregates
         res = self.connection.search(self.indexes, body=q)
         extracted_response = self._extract_results(res, 'search')
         extracted_response['stats']['page_size'] = page_size
@@ -89,8 +91,16 @@ class ElasticSearchInterface:
         extracted = False
         if type == 'search':
             results = [r['_source'] for r in res['hits']['hits']]
+            filters = {}
+            for name,v in res['aggregations'].items():
+                if 'doc_count' in v and v['doc_count'] == 0:
+                    continue
+                filters[name] = {}
+                for item in v['buckets']:
+                    filters[name][item['key']] = item['doc_count']
             extracted = {
                 'items': results,
+                'filters': filters,
                 'stats': {
                     'total': res['hits']['total']['value'],
                     'count': len(results)

@@ -43,3 +43,8 @@ export function extractURLParams(str) {
     })
     return params;
 }
+
+export function whatType(item) {
+    const typeStr = Object.prototype.toString.call(item).slice(8, -1);
+    return typeStr.toLowerCase();
+}
