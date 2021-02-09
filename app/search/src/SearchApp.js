@@ -224,7 +224,7 @@ function SearchApp() {
                 }
             case 'technologies':
                 return {
-                    'ecosystem': getAvailableFilters(resultsFilters['ecosystem'], 'Technologies Ecosystem', 'simple-select'),
+                    'ecosystem': getAvailableFilters(resultsFilters['ecosystem'], 'Technology Ecosystem', 'simple-select'),
                     'category': getAvailableFilters(resultsFilters['category'], 'Category', 'simple-select'),
                 }
         }
