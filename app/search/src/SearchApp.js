@@ -10,6 +10,7 @@ import {FilterComponent} from "../../src/components/FilterComponent";
 import SearchBarComponent from "./SearchBarComponent";
 import StudyResourceSearchListing from "../../study_resource/src/StudyResourceSearchListing";
 import CollectionSearchListing from "../../study_collection/src/CollectionSearchListing";
+import TechnologySearchListing from "../../technology/src/TechnologySearchListing";
 
 function codeParamsToUrl(params, data) {
     switch (whatType(data)) {
@@ -352,7 +353,11 @@ function SearchApp() {
                                 data={technologies.results.items}
                                 resultsContainerClass="results"
                                 setPagination={setTechnologiesResultsPagination}
-                                mapFunction={(item, idx) => <p key={item.pk}>{item.name}</p>}
+                                mapFunction={(item, idx) => <TechnologySearchListing
+                                    key={item.pk}
+                                    data={item}
+                                    addFilter={factoryAddFilter('technologies')}
+                                />}
                             /> : ''}
                     </div>
                 );

@@ -90,6 +90,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
 
                 # model fields
                 "name": {"type": "text", "copy_to": "suggest"},
+                "url": {"type": "keyword"},
                 "description": {"type": "text", "copy_to": "suggest"},
                 "owner": {"type": "text"},
                 "category": {"type": "keyword"},
@@ -108,6 +109,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
         data = {
             "pk": self.pk,
             "name": self.name,
+            "url": self.absolute_url,
             "description": self.description,
             "owner": self.owner,
             "category": self.category.name,
