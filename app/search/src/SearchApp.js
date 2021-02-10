@@ -1,13 +1,12 @@
 import React, {useState, useEffect, Fragment} from "react";
 import ReactDOM from "react-dom";
 import apiList from "../../src/api_interface/apiList";
+import {makeId, extractURLParams, whatType} from "../../src/components/utils";
 import StarRating from "../../src/components/StarRating";
 import ResourceRating from "../../study_resource/src/ResourceRating";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
 import {FilterComponent} from "../../src/components/FilterComponent";
-
-import {makeId, extractURLParams, whatType} from "../../src/components/utils";
-
+import StudyResourceListing from "../../study_resource/src/StudyResourceListing";
 import SearchBarComponent from "./SearchBarComponent";
 
 function codeParamsToUrl(params, data) {
@@ -200,11 +199,11 @@ function SearchApp() {
     function getTabState(tabname) {
         switch (tabname) {
             case 'resources':
-                return [resources, setResources, resourcesResultsPagination, setResourcesResultsPagination, resourcesFilters]
+                return [resources, setResources, resourcesResultsPagination, setResourcesResultsPagination, resourcesFilters, setResourcesFilters]
             case 'collections':
-                return [collections, setCollections, collectionsResultsPagination, setCollectionsResultsPagination, collectionsFilters]
+                return [collections, setCollections, collectionsResultsPagination, setCollectionsResultsPagination, collectionsFilters, setCollectionsFilters]
             case 'technologies':
-                return [technologies, setTechnologies, technologiesResultsPagination, setTechnologiesResultsPagination, technologiesFilters]
+                return [technologies, setTechnologies, technologiesResultsPagination, setTechnologiesResultsPagination, technologiesFilters, setTechnologiesFilters]
         }
     }
 
@@ -213,6 +212,7 @@ function SearchApp() {
             case 'resources':
                 return {
                     'tech_v': getAvailableFilters(resultsFilters['technologies'], 'Technologies', 'simple-select'),
+                    'tags': getAvailableFilters(resultsFilters['tags'], 'Tags', 'simple-select'),
                     'price': getAvailableFilters(resultsFilters['price'], 'Price', 'simple-select'),
                     'media': getAvailableFilters(resultsFilters['media'], 'Media', 'simple-select'),
                     'experience_level': getAvailableFilters(resultsFilters['experience_level'], 'Experience Level', 'simple-select'),
@@ -221,6 +221,7 @@ function SearchApp() {
             case 'collections':
                 return {
                     'technologies': getAvailableFilters(resultsFilters['technologies'], 'Technologies', 'simple-select'),
+                    'tags': getAvailableFilters(resultsFilters['tags'], 'Tags', 'simple-select'),
                 }
             case 'technologies':
                 return {
@@ -271,6 +272,15 @@ function SearchApp() {
         history.pushState(null, 'Search for ' + tabname, '?' + params.toString())
     }
 
+    function factoryAddFilter(tab) {
+        return (name, value) => {
+            const [state, setState, pagination, setPagination, filters, setFilters] = getTabState(tab);
+            let newFilters = {...filters};
+            newFilters[name] = value;
+            setFilters(newFilters);
+        }
+    }
+
     function showCurrentTab(currentTab) {
         switch (currentTab) {
             case 'resources':
@@ -290,7 +300,7 @@ function SearchApp() {
                                 data={resources.results.items}
                                 resultsContainerClass="results"
                                 setPagination={setResourcesResultsPagination}
-                                mapFunction={(item, idx) => <p key={item.pk}>{item.name}</p>}
+                                mapFunction={(item, idx) => <StudyResourceListing key={item.pk} data={item} addFilter={factoryAddFilter('resources')}/>}
                             /> : ''}
                     </div>
                 );

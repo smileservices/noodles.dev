@@ -3,19 +3,15 @@ import FormatDate from "../../src/vanilla/date";
 import Waiting from "../../src/components/Waiting";
 import ResourceRating from "./ResourceRating";
 
-export default function StudyResourceListing({data, remove}) {
+export default function StudyResourceListing({data, addFilter}) {
+    const MAX_RATING = 5
     return (
         <div className="result resource">
-            <div className="toolbar">
-                <span className="icon-close delete" onClick={e => {
-                    remove();
-                }}/>
-            </div>
             <p className="rating">
                 <ResourceRating rating={data.rating} maxRating={MAX_RATING} reviewsCount={data.reviews_count}/>
             </p>
             <p className="title">
-                <a href={data.absolute_url} target="new">{data.name}</a>
+                <a href={data.url} target="new">{data.name}</a>
             </p>
             <div className="group-muted">
                 <p className="publication-date">{FormatDate(data.publication_date, 'date')}</p>
@@ -24,8 +20,8 @@ export default function StudyResourceListing({data, remove}) {
             </div>
 
             <p className="tags">
-                {data.tags.map(t => <span key={'tag' + t.value} className="tag">{t.label}</span>)}
-                {data.technologies.map(t => <a key={'tech' + t.pk} href={t.url} className="tech">{t.name} {t.version}</a>)}
+                {data.tags.map(t => <span key={'tag' + t} onClick={e=>addFilter('tags', t)} className="tag">{t}</span>)}
+                {data.technologies.map(t => <a key={t.url} onClick={e=>addFilter('tech_v', t.name)} className="tech">{t.name} {t.version}</a>)}
             </p>
         </div>
     )

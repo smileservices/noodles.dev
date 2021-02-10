@@ -194,6 +194,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
                     "properties": {
                         "name": {"type": "keyword"},
                         "version": {"type": "float"},
+                        "url": {"type": "keyword"},
                     }
                 },
 
@@ -231,7 +232,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
 
             "category": self.category.name,
             "tags": [t.name for t in self.tags.all()],
-            "technologies": [{"name": t.name, "version": t.version} for t in self.get_technologies()],
+            "technologies": [{"name": t.name, "version": t.version, "url": t.technology.absolute_url} for t in self.get_technologies()],
 
             "author": {
                 "pk": self.author.pk,

@@ -104,7 +104,7 @@ def extract_filters(request) -> []:
             filter.append({
                 "term": {param: request.GET.get(param)}
             })
-        elif param in ['tag', 'ecosystem', 'technologies']:
+        elif param in ['tags', 'ecosystem', 'technologies']:
             for value in request.GET.getlist(param):
                 filter.append({
                     "term": {param: value}
