@@ -17,7 +17,7 @@ export default function StudyResourceSearchListing({data, addFilter}) {
                     <p className="experience-level">Difficulty {data.experience_level_label}</p>
                 <p className="type">{data.price_label} {data.media_label}</p>
             </div>
-
+            <p>Category: <span onClick={e=>addFilter('category', data.category)}>{data.category}</span></p>
             <p className="tags">
                 {data.tags.map(t => <span key={'tag' + t} onClick={e=>addFilter('tags', t)} className="tag">{t}</span>)}
                 {data.technologies.map(t => <a key={t.url} onClick={e=>addFilter('tech_v', t.name)} className="tech">{t.name} {t.version}</a>)}

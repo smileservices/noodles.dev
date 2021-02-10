@@ -10,7 +10,7 @@ export default function TechnologySearchListing({data, addFilter}) {
             <div className="group-muted">
                 <p className="summary">{data.description}</p>
             </div>
-            <p className="summary">{data.category}</p>
+            <p>Category: <span className="tags" onClick={e=>addFilter('category', data.category)}>{data.category}</span></p>
             <span className="tags">
                 {data.ecosystem.map(t => <a key={data.pk + t} onClick={e => addFilter('ecosystem', t)}
                                                className="tech">{t}</a>)}
