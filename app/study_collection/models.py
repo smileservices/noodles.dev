@@ -70,6 +70,14 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
             study_resource_id=resource_id,
             order=None
         )
+        self.save()
+
+    def remove_resource(self, resource_id):
+        self.resources.through.objects.get(
+            collection=self,
+            study_resource_id=resource_id
+        ).delete()
+        self.save()
 
     @property
     def absolute_url(self):
@@ -83,6 +91,9 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
 
                 # model fields
                 "name": {"type": "text", "copy_to": "suggest"},
+                "url": {"type": "keyword"},
+                "is_public": {"type": "boolean"},
+                "items_count": {"type": "short"},
                 "description": {"type": "text", "copy_to": "suggest"},
                 "author": {"type": "nested"},
                 "tags": {"type": "keyword"},
@@ -101,6 +112,9 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
         data = {
             "pk": self.pk,
             "name": self.name,
+            "url": self.absolute_url,
+            "is_public": self.is_public,
+            "items_count": self.resources.count(),
             "description": self.description,
             "author": {
                 "pk": self.author.pk,

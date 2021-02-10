@@ -38,6 +38,7 @@ def _search_collections(term, filter, page, page_size):
         "technologies": {"terms": {"field": "technologies", "size": 20}},
         "tags": {"terms": {"field": "tags", "size": 20}},
     }
+    filter.append({"term": {"is_public": True}})
     results = es_res.search(
         fields=collections_fields,
         term=term,

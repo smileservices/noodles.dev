@@ -228,7 +228,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
             "summary": self.summary,
             "publication_date": self.publication_date.isoformat(),
             "published_by": self.published_by,
-            "url": self.url,
+            "url": self.absolute_url,
 
             "category": self.category.name,
             "tags": [t.name for t in self.tags.all()],

@@ -1,9 +1,8 @@
 import React, {Fragment, useState} from "react";
 import FormatDate from "../../src/vanilla/date";
-import Waiting from "../../src/components/Waiting";
 import ResourceRating from "./ResourceRating";
 
-export default function StudyResourceListing({data, addFilter}) {
+export default function StudyResourceSearchListing({data, addFilter}) {
     const MAX_RATING = 5
     return (
         <div className="result resource">

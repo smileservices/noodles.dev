@@ -6,8 +6,10 @@ import StarRating from "../../src/components/StarRating";
 import ResourceRating from "../../study_resource/src/ResourceRating";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
 import {FilterComponent} from "../../src/components/FilterComponent";
-import StudyResourceListing from "../../study_resource/src/StudyResourceListing";
+
 import SearchBarComponent from "./SearchBarComponent";
+import StudyResourceSearchListing from "../../study_resource/src/StudyResourceSearchListing";
+import CollectionSearchListing from "../../study_collection/src/CollectionSearchListing";
 
 function codeParamsToUrl(params, data) {
     switch (whatType(data)) {
@@ -300,7 +302,11 @@ function SearchApp() {
                                 data={resources.results.items}
                                 resultsContainerClass="results"
                                 setPagination={setResourcesResultsPagination}
-                                mapFunction={(item, idx) => <StudyResourceListing key={item.pk} data={item} addFilter={factoryAddFilter('resources')}/>}
+                                mapFunction={(item, idx) => <StudyResourceSearchListing
+                                    key={item.pk}
+                                    data={item}
+                                    addFilter={factoryAddFilter('resources')}
+                                />}
                             /> : ''}
                     </div>
                 );
@@ -321,7 +327,11 @@ function SearchApp() {
                                 data={collections.results.items}
                                 resultsContainerClass="results"
                                 setPagination={setCollectionsResultsPagination}
-                                mapFunction={(item, idx) => <p key={item.pk}>{item.name}</p>}
+                                mapFunction={(item, idx) => <CollectionSearchListing
+                                    key={item.pk}
+                                    data={item}
+                                    addFilter={factoryAddFilter('collections')}
+                                />}
                             /> : ''}
                     </div>
                 );
