@@ -152,7 +152,8 @@ function StudyResourceCreateApp() {
             setWaiting,
             result => {
                 setAlert(<Alert close={e => setAlert(null)} text={"Could not create."} type="danger"/>)
-            }
+            },
+            'json'
         )
     }
 

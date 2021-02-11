@@ -35,6 +35,7 @@ function CreateSolutionApp() {
                         document.body.classList.remove('modal-open');
                         window.refreshChildren();
                     }}
+                    contentType="default"
                 />
             </Modal>
         )

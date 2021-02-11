@@ -79,6 +79,26 @@ export const Input = ({name, label, inputProps, smallText, error}) => {
     )
 }
 
+export const ImageInput = ({name, label, inputProps, smallText, error}) => {
+    return (
+        <div className="form-group">
+            {label
+                ? (<label htmlFor={name}>{label}</label>)
+                : ''
+            }
+            <input type="file" {...inputProps} id={name} name={name} aria-describedby={name + 'help'} className={handleInputClass(error)}/>
+            {smallText
+                ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
+                : ''
+            }
+            {error
+                ? (<div className="invalid-feedback">{error}</div>)
+                : ''
+            }
+        </div>
+    )
+}
+
 export const Textarea = ({name, label, inputProps, smallText, error}) => {
     return (
         <div className="form-group">

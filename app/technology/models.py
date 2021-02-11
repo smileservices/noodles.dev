@@ -3,6 +3,10 @@ import tsvector_field
 from users.models import CustomUser
 from django.contrib.postgres.indexes import GinIndex
 
+from versatileimagefield.fields import VersatileImageField
+from versatileimagefield.image_warmer import VersatileImageFieldWarmer
+
+from django.dispatch import receiver
 from votable.models import VotableMixin
 from core.abstract_models import SluggableModelMixin, SearchAbleQuerysetMixin, ElasticSearchIndexableMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
@@ -51,6 +55,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     limitations = models.TextField(max_length=1024)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.DO_NOTHING)
     ecosystem = models.ManyToManyField('Technology', related_name='related_technologies')
+    image_file = VersatileImageField(upload_to='technologies', blank=True, null=True)
 
     edit_suggestions = EditSuggestion(
         excluded_fields=('search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),
@@ -138,3 +143,23 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
 
 
 models.signals.post_save.connect(tasks.sync_technology_resources_to_elastic, sender=Technology, weak=False)
+
+
+@receiver(models.signals.post_delete, sender=Technology)
+def delete_technology_images(sender, instance, **kwargs):
+    """
+    Deletes Technology image renditions on post_delete.
+    """
+    instance.image_file.delete_all_created_images()
+    instance.image_file.delete(save=False)
+
+
+@receiver(models.signals.post_save, sender=Technology)
+def warm_technology_logos(sender, instance, **kwargs):
+    """Ensures Technologies logos are created post-save"""
+    sr_images_warmer = VersatileImageFieldWarmer(
+        instance_or_queryset=instance,
+        rendition_key_set='technology_logo',
+        image_attr='image_file'
+    )
+    num_created, failed_to_create = sr_images_warmer.warm()

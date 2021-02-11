@@ -1,26 +1,44 @@
 import {getCsrfToken} from "../components/utils";
 import {WaitingButton} from "../components/Waiting";
 
+function formDataTransport(data, contentType) {
+    switch (contentType) {
+        case 'multipart':
+            return [
+                data,
+                {
+                    'X-CSRFToken': getCsrfToken(),
+                    'Accept': '*/*',
+                }];
+        case 'json':
+            return [
+                JSON.stringify(data),
+                {
+                    'X-CSRFToken': getCsrfToken(),
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }]
+        default:
+            console.error('ApiCreate: must specify the content type! json/multipart supported now')
+    }
+}
+
 export default async function apiCreate(
     endpoint,
     data,
     success,
     setWaiting, setError,
-    handleSuccessHeaders
+    contentType
 ) {
-    setWaiting(<WaitingButton text={'Creating'} />);
+    setWaiting(<WaitingButton text={'Creating'}/>);
+    const [body, headers] = formDataTransport(data, contentType);
     await fetch(endpoint, {
         method: "POST",
-        headers: {
-            'X-CSRFToken': getCsrfToken(),
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        headers: headers,
+        body: body
     }).then(result => {
         setWaiting('');
         if (result.ok) {
-            if (handleSuccessHeaders) handleSuccessHeaders(result.headers);
             return result.json();
         } else {
             setError(result)

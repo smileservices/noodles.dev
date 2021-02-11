@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from rest_framework import fields
 from rest_framework.serializers import SerializerMethodField
+from versatileimagefield.serializers import VersatileImageFieldSerializer
+from django.conf import settings
 from .models import Technology
 from users.serializers import UserSerializerMinimal
 from category.serializers import CategorySerializerOption
@@ -79,11 +81,14 @@ class TechnologySerializer(EditSuggestionSerializer):
     queryset = Technology.objects.all()
     ecosystem = TechnologySerializerOption(many=True, read_only=True)
     category = CategorySerializerOption(read_only=True)
+    image_file = VersatileImageFieldSerializer(
+        sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image']
+    )
 
     class Meta:
         model = Technology
         depth = 1
-        fields = ['pk', 'name', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations', 'absolute_url', 'category',
+        fields = ['pk', 'name', 'image_file', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations', 'absolute_url', 'category',
                   'ecosystem', 'thumbs_up', 'thumbs_down']
 
     @staticmethod

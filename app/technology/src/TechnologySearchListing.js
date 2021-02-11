@@ -1,5 +1,4 @@
-import React, {useState, Fragment} from "react";
-import FormatDate from "../../src/vanilla/date";
+import React from "react";
 
 export default function TechnologySearchListing({data, addFilter}) {
 
@@ -17,8 +16,7 @@ export default function TechnologySearchListing({data, addFilter}) {
             </span>
             <div className="thumbs">
                 <div className="down"><span className="icon-thumbs-o-down"> </span><span>{data.thumbs_down}</span></div>
-                <div className="up"><span className="icon-thumbs-o-up"> </span><span>{data.thumbs_up}</span>
-                </div>
+                <div className="up"><span className="icon-thumbs-o-up"> </span><span>{data.thumbs_up}</span></div>
             </div>
         </div>
     )

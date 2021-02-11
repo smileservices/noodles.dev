@@ -2,7 +2,7 @@ import React, {useState, useEffect, Fragment} from "react"
 
 import {Input, Textarea, SelectReact, SelectReactCreatable} from "../../src/components/form";
 import apiPost from "../../src/api_interface/apiPost";
-import {FormElement} from "../../src/components/form";
+import {FormElement, ImageInput} from "../../src/components/form";
 import Alert from "../../src/components/Alert";
 
 export default function TechForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
@@ -60,6 +60,8 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
     }
 
     function validate(formData, callback) {
+        callback(formData);
+        return true;
         let vErr = {};
         if (formData.description.length < 30) vErr.description = 'Description is too short. It has to be at least 30 characters';
         if (formData.pros.length < 5) vErr.pros = 'Good points cannot be empty. Add at least 5 characters';
@@ -109,7 +111,10 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
             return t.value
         });
         cpd.category = data.category.value;
-        return cpd
+        cpd.image_file = data.image_file.content;
+        let packagedData = new FormData();
+        Object.keys(cpd).map(value => packagedData.append(value, cpd[value]));
+        return packagedData;
     }
 
     return (
@@ -121,16 +126,25 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
             alert={alert}
             waiting={waiting}
         >
-            { extraData.formTitle ? <h3>{extraData.formTitle}</h3> : ''}
-            <Input id="name" label="Name" inputProps={{
+            {extraData.formTitle ? <h3>{extraData.formTitle}</h3> : ''}
+            <Input name="name" label="Name" inputProps={{
                 ...makeStateProps('name'),
                 type: 'text',
                 disabled: Boolean(waiting)
             }}
                    smallText="The name of the technology. Don't add version."
-                   error={errors.version}
+                   error={errors.name}
             />
-            <Textarea id="description" label={false}
+            <ImageInput
+                name="image_file" label="Logo" inputProps={{
+                value: formData['image_file']['name'],
+                onChange: e => setFormData({...formData, image_file: {content: e.target.files[0], name: e.target.value}}),
+                disabled: Boolean(waiting)
+            }}
+                smallText="The logo of the technology"
+                error={errors.image_file}
+            />
+            <Textarea name="description" label={false}
                       inputProps={{
                           ...makeStateProps('description'),
                           placeholder: "Description",
@@ -140,7 +154,7 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
                       smallText="Write about release date, what problem it solves, how it does it"
                       error={errors.description}
             />
-            <Input id="url" label="Url" inputProps={{
+            <Input name="url" label="Url" inputProps={{
                 ...makeStateProps('url'),
                 required: true,
                 type: 'text',
@@ -149,7 +163,7 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
                    smallText="Url of docs or main page"
                    error={errors.url}
             />
-            <Input id="owner" label="Tech Owner/Maintainer" inputProps={{
+            <Input name="owner" label="Tech Owner/Maintainer" inputProps={{
                 ...makeStateProps('owner'),
                 required: true,
                 type: 'text',
@@ -158,7 +172,7 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
                    smallText="Who is owning or developing the tech"
                    error={errors.owner}
             />
-            <Textarea id="pros" label={false}
+            <Textarea name="pros" label={false}
                       inputProps={{
                           ...makeStateProps('pros'),
                           placeholder: "Good points",
@@ -168,7 +182,7 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
                       smallText="What are the good parts of this tech?"
                       error={errors.pros}
             />
-            <Textarea id="cons" label={false}
+            <Textarea name="cons" label={false}
                       inputProps={{
                           ...makeStateProps('cons'),
                           placeholder: "Bad points",
@@ -178,7 +192,7 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
                       smallText="What are the bad parts of this tech?"
                       error={errors.cons}
             />
-            <Textarea id="limitations" label={false}
+            <Textarea name="limitations" label={false}
                       inputProps={{
                           ...makeStateProps('limitations'),
                           placeholder: "Limitations",

@@ -31,7 +31,7 @@ export default function ReviewCreateController({data, successCallback}) {
             setAlert={setAlert}
             waiting={waiting}
             setWaiting={setWaiting}
-            submitCallback={data => apiCreate(REVIEW_API, data, successCallback, setWaiting, handleError)}
+            submitCallback={data => apiCreate(REVIEW_API, data, successCallback, setWaiting, handleError, contentType)}
         />
     )
 

@@ -113,6 +113,7 @@ export default function SolutionForm({formData, setFormData, extraData, submitCa
                     setTechnologies([...technologies, newTechOption]);
                     setFormData({...formData, technologies: [...formData.technologies, newTechOption]});
                 }}
+                contentType="default"
             />
         </Fragment>
     )
