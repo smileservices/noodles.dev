@@ -90,7 +90,7 @@ export default function SolutionForm({formData, setFormData, extraData, submitCa
 
     if (showAddTechForm) return (
         <Fragment>
-            <a href="" onClick={e=>{
+            <a href="" onClick={e => {
                 e.preventDefault();
                 setShowAddTechForm(false);
             }}>back to add solution form</a>
@@ -98,12 +98,14 @@ export default function SolutionForm({formData, setFormData, extraData, submitCa
                 endpoint={TECH_API}
                 data={{
                     'name': '',
+                    'image_file': {content: '', name: ''},
                     'description': '',
-                    'url': '',
-                    'owner': '',
                     'pros': '',
                     'cons': '',
                     'limitations': '',
+                    'owner': '',
+                    'category': '',
+                    'ecosystem': [],
                 }}
                 extraData={{addButtonText: 'create technology', formTitle: 'Create New Technology'}}
                 FormViewComponent={TechForm}
@@ -113,7 +115,7 @@ export default function SolutionForm({formData, setFormData, extraData, submitCa
                     setTechnologies([...technologies, newTechOption]);
                     setFormData({...formData, technologies: [...formData.technologies, newTechOption]});
                 }}
-                contentType="default"
+                contentType="multipart"
             />
         </Fragment>
     )
@@ -156,7 +158,10 @@ export default function SolutionForm({formData, setFormData, extraData, submitCa
                          props={{isMulti: true}}
                          error={errors.technologies}
             />
-            <a href="" onClick={e=>{e.preventDefault(); setShowAddTechForm(true)}}>add new tech</a>
+            <a href="" onClick={e => {
+                e.preventDefault();
+                setShowAddTechForm(true)
+            }}>add new tech</a>
             {extraData.formElements ? extraData.formElements.get_list(waiting, errors) : ''}
         </FormElement>
     )

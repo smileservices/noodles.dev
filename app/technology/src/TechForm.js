@@ -60,8 +60,6 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
     }
 
     function validate(formData, callback) {
-        callback(formData);
-        return true;
         let vErr = {};
         if (formData.description.length < 30) vErr.description = 'Description is too short. It has to be at least 30 characters';
         if (formData.pros.length < 5) vErr.pros = 'Good points cannot be empty. Add at least 5 characters';

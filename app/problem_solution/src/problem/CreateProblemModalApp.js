@@ -26,7 +26,7 @@ function CreateProblemApp() {
                 remove_modal_class_from_body();
                 window.refreshChildren();
             }}
-            contentType="default"
+            contentType="json"
         />);
     }
 

@@ -20,7 +20,7 @@ function Content() {
                 successCallback={()=>{}}
                 data={initialData}
                 extraData={{}}
-                contentType="default"
+                contentType="json"
            />
         </div>
     )

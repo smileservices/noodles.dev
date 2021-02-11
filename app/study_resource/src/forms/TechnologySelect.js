@@ -17,9 +17,10 @@ export default function TechnologySelect({techs, values, setValues, addNewTech, 
         'technology_id': false,
         'version': '',
     }
+
     function change(idx, prop, selected) {
         let ct = [...values];
-        if (prop==='technology') {
+        if (prop === 'technology') {
             ct[idx]['technology_id'] = selected['value'];
             ct[idx]['name'] = selected['label'];
         } else {
@@ -33,16 +34,16 @@ export default function TechnologySelect({techs, values, setValues, addNewTech, 
             <label htmlFor="select-techs">Technologies used</label>
             <small id="help" className="form-text text-muted">Can choose one or multiple or add a new one if
                 necessary.</small>
-            {values ? values.map((t,idx) =>
-                (<div className="row" key={"select-techs"+idx}>
-                    <SelectReact name={'select-tech'+idx}
+            {values ? values.map((t, idx) =>
+                (<div className="row" key={"select-techs" + idx}>
+                    <SelectReact name={'select-tech' + idx}
                                  onChange={selectedOptions => change(idx, 'technology', selectedOptions)}
                                  options={techs}
                                  value={{label: t.name, name: t.name, value: t.technology_id}}
                                  isDisabled={Boolean(waiting)}
                     />
                     <Input
-                        name={'version'+idx}
+                        name={'version' + idx}
                         inputProps={{
                             disabled: Boolean(waiting),
                             type: 'text',
@@ -52,22 +53,32 @@ export default function TechnologySelect({techs, values, setValues, addNewTech, 
                             value: t.version,
                         }}
                     />
-                    <a onClick={e=>{
+                    <a onClick={e => {
                         e.preventDefault();
-                        setValues(values.filter((t,ridx) => ridx!==idx));
+                        setValues(values.filter((t, ridx) => ridx !== idx));
                     }}>remove</a>
                 </div>)
             ) : ''}
-            <span href="" onClick={e=>{
+            <span href="" onClick={e => {
                 e.preventDefault();
                 setValues([...values, emptyForm]);
             }}>add new</span>
             <CreateableComponent
                 endpoint={TECH_API}
-                data={{}}
+                data={{
+                    'name': '',
+                    'image_file': {content: '', name: ''},
+                    'description': '',
+                    'pros': '',
+                    'cons': '',
+                    'limitations': '',
+                    'owner': '',
+                    'category': '',
+                    'ecosystem': [],
+                }}
                 extraData={{addButtonText: 'create technology', formTitle: 'Create New Technology'}}
                 FormViewComponent={TechForm}
-                successCallback={data=>addNewTech(data)}
+                successCallback={data => addNewTech(data)}
             />
         </Fragment>
     );
