@@ -2,9 +2,11 @@ from django.db import models
 import tsvector_field
 from users.models import CustomUser
 from django.contrib.postgres.indexes import GinIndex
+from django.conf import settings
 
 from versatileimagefield.fields import VersatileImageField
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
+from versatileimagefield.utils import build_versatileimagefield_url_set
 
 from django.dispatch import receiver
 from votable.models import VotableMixin
@@ -87,6 +89,13 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     def absolute_url(self):
         return reverse('tech-detail', kwargs={'id': self.pk, 'slug': self.slug})
 
+    @property
+    def logo(self):
+        return build_versatileimagefield_url_set(
+            self.image_file,
+            settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['technology_logo']
+        )
+
     @staticmethod
     def get_elastic_mapping() -> {}:
         return {
@@ -95,7 +104,8 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
 
                 # model fields
                 "name": {"type": "text", "copy_to": "suggest"},
-                "url": {"type": "keyword"},
+                "image_file": {"type": "keyword"},
+                "url": {"type": "nested"},
                 "description": {"type": "text", "copy_to": "suggest"},
                 "owner": {"type": "text"},
                 "category": {"type": "keyword"},
@@ -114,6 +124,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
         data = {
             "pk": self.pk,
             "name": self.name,
+            "image_file": self.image_file.size,
             "url": self.absolute_url,
             "description": self.description,
             "owner": self.owner,
