@@ -26,7 +26,8 @@ def create_technologies():
             pros=f.text(),
             cons=f.text(),
             limitations=f.text(),
-            category=choice(categories)
+            category=choice(categories),
+            image_file='',
         )
         tobj.save()
         created_tech[t] = tobj

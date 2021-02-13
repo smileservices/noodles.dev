@@ -141,7 +141,7 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset, SearchableModelView
 
 
     # technologies and tags are saved in the serializer
-    def edit_suggestion_handle_m2m_through_field(self, instance, f):
+    def edit_suggestion_handle_m2m_through_field(self, instance, data, f):
         # overriding the edit_suggestion method to handle technologies
         '''
             handles data of through in this format:
@@ -154,7 +154,7 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset, SearchableModelView
             f         tracked field information (the one supplied in the models when setting up edit suggestion)
         '''
         m2m_field = getattr(instance, f['name'])
-        through_data = self.request.data[f['name']]
+        through_data = data[f['name']]
         m2m_objects_id_list = [o['technology_id'] for o in through_data]
         m2m_objects = [obj for obj in f['model'].objects.filter(pk__in=m2m_objects_id_list)]
         for idx, m2m_obj in enumerate(m2m_objects):

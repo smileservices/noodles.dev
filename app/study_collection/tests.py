@@ -59,7 +59,7 @@ class CollectionsTestCase(APITestCase):
             self.assertEqual(add_to_collection_response.status_code, 200)
 
         # create control collection2
-        collection_2 = Collection.objects.create(name='2nd collection', description='something')
+        collection_2 = Collection.objects.create(name='2nd collection', description='something', author=user)
         collection_2.resources.through.objects.create(collection=collection_2, study_resource=resource_4, order=0)
         collection_2.resources.through.objects.create(collection=collection_2, study_resource=resource_5, order=1)
         collection_2.resources.through.objects.create(collection=collection_2, study_resource=resource_6, order=2)

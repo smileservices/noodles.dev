@@ -124,7 +124,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
         data = {
             "pk": self.pk,
             "name": self.name,
-            "image_file": self.image_file.size,
+            "image_file": self.image_file.size if self.image_file else {},
             "url": self.absolute_url,
             "description": self.description,
             "owner": self.owner,

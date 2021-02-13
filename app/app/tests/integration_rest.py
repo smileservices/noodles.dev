@@ -13,6 +13,10 @@ from problem_solution.fake import create_problem, create_solution
 from problem_solution.models import Problem, Solution
 from app.settings import rewards
 
+from faker import Faker
+
+fake = Faker()
+
 from study_resource.models import StudyResource
 
 PROBLEM_VIEWSET_URL = reverse('problem-viewset-list')
@@ -331,7 +335,12 @@ class RestIntegrationTest(APITestCase):
         self.client.force_login(user_cannot_update)
         res_update_cannot = self.client.put(
             reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}),
-            {'name': 'cannot edit', 'edit_suggestion_reason': 'some reason', 'category': choice(self.categories).pk,},
+            {'name': 'cannot edit',
+             'description': response_pb.data['description'],
+             'tags': [self.tags[1].pk, self.tags[2].pk],
+             'edit_suggestion_reason': 'some reason',
+             'category': choice(self.categories).pk,
+             },
             format='json'
         )
         self.assertEqual(res_update_cannot.status_code, 209)
@@ -340,7 +349,8 @@ class RestIntegrationTest(APITestCase):
         self.client.force_login(user_resource_author)
         res_update_can = self.client.put(
             reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}),
-            {'name': 'updated by author', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk], 'category': choice(self.categories).pk,},
+            {'name': 'updated by author', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk],
+             'category': choice(self.categories).pk, },
             format='json'
         )
         self.assertEqual(res_update_can.status_code, 200)
@@ -348,7 +358,8 @@ class RestIntegrationTest(APITestCase):
         self.client.force_login(user_staff)
         res_update_can = self.client.put(
             reverse('problem-viewset-detail', kwargs={'pk': response_pb.data['pk']}),
-            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk], 'category': choice(self.categories).pk,},
+            {'name': 'updated by staff', 'description': 'updated', 'tags': [self.tags[1].pk, self.tags[2].pk],
+             'category': choice(self.categories).pk, },
             format='json'
         )
         self.assertEqual(res_update_can.status_code, 200)
@@ -437,7 +448,7 @@ class RestIntegrationTest(APITestCase):
                 'summary': 'bla bla bla',
                 'publication_date': '2020-09-20',
                 'published_by': 'google',
-                'url': 'www.gibberish.com',
+                'url': fake.url(),
                 'price': 0,
                 'media': 0,
                 'experience': 0,
@@ -450,7 +461,7 @@ class RestIntegrationTest(APITestCase):
                     },
                     {
                         'technology_id': self.technologies[1].pk,
-                        'version': '',
+                        'version': 0,
                     },
                 ]
             },
@@ -468,9 +479,9 @@ class RestIntegrationTest(APITestCase):
         # check that the technologies are getting through the pivot table
         self.assertEqual(resource_get.data['category']['label'], self.categories[0].name)
         self.assertEqual(resource_get.data['technologies'][0]['name'], self.technologies[0].name)
-        self.assertEqual(resource_get.data['technologies'][0]['version'], '123')
+        self.assertEqual(resource_get.data['technologies'][0]['version'], 123.0)
         self.assertEqual(resource_get.data['technologies'][1]['name'], self.technologies[1].name)
-        self.assertEqual(resource_get.data['technologies'][1]['version'], '')
+        self.assertEqual(resource_get.data['technologies'][1]['version'], 0.0)
 
     def test_create_study_resource_edit_suggestion(self):
         resource_pk = self.test_create_study_resource()
@@ -483,7 +494,7 @@ class RestIntegrationTest(APITestCase):
             'summary': 'bla bla bla',
             'publication_date': '2020-09-20',
             'published_by': 'google',
-            'url': 'www.gibberish.com',
+            'url': fake.url(),
             'price': 0,
             'media': 0,
             'experience': 0,
@@ -492,7 +503,7 @@ class RestIntegrationTest(APITestCase):
             'technologies': [
                 {
                     'technology_id': self.technologies[2].pk,
-                    'version': '123',
+                    'version': 123.4,
                 },
             ]
         }
@@ -515,4 +526,4 @@ class RestIntegrationTest(APITestCase):
         self.assertEqual(resource.name, edit_data['name'])
         resource_techs = resource.technologies.through.objects.filter(study_resource=resource.pk).all()
         self.assertEqual(resource_techs[0].technology, self.technologies[2])
-        self.assertEqual(resource_techs[0].version, '123')
+        self.assertEqual(resource_techs[0].version, 123.4)

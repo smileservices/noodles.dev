@@ -39,7 +39,9 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
         if self.request.user.is_staff or instance.author == self.request.user:
             return super(ResourceWithEditSuggestionVieset, self).update(request, *args, **kwargs)
         else:
-            edsug = self.edit_suggestion_perform_create(instance)
+            serialized_data = self.serializer_class(data=request.data)
+            validated_data = serialized_data.run_validation(request.data)
+            edsug = self.edit_suggestion_perform_create(instance, validated_data)
             serializer = self.serializer_class.get_edit_suggestion_serializer()
             return Response(serializer(edsug).data, status=HTTP_209_EDIT_SUGGESTION_CREATED)
 
