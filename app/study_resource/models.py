@@ -21,6 +21,7 @@ from django_edit_suggestion.models import EditSuggestion
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 from core.abstract_models import ElasticSearchIndexableMixin
 from core.tasks import sync_to_elastic
+from core import utils
 
 
 class StudyResourceManager(models.Manager):
@@ -266,13 +267,9 @@ class StudyResourceImage(models.Model):
 
     def save(self, *args, **kwargs):
         if self.image_url and not self.image_file:
-            img_temp = NamedTemporaryFile(delete=True)
-            img_temp.write(requests.get(self.image_url).content)
-            self.image_file.save(
-                f"image_{self.study_resource.pk}_{uuid4().__str__()}.{self.image_url.split('.')[-1]}",
-                File(img_temp)
-            )
-            img_temp.flush()
+            name = f"image_{self.study_resource.pk}_{uuid4().__str__()}.{self.image_url.split('.')[-1]}"
+            content = requests.get(self.image_url).content
+            utils.save_file_to_field(self.image_file, name, content)
         else:
             super(StudyResourceImage, self).save(*args, **kwargs)
 
