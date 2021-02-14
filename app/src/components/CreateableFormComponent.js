@@ -3,7 +3,7 @@ import apiCreate from "../api_interface/apiCreate";
 import Alert from "./Alert";
 import {makeId} from "./utils";
 
-export default function CreateableFormComponent({endpoint, data, extraData, FormViewComponent, successCallback, contentType}) {
+export default function CreateableFormComponent({endpoint, data, extraData, FormViewComponent, successCallback}) {
     const [waiting, setWaiting] = useState(false);
     const [alert, setAlert] = useState(false);
     const [errors, setErrors] = useState({});
@@ -48,7 +48,7 @@ export default function CreateableFormComponent({endpoint, data, extraData, Form
                                         hideable={false} close={e => setAlert(null)}/>)
                     }
                 })
-            }, contentType)
+            }, FormViewComponent.contentType)
     }
 
     return (

@@ -2,7 +2,7 @@ import React, {useState, useEffect, Fragment} from "react"
 import Alert from "../../src/components/Alert";
 import {Input, SelectReact, SelectReactCreatable, Textarea, FormElement} from "../../src/components/form";
 
-export default function CollectionForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
+function CollectionForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
 
     const [tags, setTags] = useState({});
     const [techs, setTechs] = useState({});
@@ -131,5 +131,8 @@ export default function CollectionForm({formData, setFormData, extraData, submit
             />
             {extraData.formElements ? extraData.formElements.get_list(waiting, errors) : ''}
         </FormElement>
-);
+    );
 }
+
+CollectionForm.contentType = 'json';
+export default CollectionForm;

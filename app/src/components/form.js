@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import Select from 'react-select';
-import Creatable, { makeCreatableSelect } from 'react-select/creatable';
+import Creatable, {makeCreatableSelect} from 'react-select/creatable';
 
 export const ConfirmComponent = ({buttonText, questionText, handleConfirm}) => {
     const [ask, setAsk] = useState(false);
@@ -52,9 +52,9 @@ export function FormElement({data, children, callback, alert, waiting}) {
             e.stopPropagation();
             callback(data);
         }}>
-            { children }
-            { alert }
-            { waiting ? waiting : <button type="submit" className="btn submit">Submit</button> }
+            {children}
+            {alert}
+            {waiting ? waiting : <button type="submit" className="btn submit">Submit</button>}
         </form>
     )
 }
@@ -66,7 +66,8 @@ export const Input = ({name, label, inputProps, smallText, error}) => {
                 ? (<label htmlFor={name}>{label}</label>)
                 : ''
             }
-            <input {...inputProps} id={name} name={name} aria-describedby={name + 'help'} className={handleInputClass(error)}/>
+            <input {...inputProps} id={name} name={name} aria-describedby={name + 'help'}
+                   className={handleInputClass(error)}/>
             {smallText
                 ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
                 : ''
@@ -79,20 +80,28 @@ export const Input = ({name, label, inputProps, smallText, error}) => {
     )
 }
 
-export const ImageInput = ({name, label, inputProps, smallText, error}) => {
+export const ImageInput = ({name, label, inputProps, smallText, error, selectedImage}) => {
     return (
         <div className="form-group">
             {label
                 ? (<label htmlFor={name}>{label}</label>)
                 : ''
             }
-            <input type="file" {...inputProps} id={name} name={name} aria-describedby={name + 'help'} className={handleInputClass(error)}/>
+            <input type="file" {...inputProps} id={name} name={name} aria-describedby={name + 'help'}
+                   className={handleInputClass(error)}/>
             {smallText
                 ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
                 : ''
             }
             {error
                 ? (<div className="invalid-feedback">{error}</div>)
+                : ''
+            }
+            {selectedImage ?
+                <Fragment>
+                    <p>Current Image:</p>
+                    <img src={selectedImage} alt=""/>
+                </Fragment>
                 : ''
             }
         </div>
@@ -152,22 +161,23 @@ export const SelectVanilla = ({name, label, inputProps, smallText, error, Option
 
 export const SelectReact = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => {
     return (
-    <div className="form-group">
-        {label
-            ? (<label htmlFor={name}>{label}</label>)
-            : ''
-        }
-        <Select isLoading={isLoading} isDisabled={isDisabled} options={options} value={value} onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
-        {smallText
-            ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
-            : ''
-        }
-        {error
-            ? (<div className="invalid-feedback">{error}</div>)
-            : ''
-        }
-    </div>
-)
+        <div className="form-group">
+            {label
+                ? (<label htmlFor={name}>{label}</label>)
+                : ''
+            }
+            <Select isLoading={isLoading} isDisabled={isDisabled} options={options} value={value}
+                    onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
+            {smallText
+                ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
+                : ''
+            }
+            {error
+                ? (<div className="invalid-feedback">{error}</div>)
+                : ''
+            }
+        </div>
+    )
 }
 
 export const SelectReactCreatable = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => (
@@ -176,7 +186,8 @@ export const SelectReactCreatable = ({name, label, smallText, error, options, va
             ? (<label htmlFor={name}>{label}</label>)
             : ''
         }
-        <Creatable isLoading={isLoading} isDisabled={isDisabled} options={options} value={value} onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
+        <Creatable isLoading={isLoading} isDisabled={isDisabled} options={options} value={value}
+                   onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
         {smallText
             ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
             : ''

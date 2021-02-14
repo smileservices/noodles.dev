@@ -1,22 +1,20 @@
 import {getCsrfToken} from "../components/utils";
 import {WaitingButton} from "../components/Waiting";
+import {formDataTransport} from "./utils";
 
 export default async function apiUpdate(
     endpoint,
     id,
     data,
     success,
-    setWaiting, setError,
+    setWaiting, setError, contentType
 ) {
     setWaiting(<WaitingButton text="Updating"/>);
+    const [body, headers] = formDataTransport(data, contentType);
     await fetch(endpoint+id+'/', {
         method: "PUT",
-        headers: {
-            'X-CSRFToken': getCsrfToken(),
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+        headers: headers,
+        body: body
     }).then(result => {
         setWaiting('');
         if (result.ok) {

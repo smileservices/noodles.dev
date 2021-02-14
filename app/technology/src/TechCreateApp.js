@@ -8,6 +8,7 @@ function Content() {
     const defaultData = {
         'name': '',
         'image_file': {content: '', name: ''},
+        'url': '',
         'description': '',
         'pros': '',
         'cons': '',

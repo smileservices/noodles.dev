@@ -79,11 +79,13 @@ export default function EditForm({addEditSuggestionCallback, ResourceForm, api_u
                                             hideable={false}
                                             stick={true}/>)
                 )
-            }
+            }, ResourceForm.contentType
         )
     }
 
     const extraData = {
+        resetForm: resetForm,
+        originalData: originalData,
         formElements: {
             get_list: (waiting, errors) =>
                 (<Textarea

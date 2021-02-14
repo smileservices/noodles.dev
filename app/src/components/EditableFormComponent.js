@@ -35,7 +35,7 @@ export default function EditableFormComponent({endpoint, data, extraData, FormVi
                                         hideable={false} close={e => setAlert(null)}/>)
                     }
                 })
-            })
+            }, FormViewComponent.contentType)
     }
 
     return (

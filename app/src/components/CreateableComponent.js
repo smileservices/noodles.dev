@@ -20,7 +20,6 @@ export default function CreateableComponent({endpoint, data, extraData, FormView
                             setShowForm(false);
                         }
                     }
-                    contentType="json"
                 />
             </Modal>
         )

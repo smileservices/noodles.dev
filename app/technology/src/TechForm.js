@@ -5,7 +5,7 @@ import apiPost from "../../src/api_interface/apiPost";
 import {FormElement, ImageInput} from "../../src/components/form";
 import Alert from "../../src/components/Alert";
 
-export default function TechForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
+function TechForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
 
     const [technologies, setTechnologies] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -59,15 +59,15 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
         }
     }
 
-    function validate(formData, callback) {
+    function validate(normalizedData, callback) {
         let vErr = {};
-        if (formData.description.length < 30) vErr.description = 'Description is too short. It has to be at least 30 characters';
-        if (formData.pros.length < 5) vErr.pros = 'Good points cannot be empty. Add at least 5 characters';
-        if (formData.cons.length < 5) vErr.cons = 'Bad points cannot be empty. Add at least 5 characters';
-        if (formData.limitations.length < 30) vErr.limitations = 'Limitations cannot be empty. Add at least 30 characters';
-        if (formData.owner.length < 5) vErr.owner = 'Owner/Maintainer name is too short, has to be at least 5 characters';
+        if (normalizedData.description.length < 30) vErr.description = 'Description is too short. It has to be at least 30 characters';
+        if (normalizedData.pros.length < 5) vErr.pros = 'Good points cannot be empty. Add at least 5 characters';
+        if (normalizedData.cons.length < 5) vErr.cons = 'Bad points cannot be empty. Add at least 5 characters';
+        if (normalizedData.limitations.length < 30) vErr.limitations = 'Limitations cannot be empty. Add at least 30 characters';
+        if (normalizedData.owner.length < 5) vErr.owner = 'Owner/Maintainer name is too short, has to be at least 5 characters';
         if (extraData.formElements) {
-            extraData.formElements.validate(formData, vErr);
+            extraData.formElements.validate(normalizedData, vErr);
         }
         setErrors(vErr);
         if (Object.keys(vErr).length > 0) {
@@ -79,7 +79,7 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
         apiPost(
             TECH_API + 'validate_url/',
             {
-                url: formData.url
+                url: normalizedData.url
             },
             setWaiting,
         ).then(result => {
@@ -99,8 +99,14 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
                 return true;
             }
         }).then(valid => {
-            if (valid) callback(formData);
+            if (valid) callback(makeFormData(normalizedData));
         })
+    }
+
+    function makeFormData(data) {
+        let packagedData = new FormData();
+        Object.keys(data).map(value => packagedData.append(value, data[value]));
+        return packagedData;
     }
 
     function normalizeData(data) {
@@ -110,9 +116,7 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
         });
         cpd.category = data.category.value;
         cpd.image_file = data.image_file.content;
-        let packagedData = new FormData();
-        Object.keys(cpd).map(value => packagedData.append(value, cpd[value]));
-        return packagedData;
+        return cpd;
     }
 
     return (
@@ -141,7 +145,9 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
             }}
                 smallText="The logo of the technology"
                 error={errors.image_file}
+                selectedImage={extraData.originalData.image_file ? extraData.originalData.image_file.small : false}
             />
+
             <Textarea name="description" label={false}
                       inputProps={{
                           ...makeStateProps('description'),
@@ -220,3 +226,6 @@ export default function TechForm({formData, setFormData, extraData, submitCallba
         </FormElement>
     )
 }
+
+TechForm.contentType = 'multipart';
+export default TechForm;
