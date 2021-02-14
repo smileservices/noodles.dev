@@ -9,6 +9,7 @@ from users.serializers import UserSerializerMinimal
 from category.serializers import CategorySerializerOption
 from category.models import Category
 from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
+from django.template.defaultfilters import slugify
 
 
 class TechnologySerializerOption(serializers.ModelSerializer):
@@ -54,8 +55,8 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
 
     def run_validation(self, data):
         validated_data = super(TechnologyEditSerializer, self).run_validation(data)
-        validated_data['ecosystem'] = json.loads(data['ecosystem']) if data['ecosystem'] else []
-        validated_data['category_id'] = int(Category.objects.validate_category(data['category']))
+        validated_data['ecosystem'] = [int(t) for t in data['ecosystem'].split(',')] if data['ecosystem'] else []
+        validated_data['category_id'] = Category.objects.validate_category(int(data['category']))
         return validated_data
 
     def get_changes(self, instance):
@@ -65,16 +66,25 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
         for change in delta.changes:
             if change.field == 'ecosystem':
                 result.append({'field': change.field.capitalize(),
+                               'type': 'text',
                                'old': ', '.join([t.name for t in change.old]),
                                'new': ', '.join([t.name for t in change.new])
                                })
             elif change.field == 'category':
                 result.append({'field': change.field.capitalize(),
+                               'type': 'text',
                                'old': Category.objects.get(pk=change.old).name,
                                'new': Category.objects.get(pk=change.new).name
                                })
+            elif change.field == 'image_file':
+                result.append({'field': 'Logo',
+                               'type': 'image',
+                               'old': instance.edit_suggestion_parent.logo,
+                               'new': instance.logo
+                               })
             else:
-                result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
+                result.append(
+                    {'field': change.field.capitalize(), 'type': 'text', 'old': change.old, 'new': change.new})
         return result
 
 
@@ -83,13 +93,15 @@ class TechnologySerializer(EditSuggestionSerializer):
     ecosystem = TechnologySerializerOption(many=True, read_only=True)
     category = CategorySerializerOption(read_only=True)
     image_file = VersatileImageFieldSerializer(
-        sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image']
+        sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image'],
+        required=False,
     )
 
     class Meta:
         model = Technology
         depth = 1
-        fields = ['pk', 'name', 'image_file', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations', 'absolute_url', 'category',
+        fields = ['pk', 'name', 'image_file', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations',
+                  'absolute_url', 'category',
                   'ecosystem', 'thumbs_up', 'thumbs_down']
 
     @staticmethod
@@ -102,8 +114,13 @@ class TechnologySerializer(EditSuggestionSerializer):
 
     def run_validation(self, data):
         validated_data = super(TechnologySerializer, self).run_validation(data)
-        validated_data['ecosystem'] = json.loads(data['ecosystem']) if data['ecosystem'] else []
-        validated_data['category_id'] = int(Category.objects.validate_category(data['category']))
+        # edits without image_file must not modify the model
+        if 'pk' in data and 'image_file' not in data:
+            # populate with parent image file otherwise the edit will set the image_file blank
+            validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']
+        validated_data['slug'] = slugify(validated_data['name'])
+        validated_data['ecosystem'] = [int(t) for t in data['ecosystem'].split(',')] if data['ecosystem'] else []
+        validated_data['category_id'] = Category.objects.validate_category(int(data['category']))
         return validated_data
 
 
@@ -114,8 +131,5 @@ class TechnologyListing(serializers.ModelSerializer):
 
     class Meta:
         model = Technology
-        fields = ['pk', 'name', 'license','absolute_url', 'category', 'ecosystem',
+        fields = ['pk', 'name', 'license', 'absolute_url', 'category', 'ecosystem',
                   'thumbs_up', 'thumbs_down']
-
-
-

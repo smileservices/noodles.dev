@@ -115,7 +115,11 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
             return t.value
         });
         cpd.category = data.category.value;
-        cpd.image_file = data.image_file.content;
+        if (data.image_file.content) {
+            cpd.image_file = data.image_file.content;
+        } else {
+            delete cpd.image_file;
+        }
         return cpd;
     }
 
@@ -145,7 +149,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
             }}
                 smallText="The logo of the technology"
                 error={errors.image_file}
-                selectedImage={extraData.originalData.image_file ? extraData.originalData.image_file.small : false}
+                selectedImage={extraData.originalData?.image_file ? extraData.originalData.image_file.small : false}
             />
 
             <Textarea name="description" label={false}

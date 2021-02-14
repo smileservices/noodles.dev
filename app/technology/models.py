@@ -19,6 +19,32 @@ from category.models import Category
 from core import tasks
 
 
+def delete_technology_images(sender, instance, **kwargs):
+    """
+    Deletes Technology image renditions on post_delete.
+    """
+    instance.image_file.delete_all_created_images()
+    instance.image_file.delete(save=False)
+
+
+def warm_technology_logos(sender, instance, **kwargs):
+    """Ensures Technologies logos are created post-save"""
+    sr_images_warmer = VersatileImageFieldWarmer(
+        instance_or_queryset=instance,
+        rendition_key_set='technology_logo',
+        image_attr='image_file'
+    )
+    num_created, failed_to_create = sr_images_warmer.warm()
+
+
+def remove_old_image(sender, instance, **kwargs):
+    if 'image_file' in kwargs['update_fields']:
+        db_instance = sender.objects.get(pk=instance.pk)
+        if db_instance.image_file != instance.image_file:
+            db_instance.image_file.delete_all_created_images()
+            db_instance.image_file.delete(save=False)
+
+
 class TechnologyManager(models.Manager):
 
     def get_queryset(self):
@@ -65,7 +91,12 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
-        bases=(VotableMixin,)
+        bases=(VotableMixin,),
+        signals={
+            'post_save': [warm_technology_logos, ],
+            'post_delete': [delete_technology_images, ]
+        },
+        attrs_to_be_copied=['logo', ]
     )
 
     search_vector_index = tsvector_field.SearchVectorField([
@@ -153,24 +184,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
         super().save(*args, **kwargs)
 
 
+models.signals.pre_save.connect(remove_old_image, sender=Technology, weak=False)
 models.signals.post_save.connect(tasks.sync_technology_resources_to_elastic, sender=Technology, weak=False)
-
-
-@receiver(models.signals.post_delete, sender=Technology)
-def delete_technology_images(sender, instance, **kwargs):
-    """
-    Deletes Technology image renditions on post_delete.
-    """
-    instance.image_file.delete_all_created_images()
-    instance.image_file.delete(save=False)
-
-
-@receiver(models.signals.post_save, sender=Technology)
-def warm_technology_logos(sender, instance, **kwargs):
-    """Ensures Technologies logos are created post-save"""
-    sr_images_warmer = VersatileImageFieldWarmer(
-        instance_or_queryset=instance,
-        rendition_key_set='technology_logo',
-        image_attr='image_file'
-    )
-    num_created, failed_to_create = sr_images_warmer.warm()
+models.signals.post_save.connect(warm_technology_logos, sender=Technology, weak=False)
+models.signals.post_delete.connect(delete_technology_images, sender=Technology, weak=False)

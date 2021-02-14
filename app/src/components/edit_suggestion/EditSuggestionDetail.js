@@ -157,6 +157,27 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
         </form>
     );
 
+    function displayChange(c) {
+        if (c.type === 'image') return (
+            <div key={"change" + c.field} className="edit-change">
+                <p>Field name: "{c.field}"</p>
+                <p>Old value:</p>
+                <img src={c.old.small} alt=""/>
+                <p>New value:</p>
+                <img src={c.new.small} alt=""/>
+            </div>
+        )
+        return (
+            <div key={"change" + c.field} className="edit-change">
+                <p>Field name: "{c.field}"</p>
+                <p>Old value:</p>
+                <p>"{c.old}"</p>
+                <p>New value:</p>
+                <p>"{c.new}"</p>
+            </div>
+        )
+    }
+
     return (
         <div className="modal-content has-toolbar">
             <EditSuggestionToolbar isOwner={isOwner}/>
@@ -164,15 +185,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
                 ?
                 <div className="edit-suggestion-details">
                     <h4>Changes:</h4>
-                    {data.changes.map(c =>
-                        <div key={"change" + c.field} className="edit-change">
-                            <p>Field name: "{c.field}"</p>
-                            <p>Old value:</p>
-                            <p>"{c.old}"</p>
-                            <p>New value:</p>
-                            <p>"{c.new}"</p>
-                        </div>
-                    )}
+                    {data.changes.map(c => displayChange(c))}
 
                     <p>author: {data.edit_suggestion_author.get_full_name}</p>
                     <p>reason: {data.edit_suggestion_reason}</p>
