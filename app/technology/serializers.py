@@ -53,9 +53,9 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
                   'thumbs_up_array', 'thumbs_down_array']
 
     def run_validation(self, data):
-        validated_data = super().run_validation(data)
-        validated_data['ecosystem'] = data['ecosystem']
-        validated_data['category_id'] = Category.objects.validate_category(data['category'])
+        validated_data = super(TechnologyEditSerializer, self).run_validation(data)
+        validated_data['ecosystem'] = json.loads(data['ecosystem']) if data['ecosystem'] else []
+        validated_data['category_id'] = int(Category.objects.validate_category(data['category']))
         return validated_data
 
     def get_changes(self, instance):
