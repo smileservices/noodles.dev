@@ -1,6 +1,13 @@
 import React, {useState, useEffect, Fragment} from "react"
 import Alert from "../../../src/components/Alert";
-import {Input, Textarea, SelectReact, FormElement, SelectReactCreatable} from "../../../src/components/form";
+import {
+    Input,
+    Textarea,
+    SelectReact,
+    FormElement,
+    SelectReactCreatable,
+    ImageInputComponent
+} from "../../../src/components/form";
 
 export default function CreateFormStep3({data, options, categories, submit, waiting}) {
     const [formData, setFormData] = useState(data);
@@ -107,20 +114,17 @@ export default function CreateFormStep3({data, options, categories, submit, wait
                                  smallText="Experience level required"
                     />
                 </div>
-                <div className="row">
-                    <img src={formData.image_url} alt=""/>
-                </div>
-                <Input
-                    id={'image_url'}
-                    label="Image Url"
+                <ImageInputComponent
+                    data={formData.image_file}
+                    setValue={valueObj => setFormData({...formData, image_file: valueObj})}
                     inputProps={{
-                        disabled: Boolean(waiting),
-                        type: 'text',
-                        value: formData.image_url,
-                        onChange: e => setFormData({...formData, image_url: e.target.value})
+                        'name': 'image_file',
+                        'label': 'Primary Image',
+                        'error': errors.image_file,
+                        'waiting': waiting,
+                        'smallText': 'Primary image of the resource',
+                        'originalImage': false
                     }}
-                    smallText="The main image url. Can be empty"
-                    error={errors.image_url}
                 />
                 <Textarea
                     id={'summary'}

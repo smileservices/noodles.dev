@@ -115,17 +115,18 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
             return t.value
         });
         cpd.category = data.category.value;
-        if (cpd.image_file.file) {
-            cpd.image_file = cpd.image_file.file;
-            delete cpd.image_url;
-        }
-        if (cpd.image_file.url) {
-            cpd.image_url = cpd.image_file.url;
-            delete cpd.image_file;
-        }
-        if (cpd.image_file === {}) {
+        if (cpd.image_file && !cpd.image_file.url && !cpd.image_file.file) {
             delete cpd.image_file;
             delete cpd.image_url;
+        } else {
+            if (cpd.image_file.file) {
+                cpd.image_file = cpd.image_file.file;
+                delete cpd.image_url;
+            }
+            if (cpd.image_file.url) {
+                cpd.image_url = cpd.image_file.url;
+                delete cpd.image_file;
+            }
         }
         return cpd;
     }

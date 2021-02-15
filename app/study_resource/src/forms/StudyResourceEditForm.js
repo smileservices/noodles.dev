@@ -2,7 +2,7 @@ import React, {useState, useEffect, Fragment} from "react";
 import Alert from "../../../src/components/Alert";
 import {
     FormElement,
-    ImageInput,
+    ImageInput, ImageInputComponent,
     Input,
     SelectReact,
     SelectReactCreatable,
@@ -127,10 +127,19 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
         });
         cpd.category = data.category.value;
         cpd.publication_date = formatDate(data.publication_date);
-        if (data.image_file.content) {
-            cpd.image_file = data.image_file.content;
-        } else {
+        //image validation part
+        if (cpd.image_file && !cpd.image_file.url && !cpd.image_file.file) {
             delete cpd.image_file;
+            delete cpd.image_url;
+        } else {
+            if (cpd.image_file.file) {
+                cpd.image_file = cpd.image_file.file;
+                delete cpd.image_url;
+            }
+            if (cpd.image_file.url) {
+                cpd.image_url = cpd.image_file.url;
+                delete cpd.image_file;
+            }
         }
         return cpd;
     }
@@ -213,18 +222,17 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
                 smallText="Resource source url"
                 error={errors.url}
             />
-            <ImageInput
-                name="image_file" label="Primary Image" inputProps={{
-                value: formData['image_file']['name'],
-                onChange: e => setFormData({
-                    ...formData,
-                    image_file: {content: e.target.files[0], name: e.target.value}
-                }),
-                disabled: Boolean(waiting)
-            }}
-                smallText="The logo of the technology"
-                error={errors.image_file}
-                selectedImage={extraData.originalData?.image_file ? extraData.originalData.image_file.small : false}
+            <ImageInputComponent
+                data={formData.image_file}
+                setValue={valueObj => setFormData({...formData, image_file: valueObj})}
+                inputProps={{
+                    'name': 'image_file',
+                    'label': 'Primary Image',
+                    'error': errors.image_file,
+                    'waiting': waiting,
+                    'smallText': 'Primary image of the resource',
+                    'originalImage': extraData.originalData?.image_file ? extraData.originalData.image_file.small : false
+                }}
             />
             <div className="row">
                 <Input

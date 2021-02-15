@@ -142,6 +142,8 @@ function StudyResourceCreateApp() {
     }
 
     function submit(dataStep1, dataStep2, dataStep3) {
+        //todo normalize data and make FormData object
+
         setAlert('');
         apiCreate(
             STUDY_RESOURCE_API,
@@ -183,7 +185,7 @@ function StudyResourceCreateApp() {
             media: {label: 'article', value: 0},
             experience_level: false,
             summary: scraped_data['summary'],
-            image_url: scraped_data['top_img'],
+            image_file: {url: scraped_data['top_img']},
         })
         setStep(1);
         setStepStatus([

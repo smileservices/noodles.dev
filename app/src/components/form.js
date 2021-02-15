@@ -214,7 +214,7 @@ export function ImageInputComponent({inputProps, data, setValue}) {
             {activeTab === 'url' ?
                 <div className="panel">
                     <Input name={inputProps.name} label={inputProps.label} inputProps={{
-                        value: data.content,
+                        value: data.url,
                         onChange: e => setValue({url: e.target.value}),
                         type: 'text',
                         disabled: Boolean(inputProps.waiting)
@@ -222,7 +222,7 @@ export function ImageInputComponent({inputProps, data, setValue}) {
                            smallText={inputProps.smallText}
                            error={inputProps.error}
                     />
-                    <img className="preview" src={data.content} alt=""/>
+                    <img className="preview" src={data.url} alt=""/>
                 </div>
                 : ''
             }

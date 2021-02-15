@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import FloatField, IntegerField
+from rest_framework import exceptions
 from .models import StudyResource, Review, StudyResourceImage, StudyResourceTechnology
 from users.serializers import UserSerializerMinimal
 from django.template.defaultfilters import slugify
@@ -7,6 +8,7 @@ from versatileimagefield.serializers import VersatileImageFieldSerializer
 from django.conf import settings
 from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
 from tag.serializers import TagSerializerOption
+from core import utils
 from tag.models import Tag
 from category.serializers import CategorySerializerOption
 from category.models import Category
@@ -158,7 +160,13 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         if 'pk' in data and 'image_file' not in data:
             # populate with parent image file otherwise the edit will set the image_file blank
             validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']
-        # validate technologies, images
+        if 'image_url' in data:
+            # handle images from url and uploaded images
+            try:
+                validated_data['image_file'] = utils.get_temp_image_file_from_url(data['image_url'])
+            except Exception as e:
+                raise exceptions.ValidationError('Encountered error while getting the image from specified url')
+        # validate technologies
         techs = []
         for tech in cleaned_technologies:
             if tech['technology_id'] in techs:
