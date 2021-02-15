@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import Select from 'react-select';
 import Creatable, {makeCreatableSelect} from 'react-select/creatable';
 
@@ -198,3 +198,55 @@ export const SelectReactCreatable = ({name, label, smallText, error, options, va
         }
     </div>
 )
+
+export function ImageInputComponent({inputProps, data, setValue}) {
+    const [activeTab, setActiveTab] = useState('url');
+
+    function tabClass(tabName) {
+        const base = 'tab';
+        return base + tabName === activeTab ? ' active' : '';
+    }
+
+    return (
+        <div className="image-input-component">
+            <div className={tabClass('url')} onClick={e => setActiveTab('url')}>Import From Url</div>
+            <div className={tabClass('file')} onClick={e => setActiveTab('file')}>Upload Local File</div>
+            {activeTab === 'url' ?
+                <div className="panel">
+                    <Input name={inputProps.name} label={inputProps.label} inputProps={{
+                        value: data.content,
+                        onChange: e => setValue({url: e.target.value}),
+                        type: 'text',
+                        disabled: Boolean(inputProps.waiting)
+                    }}
+                           smallText={inputProps.smallText}
+                           error={inputProps.error}
+                    />
+                    <img className="preview" src={data.content} alt=""/>
+                </div>
+                : ''
+            }
+            {activeTab === 'file' ?
+                <div className="panel">
+                    <ImageInput
+                        name={inputProps.name} label={inputProps.label} inputProps={{
+                        value: data.name ? data.name : '',
+                        onChange: e => setValue({file: e.target.files[0], name: e.target.value}),
+                        disabled: Boolean(inputProps.waiting)
+                    }}
+                        smallText={inputProps.smallText}
+                        error={inputProps.error}
+                        selectedImage={false}
+                    />
+                </div>
+                : ''
+            }
+            {inputProps.originalImage ?
+                <div>
+                    <h3>Current Selected:</h3>
+                    <img className="selected" src={inputProps.originalImage} alt=""/>
+                </div>
+                : ''}
+        </div>
+    )
+}

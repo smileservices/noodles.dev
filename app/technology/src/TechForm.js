@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react"
 
-import {Input, Textarea, SelectReact, SelectReactCreatable} from "../../src/components/form";
+import {Input, Textarea, SelectReact, SelectReactCreatable, ImageInputComponent} from "../../src/components/form";
 import apiPost from "../../src/api_interface/apiPost";
 import {FormElement, ImageInput} from "../../src/components/form";
 import Alert from "../../src/components/Alert";
@@ -115,10 +115,17 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
             return t.value
         });
         cpd.category = data.category.value;
-        if (data.image_file.content) {
-            cpd.image_file = data.image_file.content;
-        } else {
+        if (cpd.image_file.file) {
+            cpd.image_file = cpd.image_file.file;
+            delete cpd.image_url;
+        }
+        if (cpd.image_file.url) {
+            cpd.image_url = cpd.image_file.url;
             delete cpd.image_file;
+        }
+        if (cpd.image_file === {}) {
+            delete cpd.image_file;
+            delete cpd.image_url;
         }
         return cpd;
     }
@@ -141,15 +148,18 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                    smallText="The name of the technology. Don't add version."
                    error={errors.name}
             />
-            <ImageInput
-                name="image_file" label="Logo" inputProps={{
-                value: formData['image_file']['name'],
-                onChange: e => setFormData({...formData, image_file: {content: e.target.files[0], name: e.target.value}}),
-                disabled: Boolean(waiting)
-            }}
-                smallText="The logo of the technology"
-                error={errors.image_file}
-                selectedImage={extraData.originalData?.image_file ? extraData.originalData.image_file.small : false}
+
+            <ImageInputComponent
+                data={formData.image_file}
+                setValue={valueObj => setFormData({...formData, image_file: valueObj})}
+                inputProps={{
+                    'name': 'image_file',
+                    'label': 'Logo',
+                    'error': errors.image_file,
+                    'waiting': waiting,
+                    'smallText': 'The logo of the technology',
+                    'originalImage': extraData.originalData?.image_file ? extraData.originalData.image_file.small : false
+                }}
             />
 
             <Textarea name="description" label={false}
