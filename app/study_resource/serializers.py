@@ -11,7 +11,7 @@ from tag.models import Tag
 from category.serializers import CategorySerializerOption
 from category.models import Category
 from technology.models import Technology
-
+import json
 
 class ImageSerializer(serializers.ModelSerializer):
     queryset = StudyResourceImage.objects
@@ -103,6 +103,12 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
                                'old': Category.objects.get(pk=change.old).name,
                                'new': Category.objects.get(pk=change.new).name
                                })
+            elif change.field == 'image_file':
+                result.append({'field': 'Image',
+                               'type': 'image',
+                               'old': instance.edit_suggestion_parent.image,
+                               'new': instance.image
+                               })
             else:
                 result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
         return result
@@ -115,14 +121,17 @@ class StudyResourceSerializer(EditSuggestionSerializer):
     technologies = StudyResourceTechnologySerializer(source='studyresourcetechnology_set', many=True, read_only=True)
     rating = FloatField(read_only=True)
     reviews_count = IntegerField(read_only=True)
-    images = ImageSerializer(many=True, read_only=True)
+    image_file = VersatileImageFieldSerializer(
+        sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image'],
+        required=False,
+    )
     category = CategorySerializerOption(read_only=True)
 
     class Meta:
         model = StudyResource
         fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'price', 'media',
                   'experience_level', 'author', 'tags', 'category',
-                  'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by', 'images']
+                  'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by', 'image_file']
 
     @staticmethod
     def get_edit_suggestion_serializer():
@@ -135,24 +144,34 @@ class StudyResourceSerializer(EditSuggestionSerializer):
     def run_validation(self, data):
         if 'slug' not in data:
             data['slug'] = slugify(data['name'])
-        validated_data = super().run_validation(data)
-        validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
+        validated_data = super(StudyResourceSerializer, self).run_validation(data)
+        # get tags out of the formdata serialized data
+        cleaned_tags = [int(t) for t in data['tags'].split(',')]
+        # get category out of the data
+        try:
+            cleaned_category = int(data['category'])
+        except ValueError:
+            cleaned_category = data['category']
+        # get technologies out of the data
+        cleaned_technologies = json.loads(data['technologies'])
+        validated_data['tags'] = Tag.objects.validate_tags(cleaned_tags)
+        if 'pk' in data and 'image_file' not in data:
+            # populate with parent image file otherwise the edit will set the image_file blank
+            validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']
         # validate technologies, images
         techs = []
-        for tech in data['technologies']:
+        for tech in cleaned_technologies:
             if tech['technology_id'] in techs:
                 raise AttributeError('Cannot add same technology multiple times')
             techs.append(tech['technology_id'])
-        validated_data['technologies'] = data['technologies']
-        validated_data['category_id'] = Category.objects.validate_category(data['category'])
-        validated_data['images'] = data['images'] if 'images' in data else []
+        validated_data['technologies'] = cleaned_technologies
+        validated_data['category_id'] = Category.objects.validate_category(cleaned_category)
         return validated_data
 
     def create(self, validated_data):
         # handle technologies and images separately
         m2m_fields = {
             'technologies': validated_data.pop('technologies'),
-            'images': validated_data.pop('images'),
         }
         created_instance = super(StudyResourceSerializer, self).create(validated_data)
         self.handle_m2m_fields(created_instance, m2m_fields)
@@ -162,11 +181,9 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         # handle technologies and images separately
         m2m_fields = {
             'technologies': validated_data.pop('technologies'),
-            'images': validated_data.pop('images'),
         }
         updated_instance = super(StudyResourceSerializer, self).update(instance, validated_data)
         updated_instance.studyresourcetechnology_set.all().delete()
-        updated_instance.images.all().delete()
         self.handle_m2m_fields(updated_instance, m2m_fields)
         return updated_instance
 
@@ -179,9 +196,10 @@ class StudyResourceSerializer(EditSuggestionSerializer):
                 technology=tech,
                 version=tech_post_data['version'],
             )
-        for img_data in m2m_fields['images']:
-            image = StudyResourceImage(study_resource=instance, image_url=img_data['image_url'])
-            image.save()
+        if 'images' in m2m_fields:
+            for img_data in m2m_fields['images']:
+                image = StudyResourceImage(study_resource=instance, image_url=img_data['image_url'])
+                image.save()
 
 
 class ReviewSerializer(serializers.ModelSerializer):

@@ -93,7 +93,7 @@ class TechnologySerializer(EditSuggestionSerializer):
     ecosystem = TechnologySerializerOption(many=True, read_only=True)
     category = CategorySerializerOption(read_only=True)
     image_file = VersatileImageFieldSerializer(
-        sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image'],
+        sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['technology_logo'],
         required=False,
     )
 

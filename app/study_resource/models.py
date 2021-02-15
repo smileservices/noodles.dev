@@ -24,6 +24,32 @@ from core.tasks import sync_to_elastic
 from core import utils
 
 
+def delete_study_resource_primary_images(sender, instance, **kwargs):
+    """
+    Deletes Technology image renditions on post_delete.
+    """
+    instance.image_file.delete_all_created_images()
+    instance.image_file.delete(save=False)
+
+
+def warm_study_resource_primary_image(sender, instance, **kwargs):
+    """Ensures Technologies logos are created post-save"""
+    sr_images_warmer = VersatileImageFieldWarmer(
+        instance_or_queryset=instance,
+        rendition_key_set='technology_logo',
+        image_attr='image_file'
+    )
+    num_created, failed_to_create = sr_images_warmer.warm()
+
+
+def remove_old_image(sender, instance, **kwargs):
+    if kwargs['update_fields'] and 'image_file' in kwargs['update_fields']:
+        db_instance = sender.objects.get(pk=instance.pk)
+        if db_instance.image_file != instance.image_file:
+            db_instance.image_file.delete_all_created_images()
+            db_instance.image_file.delete(save=False)
+
+
 class StudyResourceManager(models.Manager):
 
     def get_queryset(self):
@@ -98,7 +124,8 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
     objects = StudyResourceManager()
     publication_date = models.DateField()
     published_by = models.CharField(max_length=256)
-    url = models.TextField(max_length=1024, unique=True)
+    url = models.TextField(max_length=1024)
+    image_file = VersatileImageField(upload_to='tutorials', blank=True, null=True)
     summary = models.TextField(max_length=2048)
     # related fields
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
@@ -133,7 +160,12 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
-        bases=(VotableMixin,)
+        bases=(VotableMixin,),
+        signals={
+            'post_save': [warm_study_resource_primary_image, ],
+            'post_delete': [delete_study_resource_primary_images, ]
+        },
+        attrs_to_be_copied=['image', ]
     )
 
     class Meta:
@@ -151,7 +183,10 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
 
     @property
     def image(self):
-        return self.images.first()
+        return build_versatileimagefield_url_set(
+            self.image_file,
+            settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image']
+        )
 
     @property
     def price_label(self):
@@ -186,7 +221,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
                 "publication_date": {"type": "date", "format": "yyyy-MM-dd"},
                 "published_by": {"type": "text"},
                 "url": {"type": "text"},
-
+                "image_file": {"type": "keyword"},
                 "category": {"type": "keyword"},
                 "tags": {"type": "keyword"},
                 "technologies": {
@@ -230,6 +265,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
             "publication_date": self.publication_date.isoformat(),
             "published_by": self.published_by,
             "url": self.absolute_url,
+            "image_file": self.image if self.image_file else {},
 
             "category": self.category.name,
             "tags": [t.name for t in self.tags.all()],
@@ -310,3 +346,9 @@ class Review(DateTimeModelMixin, VotableMixin):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         super(Review, self).save()
+
+
+models.signals.pre_save.connect(remove_old_image, sender=StudyResource, weak=False)
+models.signals.post_save.connect(sync_to_elastic, sender=StudyResource, weak=False)
+models.signals.post_save.connect(warm_study_resource_primary_image, sender=StudyResource, weak=False)
+models.signals.post_delete.connect(delete_study_resource_primary_images, sender=StudyResource, weak=False)

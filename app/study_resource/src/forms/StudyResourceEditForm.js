@@ -1,14 +1,22 @@
 import React, {useState, useEffect, Fragment} from "react";
 import Alert from "../../../src/components/Alert";
-import {FormElement, Input, SelectReact, SelectReactCreatable, Textarea} from "../../../src/components/form";
+import {
+    FormElement,
+    ImageInput,
+    Input,
+    SelectReact,
+    SelectReactCreatable,
+    Textarea
+} from "../../../src/components/form";
 import apiPost from "../../../src/api_interface/apiPost";
 import TechnologySelect from "../forms/TechnologySelect";
 
-export default function StudyResourceEditForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
+function StudyResourceEditForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
 
     const emptyData = {
         'name': '',
         'url': '',
+        'image_file': {content: '', name: ''},
         'publication_date': '',
         'published_by': '',
         'summary': '',
@@ -102,6 +110,13 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
         return d.toISOString().substr(0, 10);
     }
 
+    function makeFormData(data) {
+        let packagedData = new FormData();
+        data['technologies'] = JSON.stringify(data['technologies']);
+        Object.keys(data).map(value => packagedData.append(value, data[value]));
+        return packagedData;
+    }
+
     function normalizeData(data) {
         let cpd = {...data};
         cpd.tags = data.tags.map(t => {
@@ -112,6 +127,11 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
         });
         cpd.category = data.category.value;
         cpd.publication_date = formatDate(data.publication_date);
+        if (data.image_file.content) {
+            cpd.image_file = data.image_file.content;
+        } else {
+            delete cpd.image_file;
+        }
         return cpd;
     }
 
@@ -163,7 +183,7 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
                 return true;
             }
         }).then(valid => {
-            if (valid) callback(normalizedData);
+            if (valid) callback(makeFormData(normalizedData));
         })
     }
 
@@ -193,7 +213,19 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
                 smallText="Resource source url"
                 error={errors.url}
             />
-
+            <ImageInput
+                name="image_file" label="Primary Image" inputProps={{
+                value: formData['image_file']['name'],
+                onChange: e => setFormData({
+                    ...formData,
+                    image_file: {content: e.target.files[0], name: e.target.value}
+                }),
+                disabled: Boolean(waiting)
+            }}
+                smallText="The logo of the technology"
+                error={errors.image_file}
+                selectedImage={extraData.originalData?.image_file ? extraData.originalData.image_file.small : false}
+            />
             <div className="row">
                 <Input
                     name={'publication_date'}
@@ -277,3 +309,6 @@ export default function StudyResourceEditForm({formData, setFormData, extraData,
         </FormElement>
     )
 }
+
+StudyResourceEditForm.contentType = 'multipart';
+export default StudyResourceEditForm

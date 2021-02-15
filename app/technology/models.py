@@ -38,7 +38,7 @@ def warm_technology_logos(sender, instance, **kwargs):
 
 
 def remove_old_image(sender, instance, **kwargs):
-    if 'image_file' in kwargs['update_fields']:
+    if kwargs['update_fields'] and 'image_file' in kwargs['update_fields']:
         db_instance = sender.objects.get(pk=instance.pk)
         if db_instance.image_file != instance.image_file:
             db_instance.image_file.delete_all_created_images()
@@ -155,7 +155,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
         data = {
             "pk": self.pk,
             "name": self.name,
-            "image_file": self.image_file.size if self.image_file else {},
+            "image_file": self.logo if self.image_file else {},
             "url": self.absolute_url,
             "description": self.description,
             "owner": self.owner,
