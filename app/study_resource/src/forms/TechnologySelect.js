@@ -46,7 +46,7 @@ export default function TechnologySelect({techs, values, setValues, addNewTech, 
                         name={'version' + idx}
                         inputProps={{
                             disabled: Boolean(waiting),
-                            type: 'text',
+                            type: 'number',
                             placeholder: 'version',
                             required: false,
                             onChange: e => change(idx, 'version', e.target.value),

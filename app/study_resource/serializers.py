@@ -144,11 +144,12 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         return StudyResourceEditSuggestionListingSerializer
 
     def run_validation(self, data):
+        data = data.copy()
         if 'slug' not in data:
             data['slug'] = slugify(data['name'])
         validated_data = super(StudyResourceSerializer, self).run_validation(data)
         # get tags out of the formdata serialized data
-        cleaned_tags = [int(t) for t in data['tags'].split(',')]
+        # cleaned_tags = [int(t) for t in data['tags'].split(',')]
         # get category out of the data
         try:
             cleaned_category = int(data['category'])
@@ -156,7 +157,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
             cleaned_category = data['category']
         # get technologies out of the data
         cleaned_technologies = json.loads(data['technologies'])
-        validated_data['tags'] = Tag.objects.validate_tags(cleaned_tags)
+        validated_data['tags'] = Tag.objects.validate_tags(json.loads(data['tags']))
         if 'pk' in data and 'image_file' not in data:
             # populate with parent image file otherwise the edit will set the image_file blank
             validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']

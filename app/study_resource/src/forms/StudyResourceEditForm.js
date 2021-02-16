@@ -113,6 +113,7 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
     function makeFormData(data) {
         let packagedData = new FormData();
         data['technologies'] = JSON.stringify(data['technologies']);
+        data['tags'] = JSON.stringify(data['tags']);
         Object.keys(data).map(value => packagedData.append(value, data[value]));
         return packagedData;
     }
@@ -123,7 +124,7 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
             return t.value
         });
         cpd.technologies = data.technologies.map(t => {
-            return {technology_id: t.technology_id, version: t.version};
+            return {technology_id: t.technology_id, version: t.version ? t.version : 0};
         });
         cpd.category = data.category.value;
         cpd.publication_date = formatDate(data.publication_date);

@@ -121,7 +121,7 @@ function StudyResourceCreateApp() {
         setTechs([...techs, techOption]);
     }
 
-    function extractData(dataStep1, dataStep2, dataStep3) {
+    function normalize(dataStep1, dataStep2, dataStep3) {
         let data = {...dataStep1, ...dataStep3};
         data.tags = dataStep2.tags.map(arr => arr.value);
         /*
@@ -133,21 +133,44 @@ function StudyResourceCreateApp() {
 
         * */
         data.category = dataStep3.category.value;
-        data.technologies = dataStep2.technologies;
+        data.technologies = dataStep2.technologies.map(tech=>{
+            if (!tech.version) tech.version = 0;
+            return tech;
+        });
         data.type = dataStep3.type.value;
         data.media = dataStep3.media.value;
         data.experience_level = dataStep3.experience_level.value;
-        data.images = [{image_url: dataStep3.image_url}];
+        if (data.image_file && !data.image_file.url && !data.image_file.file) {
+            delete data.image_file;
+            delete data.image_url;
+        } else {
+            if (data.image_file.file) {
+                data.image_file = data.image_file.file;
+                delete data.image_url;
+            }
+            if (data.image_file.url) {
+                data.image_url = data.image_file.url;
+                delete data.image_file;
+            }
+        }
         return data;
     }
 
-    function submit(dataStep1, dataStep2, dataStep3) {
-        //todo normalize data and make FormData object
+    function makeFormData(data) {
+        let packagedData = new FormData();
+        data['technologies'] = JSON.stringify(data['technologies']);
+        data['tags'] = JSON.stringify(data['tags']);
+        Object.keys(data).map(value => packagedData.append(value, data[value]));
+        return packagedData;
+    }
 
+    function submit(dataStep1, dataStep2, dataStep3) {
+        let normalizedData = normalize(dataStep1, dataStep2, dataStep3);
+        const packagedFormData = makeFormData(normalizedData);
         setAlert('');
         apiCreate(
             STUDY_RESOURCE_API,
-            extractData(dataStep1, dataStep2, dataStep3),
+            packagedFormData,
             data => {
                 setCreated({url: data.absolute_url})
             },
@@ -167,12 +190,16 @@ function StudyResourceCreateApp() {
 
         scraped_data['tags']
             ? dataObjStep2['tags'] = scraped_data['tags']
-                .map(tag => {return {value: tag, label: tag}})
+                .map(tag => {
+                    return {value: tag, label: tag}
+                })
             : dataObjStep2['tags'] = [];
 
         scraped_data['technologies']
             ? dataObjStep2['technologies'] = scraped_data['technologies']
-                .map(tech => {return {name: tech.name, technology_id: tech.pk, version: tech.version}})
+                .map(tech => {
+                    return {name: tech.name, technology_id: tech.pk, version: tech.version}
+                })
             : dataObjStep2['technologies'] = [{name: '', technology_id: '', version: ''},];
         setDataStep2(dataObjStep2);
 
