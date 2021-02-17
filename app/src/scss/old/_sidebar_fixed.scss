@@ -1,0 +1,104 @@
+// External changes when sidebar is visible
+// start
+//
+
+body.sidebar-visible {
+  padding-left: $sidebar-width;
+
+  nav {
+    margin-left: -$sidebar-width;
+  }
+
+  aside {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+}
+
+// Styling of aside > sidebar element
+// start
+//
+
+aside {
+  display: none;
+}
+
+aside .sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--color-sidebar-bg);
+  width: $sidebar-width;
+  font-size: $fontsize-md;
+  font-weight: 400;
+  height: 100vh;
+  //animation: growRight 300ms ease-in-out forwards;
+  //transform-origin: top left;
+}
+
+aside .sidebar .top-section {
+  display: flex;
+  flex-direction: row;
+  line-height: $fontsize-big;
+  font-size: $fontsize-big;
+  font-weight: 700;
+  background-color: var(--color-background-1);
+  color: var(--color-sidebar-txt);
+  box-shadow: inset 0px -1px 0px #2F2F2F;
+}
+
+
+aside .sidebar .top-section a {
+  padding: $nav-padding*2;
+  text-decoration: none;
+  color: var(--color-text-white);
+}
+
+aside .sidebar .top-section a.collapse-button {
+    padding: $nav-padding;
+}
+
+aside .sidebar .top-section a > svg {
+  fill: var(--color-text-white);
+}
+
+aside .sidebar .top-section a:last-child {
+  flex-grow: 1;
+}
+
+aside .sidebar .top-section a:hover {
+  background-color: var(--color-sidebar-hover-bg);
+  color: var(--color-sidebar-hover-txt);
+}
+
+aside .sidebar .top-section a:hover svg {
+  fill: var(--color-text-grey);
+}
+
+aside .sidebar .links a {
+  padding: 1rem;
+  text-decoration: none;
+  display: block;
+  color: var(--color-text-grey);
+}
+
+aside .sidebar .links a:hover {
+  background-color: var(--color-sidebar-hover-bg);
+  color: var(--color-sidebar-hover-txt);
+}
+
+aside .sidebar .dropdown .dropdown-menu {
+  position: static;
+}
+
+aside .sidebar .dropdown .dropdown-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+aside .sidebar .dropdown .dropdown-menu a {
+  padding-left: 2rem;
+}

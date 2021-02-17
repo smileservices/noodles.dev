@@ -82,9 +82,9 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: var(--topbar-height);
+    top: $nav-height;
     left: 0;
-    background-color: $nav-bg;
+    background-color: $color-background-1;
     width: 100%;
     animation: growDown 300ms ease-in-out forwards;
     transform-origin: top center;

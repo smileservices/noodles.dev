@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "webpack --mode development",
     "prod": "webpack --mode production",
-    "css-compile-frontend": "node-sass --output-style compressed app/frontend/src/scss/ -o app/frontend/static/frontend/css/",
-    "css-compile-dashboard": "node-sass --output-style compressed app/dashboard/src/scss/ -o app/dashboard/static/dashboard/css/"
+    "css": "node-sass --output-style compressed app/frontend/src/scss/ -o app/frontend/static/frontend/css/",
+    "css-dashboard": "node-sass --output-style compressed app/dashboard/src/scss/ -o app/dashboard/static/dashboard/css/"
   },
   "keywords": [],
   "author": "",

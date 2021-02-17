@@ -21,7 +21,7 @@ aside .sidebar {
   top: 0;
   left: 0;
   background-color: $sidebar-bg;
-  width: var(--sidebar-width);
+  width: $sidebar-width;
   height: 100vh;
   animation: growRight 300ms ease-in-out forwards;
   transform-origin: top left;

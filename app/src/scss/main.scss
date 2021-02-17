@@ -1,76 +1,60 @@
+@import url(//fonts.googleapis.com/css?family=Inter);
+
 @import "node_modules/bootstrap/scss/functions";
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 @import "node_modules/bootstrap/scss/utilities";
 
-
-// text and general elements
-$theme-color-main: #36383d;
-$theme-color-main-contrast: #e0e1ea;
-
-// for special elements like buttons
-$theme-color-accent: #309287;
-
-//important elements color scheme
-//navbar
-$nav-bg : $theme-color-main;
-$nav-text: $theme-color-main-contrast;
-$nav-hover-bg: lighten($nav-bg, 20);
-$nav-hover-text: $nav-text;
-//dropdowns
-$dropdown-bg: lighten($theme-color-main, 10);
-$dropdown-text: lighten($theme-color-main-contrast, 10);
-$dropdown-hover-bg: darken($dropdown-bg, 10);
-$dropdown-hover-text: lighten($dropdown-text, 10);
-//sidebar
-$sidebar-bg: $theme-color-main;
-$sidebar-text: $theme-color-main-contrast;
-$sidebar-hover-bg: lighten($sidebar-bg, 10);
-$sidebar-hover-text: lighten($sidebar-text, 10);
-
-//z-index
-$header-zindex: 1;
-$sidebar-zindex: 10000;
-$dropdown-zindex: 10000;
-$collapsible-zindex: 90000;
-$modal-backdrop-zindex: 95000;
-$modal-content-zindex: 96000;
+@import "config";
 
 :root {
-    /* ---- sizes ---- */
-    --topbar-height: 3rem;
-    --sidebar-width: 15rem;
+  --color-sidebar-bg: #262626;
+  --color-sidebar-txt: #90929C;
+  --color-sidebar-hover-bg: #555B5E;
+  --color-sidebar-hover-txt: #F7F7F7;
+
+  --color-background: hsl(0,0,5,1);
+  --color-background-1: #242728;
+  --color-background-2: #303436;
+  --color-background-3: #3D4143;
+  --color-background-4: #494E50;
+  --color-background-5: #555B5E;
+
+  --color-text-white: #F7F7F7;
+  --color-text-grey: #B8C0C5;
+  --color-text-grey-2: #85A0AD;
+  --color-blue: #24A0ED;
 }
 
 body {
-  font-family: $font-family-sans-serif;
-  color: $theme-color-main;
-  background-color: $theme-color-main-contrast;
+  font-family: 'Inter', sans-serif;
 }
 
 @import "node_modules/bootstrap/scss/forms";
 @import "node_modules/bootstrap/scss/alert";
 @import "app/static/slim-select/src/slim-select/slimselect.scss";
 
-@import "reset";
-@import "animations";
-@import "layouts";
-@import "modal";
-@import "forms";
+@import "old/reset";
+@import "old/animations";
+@import "old/layouts";
+@import "old/modal";
+@import "old/forms";
 
-@import "content";
+@import "buttons";
+//@import "old/content";
 
-@import "footer";
-@import "navbar";
-@import "search_window";
-@import "sidebar";
-@import "dropdowns";
-@import "pagination";
+@import "old/footer";
+@import "old/navbar";
+@import "old/sidebar_fixed";
 
-@import "authentication";
-@import "page_sections";
-@import "pages";
-@import "detail_page";
-@import "edit_page";
+@import "old/search_window";
+@import "old/dropdowns";
+@import "old/pagination";
 
-@import "responsive";
+//@import "old/authentication";
+//@import "old/page_sections";
+//@import "old/pages";
+//@import "old/detail_page";
+//@import "old/edit_page";
+
+@import "old/responsive";

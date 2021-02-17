@@ -1,0 +1,35 @@
+.btn {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  background-color: $color-blue;
+  color: $color-text-white;
+  padding: $fontsize-big/2 $fontsize-big*1.75;
+  font-weight: 700 !important;
+  border-radius: $radius-small;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: $color-blue-hover;
+  color: $color-text-white;
+}
+
+.btn.secondary {
+  background-color: $color-background-1;
+}
+
+.btn.secondary:hover {
+  background-color: $color-text-grey;
+  color: $color-text-white;
+}
+
+.btn.create {
+    background-color: $color-background-3;
+}
+
+.btn.create:hover {
+  background-color: $color-text-grey-2;
+  color: $color-text-white;
+}

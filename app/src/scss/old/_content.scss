@@ -75,7 +75,7 @@ section.header {
   background-color: $theme-color-accent;
   padding: 0.5rem 1rem;
   font-weight: 700 !important;
-  border-radius: 0.25rem;
+  border-radius: $radius-small;
   color: #ffffff;
   cursor: pointer;
   transition: filter 0.3s ease;

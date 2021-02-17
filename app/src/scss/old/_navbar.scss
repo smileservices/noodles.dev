@@ -1,33 +1,58 @@
 nav {
-  background-color: $nav-bg;
-  height: var(--topbar-height);
+  background-color: var(--color-background-1);
+  line-height: $fontsize-big;
+  font-size: $fontsize-big;
+  font-weight: 700;
   overflow: hidden;
   display: flex;
   justify-content: space-between;
+  padding: $nav-padding;
+  box-shadow: inset 0px -1px 0px #2F2F2F;
+}
+
+#navbar-logo {
+  padding: $padding-unit*2;
+}
+
+nav .left-side {
+  margin: -$nav-padding;
+  align-items: center;
+}
+
+nav .right-side {
+    align-items: center;
+}
+
+nav .right-side > * {
+  margin-right: $nav-padding;
 }
 
 nav a {
   display: inline-block;
-  padding: 1rem;
+  padding: $nav-padding;
   text-decoration: none;
-  color: $nav-text;
+  color: var(--color-text-white);
+}
+
+nav a.collapse-button {
+  padding: $nav-padding;
 }
 
 nav a, nav a:visited, nav a:active {
-  color: $nav-text;
+  color: var(--color-text-white);
 }
 
 nav a > svg {
-  fill: $nav-text;
+  fill: var(--color-text-white);
 }
 
 nav a:hover {
-  background-color: $nav-hover-bg;
-  color: $nav-hover-text;
+  background-color: var(--color-background-3);
+  color: var(--color-text-white);
 }
 
 nav a:hover > svg {
-  fill: $nav-hover-text;
+  fill: var(--color-text-white);
 }
 
 nav .left-side, .right-side {
@@ -53,7 +78,7 @@ nav {
         margin-top: -1.55rem;
         margin-right: 0.10rem;
         float: right;
-        color: $theme-color-accent;
+        color: var(--color-blue);
         background-color: #ffffff;
         border-radius: 0.125rem;
       }

@@ -3,7 +3,7 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    top: var(--topbar-height);
+    top: $nav-height;
     background-color: $dropdown-bg;
     overflow: hidden;
     height: auto;
