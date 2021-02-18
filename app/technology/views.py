@@ -1,6 +1,7 @@
 import requests
 import json
 from django.shortcuts import render
+from django.http.response import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.db.models import Q
@@ -11,7 +12,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset, SearchableModelViewset
 from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
-
+from collections import defaultdict
 from study_collection.models import Collection
 from . import filters
 from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyListing
@@ -93,7 +94,6 @@ class TechViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
             queryset
         )
 
-
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):
         try:
@@ -111,6 +111,23 @@ class TechViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
         return Response({
             'error': False
         })
+
+
+def sidebar(request):
+    all = Technology.objects.select_related('category').all()
+    featured = defaultdict(list)
+    other = defaultdict(list)
+    techlisting = lambda t: {
+        'url': t.absolute_url,
+        'logo': t.logo,
+        'name': t.name
+    }
+    for tech in all:
+        if tech.featured:
+            featured[tech.category.name].append(techlisting(tech))
+        else:
+            other[tech.category.name].append(techlisting(tech))
+    return JsonResponse({'featured': featured, 'other': other})
 
 
 class TechEditSuggestionViewset(EditSuggestionViewset):

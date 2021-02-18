@@ -28,6 +28,7 @@ def create_technologies():
             limitations=f.text(),
             category=choice(categories),
             image_file='',
+            featured=True
         )
         tobj.save()
         created_tech[t] = tobj
@@ -38,6 +39,23 @@ def create_technologies():
     created_tech['django'].save()
     created_tech['laravel'].save()
     created_tech['nginx'].save()
+
+    for t in ['nextjs', 'sphinx', 'mino', 'bibigi', 'futarelo', 'vuejs']:
+        tobj = Technology(
+            name=t,
+            author=user,
+            description=f.text(),
+            license=choice(Technology.LicenseType.choices)[0],
+            url=f.url(),
+            owner=f.company(),
+            pros=f.text(),
+            cons=f.text(),
+            limitations=f.text(),
+            category=choice(categories),
+            image_file='',
+        )
+        tobj.save()
+        created_tech[t] = tobj
 
     return created_tech
 

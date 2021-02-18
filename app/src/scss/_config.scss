@@ -1,12 +1,12 @@
-$fontsize-big: 1rem !default;
-$fontsize-md: $fontsize-big * 0.875 !default;
-$fontsize-sm: $fontsize-big * 0.75 !default;
-$fontsize-tn: $fontsize-big * 0.625 !default;
+$fontsize-big: 1rem !default;                   //16px
+$fontsize-md: $fontsize-big * 0.875 !default;   //14px
+$fontsize-sm: $fontsize-big * 0.75 !default;    //12px
+$fontsize-tn: $fontsize-big * 0.625 !default;   //10px
 
 $padding-unit: $fontsize-big * 0.625; //10px
 $padding-unit-big: $fontsize-big;     //16px
 $padding-unit-md: $fontsize-sm;       //12px
-$padding-unit-sm: $fontsize-tn;       //8px
+$padding-unit-sm: $fontsize-tn * 0.8;       //8px
 
 //radius
 $radius-small: 4px;
@@ -49,7 +49,7 @@ $dropdown-hover-bg: darken($dropdown-bg, 10);
 $dropdown-hover-text: lighten($dropdown-text, 10);
 
 //sidebar
-$sidebar-width: $fontsize-big*8.25;
+$sidebar-width: $fontsize-big*9.25;
 
 //z-index
 $header-zindex: 1;

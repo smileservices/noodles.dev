@@ -57,7 +57,7 @@ aside .sidebar .top-section a {
 }
 
 aside .sidebar .top-section a.collapse-button {
-    padding: $nav-padding;
+  padding: $nav-padding;
 }
 
 aside .sidebar .top-section a > svg {
@@ -77,28 +77,69 @@ aside .sidebar .top-section a:hover svg {
   fill: var(--color-text-grey);
 }
 
-aside .sidebar .links a {
-  padding: 1rem;
-  text-decoration: none;
-  display: block;
-  color: var(--color-text-grey);
+aside .sidebar .links {
+  padding-top: $padding-unit-big*2;
+  padding-bottom: $padding-unit-sm;
+  overflow-y: auto;
+  height: 100vh;
+  font-size: $fontsize-sm;
+
+  h5 {
+    margin-top: $padding-unit-big*2;
+    margin-bottom: $padding-unit-sm;
+    padding-left: $padding-unit-sm;
+    padding-right: $padding-unit-sm;
+  }
+
+  a {
+    padding: $padding-unit $padding-unit-sm;
+    text-decoration: none;
+    display: block;
+    color: var(--color-text-grey);
+
+    img {
+      width: $fontsize-big;
+      height: $fontsize-big;
+      padding-right: $padding-unit-sm;
+    }
+
+    span.no-logo {
+      display: inline-block;
+      width: $fontsize-big;
+      height: $fontsize-big;
+      padding-right: $padding-unit-sm;
+    }
+  }
+
+  a:hover {
+    background-color: var(--color-sidebar-hover-bg);
+    color: var(--color-sidebar-hover-txt);
+  }
+
+  .other {
+    margin-top: $padding-unit-big*2;
+    padding: $padding-unit $padding-unit-sm;
+
+    svg {
+      width: $fontsize-big;
+      height: $fontsize-big;
+      padding-right: $padding-unit-sm;
+    }
+  }
 }
 
-aside .sidebar .links a:hover {
-  background-color: var(--color-sidebar-hover-bg);
-  color: var(--color-sidebar-hover-txt);
-}
+aside .sidebar .dropdown {
+  .dropdown-menu {
+    position: static;
 
-aside .sidebar .dropdown .dropdown-menu {
-  position: static;
-}
+    a {
+      padding-left: 2rem;
+    }
+  }
 
-aside .sidebar .dropdown .dropdown-button {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-aside .sidebar .dropdown .dropdown-menu a {
-  padding-left: 2rem;
+  .dropdown-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }

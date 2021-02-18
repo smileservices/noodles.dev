@@ -1,15 +1,16 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from .views import TechViewset, TechViewsetOptions, TechEditSuggestionViewset, detail, create, edit
+from . import views
 
 router = DefaultRouter()
-router.register('as-options', TechViewsetOptions, basename='techs-options')
-router.register('edit-suggestions', TechEditSuggestionViewset, basename='techs-edit-suggestions-viewset')
-router.register('', TechViewset, basename='techs-viewset')
+router.register('as-options', views.TechViewsetOptions, basename='techs-options')
+router.register('edit-suggestions', views.TechEditSuggestionViewset, basename='techs-edit-suggestions-viewset')
+router.register('', views.TechViewset, basename='techs-viewset')
 
 urlpatterns = [
-    path('create/', create, name='tech-create'),
+    path('sidebar/', views.sidebar, name='tech-sidebar'),
+    path('create/', views.create, name='tech-create'),
     path('api/', include(router.urls)),
-    path('<int:id>/edit', edit, name='tech-edit'),
-    path('<int:id>/<slug:slug>', detail, name='tech-detail'),
+    path('<int:id>/edit', views.edit, name='tech-edit'),
+    path('<int:id>/<slug:slug>', views.detail, name='tech-detail'),
 ]

@@ -32,6 +32,7 @@ module.exports = {
 
         //technology
         '/static/technology/technology-create': './app/technology/src/TechCreateApp.js',
+        '/static/technology/sidebar-app': './app/technology/src/SidebarApp.js',
 
         //vote app
         '/static/votes': './app/src/core/VotesApp.js',

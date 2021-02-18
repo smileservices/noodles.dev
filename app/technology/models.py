@@ -84,6 +84,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.DO_NOTHING)
     ecosystem = models.ManyToManyField('Technology', related_name='related_technologies')
     image_file = VersatileImageField(upload_to='technologies', blank=True, null=True)
+    featured = models.BooleanField(default=False)
 
     edit_suggestions = EditSuggestion(
         excluded_fields=('search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),

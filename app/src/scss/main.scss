@@ -13,7 +13,7 @@
   --color-sidebar-hover-bg: #555B5E;
   --color-sidebar-hover-txt: #F7F7F7;
 
-  --color-background: hsl(0,0,5,1);
+  --color-background: #0D0D0D;
   --color-background-1: #242728;
   --color-background-2: #303436;
   --color-background-3: #3D4143;
@@ -28,6 +28,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-text-white);
 }
 
 @import "node_modules/bootstrap/scss/forms";
@@ -40,16 +42,17 @@ body {
 @import "old/modal";
 @import "old/forms";
 
+@import "text";
 @import "buttons";
-//@import "old/content";
 
 @import "old/footer";
 @import "old/navbar";
-@import "old/sidebar_fixed";
+@import "sidebar_fixed";
 
 @import "old/search_window";
 @import "old/dropdowns";
 @import "old/pagination";
+
 
 //@import "old/authentication";
 //@import "old/page_sections";
