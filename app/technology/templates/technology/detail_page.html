@@ -10,6 +10,7 @@
 
 
 
+
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -37,19 +38,8 @@
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
-                <div class="toolbar">
-                    <a href="{% url 'tech-edit' id=result.pk %}">edit</a>
-                </div>
                 {% include 'technology/detail.html' %}
                 <div id="votes-app" class="thumbs"></div>
-            </section>
-            <section class="column-container">
-                <h3>Used in solutions:</h3>
-                <div class="tile-container">
-                    {% for solution in solutions.all %}
-                        {% include 'problem_solution/solution/result.html' with result=solution %}
-                    {% endfor %}
-                </div>
             </section>
         </div>
         <section class="related column-container">
@@ -63,8 +53,8 @@
             {% endif %}
             <h3>Learning Resources</h3>
             <div class="tile-container">
-                {% for resource_tech in related_resources_techs %}
-                    {% include 'study_resource/result.html' with result=resource_tech.study_resource %}
+                {% for resource in resources %}
+                    {% include 'study_resource/result.html' with result=resource %}
                 {% endfor %}
             </div>
         </section>

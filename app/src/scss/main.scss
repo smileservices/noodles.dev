@@ -24,6 +24,7 @@
   --color-text-grey: #B8C0C5;
   --color-text-grey-2: #85A0AD;
   --color-blue: #24A0ED;
+  --color-blue-dark: #0C5C8D;
 }
 
 body {
@@ -38,20 +39,24 @@ body {
 
 @import "old/reset";
 @import "old/animations";
-@import "old/layouts";
 @import "old/modal";
 @import "old/forms";
-
-@import "text";
-@import "buttons";
-
 @import "old/footer";
 @import "old/navbar";
-@import "sidebar_fixed";
-
 @import "old/search_window";
 @import "old/dropdowns";
 @import "old/pagination";
+
+@import "layouts";
+
+@import "text";
+@import "buttons";
+@import "content";
+@import "sidebar_fixed";
+@import "detail_page";
+@import "listings";
+
+@import "technology_detail";
 
 
 //@import "old/authentication";

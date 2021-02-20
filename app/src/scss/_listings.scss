@@ -1,0 +1,24 @@
+.result {
+  > * {
+    margin-bottom: $padding-unit-md;
+  }
+
+  .listing-title {
+    > * {
+      display: inline-block;
+    }
+    .published {
+      font-size: $fontsize-sm;
+      font-weight: 400;
+      color: var(--color-text-grey-2);
+    }
+  }
+
+  .description {
+    font-size: $fontsize-md;
+  }
+
+  .rating {
+    padding-top: $padding-unit-md;
+  }
+}

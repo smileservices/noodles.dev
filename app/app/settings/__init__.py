@@ -252,13 +252,12 @@ MAX_RATING = 5
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     'resource_image': [
         ('small', 'thumbnail__180x180'),
-        ('medium', 'thumbnail__220x220'),
-        ('large', 'thumbnail__320x320'),
+        ('medium', 'thumbnail__270x270'),
+        ('large', 'thumbnail__1008x220'),
     ],
     'technology_logo': [
-        ('small', 'thumbnail__180x180'),
-        ('medium', 'thumbnail__220x220'),
-        ('large', 'thumbnail__320x320'),
+        ('small', 'thumbnail__16x16'),
+        ('medium', 'thumbnail__35x35'),
     ],
 }
 

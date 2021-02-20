@@ -33,3 +33,18 @@
   background-color: $color-text-grey-2;
   color: $color-text-white;
 }
+
+.btn.submit.waiting {
+  &:hover {
+    cursor: not-allowed;
+    filter: none;
+  }
+
+  > * {
+    margin-right: 1rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

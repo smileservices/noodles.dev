@@ -1,29 +1,39 @@
-<h1 class="title" itemProp="name">{{ result.name }}</h1>
-<img src="{{ result.logo.medium }}" alt="">
+<header>
+    <div class="left-side">
+        <img src="{{ result.logo.medium }}" alt="">
+        <h1 class="title" itemProp="name">{{ result.name }}</h1>
+    </div>
+    <div class="right-side">
+        <a class="btn" href="{% url 'tech-edit' id=result.pk %}">Contribute</a>
+    </div>
+</header>
 
-<p>license type: {{ result.license_label }}</p>
-<p>maintained by {{ result.owner }}</p>
-<p>Category: {{ result.category }}</p>
-<p class="source_url"><a href="{{ result.url }}">url</a></p>
+<div class="main-content">
+    <p>License type: {{ result.license_label }}</p>
+    <p>Technology maintained by {{ result.owner }}</p>
+    <p>Category: {{ result.category }}</p>
+    <p class="source_url"><a href="{{ result.url }}">{{ result.url }}</a></p>
 
-<p class="summary" itemProp="abstract">{{ result.description }}</p>
+    <p class="summary" itemProp="abstract">{{ result.description }}</p>
 
-{% if result.pros %}
-<p class="pros">Pros: {{ result.pros }}</p>
-{% endif %}
+    {% if result.pros %}
+        <p class="pros">Pros: {{ result.pros }}</p>
+    {% endif %}
 
-{% if result.cons %}
-<p class="cons">Cons: {{ result.cons }}</p>
-{% endif %}
+    {% if result.cons %}
+        <p class="cons">Cons: {{ result.cons }}</p>
+    {% endif %}
 
-{% if result.limitations %}
-<p class="limitations">Limitations: {{ result.limitations }}</p>
-{% endif %}
+    {% if result.limitations %}
+        <p class="limitations">Limitations: {{ result.limitations }}</p>
+    {% endif %}
 
-{% if result.ecosystem.count > 0 %}
-<ul class="ecosystem">Ecosystem:
-    {% for tech in result.ecosystem.all %}
-        <li><a class="tech" href="{% url 'tech-detail' tech.pk tech.slug %}">{{ tech }}</a></li>
-    {% endfor %}
-</ul>
-{% endif %}
+    {% if result.ecosystem.count > 0 %}
+        <p>Ecosystem:</p>
+        <div class="tags">
+            {% for tech in result.ecosystem.all %}
+                <a class="tech" href="{% url 'tech-detail' tech.pk tech.slug %}">{{ tech }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

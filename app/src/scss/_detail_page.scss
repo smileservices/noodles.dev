@@ -1,0 +1,38 @@
+main .detail-page {
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: 2.5fr 1fr;
+  grid-template-areas:
+  "detail related"
+  "tab-navigation related"
+  "reviews related";
+
+  section#detail {
+    grid-area: detail;
+    display: block;
+    height: fit-content;
+
+    header {
+      margin: $padding-unit-big 0;
+      > * {
+        display: inline-block;
+      }
+      .right-side {
+        float: right;
+      }
+    }
+
+    .waiting-container {
+      border: none;
+    }
+  }
+
+  section.reviews {
+    animation: grow;
+  }
+
+  section.children {
+    animation: grow;
+  }
+
+}

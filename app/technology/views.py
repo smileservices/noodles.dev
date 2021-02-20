@@ -14,6 +14,7 @@ from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggest
 from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
 from collections import defaultdict
 from study_collection.models import Collection
+from study_resource.models import StudyResource
 from . import filters
 from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyListing
 from .models import Technology
@@ -27,13 +28,14 @@ def detail(request, id, slug):
     similar_techs = []
     for tech_list in [solution.technologies.all() for solution in solutions.all()]:
         similar_techs += tech_list
-    related_resources_techs = detail.studyresourcetechnology_set.all()
+    resources_ids = [tech['study_resource_id'] for tech in detail.studyresourcetechnology_set.values('study_resource_id').all()]
+    resources = StudyResource.objects.filter(pk__in=resources_ids).all()
     data = {
         'result': detail,
         'collections': collections,
         'solutions': solutions,
         'similar': similar_techs,
-        'related_resources_techs': related_resources_techs,
+        'resources': resources,
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
         'thumbs_down_array': json.dumps(detail.thumbs_down_array),
         'vote_url': reverse_lazy('techs-viewset-vote', kwargs={'pk': detail.pk}),
