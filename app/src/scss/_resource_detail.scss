@@ -1,0 +1,31 @@
+main .detail-page.resource {
+  grid-template-areas:
+  "detail related"
+  "reviews related";
+
+  section#detail {
+
+    header {
+      margin: $padding-unit-big 0;
+      > * {
+        display: block;
+      }
+      .title {
+        margin-top: $padding-unit-md*2;
+      }
+    }
+
+    .description {
+      margin: $padding-unit-md*2 0;
+    }
+
+    .resource-url {
+      display: inline-block;
+      background-color: var(--color-background-2);
+    }
+  }
+
+  section.reviews {
+    animation: grow;
+  }
+}

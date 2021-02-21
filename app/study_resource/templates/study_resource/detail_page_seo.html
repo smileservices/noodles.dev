@@ -6,26 +6,18 @@
     <title>{{ result.name }}</title>
     <meta name="description"
           content="{{ result.summary }}"/>
-    <meta name="keywords" content="
-
-
-
-            {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.studyresourcetechnologies_set.all %}{{ tech }}, {% endfor %}"/>
+    <meta name="keywords" content="{% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.studyresourcetechnologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
 {% endblock %}
 
 {% block content %}
-    <div class="detail-page">
+    <div class="detail-page resource">
 
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
-                <div class="toolbar">
-                    <a href="{% url 'study-resource-edit' result.pk %}" class="icon-pencil edit"></a>
-                    <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" class="icon-bookmark"></a>
-                </div>
                 {% include 'study_resource/detail.html' %}
             </section>
             <section id="reviews" class="column-container">

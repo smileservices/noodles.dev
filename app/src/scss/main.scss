@@ -25,6 +25,7 @@
   --color-text-grey-2: #85A0AD;
   --color-blue: #24A0ED;
   --color-blue-dark: #0C5C8D;
+  --color-text-red: #c21d6a;
 }
 
 body {
@@ -53,10 +54,11 @@ body {
 @import "content";
 @import "navbar";
 @import "sidebar_fixed";
-@import "detail_page";
 @import "listings";
-
+@import "detail_page";
+@import "resource_detail";
 @import "technology_detail";
+
 
 
 //@import "old/authentication";

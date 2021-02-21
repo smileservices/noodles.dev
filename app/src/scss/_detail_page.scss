@@ -3,22 +3,34 @@ main .detail-page {
   grid-gap: 2rem;
   grid-template-columns: 2.5fr 1fr;
   grid-template-areas:
-  "detail related"
-  "tab-navigation related"
-  "reviews related";
+  "detail related";
 
   section#detail {
     grid-area: detail;
     display: block;
     height: fit-content;
 
+    > * {
+      margin-bottom: $padding-unit-md;
+    }
+
+    .published {
+      display: block;
+      font-size: $fontsize-sm;
+      font-weight: 400;
+      color: var(--color-text-grey-2);
+    }
+
     header {
       margin: $padding-unit-big 0;
+
       > * {
         display: inline-block;
       }
+
       .right-side {
         float: right;
+
         a:visited {
           color: var(--color-text-white);
         }
@@ -30,16 +42,9 @@ main .detail-page {
     }
   }
 
-  section.reviews {
-    animation: grow;
-  }
-
-  section.children {
-    animation: grow;
-  }
-
   section#related {
     margin: $padding-unit-big 0;
+
     .btn.see-more {
       display: block;
       text-align: center;

@@ -24,7 +24,7 @@
     <h4 class="title" itemprop="name">
         <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">{{ result.name }}</a>
     </h4>
-        <span class="published">{{ result.created_at }} By {{ result.author }}</span>
+        <span class="published">{{ result.publication_date }} By {{ result.published_by }}</span>
     </div>
 
     <div class="description">
