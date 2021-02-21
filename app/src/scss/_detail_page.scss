@@ -19,6 +19,9 @@ main .detail-page {
       }
       .right-side {
         float: right;
+        a:visited {
+          color: var(--color-text-white);
+        }
       }
     }
 

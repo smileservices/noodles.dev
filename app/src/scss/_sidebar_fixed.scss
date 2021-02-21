@@ -41,7 +41,8 @@ aside .sidebar {
 aside .sidebar .top-section {
   display: flex;
   flex-direction: row;
-  line-height: $fontsize-big;
+  padding: $nav-padding;
+  line-height: $fontsize-big*2;
   font-size: $fontsize-big;
   font-weight: 700;
   background-color: var(--color-background-1);
@@ -51,13 +52,12 @@ aside .sidebar .top-section {
 
 
 aside .sidebar .top-section a {
-  padding: $nav-padding*2;
   text-decoration: none;
   color: var(--color-text-white);
 }
 
 aside .sidebar .top-section a.collapse-button {
-  padding: $nav-padding;
+  //padding: $nav-padding;
 }
 
 aside .sidebar .top-section a > svg {

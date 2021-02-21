@@ -12,7 +12,7 @@
         <a id="navbar-logo" href="{% url "homepage" %}">Noodles.dev</a>
     </div>
 
-    <div class="right-side collapsible">
+    <div class="right-side">
 
         {% if user.is_authenticated %}
             {# NOTIFICATIONS DROPDOWN #}
@@ -26,12 +26,12 @@
                         </svg>
                     </span>
                 <div class="dropdown-menu">
+                    <a href="">Some notification</a>
                 </div>
             </div>
             {# NOTIFICATIONS DROPDOWN END #}
         {% endif %}
 
-        <a rel="nofollow noopener" href="#" class="collapse-toggle"><span class="icon-angle-down"></span></a>
         {% if user.is_authenticated %}
             <div class="right-side collapsible-links">
 
@@ -52,18 +52,10 @@
                     </span>
                     <div class="dropdown-menu">
                         <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
-                        <div class="dropdown submenu hidden">
-                            <a rel="nofollow noopener" class="dropdown-button" href="#">{% trans "Settings" %} <span
-                                    class="icon-angle-down"></span></a>
-                            <div class="dropdown-menu">
-                                <a rel="nofollow noopener"
-                                   href={% url "account_email" %}>{% trans "change email " %}</a>
-                                <a rel="nofollow noopener"
-                                   href={% url "account_change_password" %}>{% trans "change password" %}</a>
-                                <a rel="nofollow noopener"
-                                   href={% url "socialaccount_connections" %}>{% trans "change social accounts" %}</a>
-                            </div>
-                        </div>
+                        <a rel="nofollow noopener"
+                           href={% url "my-profile" %}>Profile</a>
+                        <a rel="nofollow noopener"
+                           href={% url "my-profile-edit" %}>Account</a>
                     </div>
                 </div>
                 {# ACCOUNT DROPDOWN END #}

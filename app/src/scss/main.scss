@@ -42,16 +42,16 @@ body {
 @import "old/modal";
 @import "old/forms";
 @import "old/footer";
-@import "old/navbar";
 @import "old/search_window";
-@import "old/dropdowns";
 @import "old/pagination";
 
+@import "dropdowns";
 @import "layouts";
 
 @import "text";
 @import "buttons";
 @import "content";
+@import "navbar";
 @import "sidebar_fixed";
 @import "detail_page";
 @import "listings";

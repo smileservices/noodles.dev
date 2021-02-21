@@ -11,6 +11,8 @@
 
 
 
+
+
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -34,34 +36,89 @@
         }
     </script>
     <div class="detail-page">
-
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
-            <section id="detail" class="card" itemprop="itemReviewed" itemscope
+            <section id="detail" class="technology-detail" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
+                <div class="breadcrumbs">
+                    <a href="/">Homepage</a> / Technologies / {{ result.category }} / <a
+                        href="{{ result.absolute_url }}">{{ result.name }}</a>
+                </div>
                 {% include 'technology/detail.html' %}
                 <div id="votes-app" class="thumbs"></div>
             </section>
-        </div>
-        <section class="related column-container">
-            {% if collections %}
-                <h3>Collections</h3>
-                <div class="tile-container">
-                    {% for result in collections %}
-                        {% include 'study_collection/result.html' %}
-                    {% endfor %}
+
+            <section class="tab-navigation">
+                <div class="tab-headers">
+                    {% if resources %}
+                        <h4 data-target="resources-tab" class="active">Resources</h4>
+                    {% endif %}
+                    {% if collections %}
+                        <h4 data-target="collections-tab">Collections</h4>
+                    {% endif %}
                 </div>
-            {% endif %}
-            <h3>Learning Resources</h3>
-            <div class="tile-container">
-                {% for resource in resources %}
-                    {% include 'study_resource/result.html' with result=resource %}
-                {% endfor %}
-            </div>
+                <div class="tab-content">
+                    {% if resources %}
+                        <div id="resources-tab" class="active">
+                            <div class="column-container">
+                                {% for resource in resources %}
+                                    {% include 'study_resource/result.html' with result=resource %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if collections %}
+                        <div id="collections-tab" class="">
+                            <div class="column-container">
+                                {% for result in collections %}
+                                    {% include 'study_collection/result.html' %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+
+
+        <section class="related column-container" id="related">
+            <h3>Related</h3>
         </section>
     </div>
 {% endblock %}
 
 {% block extra_js %}
+    <script>
+        window.onload = e => {
+            const tab_holders = document.getElementsByClassName('tab-navigation');
+
+            function showTab(headers, tabs, selectedIdx) {
+                for (let idx = 0; idx < headers.length; idx++) {
+                    //handle active class on headers
+                    if (idx === selectedIdx) {
+                        headers[idx].classList.add('active');
+                    } else {
+                        headers[idx].classList.remove('active');
+                    }
+                }
+                const targetId = headers[selectedIdx].getAttribute('data-target');
+                for (let idx = 0; idx < tabs.length; idx++) {
+                    if (tabs[idx].getAttribute('id') === targetId) {
+                        tabs[idx].classList.add('active');
+                    } else {
+                        tabs[idx].classList.remove('active');
+                    }
+                }
+            }
+
+            for (const tab_elem of tab_holders) {
+                const headers = tab_elem.getElementsByClassName('tab-headers')[0].children;
+                const tabs = tab_elem.getElementsByClassName('tab-content')[0].children;
+                for (let idx = 0; idx < headers.length; idx++) {
+                    headers[idx].addEventListener('click', e => showTab(headers, tabs, idx));
+                }
+            }
+        }
+    </script>
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'votes.js' %}"></script>
 {% endblock %}
