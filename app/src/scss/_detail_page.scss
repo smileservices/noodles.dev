@@ -38,4 +38,12 @@ main .detail-page {
     animation: grow;
   }
 
+  section#related {
+    margin: $padding-unit-big 0;
+    .btn.see-more {
+      display: block;
+      text-align: center;
+    }
+  }
+
 }

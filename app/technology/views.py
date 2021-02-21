@@ -23,18 +23,27 @@ from .models import Technology
 def detail(request, id, slug):
     queryset = Technology.objects
     detail = queryset.get(pk=id)
-    solutions = detail.solutions
+    # solutions = detail.solutions
     collections = Collection.objects.filter(technologies=detail).all()[:5]
-    similar_techs = []
-    for tech_list in [solution.technologies.all() for solution in solutions.all()]:
-        similar_techs += tech_list
+    # similar_techs = []
+    # for tech_list in [solution.technologies.all() for solution in solutions.all()]:
+    #     similar_techs += tech_list
     resources_ids = [tech['study_resource_id'] for tech in detail.studyresourcetechnology_set.values('study_resource_id').all()]
     resources = StudyResource.objects.filter(pk__in=resources_ids).all()
+    latest_resources = StudyResource.objects.all().order_by('created_at')[:5]
+    tags = []
+    for res in latest_resources:
+        [tags.append(tag) for tag in res.tags.all()]
+    latest = {
+        'tags': set(tags),
+        'resources': latest_resources
+    }
     data = {
         'result': detail,
         'collections': collections,
-        'solutions': solutions,
-        'similar': similar_techs,
+        'latest': latest,
+        # 'solutions': solutions,
+        # 'similar': similar_techs,
         'resources': resources,
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
         'thumbs_down_array': json.dumps(detail.thumbs_down_array),

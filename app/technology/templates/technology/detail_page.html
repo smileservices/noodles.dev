@@ -7,6 +7,8 @@
     <meta name="description"
           content="{{ result.summary }}"/>
     <meta name="keywords" content="
+
+
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -29,23 +31,20 @@
             vote_url: "{{ vote_url }}",
         }
     </script>
+    <div class="breadcrumbs">
+        <a href="/">Homepage</a> / Technologies / {{ result.category }} / <a
+            href="{{ result.absolute_url }}">{{ result.name }}</a>
+    </div>
     <div class="detail-page">
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
             <section id="detail" class="technology-detail" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
-                <div class="breadcrumbs">
-                    <a href="/">Homepage</a> / Technologies / {{ result.category }} / <a
-                        href="{{ result.absolute_url }}">{{ result.name }}</a>
-                </div>
                 {% include 'technology/detail.html' %}
                 <div id="votes-app" class="thumbs"></div>
             </section>
             {% include 'technology/tab_navigation.html' %}
         </div>
-
-        <section class="related column-container" id="related">
-            <h3>Related</h3>
-        </section>
+        {% include 'technology/right_side.html' %}
     </div>
 {% endblock %}
 

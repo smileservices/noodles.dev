@@ -1,0 +1,12 @@
+<h5>Tags to follow</h5>
+<div class="tags">
+{% for tag in latest.tags %}
+    <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"># {{ tag }}</a>
+{% endfor %}
+</div>
+<h5>Latest Added Resources</h5>
+{% for resource in latest.resources %}
+    {% include 'study_resource/result.html' with result=resource %}
+{% endfor %}
+
+<a class="btn secondary see-more" href="{% url 'search_page' %}?tab=resources">See More</a>
