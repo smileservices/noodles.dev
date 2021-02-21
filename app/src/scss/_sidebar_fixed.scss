@@ -41,7 +41,6 @@ aside .sidebar {
 aside .sidebar .top-section {
   display: flex;
   flex-direction: row;
-  padding: $nav-padding;
   line-height: $fontsize-big*2;
   font-size: $fontsize-big;
   font-weight: 700;
@@ -52,6 +51,7 @@ aside .sidebar .top-section {
 
 
 aside .sidebar .top-section a {
+  padding: $nav-padding;
   text-decoration: none;
   color: var(--color-text-white);
 }
