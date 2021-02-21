@@ -7,12 +7,6 @@
     <meta name="description"
           content="{{ result.summary }}"/>
     <meta name="keywords" content="
-
-
-
-
-
-
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -46,39 +40,8 @@
                 {% include 'technology/detail.html' %}
                 <div id="votes-app" class="thumbs"></div>
             </section>
-
-            <section class="tab-navigation">
-                <div class="tab-headers">
-                    {% if resources %}
-                        <h4 data-target="resources-tab" class="active">Resources</h4>
-                    {% endif %}
-                    {% if collections %}
-                        <h4 data-target="collections-tab">Collections</h4>
-                    {% endif %}
-                </div>
-                <div class="tab-content">
-                    {% if resources %}
-                        <div id="resources-tab" class="active">
-                            <div class="column-container">
-                                {% for resource in resources %}
-                                    {% include 'study_resource/result.html' with result=resource %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endif %}
-                    {% if collections %}
-                        <div id="collections-tab" class="">
-                            <div class="column-container">
-                                {% for result in collections %}
-                                    {% include 'study_collection/result.html' %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </section>
+            {% include 'technology/tab_navigation.html' %}
         </div>
-
 
         <section class="related column-container" id="related">
             <h3>Related</h3>

@@ -1,22 +1,36 @@
 <span class="card" itemscope itemtype="https://schema.org/AggregateRating">
 <div class="result" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
 
-<h2 class="title" itemprop="name">
-    <a itemprop="name" href="{% url 'collection-detail' result.pk result.slug %}">{{ result.name }}</a>
-</h2>
-
-    <div class="group-muted">
-        <p>{{ result.items_count }} Items</p>
+    <div class="tags">
+        {% for tech in result.technologies.all %}
+            <a class="tech" href="{{ tech.absolute_url }}">
+                <span>
+                <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.50198 4.5L11.002 1H2.00198V0.5C2.00198 0.224 1.77798 0 1.50198 0C1.22598 0 1.00198 0.224 1.00198 0.5V11.5C1.00198 11.776 1.22598 12 1.50198 12C1.77798 12 2.00198 11.776 2.00198 11.5V8H11.002L9.50198 4.5Z"
+                      fill="black"/>
+                </svg>
+                 {{ tech }}
+                </span>
+            </a>
+        {% endfor %}
     </div>
 
-</div>
-    <p class="tags" itemprop="keywords">
-        {% for tag in result.tags.all %}
-            <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>
-        {% endfor %}
-        {% for tech in result.technologies.all %}
-            <a class="tech" href="{{ tech.absolute_url }}">{{ tech }}</a>
-        {% endfor %}
-    </p>
+    <div class="listing-title">
+        <h4 class="title" itemprop="name">
+        <a itemprop="name" href="{% url 'collection-detail' result.pk result.slug %}">{{ result.name }}</a>
+        </h4>
+        <span class="published">{{ result.created_at }} By {{ result.author }}</span>
+        <span class="published">{{ result.items_count }} Resources</span>
+    </div>
+
+    <p class="description">{{ result.description }}</p>
+
+    <div class="tags" itemprop="keywords">
+    {% for tag in result.tags.all %}
+        <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"># {{ tag }}</a>
+    {% endfor %}
+    </div>
+
     {% include 'vote_display.html' with resource=result %}
+</div>
 </span>
