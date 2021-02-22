@@ -7,33 +7,30 @@
         <a class="btn" href="{% url 'tech-edit' id=result.pk %}">Contribute</a>
     </div>
 </header>
-
-<div class="main-content">
-    <p>License type: {{ result.license_label }}</p>
-    <p>Technology maintained by {{ result.owner }}</p>
-    <p>Category: {{ result.category }}</p>
-    <p class="source_url"><a href="{{ result.url }}">{{ result.url }}</a></p>
-
+<p class="tags">
+    <span>{{ result.license_label }}</span>
+    <span>{{ result.category }}</span>
+</p>
+<div class="description">
     <p class="summary" itemProp="abstract">{{ result.description }}</p>
-
+    <p>Technology maintained by <span class="highlighted">{{ result.owner }}</span></p>
+    <p class="source_url"><a href="{{ result.url }}">{{ result.url }}</a></p>
     {% if result.pros %}
-        <p class="pros">Pros: {{ result.pros }}</p>
+        <p class="pros"><span class="highlighted">Pros</span> {{ result.pros }}</p>
     {% endif %}
-
     {% if result.cons %}
-        <p class="cons">Cons: {{ result.cons }}</p>
+        <p class="cons"><span class="highlighted">Cons</span> {{ result.cons }}</p>
     {% endif %}
-
     {% if result.limitations %}
-        <p class="limitations">Limitations: {{ result.limitations }}</p>
-    {% endif %}
-
-    {% if result.ecosystem.count > 0 %}
-        <p>Ecosystem:</p>
-        <div class="tags">
-            {% for tech in result.ecosystem.all %}
-                <a class="tech" href="{% url 'tech-detail' tech.pk tech.slug %}">{{ tech }}</a>
-            {% endfor %}
-        </div>
+        <p class="limitations"><span class="highlighted">Limitations</span> {{ result.limitations }}</p>
     {% endif %}
 </div>
+
+{% if result.ecosystem.count > 0 %}
+    <p>Ecosystem:</p>
+    <div class="tags">
+        {% for tech in result.ecosystem.all %}
+            <a class="tech" href="{% url 'tech-detail' tech.pk tech.slug %}">{{ tech }}</a>
+        {% endfor %}
+    </div>
+{% endif %}

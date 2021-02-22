@@ -1,0 +1,16 @@
+<section class="related column-container" id="related">
+{% if collections %}
+    <h5>Contained In Collections</h5>
+    <div class="tile-container">
+        {% for result in collections %}
+            {% include 'study_collection/result.html' %}
+        {% endfor %}
+    </div>
+{% endif %}
+<h5>Related</h5>
+<div class="tile-container">
+    {% for result in related %}
+        {% include 'study_resource/result.html' %}
+    {% endfor %}
+</div>
+</section>

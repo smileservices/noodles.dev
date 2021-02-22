@@ -14,7 +14,6 @@
 
 {% block content %}
     <div class="detail-page resource">
-
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
@@ -27,23 +26,6 @@
                 <a href="{% url 'account_login' %}?next={{ request.get_full_path }}">login to review</a>
             </section>
         </div>
-
-
-        <section class="related column-container">
-            {% if collections %}
-                <h3>Collections</h3>
-                <div class="tile-container">
-                    {% for result in collections %}
-                        {% include 'study_collection/result.html' %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <h3>Related</h3>
-            <div class="tile-container">
-                {% for result in related %}
-                    {% include 'study_resource/result.html' %}
-                {% endfor %}
-            </div>
-        </section>
+        {% include 'study_resource/right_side.html' %}
     </div>
 {% endblock %}

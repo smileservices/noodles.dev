@@ -37,6 +37,20 @@ main .detail-page {
       }
     }
 
+    .highlighted {
+      color: var(--color-blue);
+    }
+
+    .description {
+      max-width: $fontsize-big*50;
+      > * {
+        margin-bottom: $padding-unit;
+      }
+      > *:last-child {
+        margin-bottom: 0;
+      }
+    }
+
     .waiting-container {
       border: none;
     }
