@@ -1,22 +1,17 @@
-<h1 class="title" itemProp="name">
-    {{ result.name }}
-</h1>
+<header>
+    <div class="left-side">
+        <img src="{{ result.logo.medium }}" alt="">
+        <h1 class="title" itemProp="name">{{ result.name }}</h1>
+    </div>
+</header>
 
-<div class="group">
-    <p class="summary" itemProp="abstract">{{ result.description }}</p>
-    <p class="publication-date">Created by {{ result.author.get_full_name }}</p>
-</div>
+<span class="published">{{ result.created_at }} By {{ result.author }}</span>
+<span class="published">{{ result.items_count }} Resources</span>
+
+<p class="description" itemProp="abstract">{{ result.description }}</p>
 
 <div class="tags" itemProp="keywords">
-    <span>Tags: </span>
     {% for tag in result.tags.all %}
-        <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"><span></span>{{ tag }}</a>
-    {% endfor %}
-</div>
-
-<div class="tags" itemProp="keywords">
-    <span>Tech: </span>
-    {% for tech in result.technologies.all %}
-        <a class="tech" href="{{ tech.absolute_url }}">{{ tech }}</a>
+        <a class="tag" href="{% url 'search' %}?tab=collections&tags={{ tag }}"># {{ tag }}</a>
     {% endfor %}
 </div>

@@ -9,6 +9,8 @@
     <meta name="keywords" content="
 
 
+
+
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.studyresourcetechnologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -16,15 +18,16 @@
 {% endblock %}
 
 {% block content %}
-    <div class="detail-page">
-
+    <div class="breadcrumbs">
+        <a href="/">Homepage</a> / Collections /
+        <a href="{{ result.absolute_url }}">{{ result.name }}</a>
+    </div>
+    <div class="detail-page collection">
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
-            <section id="detail" class="card" itemprop="itemReviewed" itemscope
+            <section id="detail" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
-                <div class="toolbar">
-                    <a href="{% url 'account_login' %}?next={{ request.get_full_path }}">add to favorites</a>
-                </div>
                 {% include 'study_collection/detail.html' %}
+                {% include 'vote_not_logged.html' with resource=result %}
             </section>
             <section id="items" class="column-container">
                 <h3>Collection Items:</h3>
@@ -33,15 +36,6 @@
                 {% endfor %}
             </section>
         </div>
-
-
-        <section class="related column-container">
-            <h3>Related</h3>
-            <div class="tile-container">
-                {% for result in related %}
-                    {% include 'study_collection/result.html' %}
-                {% endfor %}
-            </div>
-        </section>
+        {% include 'study_collection/right_side.html' %}
     </div>
 {% endblock %}
