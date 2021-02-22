@@ -107,8 +107,8 @@
 .thumbs {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
-  gap: 1rem;
+  justify-content: flex-start;
+  gap: $padding-unit-big;
 
   a, a:visited {
     color: var(--color-blue);

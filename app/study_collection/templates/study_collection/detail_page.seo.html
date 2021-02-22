@@ -30,7 +30,7 @@
                 {% include 'vote_not_logged.html' with resource=result %}
             </section>
             <section id="items" class="column-container">
-                <h3>Collection Items:</h3>
+                <h4>Resources</h4>
                 {% for item in  study_resources %}
                     {% include 'study_resource/result.html' with result=item %}
                 {% endfor %}

@@ -1,5 +1,5 @@
 import requests
-
+import json
 from django.db import IntegrityError, models
 from django.db.models import Q
 from django.urls import reverse_lazy
@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from core.abstract_viewsets import SearchableModelViewset
+from core.abstract_viewsets import SearchableModelViewset, ResourceWithEditSuggestionVieset
 from . import serializers, filters
 from .models import CollectionResources, Collection
 
@@ -34,12 +34,15 @@ def detail(request, id, slug):
         'result': resource,
         'study_resources': study_resources,
         'related': related,
+        'thumbs_up_array': json.dumps(resource.thumbs_up_array),
+        'thumbs_down_array': json.dumps(resource.thumbs_down_array),
         'urls': {
             # options
             'tag_options_api': reverse_lazy('tags-options-list'),
             'tech_options_api': reverse_lazy('techs-options-list'),
             # collections urls
             'collections_api': reverse_lazy('collection-viewset-list'),
+            'vote_url': reverse_lazy('collection-viewset-vote', kwargs={'pk': resource.pk}),
         }
     }
     if request.user.is_authenticated:
@@ -64,7 +67,7 @@ def my_collections(request):
     return render(request, 'study_collection/my_collections.html', data)
 
 
-class CollectionViewset(SearchableModelViewset):
+class CollectionViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
     serializer_class = serializers.CollectionSerializer
     queryset = serializers.CollectionSerializer.queryset.order_by('-created_at')
     permission_classes = [IsAuthenticatedOrReadOnly]

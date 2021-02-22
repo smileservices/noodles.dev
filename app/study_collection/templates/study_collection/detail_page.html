@@ -6,9 +6,7 @@
     <title>{{ result.name }}</title>
     <meta name="description"
           content="{{ result.summary }}"/>
-    <meta name="keywords" content="
-
-            {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies_set.all %}{{ tech }}, {% endfor %}"/>
+    <meta name="keywords" content="{% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -25,35 +23,34 @@
 
         const MANAGE_COLLECTIONS_URL = "{% url 'my-collections' %}"
         const COLLECTIONS_API = "{{ urls.collections_api }}";
+        const RESULT = {
+            thumbs_up_array: JSON.parse("{{ thumbs_up_array }}"),
+            thumbs_down_array: JSON.parse("{{ thumbs_down_array }}"),
+            vote_url: "{{ urls.vote_url }}",
+        }
     </script>
-    <div class="detail-page">
-
+    <div class="breadcrumbs">
+        <a href="/">Homepage</a> / Collections /
+        <a href="{{ result.absolute_url }}">{{ result.name }}</a>
+    </div>
+    <div class="detail-page collection">
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
-            <section id="detail" class="card" itemprop="itemReviewed" itemscope
+            <section id="detail" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
-                <div class="toolbar" id="toolbar-app"></div>
                 {% include 'study_collection/detail.html' with result=result %}
+                <div id="votes-app" class="thumbs"></div>
             </section>
             <section id="items" class="column-container">
-                <h3>Collection Items:</h3>
+                <h4>Resources</h4>
                 {% for item in  study_resources %}
                     {% include 'study_resource/result.html' with result=item %}
                 {% endfor %}
             </section>
         </div>
-
-
-        <section class="related column-container">
-            <h3>Related</h3>
-            <div class="tile-container">
-                {% for result in related %}
-                    {% include 'study_collection/result.html' %}
-                {% endfor %}
-            </div>
-        </section>
+        {% include 'study_collection/right_side.html' %}
     </div>
 {% endblock %}
 
 {% block extra_js %}
-
+    <script src="{% static 'votes.js' %}"></script>
 {% endblock %}
