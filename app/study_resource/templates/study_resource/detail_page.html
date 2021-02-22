@@ -7,6 +7,8 @@
     <meta name="description"
           content="{{ result.summary }}"/>
     <meta name="keywords" content="
+
+
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -35,8 +37,11 @@
         const USER_COLLECTIONS_WITH_RESOURCE = "{{ urls.user_collections_with_resource }}";
         const USER_COLLECTIONS_SET_API = "{{ urls.user_collections_set_resource_to_collections }}";
     </script>
+    <div class="breadcrumbs">
+        <a href="/">Homepage</a> / Resources / {{ result.category }} /
+        <a href="{{ result.absolute_url }}">{{ result.name }}</a>
+    </div>
     <div class="detail-page resource">
-
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">

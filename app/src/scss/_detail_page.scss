@@ -1,6 +1,6 @@
 main .detail-page {
   display: grid;
-  grid-gap: 2rem;
+  grid-gap: $padding-unit-big;
   grid-template-columns: 2.5fr 1fr;
   grid-template-areas:
   "detail related";

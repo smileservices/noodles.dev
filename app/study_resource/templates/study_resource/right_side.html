@@ -1,13 +1,13 @@
 <section class="related column-container" id="related">
 {% if collections %}
-    <h5>Contained In Collections</h5>
+    <h4>Contained In Collections</h4>
     <div class="tile-container">
         {% for result in collections %}
             {% include 'study_collection/result.html' %}
         {% endfor %}
     </div>
 {% endif %}
-<h5>Related</h5>
+<h4>Related</h4>
 <div class="tile-container">
     {% for result in related %}
         {% include 'study_resource/result.html' %}
