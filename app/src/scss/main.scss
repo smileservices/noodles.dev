@@ -41,10 +41,10 @@ body {
 @import "old/reset";
 @import "old/animations";
 @import "old/modal";
-@import "old/forms";
 @import "old/footer";
 @import "old/search_window";
 @import "old/pagination";
+@import "forms";
 
 @import "dropdowns";
 @import "layouts";
@@ -58,8 +58,7 @@ body {
 @import "detail_page";
 @import "resource_detail";
 @import "technology_detail";
-
-
+@import "review";
 
 //@import "old/authentication";
 //@import "old/page_sections";

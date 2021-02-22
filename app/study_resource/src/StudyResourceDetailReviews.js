@@ -34,7 +34,9 @@ function ResourceReviewsApp() {
 
     return (
         <Fragment>
-            <h3>Reviews</h3>
+            <header>
+                <h3>Reviews</h3>
+            </header>
             {waiting}
             {alert}
             <PaginatedLayout data={reviews.results} resultsCount={reviews.count} pagination={pagination}

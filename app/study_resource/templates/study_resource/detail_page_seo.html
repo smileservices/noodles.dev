@@ -19,12 +19,7 @@
                      itemtype="https://schema.org/CreativeWork">
                 {% include 'study_resource/detail.html' %}
             </section>
-            <section id="reviews" class="column-container">
-                {% for review in reviews %}
-                    {% include 'study_resource/review.html' with review=review %}
-                {% endfor %}
-                <a href="{% url 'account_login' %}?next={{ request.get_full_path }}">login to review</a>
-            </section>
+            {% include 'study_resource/reviews.html' %}
         </div>
         {% include 'study_resource/right_side.html' %}
     </div>

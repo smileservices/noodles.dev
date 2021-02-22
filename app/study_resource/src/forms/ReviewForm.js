@@ -3,7 +3,7 @@ import Alert from "../../../src/components/Alert";
 import StarRating from "../../../src/components/StarRating";
 import {Textarea, FormElement} from "../../../src/components/form";
 
-export default function ReviewForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
+function ReviewForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
 
     function validateForm(formData) {
         let vErrors = {}
@@ -51,3 +51,6 @@ export default function ReviewForm({formData, setFormData, extraData, submitCall
         </FormElement>
     )
 }
+
+ReviewForm.contentType = 'json';
+export default ReviewForm;

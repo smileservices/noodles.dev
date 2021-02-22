@@ -25,7 +25,16 @@ main .detail-page.resource {
     }
   }
 
-  section.reviews {
+  section#reviews {
     animation: grow;
+    header {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .review {
+      background-color: var(--color-background-3);
+    }
   }
 }

@@ -49,11 +49,11 @@ form {
   }
 
   #form_rating_stars span {
-    color: var(--color-blue-dark);
+    color: var(--color-blue);
   }
 
   #form_rating_stars span:hover {
-    color: var(--color-blue);
+    color: var(--color-blue-dark);
   }
 
   .invalid-feedback {
@@ -96,12 +96,12 @@ ul.progress {
 
   li.completed {
     color: #ffffff;
-    background-color: lighten(var(--color-blue), 20%);
+    background-color: var(--color-blue);
   }
 
   li.active {
     color: #ffffff;
-    background-color: var(--color-blue);
+    background-color: var(--color-blue-dark);
   }
 
 }
@@ -114,3 +114,15 @@ ul.progress {
   }
 }
 
+
+
+.form-control {
+  background-color: var(--color-background);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-background);
+}
+
+.form-control:focus {
+  color: var(--color-text-white);
+  background-color: var(--color-background);
+}

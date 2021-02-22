@@ -1,0 +1,25 @@
+.review {
+  > * {
+    margin-bottom: $padding-unit;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .rating {
+    margin-bottom: 0;
+  }
+
+  .published {
+    font-size: $fontsize-sm;
+    font-weight: 400;
+    padding-top: $padding-unit-sm;
+    color: var(--color-text-grey-2);
+  }
+
+  .description {
+    font-size: $fontsize-md;
+    max-width: $fontsize-big*40;
+  }
+}

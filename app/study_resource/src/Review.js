@@ -33,7 +33,7 @@ export default function Review({review}) {
                 </div>
             );
         }
-        return (<span className="delete icon-close" onClick={e => setConfirm(true)}/>)
+        return (<span className="delete" onClick={e => setConfirm(true)}>delete</span>)
     }
 
     let date = new Date(review.created_at);
@@ -43,22 +43,18 @@ export default function Review({review}) {
     };
     if (deleted) return <Alert text={deleted} type='success'/>;
     return (
-        <div className={current_owner ? 'review card highlighted' : 'review card'} itemProp="review" itemScope itemType="https://schema.org/Review">
+        <div className={current_owner ? 'card review highlighted' : 'card review'}>
             {waiting}
             {alert}
-            <p className="rating" itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
-                <span><StarRating rating={review.rating} maxRating={MAX_RATING}/></span>
-                <span>
-                    <span itemProp="ratingValue">{review.rating}</span>/<span itemProp="bestRating">{MAX_RATING}</span>
-                </span>
-            </p>
-            <p className="date" itemProp="datePublished">{date.toUTCString()}</p>
-            <p className="author">by <span itemProp="author">{author_full_name}</span></p>
+            <div className="rating">
+                <span className="stars"><StarRating rating={review.rating} maxRating={MAX_RATING} /></span>
+            </div>
+            <p className="published">{date.toUTCString()} by {author_full_name}</p>
             {current_owner
                 ? <div className="toolbar">{deleteElement(confirm)}</div>
                 : ''
             }
-            <p className="text" itemProp="ratingExplanation">{review.text}</p>
+            <p className="text">{review.text}</p>
             <div className="thumbs">
                 <Thumbs
                     thumbs_obj={thumbs_obj}

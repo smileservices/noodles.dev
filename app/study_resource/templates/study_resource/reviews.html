@@ -1,0 +1,20 @@
+{% load star_rating %}
+
+<section id="reviews" class="column-container card">
+    <header>
+        <h3>Reviews</h3>
+        <a class="btn" href="{% url 'account_login' %}?next={{ request.get_full_path }}">Write a Review</a>
+    </header>
+    {% for review in reviews %}
+        <div class="card review">
+            <div class="rating"><span itemProp="ratingValue" class="stars">{% star_rating review.rating %}</span></div>
+            <p class="published">
+                <span itemProp="datePublished">{{ review.created_at }}</span>
+                by
+                <span itemProp="author">{{ review.author }}</span>
+            </p>
+            <p class="text" itemProp="ratingExplanation">{{ review.text }}</p>
+            {% include 'vote_not_logged.html' with resource=review %}
+        </div>
+    {% endfor %}
+</section>

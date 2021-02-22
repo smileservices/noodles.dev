@@ -1,7 +1,7 @@
 {% load star_rating %}
 
 <div id="detail-toolbar" class="toolbar">
-    <a href="{% url 'study-resource-edit' result.pk %}" class="icon-pencil edit"></a>
+    <a href="{% url 'study-resource-edit' result.pk %}">edit</a>
     <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" class="icon-bookmark"></a>
 </div>
 <header>
