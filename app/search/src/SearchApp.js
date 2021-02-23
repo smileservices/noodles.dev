@@ -1,9 +1,6 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState, useEffect} from "react";
 import ReactDOM from "react-dom";
-import apiList from "../../src/api_interface/apiList";
-import {makeId, extractURLParams, whatType} from "../../src/components/utils";
-import StarRating from "../../src/components/StarRating";
-import ResourceRating from "../../study_resource/src/ResourceRating";
+import {whatType} from "../../src/components/utils";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
 import {FilterComponent} from "../../src/components/FilterComponent";
 
@@ -237,9 +234,9 @@ function SearchApp() {
     useEffect(e => {
         const [tab, setTabstate, pagination, setPagination, filters] = getTabState(currentTab);
         updateUrl({
-           search: searchbarState.q,
-           tab: currentTab,
-           filters: filters
+            search: searchbarState.q,
+            tab: currentTab,
+            filters: filters
         });
         searchInTab(searchbarState.q, currentTab)
     }, [resourcesFilters, collectionsFilters, technologiesFilters])
@@ -373,16 +370,20 @@ function SearchApp() {
         }
     }
 
+    function headerClass(tabname) {
+        return tabname===currentTab ? 'active' : '';
+    }
+
     return (
-        <div className="container">
-            <div className="tab-select">
-                <span onClick={e => changeTab('resources')}>Resources ({getCounter(resources)})</span>
-                <span onClick={e => changeTab('collections')}>Collections ({getCounter(collections)})</span>
-                <span onClick={e => changeTab('technologies')}>Technologies ({getCounter(technologies)})</span>
+        <section className="tab-navigation search">
+            <div className="tab-headers">
+                <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources ({getCounter(resources)})</h4>
+                <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections ({getCounter(collections)})</h4>
+                <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies ({getCounter(technologies)})</h4>
             </div>
             <SearchBarComponent search={setSearch} state={searchbarState}/>
             {showCurrentTab(currentTab)}
-        </div>
+        </section>
     );
 }
 

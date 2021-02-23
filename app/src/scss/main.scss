@@ -1,4 +1,4 @@
-@import url(//fonts.googleapis.com/css?family=Inter);
+//@import url(//fonts.googleapis.com/css?family=Inter);
 
 @import "node_modules/bootstrap/scss/functions";
 @import "node_modules/bootstrap/scss/variables";
@@ -59,6 +59,7 @@ body {
 @import "resource_detail";
 @import "technology_detail";
 @import "review";
+@import "search";
 
 //@import "old/authentication";
 //@import "old/page_sections";

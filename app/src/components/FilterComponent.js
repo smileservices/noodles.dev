@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {makeId} from "./utils";
+import Select from "react-select";
 
 const INACTIVE = 'inactive';
 
-export function SelectFilter({name, selected, options, label, onChange}) {
+export function SelectReactFilter({selected, options, label, onChange, isMulti}) {
     /*
     * name: string
     * selected: string/int
@@ -11,21 +11,23 @@ export function SelectFilter({name, selected, options, label, onChange}) {
     * onChange: value => {...}
     *
     * */
-    const id = "filter-" + name;
-    const selectedOption = selected ? selected : INACTIVE;
+    let selectedValue = selected ? {label: '', value: null} : INACTIVE;
+    const selectOptions = options.map(o => {
+        if (selected === o[0]) selectedValue = {label: o[1], value: o[0]};
+        return {label: o[1], value: o[0]}
+    })
+    const selectOnChange = selected => onChange(selected.value)
 
     return (
-        <div className="form-group">
-            <label htmlFor={id}>{label}</label>
-            <select className="form-control" name={id} id={id} value={selectedOption} onChange={e => {
-                onChange(e.target.value);
-            }}>
-                <option key={id + INACTIVE} value={INACTIVE}>All</option>
-                {options.map(option =>
-                    <option key={id + option[0]} value={option[0]}>{option[1]}</option>
-                )}
-            </select>
-        </div>
+        <Select isLoading={false} isDisabled={false}
+                placeholder={label}
+                options={selectOptions}
+                value={selectedValue}
+                onChange={selectOnChange}
+                className="filter-select"
+                classNamePrefix="fs"
+                isMulti={isMulti}
+        />
     )
 }
 
@@ -49,18 +51,19 @@ export function FilterComponent({fields, queryFilter, setQueryFilter}) {
     function filterFactory(type, data) {
         switch (type) {
             case 'simple-select':
-                return <SelectFilter key={"filter-" + data.name} {...data} />
+                return <SelectReactFilter key={"filter-" + data.name} {...data} isMulti={false}/>
+            case 'multi-select':
+                return <SelectReactFilter key={"filter-" + data.name} {...data} isMulti={true}/>
             default:
                 console.error('filterFactory ERROR: could not find matching filter component:', type);
         }
     }
 
     return (
-        <div id="filter">
+        <div className="filters">
             {Object.keys(fields).map(name => {
                 const selected = name in queryFilter ? queryFilter[name] : false;
                 const data = {
-                    name: name,
                     selected: selected,
                     options: fields[name].options,
                     label: fields[name].label,
@@ -68,8 +71,8 @@ export function FilterComponent({fields, queryFilter, setQueryFilter}) {
                 }
                 return filterFactory(fields[name].type, data)
             })}
-            { Object.keys(queryFilter).length > 0
-                ? <button className="btn btn-primary" onClick={e=>setQueryFilter({})}>Reset All</button> : ''}
+            {Object.keys(queryFilter).length > 0
+                ? <button className="btn" onClick={e => setQueryFilter({})}>Reset All</button> : ''}
         </div>
     )
 }

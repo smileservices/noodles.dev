@@ -59,6 +59,7 @@ export default function SearchBarComponent({search, state}) {
                 setShowSuggestions(false);
             }}>
                 <input type="text"
+                       className="form-control"
                        placeholder={state.placeholder}
                        value={formData}
                        onChange={e => {
