@@ -1,6 +1,8 @@
 .btn {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: $padding-unit-md;
   margin: 0;
   background-color: var(--color-blue);
   color: var(--color-text-white);
@@ -9,6 +11,11 @@
   border-radius: $radius-small;
   cursor: pointer;
   transition: background-color 0.3s ease;
+
+  span.icon {
+    font-size: $fontsize-sm;
+    font-weight: 800 !important;
+  }
 }
 
 .btn:hover {
@@ -26,7 +33,7 @@
 }
 
 .btn.create {
-    background-color: var(--color-background-3);
+  background-color: var(--color-background-3);
 }
 
 .btn.create:hover {

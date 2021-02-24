@@ -20,6 +20,13 @@ function codeParamsToUrl(params, data) {
     }
 }
 
+const NoResultsElement = (
+    <div className="no-results">
+        <h2>Too picky maybe?</h2>
+        <p>Try to broaden your filters.</p>
+    </div>
+)
+
 function updateUrl(params) {
     /*
     * params = {search: searchTerm, tab: tabName, filters: filters,...}
@@ -292,7 +299,7 @@ function SearchApp() {
                             queryFilter={resourcesFilters}
                             setQueryFilter={setResourcesFilters}
                         />
-                        {resources.results.items ?
+                        {resources.results.items?.length > 0 ?
                             <Fragment>
                                 <h4>Resources Results</h4>
                                 <PaginatedLayout
@@ -308,7 +315,7 @@ function SearchApp() {
                                     />}
                                 />
                             </Fragment>
-                            : ''}
+                            : NoResultsElement}
                     </div>
                 );
             case 'collections':
@@ -320,7 +327,7 @@ function SearchApp() {
                             queryFilter={collectionsFilters}
                             setQueryFilter={setCollectionsFilters}
                         />
-                        {collections.results.items ?
+                        {collections.results.items?.length > 0 ?
                             <Fragment>
                                 <h4>Collections Results</h4>
                                 <PaginatedLayout
@@ -336,7 +343,7 @@ function SearchApp() {
                                     />}
                                 />
                             </Fragment>
-                            : ''}
+                            : NoResultsElement}
                     </div>
                 );
             case 'technologies':
@@ -348,7 +355,7 @@ function SearchApp() {
                             queryFilter={technologiesFilters}
                             setQueryFilter={setTechnologiesFilters}
                         />
-                        {technologies.results.items ?
+                        {technologies.results.items?.length > 0 ?
                             <Fragment>
                                 <h4>Technologies Results</h4>
                                 <PaginatedLayout
@@ -364,7 +371,7 @@ function SearchApp() {
                                     />}
                                 />
                             </Fragment>
-                            : ''}
+                            : NoResultsElement }
                     </div>
                 );
         }

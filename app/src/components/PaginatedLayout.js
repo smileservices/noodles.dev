@@ -5,7 +5,7 @@ import {PaginationElement} from "./pagination";
 
 export default function PaginatedLayout({data, mapFunction, pagination, resultsCount, setPagination, resultsContainerClass}) {
     if (!data) return '';
-    if (data.length === 0) return 'No results'
+    if (data.length === 0) return ''
     return (
         <Fragment>
             <div className={resultsContainerClass}>

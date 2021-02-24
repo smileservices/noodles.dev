@@ -73,7 +73,7 @@ export function FilterComponent({fields, queryFilter, setQueryFilter}) {
                 return filterFactory(fields[name].type, data)
             })}
             {Object.keys(queryFilter).length > 0
-                ? <button className="btn" onClick={e => setQueryFilter({})}>Reset All</button> : ''}
+                ? <button className="btn reset-filters" onClick={e => setQueryFilter({})}><span className="icon icon-close"/> Reset All</button> : ''}
         </div>
     )
 }

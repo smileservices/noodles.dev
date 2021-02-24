@@ -77,6 +77,23 @@
       color: var(--color-text-white);
     }
   }
+
+  .btn.reset-filters {
+    background-color: var(--color-text-red);
+  }
+}
+
+.no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $padding-unit-md;
+
+  p {
+    font-size: $fontsize-md;
+    color: var(--color-text-grey);
+  }
 }
 
 .results {
