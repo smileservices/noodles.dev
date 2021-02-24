@@ -19,26 +19,29 @@ export default function CollectionSearchListing({data, addFilter}) {
                 }
             </div>
 
-            <p className="title"><a href={data.url}>{data.name}</a></p>
-            <div className="group-muted">
-                <div className="row">
-                    <span className="date">Created on {FormatDate(data.created_at, 'date')}</span>
-                </div>
-                <p className="summary">{data.description}</p>
-                <p>has {data.items_count} items</p>
+            <div className="listing-title">
+                <h4 className="title" itemProp="name">
+                    <a itemProp="name" href={data.url}>{data.name}</a>
+                </h4>
+                <span className="published">{data.created_at} By {data.author.full_name}</span>
+                <span className="published">{data.items_count} Resources</span>
             </div>
+
+            <p className="description">{data.description}</p>
+
             <span className="tags">
                 {data.tags.map(t => <span key={'tag' + t} onClick={e => addFilter('tags', t)}
-                                          className="tag">{t}</span>)}
+                                          className="tag"># {t}</span>)}
 
             </span>
+
             <div className="thumbs">
-                <div>is public</div>
                 <div className="down"><span
                     className="icon-thumbs-o-down"> </span><span>{data.thumbs_down}</span></div>
                 <div className="up"><span className="icon-thumbs-o-up"> </span><span>{data.thumbs_up}</span>
                 </div>
             </div>
+
         </div>
     )
 }

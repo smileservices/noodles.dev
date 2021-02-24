@@ -4,13 +4,14 @@
   }
 
   .listing-title {
-    > * {
-      display: inline-block;
-    }
+    display: flex;
+    gap: $padding-unit;
+    flex-wrap: wrap;
+    align-items: baseline;
+
     .published {
       font-size: $fontsize-sm;
       font-weight: 400;
-      padding-top: $padding-unit-sm;
       color: var(--color-text-grey-2);
     }
   }
@@ -21,5 +22,8 @@
 
   .rating {
     padding-top: $padding-unit-md;
+  }
+  .thumbs {
+    justify-content: flex-end;
   }
 }
