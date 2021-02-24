@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, Fragment} from "react";
 import ReactDOM from "react-dom";
 import {whatType} from "../../src/components/utils";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
@@ -292,20 +292,23 @@ function SearchApp() {
                             queryFilter={resourcesFilters}
                             setQueryFilter={setResourcesFilters}
                         />
-                        <h1>res</h1>
                         {resources.results.items ?
-                            <PaginatedLayout
-                                pagination={resourcesResultsPagination}
-                                resultsCount={resources.results.stats.total}
-                                data={resources.results.items}
-                                resultsContainerClass="results"
-                                setPagination={setResourcesResultsPagination}
-                                mapFunction={(item, idx) => <StudyResourceSearchListing
-                                    key={item.pk}
-                                    data={item}
-                                    addFilter={factoryAddFilter('resources')}
-                                />}
-                            /> : ''}
+                            <Fragment>
+                                <h4>Resources Results</h4>
+                                <PaginatedLayout
+                                    pagination={resourcesResultsPagination}
+                                    resultsCount={resources.results.stats.total}
+                                    data={resources.results.items}
+                                    resultsContainerClass="results"
+                                    setPagination={setResourcesResultsPagination}
+                                    mapFunction={(item, idx) => <StudyResourceSearchListing
+                                        key={item.pk}
+                                        data={item}
+                                        addFilter={factoryAddFilter('resources')}
+                                    />}
+                                />
+                            </Fragment>
+                            : ''}
                     </div>
                 );
             case 'collections':
@@ -317,20 +320,23 @@ function SearchApp() {
                             queryFilter={collectionsFilters}
                             setQueryFilter={setCollectionsFilters}
                         />
-                        <h1>col</h1>
                         {collections.results.items ?
-                            <PaginatedLayout
-                                pagination={collectionsResultsPagination}
-                                resultsCount={collections.results.stats.total}
-                                data={collections.results.items}
-                                resultsContainerClass="results"
-                                setPagination={setCollectionsResultsPagination}
-                                mapFunction={(item, idx) => <CollectionSearchListing
-                                    key={item.pk}
-                                    data={item}
-                                    addFilter={factoryAddFilter('collections')}
-                                />}
-                            /> : ''}
+                            <Fragment>
+                                <h4>Collections Results</h4>
+                                <PaginatedLayout
+                                    pagination={collectionsResultsPagination}
+                                    resultsCount={collections.results.stats.total}
+                                    data={collections.results.items}
+                                    resultsContainerClass="results"
+                                    setPagination={setCollectionsResultsPagination}
+                                    mapFunction={(item, idx) => <CollectionSearchListing
+                                        key={item.pk}
+                                        data={item}
+                                        addFilter={factoryAddFilter('collections')}
+                                    />}
+                                />
+                            </Fragment>
+                            : ''}
                     </div>
                 );
             case 'technologies':
@@ -342,20 +348,23 @@ function SearchApp() {
                             queryFilter={technologiesFilters}
                             setQueryFilter={setTechnologiesFilters}
                         />
-                        <h1>tec</h1>
                         {technologies.results.items ?
-                            <PaginatedLayout
-                                pagination={technologiesResultsPagination}
-                                resultsCount={technologies.results.stats.total}
-                                data={technologies.results.items}
-                                resultsContainerClass="results"
-                                setPagination={setTechnologiesResultsPagination}
-                                mapFunction={(item, idx) => <TechnologySearchListing
-                                    key={item.pk}
-                                    data={item}
-                                    addFilter={factoryAddFilter('technologies')}
-                                />}
-                            /> : ''}
+                            <Fragment>
+                                <h4>Technologies Results</h4>
+                                <PaginatedLayout
+                                    pagination={technologiesResultsPagination}
+                                    resultsCount={technologies.results.stats.total}
+                                    data={technologies.results.items}
+                                    resultsContainerClass="results"
+                                    setPagination={setTechnologiesResultsPagination}
+                                    mapFunction={(item, idx) => <TechnologySearchListing
+                                        key={item.pk}
+                                        data={item}
+                                        addFilter={factoryAddFilter('technologies')}
+                                    />}
+                                />
+                            </Fragment>
+                            : ''}
                     </div>
                 );
         }
@@ -371,15 +380,18 @@ function SearchApp() {
     }
 
     function headerClass(tabname) {
-        return tabname===currentTab ? 'active' : '';
+        return tabname === currentTab ? 'active' : '';
     }
 
     return (
         <section className="tab-navigation search">
             <div className="tab-headers">
-                <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources ({getCounter(resources)})</h4>
-                <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections ({getCounter(collections)})</h4>
-                <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies ({getCounter(technologies)})</h4>
+                <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources
+                    ({getCounter(resources)})</h4>
+                <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections
+                    ({getCounter(collections)})</h4>
+                <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies
+                    ({getCounter(technologies)})</h4>
             </div>
             <SearchBarComponent search={setSearch} state={searchbarState}/>
             {showCurrentTab(currentTab)}

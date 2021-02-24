@@ -16,7 +16,7 @@ export function SelectReactFilter({selected, options, label, onChange, isMulti})
         if (selected === o[0]) selectedValue = {label: o[1], value: o[0]};
         return {label: o[1], value: o[0]}
     })
-    const selectOnChange = selected => onChange(selected.value)
+    const selectOnChange = selected => onChange(selected ? selected.value : INACTIVE)
 
     return (
         <Select isLoading={false} isDisabled={false}
@@ -27,6 +27,7 @@ export function SelectReactFilter({selected, options, label, onChange, isMulti})
                 className="filter-select"
                 classNamePrefix="fs"
                 isMulti={isMulti}
+                isClearable={true}
         />
     )
 }
@@ -51,9 +52,9 @@ export function FilterComponent({fields, queryFilter, setQueryFilter}) {
     function filterFactory(type, data) {
         switch (type) {
             case 'simple-select':
-                return <SelectReactFilter key={"filter-" + data.name} {...data} isMulti={false}/>
+                return <SelectReactFilter key={"filter-" + data.label} {...data} isMulti={false}/>
             case 'multi-select':
-                return <SelectReactFilter key={"filter-" + data.name} {...data} isMulti={true}/>
+                return <SelectReactFilter key={"filter-" + data.label} {...data} isMulti={true}/>
             default:
                 console.error('filterFactory ERROR: could not find matching filter component:', type);
         }
