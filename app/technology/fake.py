@@ -4,6 +4,8 @@ from faker import Faker
 from .models import Technology
 from users.fake import create_user_single, create_bulk_users
 from category.models import Category
+from core.fixtures.technologies import get_technologies_and_categories
+from .serializers import TechnologySerializer
 
 f = Faker()
 
@@ -78,3 +80,11 @@ def create_technology_edit_suggestions():
             'edit_suggestion_author': choice(users)
         })
         edsug.ecosystem.add(technologies[0])
+
+
+def create_technologies_from_fixtures():
+    categories, techs, linked_techs = get_technologies_and_categories()
+    for tech in techs:
+        serialized = TechnologySerializer(data=tech)
+        if serialized.is_valid():
+            serialized.save()

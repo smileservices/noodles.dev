@@ -120,15 +120,16 @@ class TechnologySerializer(EditSuggestionSerializer):
     def run_validation(self, data):
         validated_data = super(TechnologySerializer, self).run_validation(data)
         if 'pk' in data and ('image_file' not in data and 'image_url' not in data):
-            # edits without image_file must not modify the model
+            # edits without image (image_file or image_url) must not modify the model!
             # populate with parent image file otherwise the edit will set the image_file blank
             validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']
         if 'image_url' in data:
             # handle images from url and uploaded images
             try:
                 validated_data['image_file'] = utils.get_temp_image_file_from_url(data['image_url'])
+                del validated_data['image_url']
             except Exception as e:
-                raise exceptions.ValidationError('Encountered error while getting the image from specified url')
+                raise exceptions.ValidationError('Error getting the image from specified url')
         validated_data['slug'] = slugify(validated_data['name'])
         validated_data['ecosystem'] = [int(t) for t in data['ecosystem'].split(',')] if data['ecosystem'] else []
         validated_data['category_id'] = Category.objects.validate_category(int(data['category']))

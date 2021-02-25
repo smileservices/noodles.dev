@@ -1,27 +1,37 @@
 from . import models
-
+import os
+import shutil
 from faker import Faker
 from random import randint, choice, choices
 from datetime import date
 from django.conf import settings
 from django.template.defaultfilters import slugify
 from django.db.utils import IntegrityError
-
+from django.core.files import File
 from users.models import CustomUser
 from technology.models import Technology
 from tag.models import Tag
 from category.models import Category
-
+from versatileimagefield.files import VersatileImageFieldFile
 f = Faker()
+FAKE_IMAGES_PATH = os.path.join(os.getcwd(), 'study_resource', 'fake_images')
+MEDIA_IMAGES_PATH = os.path.join(os.getcwd(), '..', 'MEDIA', 'tutorials')
 
 
 def clean():
     models.StudyResource.objects.all().delete()
+    shutil.rmtree(MEDIA_IMAGES_PATH)
+    os.mkdir(MEDIA_IMAGES_PATH)
 
 
 def new_study_resource(user):
     name = f.text().split('.')[0]
     categories = Category.objects.all()
+    # get images; move to MEDIA dir; open
+    image_name = choice(os.listdir(FAKE_IMAGES_PATH))
+    image_file_path = os.path.join(FAKE_IMAGES_PATH, image_name)
+    shutil.copy(image_file_path, os.path.join(MEDIA_IMAGES_PATH, image_name))
+    image_file = open(os.path.join(MEDIA_IMAGES_PATH, image_name), 'rb')
     sr = models.StudyResource(
         name=name,
         slug=slugify(name),
@@ -33,8 +43,10 @@ def new_study_resource(user):
         media=choice(models.StudyResource.Media.choices)[0],
         experience_level=choice(models.StudyResource.ExperienceLevel.choices)[0],
         author=user,
-        category=choice(categories)
+        category=choice(categories),
     )
+    sr.save()
+    sr.image_file.save(image_name, content=File(image_file))
     return sr
 
 
@@ -83,11 +95,11 @@ def study_resources_bulk(count=20):
     tags = Tag.objects.all()
     techs = Technology.objects.all()
     items = [new_study_resource(choice(users)) for _ in range(count)]
-    models.StudyResource.objects.bulk_create(items)
-    items = models.StudyResource.objects.all()
+    # models.StudyResource.objects.bulk_create(items)
+    # items = models.StudyResource.objects.all()
     for i in items:
         i.tags.add(*choices(tags, k=randint(1, 4)))
-        for tech in choices(techs, k=randint(1,3)):
+        for tech in choices(techs, k=randint(1, 3)):
             try:
                 models.StudyResourceTechnology.objects.create(
                     technology=tech,

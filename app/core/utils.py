@@ -23,7 +23,9 @@ def get_temp_image_file_from_url(url):
     img_temp.write(req.content)
     fname = ''
     if "Content-Disposition" in req.headers.keys():
-        fname = re.findall("filename=(.+)", req.headers["Content-Disposition"])[0]
+        result_arr = re.findall("filename=(.+)", req.headers["Content-Disposition"])
+        if len(result_arr) > 0:
+            fname = result_arr[0]
     else:
         fname = url.split("/")[-1]
     result = InMemoryUploadedFile(

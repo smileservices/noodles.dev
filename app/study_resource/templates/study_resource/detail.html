@@ -6,7 +6,7 @@
 </div>
 <header>
     {% if result.image %}
-        <img src="{{ result.image.big }}" alt="">
+        <img src="{{ result.image.large }}" alt="">
     {% endif %}
     <div class="tags">
         {% for tech in result.studyresourcetechnology_set.all %}

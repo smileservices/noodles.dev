@@ -256,8 +256,8 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('large', 'thumbnail__1008x220'),
     ],
     'technology_logo': [
-        ('small', 'thumbnail__16x16'),
-        ('medium', 'thumbnail__35x35'),
+        ('small', 'thumbnail__35x35'),
+        ('medium', 'thumbnail__60x60'),
     ],
 }
 

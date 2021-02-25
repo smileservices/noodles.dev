@@ -33,7 +33,7 @@
 
     {% if result.image %}
         <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">
-        <img class="primary-image" src="{{ result.image.sizes.small }}" alt="">
+        <img class="primary-image" src="{{ result.image.small }}" alt="">
     </a>
     {% endif %}
 
