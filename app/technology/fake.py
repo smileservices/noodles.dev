@@ -1,16 +1,21 @@
 from random import choice, randint, choices
-
+import os
+import shutil
 from faker import Faker
 from .models import Technology
 from users.fake import create_user_single, create_bulk_users
 from category.models import Category
-from core.fixtures.technologies import get_technologies_and_categories
-from .serializers import TechnologySerializer
+from core.fixtures.technologies import make_technologies_and_categories
+
 
 f = Faker()
+MEDIA_IMAGES_PATH = os.path.join(os.getcwd(), '..', 'MEDIA', 'technologies')
+
 
 def clean_technologies():
     Technology.objects.all().delete()
+    shutil.rmtree(MEDIA_IMAGES_PATH)
+    os.mkdir(MEDIA_IMAGES_PATH)
 
 
 def create_technologies():
@@ -62,7 +67,6 @@ def create_technologies():
     return created_tech
 
 
-
 def create_technology_edit_suggestions():
     technologies = Technology.objects.all()
     users = [create_user_single() for _ in range(5)]
@@ -83,8 +87,4 @@ def create_technology_edit_suggestions():
 
 
 def create_technologies_from_fixtures():
-    categories, techs, linked_techs = get_technologies_and_categories()
-    for tech in techs:
-        serialized = TechnologySerializer(data=tech)
-        if serialized.is_valid():
-            serialized.save()
+    make_technologies_and_categories()

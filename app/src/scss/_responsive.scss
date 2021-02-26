@@ -1,0 +1,141 @@
+@media only screen and (min-width: 1600px) {
+  main .detail-page.resource {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "detail related";
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  main .collapsible .collapse-toggle {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 700px) {
+  nav .collapsible .collapse-toggle {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .detail-page.resource .right-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 'collections related';
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  //hide fixed sidebar
+  body {
+    padding-left: 0;
+
+    nav {
+      margin-left: 0;
+    }
+
+    aside.sidebar {
+      display: none;
+    }
+  }
+}
+
+
+@media only screen and (max-width: 900px) {
+
+  header {
+    margin-bottom: 2rem;
+  }
+
+  main {
+    padding: 0.75rem !important;
+  }
+
+  main .search-page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main .detail-page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main .homepage {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main .collapsible:not(.show) .collapsible-content {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+
+  header {
+    clip-path: none;
+    padding: 0;
+    height: auto;
+
+    .content {
+      margin: 1rem auto;
+
+      section.search-bar {
+        padding: 1rem 0;
+      }
+    }
+  }
+
+  main {
+    padding: 0.5rem !important;
+  }
+
+  nav {
+    #logo {
+      display: none;
+    }
+  }
+
+  nav .collapsible {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+  }
+
+  nav .collapsible.collapse-toggle {
+    display: block;
+  }
+
+  nav .collapsible.show .collapsible-links {
+    z-index: $collapsible-zindex;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: $nav-height;
+    left: 0;
+    background-color: $color-background-1;
+    width: 100%;
+    animation: growDown 300ms ease-in-out forwards;
+    transform-origin: top center;
+  }
+
+  nav .collapsible:not(.show) .collapsible-links {
+    display: none;
+  }
+
+  nav .dropdown .dropdown-menu {
+    position: static;
+  }
+
+  nav .dropdown .dropdown-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  nav .dropdown .dropdown-menu a {
+    padding-left: 2rem;
+  }
+
+}

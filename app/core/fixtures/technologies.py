@@ -1,10 +1,11 @@
 from technology.serializers import TechnologySerializer
 from category.models import Category
+from technology.models import Technology
 
 
 # use technology serializer to save
 
-def get_technologies_and_categories():
+def make_technologies_and_categories():
     categories = {}
     categories['programming_language'] = Category.objects.create(
         name='Programming Language',
@@ -29,7 +30,7 @@ def get_technologies_and_categories():
 
     javascript = {
         "name": 'Javascript',
-        "image_url": 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/200px-Unofficial_JavaScript_logo_2.svg.png',
+        "image_url": 'https://www.postscapes.com/wp-content/uploads/bb-plugin/cache/MST8CKVShX8cHwVIZ_FUR42xQZAEpUOLiHTsWrcG0o-SKEjCIq1KhCGHshgxTlTJ0CaHlJpBZ3pbT7zlyRQyq-dzFosiw-circle.jpeg',
         "category": categories['programming_language'].pk,
         "description": "Often abbreviated as JS, is a programming language that conforms to the ECMAScript specification."
                        " JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax,"
@@ -60,7 +61,7 @@ def get_technologies_and_categories():
     python = {
         "featured": True,
         "name": 'Python',
-        "image_url": 'http://www.startertutorials.com/blog/wp-content/uploads/2018/04/python-logo.png',
+        "image_url": 'https://www.freepngimg.com/thumb/android/72537-icons-python-programming-computer-social-tutorial.png',
         "category": categories['programming_language'].pk,
         "description": "Python is an interpreted, high-level and general-purpose programming language. "
                        "Python's design philosophy emphasizes code readability with its notable use of significant "
@@ -80,7 +81,7 @@ def get_technologies_and_categories():
     php = {
         "featured": True,
         "name": 'Php',
-        "image_url": 'http://pngimg.com/uploads/php/php_PNG7.png',
+        "image_url": 'https://www.lije-creative.com/wp-content/uploads/2015/03/php7.jpeg',
         "category": categories['programming_language'].pk,
         "description": "PHP is a general-purpose scripting language especially suited to web development."
                        " It was originally created by Danish-Canadian programmer Rasmus Lerdorf in 1994.\n"
@@ -134,8 +135,22 @@ def get_technologies_and_categories():
     }
 
     TECHNOLOGIES = [javascript, python, php, django, react]
+    FEATURED_TECHS = [javascript['name'], python['name'], php['name'], django['name'], react['name']]
     LINKED_TECH = [
         (django, (python,)),
         (react, (javascript,))
     ]
-    return categories, TECHNOLOGIES, LINKED_TECH
+
+    for tech in TECHNOLOGIES:
+        serialized = TechnologySerializer(data=tech)
+        if serialized.is_valid():
+            serialized.save()
+    created_techs = {}
+    for tech in Technology.objects.all():
+        created_techs[tech.name] = tech
+        if tech.name in FEATURED_TECHS:
+            tech.featured = True
+            tech.save()
+    for tech in LINKED_TECH:
+        created_techs[tech[0]['name']].ecosystem.add(*[created_techs[t['name']] for t in tech[1]])
+    return categories, created_techs

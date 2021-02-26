@@ -221,7 +221,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
                 "publication_date": {"type": "date", "format": "yyyy-MM-dd"},
                 "published_by": {"type": "text"},
                 "url": {"type": "text"},
-                "image_file": {"type": "keyword"},
+                "image_file": {"type": "nested"},
                 "category": {"type": "keyword"},
                 "tags": {"type": "keyword"},
                 "technologies": {

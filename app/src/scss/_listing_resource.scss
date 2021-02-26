@@ -1,0 +1,27 @@
+.result.resource {
+  .middle-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: $padding-unit-big;
+    justify-content: space-between;
+    align-items: center;
+
+    .content {
+      max-width: $fontsize-big*27;
+
+      > * {
+        margin-bottom: $padding-unit-md;
+      }
+    }
+
+    .image {
+      text-align: center;
+      margin: 0 auto;
+      display: block;
+      img {
+        border-radius: $radius-small;
+      }
+    }
+  }
+}

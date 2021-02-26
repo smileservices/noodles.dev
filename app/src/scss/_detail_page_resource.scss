@@ -1,15 +1,39 @@
 main .detail-page.resource {
   grid-template-areas:
-  "detail related"
-  "reviews related";
+  "detail collections"
+  "detail related";
 
   section#detail {
 
+    #primary-image-container {
+      margin: -$card-padding;
+      margin-bottom: $padding-unit-big*2;
+      
+      img {
+        border-radius: $radius-big $radius-big 0 0;
+      }
+    }
+
     header {
       margin: $padding-unit-big 0;
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+
+        #toolbar {
+          display: flex;
+          align-items: center;
+          flex-wrap: nowrap;
+          gap: 10px;
+        }
+      }
+
       > * {
         display: block;
       }
+
       .title {
         margin-top: $padding-unit-md*2;
       }
@@ -27,12 +51,14 @@ main .detail-page.resource {
 
   section#reviews {
     animation: grow;
+
     header {
       display: flex;
       flex-direction: row;
       align-items: flex-end;
       justify-content: space-between;
     }
+
     .review {
       background-color: var(--color-background-3);
     }

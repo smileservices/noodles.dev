@@ -2,4 +2,14 @@ main .detail-page.technology {
   grid-template-areas:
   "detail related"
   "tab-navigation related";
+    section#detail {
+      header {
+        .left-side {
+          display: flex;
+          gap: $padding-unit-big;
+          align-items: center;
+          justify-content: start;
+        }
+      }
+    }
 }

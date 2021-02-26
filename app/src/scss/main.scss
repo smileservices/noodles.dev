@@ -55,8 +55,9 @@ body {
 @import "navbar";
 @import "sidebar_fixed";
 @import "listings";
+@import "listing_resource";
 @import "detail_page";
-@import "resource_detail";
+@import "detail_page_resource";
 @import "technology_detail";
 @import "review";
 @import "search";
@@ -67,4 +68,4 @@ body {
 //@import "old/detail_page";
 //@import "old/edit_page";
 
-@import "old/responsive";
+@import "responsive";

@@ -2,14 +2,14 @@
 // start
 //
 
-body.sidebar-visible {
+body {
   padding-left: $sidebar-width;
 
   nav {
     margin-left: -$sidebar-width;
   }
 
-  aside {
+  aside.sidebar {
     display: block;
     position: fixed;
     top: 0;
@@ -21,11 +21,7 @@ body.sidebar-visible {
 // start
 //
 
-aside {
-  display: none;
-}
-
-aside .sidebar {
+aside.sidebar {
   position: absolute;
   top: 0;
   left: 0;
@@ -36,110 +32,114 @@ aside .sidebar {
   height: 100vh;
   //animation: growRight 300ms ease-in-out forwards;
   //transform-origin: top left;
-}
 
-aside .sidebar .top-section {
-  display: flex;
-  flex-direction: row;
-  line-height: $fontsize-big*2;
-  font-size: $fontsize-big;
-  font-weight: 700;
-  background-color: var(--color-background-1);
-  color: var(--color-sidebar-txt);
-  box-shadow: inset 0px -1px 0px #2F2F2F;
-}
-
-
-aside .sidebar .top-section a {
-  padding: $nav-padding;
-  text-decoration: none;
-  color: var(--color-text-white);
-}
-
-aside .sidebar .top-section a.collapse-button {
-  //padding: $nav-padding;
-}
-
-aside .sidebar .top-section a > svg {
-  fill: var(--color-text-white);
-}
-
-aside .sidebar .top-section a:last-child {
-  flex-grow: 1;
-}
-
-aside .sidebar .top-section a:hover {
-  background-color: var(--color-sidebar-hover-bg);
-  color: var(--color-sidebar-hover-txt);
-}
-
-aside .sidebar .top-section a:hover svg {
-  fill: var(--color-text-grey);
-}
-
-aside .sidebar .links {
-  //padding-top: $padding-unit-big*2;
-  padding-bottom: $padding-unit-sm;
-  overflow-y: auto;
-  height: 100vh;
-  font-size: $fontsize-sm;
-
-  h5 {
-    margin-top: $padding-unit-big*2;
-    margin-bottom: $padding-unit-sm;
-    padding-left: $padding-unit-sm;
-    padding-right: $padding-unit-sm;
-  }
-
-  a {
-    padding: $padding-unit $padding-unit-sm;
-    text-decoration: none;
-    display: block;
-    color: var(--color-text-grey);
-
-    img {
-      width: $fontsize-big;
-      height: $fontsize-big;
-      padding-right: $padding-unit-sm;
-    }
-
-    span.no-logo {
-      display: inline-block;
-      width: $fontsize-big;
-      height: $fontsize-big;
-      padding-right: $padding-unit-sm;
-    }
-  }
-
-  a:hover {
-    background-color: var(--color-sidebar-hover-bg);
-    color: var(--color-sidebar-hover-txt);
-  }
-
-  .other {
-    margin-top: $padding-unit-big*2;
-    padding: $padding-unit $padding-unit-sm;
-
-    svg {
-      width: $fontsize-big;
-      height: $fontsize-big;
-      padding-right: $padding-unit-sm;
-    }
-  }
-}
-
-aside .sidebar .dropdown {
-  .dropdown-menu {
-    position: static;
-
-    a {
-      padding-left: 2rem;
-    }
-  }
-
-  .dropdown-button {
+  .top-section {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    line-height: $fontsize-big*2;
+    font-size: $fontsize-big;
+    font-weight: 700;
+    background-color: var(--color-background-1);
+    color: var(--color-sidebar-txt);
+    box-shadow: inset 0px -1px 0px #2F2F2F;
+
+    a {
+      padding: $nav-padding;
+      text-decoration: none;
+      color: var(--color-text-white);
+    }
+
+    a.collapse-button {
+      //padding: $nav-padding;
+    }
+
+    a > svg {
+      fill: var(--color-text-white);
+    }
+
+    a:last-child {
+      flex-grow: 1;
+    }
+
+    a:hover {
+      background-color: var(--color-sidebar-hover-bg);
+      color: var(--color-sidebar-hover-txt);
+    }
+
+    a:hover svg {
+      fill: var(--color-text-grey);
+    }
   }
+
+  .links {
+    //padding-top: $padding-unit-big*2;
+    padding-bottom: $padding-unit-sm;
+    overflow-y: auto;
+    height: 100vh;
+    font-size: $fontsize-sm;
+
+    h5 {
+      margin-top: $padding-unit-big*2;
+      margin-bottom: $padding-unit-sm;
+      padding-left: $padding-unit-sm;
+      padding-right: $padding-unit-sm;
+    }
+
+    a {
+      padding: $padding-unit $padding-unit-sm;
+      display: flex;
+      gap: $padding-unit-big/2;
+      flex-direction: row;
+      align-items: center;
+      justify-content: start;
+      flex-wrap: nowrap;
+      text-decoration: none;
+      color: var(--color-text-grey);
+
+      img {
+        width: $fontsize-big;
+        height: $fontsize-big;
+      }
+
+      span.no-logo {
+        display: inline-block;
+        width: $fontsize-big;
+        height: $fontsize-big;
+        padding-right: $padding-unit-sm;
+      }
+    }
+
+    a:hover {
+      background-color: var(--color-sidebar-hover-bg);
+      color: var(--color-sidebar-hover-txt);
+    }
+
+    .other {
+      margin-top: $padding-unit-big*2;
+      padding: $padding-unit $padding-unit-sm;
+
+      svg {
+        width: $fontsize-big;
+        height: $fontsize-big;
+        padding-right: $padding-unit-sm;
+      }
+    }
+  }
+
+  .dropdown {
+    .dropdown-menu {
+      position: static;
+
+      a {
+        padding-left: 2rem;
+      }
+    }
+
+    .dropdown-button {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
 }

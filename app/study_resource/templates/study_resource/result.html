@@ -1,7 +1,7 @@
 {% load star_rating %}
 
 <span class="card" itemscope itemtype="https://schema.org/AggregateRating">
-<div class="result" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
+<div class="result resource" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
 
     <div class="tags">
         {% for tech in result.studyresourcetechnology_set.all %}
@@ -20,22 +20,27 @@
            itemprop="educationalLevel">{{ result.experience_level_label }}</a>
     </div>
 
-    <div class="listing-title">
-    <h4 class="title" itemprop="name">
-        <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">{{ result.name }}</a>
-    </h4>
-        <span class="published">{{ result.publication_date }} By {{ result.published_by }}</span>
-    </div>
+    <div class="middle-container">
+        <div class="content">
+            <div class="listing-title">
+            <h4 class="title" itemprop="name">
+                <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">{{ result.name }}</a>
+            </h4>
+                <span class="published">{{ result.publication_date }} By {{ result.published_by }}</span>
+            </div>
 
-    <div class="description">
-        {{ result.summary }}
+            <div class="description">
+                {{ result.summary }}
+            </div>
+        </div>
+        {% if result.image %}
+            <div class="image">
+                <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">
+                    <img class="primary-image" src="{{ result.image.small }}" alt="">
+                </a>
+            </div>
+        {% endif %}
     </div>
-
-    {% if result.image %}
-        <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">
-        <img class="primary-image" src="{{ result.image.small }}" alt="">
-    </a>
-    {% endif %}
 
     <div class="tags" itemprop="keywords">
     {% for tag in result.tags.all %}

@@ -69,9 +69,8 @@ main {
 
 .card {
   position: relative;
-  padding: $padding-unit-md*2;
+  padding: $card-padding;
   background-color: var(--color-background-1);
-  padding: 1rem;
   border-radius: $radius-big;
   overflow: initial;
 }

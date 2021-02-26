@@ -136,8 +136,8 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
 
                 # model fields
                 "name": {"type": "text", "copy_to": "suggest"},
-                "image_file": {"type": "keyword"},
-                "url": {"type": "nested"},
+                "logo": {"type": "nested"},
+                "url": {"type": "keyword"},
                 "description": {"type": "text", "copy_to": "suggest"},
                 "owner": {"type": "text"},
                 "category": {"type": "keyword"},
@@ -156,7 +156,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
         data = {
             "pk": self.pk,
             "name": self.name,
-            "image_file": self.logo if self.image_file else {},
+            "logo": self.logo if self.image_file else {},
             "url": self.absolute_url,
             "description": self.description,
             "owner": self.owner,

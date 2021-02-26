@@ -5,6 +5,10 @@ main .detail-page {
   grid-template-areas:
   "detail related";
 
+  .detail-container {
+    max-width: $fontsize-big*76;
+  }
+
   section#detail {
     grid-area: detail;
     display: block;
@@ -43,9 +47,11 @@ main .detail-page {
 
     .description {
       max-width: $fontsize-big*50;
+
       > * {
         margin-bottom: $padding-unit;
       }
+
       > *:last-child {
         margin-bottom: 0;
       }
@@ -56,12 +62,19 @@ main .detail-page {
     }
   }
 
-  section#related {
-    margin: $padding-unit-big 0;
+  .right-side {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $padding-unit-big;
 
-    .btn.see-more {
-      display: block;
-      text-align: center;
+    > * {
+      margin: $padding-unit-big 0;
+      //max-width: $fontsize-big*17;
+
+      .btn.see-more {
+        display: block;
+        text-align: center;
+      }
     }
   }
 

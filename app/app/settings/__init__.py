@@ -251,13 +251,13 @@ MAX_RATING = 5
 # VERSATILE IMAGEFIELD
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     'resource_image': [
-        ('small', 'thumbnail__180x180'),
-        ('medium', 'thumbnail__270x270'),
-        ('large', 'thumbnail__1008x220'),
+        ('small', 'thumbnail__270x270'),
+        ('medium', 'thumbnail__470x470'),
+        ('large', 'thumbnail__1230x700'),
     ],
     'technology_logo': [
-        ('small', 'thumbnail__35x35'),
-        ('medium', 'thumbnail__60x60'),
+        ('small', 'thumbnail__45x45'),
+        ('medium', 'thumbnail__75x75'),
     ],
 }
 
