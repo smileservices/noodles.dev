@@ -1,22 +1,16 @@
-import React, {Fragment} from "react"
+import React from "react"
 import StarRating from "../../src/components/StarRating";
 
-export default function ResourceRating({rating, maxRating, reviewsCount}) {
+export default function ResourceRating({data, maxRating}) {
+    if (data.rating) return (
+        <div className="rating">
+            <span className="stars"><StarRating maxRating={maxRating} rating={data.rating}/></span>
+            <span itemProp="ratingCount">{data.reviewsCount} Reviews</span>
+        </div>
+    )
     return (
-        <Fragment>
-            <span className="stars"><StarRating maxRating={maxRating} rating={rating}/></span>
-            {rating
-                ? <Fragment>
-                <span>
-                    <span itemProp="ratingValue">{rating.toFixed(1)}</span>/<span
-                    itemProp="bestRating">{maxRating}</span>
-                </span>
-                    <span>
-                    <span itemProp="ratingCount">{reviewsCount}</span> Reviews
-                </span>
-                </Fragment>
-                : 'No Reviews Yet'
-            }
-        </Fragment>
+        <div className="rating">
+            <span itemProp="ratingCount">No Reviews Yet. <a href={data.url}>Contribute</a></span>
+        </div>
     )
 }

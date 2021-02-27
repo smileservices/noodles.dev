@@ -105,21 +105,21 @@ class StudyResourceTechnology(models.Model):
 
 class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
     class Price(models.IntegerChoices):
-        FREE = (0, 'free')
-        PAID = (1, 'paid')
+        FREE = (0, 'Free')
+        PAID = (1, 'Paid')
 
     class Media(models.IntegerChoices):
-        ARTICLE = (0, 'article')
-        VIDEO = (1, 'video')
-        SERIES = (3, 'series')
-        COURSE = (4, 'course')
-        BOOK = (5, 'book')
+        ARTICLE = (0, 'Article')
+        VIDEO = (1, 'Video')
+        SERIES = (3, 'Series')
+        COURSE = (4, 'Course')
+        BOOK = (5, 'Book')
 
     class ExperienceLevel(models.IntegerChoices):
-        ABEGINNER = (0, 'absolute beginner')
-        JUNIOR = (1, 'junior')
-        MIDDLE = (2, 'middle')
-        SENIOR = (3, 'experienced')
+        ABEGINNER = (0, 'Absolute Beginner')
+        JUNIOR = (1, 'Junior')
+        MIDDLE = (2, 'Middle')
+        SENIOR = (3, 'Experienced')
 
     objects = StudyResourceManager()
     publication_date = models.DateField()
@@ -221,7 +221,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
                 "publication_date": {"type": "date", "format": "yyyy-MM-dd"},
                 "published_by": {"type": "text"},
                 "url": {"type": "text"},
-                "image_file": {"type": "nested"},
+                "image": {"type": "nested"},
                 "category": {"type": "keyword"},
                 "tags": {"type": "keyword"},
                 "technologies": {
@@ -265,7 +265,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
             "publication_date": self.publication_date.isoformat(),
             "published_by": self.published_by,
             "url": self.absolute_url,
-            "image_file": self.image if self.image_file else {},
+            "image": self.image if self.image_file else {},
 
             "category": self.category.name,
             "tags": [t.name for t in self.tags.all()],

@@ -3,7 +3,7 @@
 <span class="card" itemscope itemtype="https://schema.org/AggregateRating">
 <div class="result resource" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
     <div class="left">
-        <div class="tags technologies">
+        <div class="tags">
             {% for tech in result.studyresourcetechnology_set.all %}
                 <a class="tech" href="{{ tech.absolute_url }}">
                     <span>
@@ -30,7 +30,7 @@
             {{ result.summary }}
         </div>
 
-        <div class="tags tags-bottom" itemprop="keywords">
+        <div class="tags" itemprop="keywords">
         {% for tag in result.tags.all %}
             <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"># {{ tag }}</a>
         {% endfor %}
