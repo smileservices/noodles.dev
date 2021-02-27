@@ -1,6 +1,12 @@
 .result {
+  display: flex;
+  flex-direction: column;
+
   > * {
     margin-bottom: $padding-unit-md;
+  }
+  > *:last-child {
+    margin-bottom: 0;
   }
 
   .listing-title {

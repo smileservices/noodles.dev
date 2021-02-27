@@ -2,59 +2,57 @@
 
 <span class="card" itemscope itemtype="https://schema.org/AggregateRating">
 <div class="result resource" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
+    <div class="left">
+        <div class="tags technologies">
+            {% for tech in result.studyresourcetechnology_set.all %}
+                <a class="tech" href="{{ tech.absolute_url }}">
+                    <span>
+                    <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.50198 4.5L11.002 1H2.00198V0.5C2.00198 0.224 1.77798 0 1.50198 0C1.22598 0 1.00198 0.224 1.00198 0.5V11.5C1.00198 11.776 1.22598 12 1.50198 12C1.77798 12 2.00198 11.776 2.00198 11.5V8H11.002L9.50198 4.5Z"
+                          fill="black"/>
+                    </svg>
+                     {{ tech }}
+                    </span>
+                </a>
+            {% endfor %}
+            <a href="{% url 'search_page' %}?tab=resources&category={{ result.category }}">{{ result.category }}</a>
+            <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
+               itemprop="educationalLevel">{{ result.experience_level_label }}</a>
+        </div>
 
-    <div class="tags">
-        {% for tech in result.studyresourcetechnology_set.all %}
-            <a class="tech" href="{{ tech.absolute_url }}">
-                <span>
-                <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.50198 4.5L11.002 1H2.00198V0.5C2.00198 0.224 1.77798 0 1.50198 0C1.22598 0 1.00198 0.224 1.00198 0.5V11.5C1.00198 11.776 1.22598 12 1.50198 12C1.77798 12 2.00198 11.776 2.00198 11.5V8H11.002L9.50198 4.5Z"
-                      fill="black"/>
-                </svg>
-                 {{ tech }}
-                </span>
-            </a>
-        {% endfor %}
-        <a href="{% url 'search_page' %}?tab=resources&category={{ result.category }}">{{ result.category }}</a>
-        <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
-           itemprop="educationalLevel">{{ result.experience_level_label }}</a>
-    </div>
-
-    <div class="middle-container">
-        <div class="content">
-            <div class="listing-title">
+        <div class="listing-title">
             <h4 class="title" itemprop="name">
                 <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">{{ result.name }}</a>
             </h4>
-                <span class="published">{{ result.publication_date }} By {{ result.published_by }}</span>
-            </div>
-
-            <div class="description">
-                {{ result.summary }}
-            </div>
+            <span class="published">{{ result.publication_date }} By {{ result.published_by }}</span>
         </div>
-        {% if result.image %}
-            <div class="image">
-                <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">
-                    <img class="primary-image" src="{{ result.image.small }}" alt="">
-                </a>
-            </div>
-        {% endif %}
-    </div>
+        <div class="description">
+            {{ result.summary }}
+        </div>
 
-    <div class="tags" itemprop="keywords">
-    {% for tag in result.tags.all %}
-        <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"># {{ tag }}</a>
-    {% endfor %}
-    </div>
+        <div class="tags tags-bottom" itemprop="keywords">
+        {% for tag in result.tags.all %}
+            <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"># {{ tag }}</a>
+        {% endfor %}
+        </div>
 
-<div class="rating">
-    {% if result.rating %}
-        <span class="stars">{% star_rating result.rating %}</span>
-        <span itemprop="ratingCount">{{ result.reviews_count }}</span> Reviews
-    {% else %}
-        <span itemprop="ratingCount">No reviews yet. <a href="{{ result.absolute_url }}">Contribute</a></span>
+        <div class="rating">
+            {% if result.rating %}
+                <span class="stars">{% star_rating result.rating %}</span>
+                <span itemprop="ratingCount">{{ result.reviews_count }}</span> Reviews
+            {% else %}
+                <span itemprop="ratingCount">No reviews yet. <a href="{{ result.absolute_url }}">Contribute</a></span>
+            {% endif %}
+        </div>
+    </div>
+    {% if result.image %}
+        <div class="right">
+        <div class="image">
+            <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">
+                <img class="primary-image" src="{{ result.image.small }}" alt="">
+            </a>
+        </div>
+        </div>
     {% endif %}
-</div>
 </div>
 </span>
