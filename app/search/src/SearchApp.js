@@ -8,6 +8,7 @@ import SearchBarComponent from "./SearchBarComponent";
 import StudyResourceSearchListing from "../../study_resource/src/StudyResourceSearchListing";
 import CollectionSearchListing from "../../study_collection/src/CollectionSearchListing";
 import TechnologySearchListing from "../../technology/src/TechnologySearchListing";
+import RelatedComponent from "./RelatedComponent";
 
 function codeParamsToUrl(params, data) {
     switch (whatType(data)) {
@@ -283,6 +284,7 @@ function SearchApp() {
         return (name, value) => {
             const [state, setState, pagination, setPagination, filters, setFilters] = getTabState(tab);
             let newFilters = {...filters};
+            setCurrentTab(tab);
             newFilters[name] = value;
             setFilters(newFilters);
         }
@@ -371,7 +373,7 @@ function SearchApp() {
                                     />}
                                 />
                             </Fragment>
-                            : NoResultsElement }
+                            : NoResultsElement}
                     </div>
                 );
         }
@@ -391,18 +393,23 @@ function SearchApp() {
     }
 
     return (
-        <section className="tab-navigation search">
-            <div className="tab-headers">
-                <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources
-                    ({getCounter(resources)})</h4>
-                <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections
-                    ({getCounter(collections)})</h4>
-                <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies
-                    ({getCounter(technologies)})</h4>
-            </div>
-            <SearchBarComponent search={setSearch} state={searchbarState}/>
-            {showCurrentTab(currentTab)}
-        </section>
+        <Fragment>
+            <section className="tab-navigation search">
+                <div className="tab-headers">
+                    <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources
+                        ({getCounter(resources)})</h4>
+                    <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections
+                        ({getCounter(collections)})</h4>
+                    <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies
+                        ({getCounter(technologies)})</h4>
+                </div>
+                <SearchBarComponent search={setSearch} state={searchbarState}/>
+                {showCurrentTab(currentTab)}
+            </section>
+            <section id="related" className="column-container">
+                <RelatedComponent addFilter={factoryAddFilter('resources')} />
+            </section>
+        </Fragment>
     );
 }
 

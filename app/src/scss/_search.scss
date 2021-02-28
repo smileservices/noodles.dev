@@ -1,3 +1,11 @@
+.search-page {
+  display: grid;
+  grid-gap: $padding-unit-big;
+  grid-template-columns: 2.5fr 1fr;
+  grid-template-areas:
+  "search related";
+}
+
 .tab-navigation.search {
   .tab-content > * {
     display: block;
@@ -60,7 +68,7 @@
     }
 
     .fs__control--is-disabled:hover {
-        cursor: not-allowed;
+      cursor: not-allowed;
     }
 
 

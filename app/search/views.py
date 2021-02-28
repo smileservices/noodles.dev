@@ -1,6 +1,9 @@
+import json
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
+from study_resource.models import StudyResource
+from study_resource.serializers import StudyResourceSerializer
 
 
 def autocomplete(request, prefix):
@@ -83,7 +86,7 @@ def search_specific(request, index):
     term = request.GET.get('search', '')
     page_size = int(request.GET.get('resultsPerPage', 10))
     offset_results = int(request.GET.get('offset', 0))
-    page = 0 if not offset_results else offset_results/page_size;
+    page = 0 if not offset_results else offset_results / page_size;
     filter = extract_filters(request)
     if index == 'resources':
         results = _search_study_resources(term, filter, page, page_size)
@@ -158,3 +161,16 @@ def search_page(request):
         'search_technologies_url': '/search/api/technologies/',
     }
     return render(request, 'search/main.html', data)
+
+
+def related_data(request):
+    es = ElasticSearchInterface(['study_resources'])
+    aggregates_results = es.aggregates({
+        "technologies": {"terms": {"field": "technologies.name", "size": 10}},
+        "tags": {"terms": {"field": "tags", "size": 10}},
+    })
+    data = {
+        'aggregations': aggregates_results,
+        'resources': es.latest(page_size=5)
+    }
+    return JsonResponse(data)

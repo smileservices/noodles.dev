@@ -139,3 +139,9 @@ img {
   width: auto;
   object-fit: scale-down;
 }
+
+.tags {
+  > * {
+    cursor: pointer;
+  }
+}

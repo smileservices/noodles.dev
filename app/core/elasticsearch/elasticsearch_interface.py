@@ -58,6 +58,12 @@ class ElasticSearchInterface:
         extracted_response['stats']['page_size'] = page_size
         return extracted_response
 
+    def aggregates(self, aggregates):
+        q = {"aggs": aggregates, "size": 0}
+        res = self.connection.search(self.indexes, body=q)
+        extracted_response = self._extract_results(res, 'aggregation')
+        return extracted_response
+
     def suggest(self, prefix):
         q = {
             "suggest": {
@@ -88,16 +94,17 @@ class ElasticSearchInterface:
         return extracted_response
 
     def _extract_results(self, res, type):
-        extracted = False
+        extracted = {}
         if type == 'search':
             results = [r['_source'] for r in res['hits']['hits']]
             filters = {}
-            for name,v in res['aggregations'].items():
-                if 'doc_count' in v and v['doc_count'] == 0:
-                    continue
-                filters[name] = {}
-                for item in v['buckets']:
-                    filters[name][item['key']] = item['doc_count']
+            if 'aggregations' in res:
+                for name, v in res['aggregations'].items():
+                    if 'doc_count' in v and v['doc_count'] == 0:
+                        continue
+                    filters[name] = {}
+                    for item in v['buckets']:
+                        filters[name][item['key']] = item['doc_count']
             extracted = {
                 'items': results,
                 'filters': filters,
@@ -108,6 +115,13 @@ class ElasticSearchInterface:
             }
         elif type == 'suggest':
             extracted = [r['text'] for r in res['suggest']['search-suggest'][0]['options']]
+        elif type == 'aggregation':
+            for name, v in res['aggregations'].items():
+                if 'doc_count' in v and v['doc_count'] == 0:
+                    continue
+                extracted[name] = {}
+                for item in v['buckets']:
+                    extracted[name][item['key']] = item['doc_count']
         return extracted
 
 

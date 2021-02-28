@@ -29,6 +29,7 @@ export default function StudyResourceSearchListing({data, addFilter}) {
                     <span className="published">{data.created_at} By {data.author.full_name}</span>
                     <span className="published">{data.items_count} Resources</span>
                 </div>
+                <div className="description">{data.summary}</div>
                 <div className="tags">
                     {data.tags.map(t => <span key={'tag' + t} onClick={e => addFilter('tags', t)}
                                               className="tag">{t}</span>)}
