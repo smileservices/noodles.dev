@@ -1,0 +1,12 @@
+.result.technology {
+  header {
+      display: flex;
+      gap: $padding-unit-big;
+      align-items: center;
+    .tags {
+      > *:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}

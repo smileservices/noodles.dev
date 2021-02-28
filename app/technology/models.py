@@ -114,6 +114,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     def __str__(self):
         return f'{self.name}'
 
+    @property
     def license_label(self):
         return self.LicenseType(self.license).label
 
@@ -138,6 +139,8 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
                 "name": {"type": "text", "copy_to": "suggest"},
                 "logo": {"type": "nested"},
                 "url": {"type": "keyword"},
+                "license": {"type": "keyword"},
+                "featured": {"type": "boolean"},
                 "description": {"type": "text", "copy_to": "suggest"},
                 "owner": {"type": "text"},
                 "category": {"type": "keyword"},
@@ -158,6 +161,8 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
             "name": self.name,
             "logo": self.logo if self.image_file else {},
             "url": self.absolute_url,
+            "license": self.license_label,
+            "featured": self.featured,
             "description": self.description,
             "owner": self.owner,
             "category": self.category.name,

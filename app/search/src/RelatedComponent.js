@@ -32,7 +32,7 @@ export default function RelatedComponent({addFilter}) {
                     <h4>Popular Technologies</h4>
                     <div className="tags">
                         {Object.keys(data.aggregations.technologies).map(tech =>
-                            <span className="tech" onClick={e => addFilter('tech_v', tech)}>
+                            <span key={'popular-tech-'+tech} className="tech" onClick={e => addFilter('tech_v', tech)}>
                                 {flagIcon} {tech} ({data.aggregations.technologies[tech]})
                             </span>
                         )}
@@ -45,7 +45,7 @@ export default function RelatedComponent({addFilter}) {
                     <h4>Tags to follow</h4>
                     <div className="tags">
                         {Object.keys(data.aggregations.tags).map(tag =>
-                            <span onClick={e => addFilter('tags', tag)}>
+                            <span key={'popular-tag-'+tag} onClick={e => addFilter('tags', tag)}>
                                 # {tag} ({data.aggregations.tags[tag]})
                             </span>
                         )}
@@ -54,7 +54,7 @@ export default function RelatedComponent({addFilter}) {
                 : ''
             }
             <h4>Latest Added Resources</h4>
-            {data.resources.items.map(resource => <StudyResourceSearchListing data={resource} addFilter={addFilter}/>)}
+            {data.resources.items.map(resource => <StudyResourceSearchListing key={'latest-resource-'+resource.pk} data={resource} addFilter={addFilter}/>)}
         </Fragment>
     )
 }

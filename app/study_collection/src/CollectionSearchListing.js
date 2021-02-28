@@ -1,5 +1,6 @@
 import React, {useState, Fragment} from "react";
 import FormatDate from "../../src/vanilla/date";
+import TruncatedTextComponent from "../../src/components/TruncatedTextComponent";
 
 const flagIcon = (
     <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -27,7 +28,9 @@ export default function CollectionSearchListing({data, addFilter}) {
                 <span className="published">{data.items_count} Resources</span>
             </div>
 
-            <p className="description">{data.description}</p>
+            <p className="description">
+                <TruncatedTextComponent fullText={data.description} charLimit={250}/>
+            </p>
 
             <span className="tags">
                 {data.tags.map(t => <span key={'tag' + t} onClick={e => addFilter('tags', t)}

@@ -1,6 +1,6 @@
 import React, {Fragment, useState} from "react";
-import FormatDate from "../../src/vanilla/date";
 import ResourceRating from "./ResourceRating";
+import TruncatedTextComponent from "../../src/components/TruncatedTextComponent";
 
 const flagIcon = (
     <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -13,39 +13,41 @@ export default function StudyResourceSearchListing({data, addFilter}) {
     const MAX_RATING = 5
     return (
         <div className="card">
-        <div className="result resource">
-            <div className="left">
-                <div className="tags">
-                    {data.technologies.map(t => <a key={t.url} onClick={e => addFilter('tech_v', t.name)}
-                                                   className="tech">{flagIcon} {t.name} {t.version}</a>)}
-                    <span onClick={e => addFilter('category', data.category)}>{data.category}</span>
-                    <span
-                        onClick={e => addFilter('experience_level', data.experience_level)}>{data.experience_level}</span>
-                </div>
-                <div className="listing-title">
-                    <h4 className="title" itemProp="name">
-                        <a href={data.url} target="new">{data.name}</a>
-                    </h4>
-                    <span className="published">{data.created_at} By {data.author.full_name}</span>
-                    <span className="published">{data.items_count} Resources</span>
-                </div>
-                <div className="description">{data.summary}</div>
-                <div className="tags">
-                    {data.tags.map(t => <span key={'tag' + t} onClick={e => addFilter('tags', t)}
-                                              className="tag">{t}</span>)}
-                </div>
-                <ResourceRating data={data} maxRating={MAX_RATING}/>
-            </div>
-            {data.image ?
-                <div className="right">
-                    <div className="image">
-                        <a itemProp="name" href={data.url}>
-                            <img className="primary-image" src={data.image.small} alt=""/>
-                        </a>
+            <div className="result resource">
+                <div className="left">
+                    <div className="tags">
+                        {data.technologies.map(t => <a key={t.url} onClick={e => addFilter('tech_v', t.name)}
+                                                       className="tech">{flagIcon} {t.name} {t.version}</a>)}
+                        <span onClick={e => addFilter('category', data.category)}>{data.category}</span>
+                        <span
+                            onClick={e => addFilter('experience_level', data.experience_level)}>{data.experience_level}</span>
                     </div>
+                    <div className="listing-title">
+                        <h4 className="title" itemProp="name">
+                            <a href={data.url} target="new">{data.name}</a>
+                        </h4>
+                        <span className="published">{data.created_at} By {data.author.full_name}</span>
+                        <span className="published">{data.items_count} Resources</span>
+                    </div>
+                    <div className="description">
+                        <TruncatedTextComponent fullText={data.summary} charLimit={250}/>
+                    </div>
+                    <div className="tags">
+                        {data.tags.map(t => <span key={'tag' + t} onClick={e => addFilter('tags', t)}
+                                                  className="tag">{t}</span>)}
+                    </div>
+                    <ResourceRating data={data} maxRating={MAX_RATING}/>
                 </div>
-                : ''}
-        </div>
+                {data.image ?
+                    <div className="right">
+                        <div className="image">
+                            <a itemProp="name" href={data.url}>
+                                <img className="primary-image" src={data.image.small} alt=""/>
+                            </a>
+                        </div>
+                    </div>
+                    : ''}
+            </div>
         </div>
     )
 }
