@@ -38,13 +38,17 @@ h5 {
   line-height: $fontsize-sm*1.1;
 }
 
-a, a:visited {
+a {
   text-decoration: none;
-  color: var(--color-text-grey);
+  color: var(--color-blue);
+}
+
+a:visited {
+  color: var(--color-blue-dark);
 }
 
 a:hover {
-  color: var(--color-blue);
+  color: var(--color-blue-dark);
   cursor: pointer;
 }
 
@@ -69,7 +73,7 @@ small, .small {
 
 .tags {
 
-  > * {
+  > *, > a:visited {
     display: inline-block;
     border-radius: $radius-small;
     padding: $padding-unit-sm/2;
@@ -85,17 +89,17 @@ small, .small {
     margin-right: 0;
   }
 
-  > a:hover {
+  > *:hover {
     background-color: var(--color-background-2);
     color: var(--color-text-grey);
   }
 
-  > *.tech {
+  > *.tech, > a.tech:visited {
     background-color: var(--color-blue);
     color: var(--color-background-1);
   }
 
-  > a.tech:hover {
+  > *.tech:hover {
     background-color: var(--color-blue-dark);
     color: var(--color-background-1);
   }

@@ -1,0 +1,97 @@
+section.content {
+  display: flex;
+}
+
+.auth-container {
+  background-color: var(--color-background-1);
+  max-width: $fontsize-big*20;
+  min-height: 50vh;
+  margin-top: $padding-unit-big*3;
+  margin-left: auto;
+  margin-right: auto;
+  padding: $padding-unit-big*3 $padding-unit-big*5 $padding-unit-big*5 $padding-unit-big*5;
+  border-radius: $radius-big;
+
+  font-size: $fontsize-md;
+
+  .header {
+    font-size: $fontsize-big;
+    margin-bottom: $padding-unit-big*2;
+    h1 {
+      margin-bottom: $padding-unit-md/2;
+    }
+  }
+  .or {
+    font-size: $fontsize-big;
+    font-weight: 400;
+    margin: $padding-unit-sm*2 0;
+  }
+}
+
+.socialaccount_providers {
+  margin-top: $padding-unit;
+  margin-bottom: $padding-unit*2;
+  display: flex;
+  flex-direction: column;
+  gap: $padding-unit-md;
+}
+
+.socialaccount_providers a.socialaccount_provider {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $padding-unit-md;
+  margin: 0;
+  background-color: var(--color-blue);
+  color: var(--color-text-white);
+  padding: $fontsize-big/2 $fontsize-big*1.75;
+  font-weight: 700 !important;
+  border-radius: $radius-small;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.socialaccount_providers a.socialaccount_provider.google {
+  background-color: #f3f6f6;
+  color: var(--color-blue);
+  border: 1px solid #f3f6f6;
+}
+
+.socialaccount_providers a.socialaccount_provider.facebook {
+  background-color: #395697;
+  border: 1px solid #395697;
+}
+
+a.socialaccount_provider:hover {
+    border-color: var(--color-blue);
+}
+
+.email_list span {
+  margin-left: $padding-unit-big;
+}
+
+.email_list span.verified {
+  color: darkgreen;
+}
+
+.email_list span.unverified {
+  color: var(--color-error);
+}
+
+.email_list span.primary {
+  font-weight: bold;
+  color: green;
+}
+
+
+.user-social-accounts span.socialaccount_provider {
+  font-weight: bold;
+  color: var(--color-blue-dark);
+  margin-right: $padding-unit-big*2;
+}
+
+ul.errorlist li {
+  margin: $padding-unit/2 0;
+  color: var(--color-error);
+}

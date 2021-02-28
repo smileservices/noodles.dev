@@ -6,6 +6,6 @@
 {% for provider in socialaccount_providers %}
   <a class="socialaccount_provider btn {{ provider.id }}" title="{{provider.name}}" class="{{provider.id}}"
      href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
-      {% blocktrans with provider.name as provider_name %}Use {{ provider_name }} Account{% endblocktrans %}
+      {{ provider.name }}
   </a>
 {% endfor %}

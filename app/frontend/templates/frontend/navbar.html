@@ -100,8 +100,8 @@
                 })
             </script>
         {% else %}
-            <span class="btn secondary">Login</span>
-            <span class="btn">Sign Up</span>
+            <a href="{% url 'account_login' %}" class="btn secondary">Login</a>
+            <a href="{% url 'account_login' %}" class="btn">Sign Up</a>
         {% endif %}
     </div>
     </div>

@@ -7,39 +7,35 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
-
-    <div class="auth-container">
-    <h1>{% trans "Sign In" %}</h1>
-
     {% get_providers as socialaccount_providers %}
 
-    {% if socialaccount_providers %}
+    <div class="auth-container">
+
+        <div class="header">
+        <h1>Welcome</h1>
+        Join Noodles.dev community today
+        </div>
+
+        <form class="login" method="POST" action="{% url 'account_login' %}">
+            {{ form|crispy }}
+            {% csrf_token %}
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+            <button class="btn block" type="submit">{% trans "Sign In" %}</button>
+            <a class="" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+        </form>
+
+        <div class="or">Or</div>
 
         <p>{% blocktrans with site.name as site_name %}Sign in with social account or
             <a href="{{ signup_url }}">sign up</a> with username and password{% endblocktrans %}</p>
-
         <div class="socialaccount_providers">
             {% include "socialaccount/snippets/provider_list.html" with process="login" %}
         </div>
-
         {% include "socialaccount/snippets/login_extra.html" %}
+        <p class="small">by Creating an account, you agree to our TOS</p>
 
-    {% else %}
-        <p>{% blocktrans %}If you don't have an account yet, please
-            <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
-    {% endif %}
-
-    <form class="login" method="POST" action="{% url 'account_login' %}">
-
-        {{ form|crispy }}
-        {% csrf_token %}
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
-        <a class="" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-
-        <button class="btn submit" type="submit">{% trans "Sign In" %}</button>
-    </form>
     </div>
 
 {% endblock %}
