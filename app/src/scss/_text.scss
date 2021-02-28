@@ -9,27 +9,33 @@ h1, h2, h3, h4, h5 {
 h1 {
   font-weight: 700;
   font-size: $fontsize-big*2;
+  line-height: $fontsize-big*2.5;
 }
 
 h2 {
   font-weight: 700;
   font-size: $fontsize-sm*2;
+  line-height: $fontsize-sm*2.5;
+
 }
 
 h3 {
   font-weight: 700;
   font-size: $fontsize-tn*2;
+  line-height: $fontsize-tn*2.5;
 }
 
 
 h4 {
   font-weight: 700;
   font-size: $fontsize-big;
+  line-height: $fontsize-big*1.1
 }
 
 h5 {
   font-weight: 700;
   font-size: $fontsize-sm;
+  line-height: $fontsize-sm*1.1;
 }
 
 a, a:visited {
