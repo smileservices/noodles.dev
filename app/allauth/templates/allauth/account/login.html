@@ -10,7 +10,7 @@
     {% get_providers as socialaccount_providers %}
 
     <div class="auth-container">
-
+        <div class="sign-in"><a href="{{ signup_url }}">sign up</a></div>
         <div class="header">
         <h1>Welcome</h1>
         Join Noodles.dev community today
@@ -23,13 +23,9 @@
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
             {% endif %}
             <button class="btn block" type="submit">{% trans "Sign In" %}</button>
-            <a class="" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+            <a class="" href="{% url 'account_reset_password' %}">Forgot Password?</a>
         </form>
-
-        <div class="or">Or</div>
-
-        <p>{% blocktrans with site.name as site_name %}Sign in with social account or
-            <a href="{{ signup_url }}">sign up</a> with username and password{% endblocktrans %}</p>
+        <div class="or">Or use Social Login</div>
         <div class="socialaccount_providers">
             {% include "socialaccount/snippets/provider_list.html" with process="login" %}
         </div>

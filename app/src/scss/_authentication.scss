@@ -11,8 +11,15 @@ section.content {
   margin-right: auto;
   padding: $padding-unit-big*3 $padding-unit-big*5 $padding-unit-big*5 $padding-unit-big*5;
   border-radius: $radius-big;
+  position: relative;
 
   font-size: $fontsize-md;
+
+  .sign-in {
+    position: absolute;
+    right: $padding-unit-md*2;
+    top: $padding-unit-md*2;
+  }
 
   .header {
     font-size: $fontsize-big;
@@ -24,7 +31,8 @@ section.content {
   .or {
     font-size: $fontsize-big;
     font-weight: 400;
-    margin: $padding-unit-sm*2 0;
+    margin: $padding-unit-md*2 0;
+    text-align: center;
   }
 }
 
