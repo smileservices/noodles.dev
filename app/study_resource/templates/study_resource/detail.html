@@ -26,7 +26,7 @@
                itemProp="learningResourceType">{{ result.media_label }}</a>
         </div>
         <div id="toolbar">
-            <a href="{% url 'study-resource-edit' result.pk %}">edit</a>
+            <a href="{% url 'study-resource-edit' result.pk %}">suggest edit</a>
             <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" class="icon-bookmark"></a>
         </div>
     </div>

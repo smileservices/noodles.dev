@@ -14,6 +14,12 @@
     gap: $padding-unit;
     flex-wrap: wrap;
     align-items: baseline;
+    a, a:visited {
+      color: var(--color-text-white);
+    }
+    a:hover {
+      color: var(--color-blue);
+    }
 
     .published {
       font-size: $fontsize-sm;
