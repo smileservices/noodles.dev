@@ -12,6 +12,10 @@ module.exports = {
         //for prod
         // 'static/js/react-bundle': ['./app/static/js/react.min.js', './app/static/js/react-dom.min.js'],
 
+        //homepage
+        '/static/homepage-app': './app/frontend/src/HomepageApp.js',
+
+
         //study resource related
         '/static/study_resource/study-resource-detail-reviews': './app/study_resource/src/StudyResourceDetailReviews.js',
         '/static/study_resource/study-resource-create': './app/study_resource/src/create/StudyResourceCreate.js',

@@ -11,64 +11,14 @@
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
 {% endblock %}
 
-{% block header %}
-    <header>
-        <div class="content">
-            <h1>turn noodles into knowledge</h1>
-            <p>a community curated collection of tutorials and courses on software development</p>
-        </div>
-    </header>
-{% endblock %}
-
 {% block content %}
-    <section class="homepage">
-        {#        <section class="header">#}
-        {#            <h1>Homepage</h1>#}
-        {#        </section>#}
-
-
-        {% include 'frontend/filter.html' with filter_url='search' %}
-        <section class="results-container column-container">
-
-            <h3>Collections:</h3>
-            <div class="results-selection tile-container">
-                {% for result in collections %}
-                    {% include 'study_collection/result.html' %}
-                {% endfor %}
-            </div>
-
-            <h3>Most appreciated:</h3>
-            <div class="results-selection tile-container">
-                {% for result in most_appreciated %}
-                    {% include 'study_resource/result.html' %}
-                {% endfor %}
-            </div>
-
-            <h3>Latest added:</h3>
-            <div class="results-selection tile-container">
-                {% for result in latest %}
-                    {% include 'study_resource/result.html' %}
-                {% endfor %}
-            </div>
-
-            <h3>Problems:</h3>
-            <div class="results-selection tile-container" id="problems-app">
-                {% for p in problems %}
-                    {% include 'problem_solution/problem/result.html' with result=p %}
-                {% endfor %}
-            </div>
-
-            <h3>Solutions:</h3>
-            <div class="results-selection tile-container" id="solutions-app">
-                {% for s in solutions %}
-                    {% include 'problem_solution/solution/result.html' with result=s %}
-                {% endfor %}
-            </div>
-        </section>
-
+    <section id="homepage-app">
+        <a href="">Browse Technologies</a>
+        <a href="">Browse Resources</a>
+        <a href="">Browse Collections</a>
     </section>
 {% endblock %}
 
 {% block extra_js %}
-
+    <script src="{% static 'homepage-app.js' %}"></script>
 {% endblock %}

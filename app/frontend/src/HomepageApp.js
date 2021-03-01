@@ -2,12 +2,11 @@ import React, {useState, useEffect, Fragment} from "react";
 import ReactDOM from "react-dom";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
 import {FilterComponent} from "../../src/components/FilterComponent";
-
-import SearchBarComponent from "./SearchBarComponent";
+import SearchBarComponent from "../../search/src/SearchBarComponent";
 import StudyResourceSearchListing from "../../study_resource/src/StudyResourceSearchListing";
 import CollectionSearchListing from "../../study_collection/src/CollectionSearchListing";
 import TechnologySearchListing from "../../technology/src/TechnologySearchListing";
-import RelatedComponent from "./RelatedComponent";
+import RelatedComponent from "../../search/src/RelatedComponent";
 
 import {codeParamsToUrl, decodeParamsFromUrl, updateUrl, getAvailableFilters} from "../../src/components/utils";
 
@@ -19,7 +18,7 @@ const NoResultsElement = (
     </div>
 )
 
-function SearchApp() {
+function HomepageApp() {
 
     /*
     *   Open url:
@@ -86,9 +85,6 @@ function SearchApp() {
     const [technologies, setTechnologies] = useState(initialTechnologies);
     const [technologiesResultsPagination, setTechnologiesResultsPagination] = useState(initialTechnologiesPagination);
     const [technologiesFilters, setTechnologiesFilters] = useState(technologiesFilterInitial);
-
-    let firstRun = true;
-
 
     function setSearch(term) {
         let params = new URLSearchParams(location.search);
@@ -340,12 +336,16 @@ function SearchApp() {
                 </div>
                 <SearchBarComponent search={setSearch} state={searchbarState}/>
                 {showCurrentTab(currentTab)}
+                <div className="semi-footer">
+                    <h4>Turn Noodles into Solutions</h4>
+                    <p>Join Noodles.dev community to solves issues, help others and find learning ressources</p>
+                </div>
             </section>
             <section id="related" className="column-container">
-                <RelatedComponent addFilter={factoryAddFilter('resources')} />
+                <RelatedComponent addFilter={factoryAddFilter('resources')}/>
             </section>
         </Fragment>
     );
 }
 
-ReactDOM.render(<SearchApp/>, document.getElementById('search-app'));
+ReactDOM.render(<HomepageApp/>, document.getElementById('homepage-app'));

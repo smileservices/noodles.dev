@@ -1,0 +1,7 @@
+#homepage-app {
+  display: grid;
+  grid-gap: $padding-unit-big;
+  grid-template-columns: 2.5fr 1fr;
+  grid-template-areas:
+  "search related";
+}
