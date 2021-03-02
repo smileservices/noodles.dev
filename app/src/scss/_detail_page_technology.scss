@@ -4,6 +4,15 @@ main .detail-page.technology {
   "tab-navigation related";
     section#detail {
       header {
+        display: flex;
+        flex-wrap: wrap-reverse;
+        justify-content: space-between;
+        align-items: center;
+        gap: $padding-unit-big;
+        .btn.contribute {
+          margin: 0;
+        }
+
         .left-side {
           display: flex;
           gap: $padding-unit-big;

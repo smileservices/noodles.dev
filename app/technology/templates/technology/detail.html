@@ -3,9 +3,7 @@
         <img src="{{ result.logo.medium }}" alt="">
         <h1 class="title" itemProp="name">{{ result.name }}</h1>
     </div>
-    <div class="right-side">
-        <a class="btn" href="{% url 'tech-edit' id=result.pk %}">Contribute</a>
-    </div>
+    <a class="btn contribute" href="{% url 'tech-edit' id=result.pk %}">Contribute</a>
 </header>
 <p class="tags">
     <span>{{ result.license_label }}</span>
