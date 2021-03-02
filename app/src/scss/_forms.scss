@@ -119,7 +119,6 @@ textarea {
 }
 
 
-
 .form-control {
   background-color: var(--color-background);
   color: var(--color-text-white);
@@ -129,4 +128,71 @@ textarea {
 .form-control:focus {
   color: var(--color-text-white);
   background-color: var(--color-background);
+}
+
+.react-select {
+  color: var(--color-text-grey);
+  font-size: $fontsize-md;
+
+  .form-control__placeholder {
+    font-size: $fontsize-md;
+  }
+
+  .form-control__indicator-separator {
+    display: none;
+  }
+
+  .form-control__control {
+    background-color: var(--color-background-3);
+    border: none;
+    border-radius: $radius-medium;
+  }
+
+  .form-control__multi-value {
+    background-color: var(--color-background);
+    border-radius: $radius-medium;
+  }
+
+  .form-control__multi-value__label {
+    color: var(--color-text-grey);
+  }
+
+  .form-control__input {
+    color: var(--color-text-white);
+  }
+
+  .form-control__control--is-disabled {
+    background-color: var(--color-background-2);
+    color: var(--color-text-grey-2);
+  }
+
+  .form-control__control--is-disabled:hover {
+    cursor: not-allowed;
+  }
+
+  .form-control__multi-value__remove {
+    color: var(--color-background-3);
+    cursor: pointer;
+  }
+
+  .form-control__menu {
+    background-color: var(--color-background-3);
+    border-radius: $radius-big;
+
+    .form-control__option, .form-control__option--is-selected {
+      color: var(--color-text-white);
+    }
+
+    .form-control__option--is-focused {
+      color: var(--color-background-1);
+    }
+  }
+
+  .form-control__value-container {
+    color: var(--color-text-white);
+  }
+
+  .form-control__single-value {
+    color: var(--color-text-white);
+  }
 }

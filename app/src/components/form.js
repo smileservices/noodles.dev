@@ -167,7 +167,9 @@ export const SelectReact = ({name, label, smallText, error, options, value, onCh
                 : ''
             }
             <Select isLoading={isLoading} isDisabled={isDisabled} options={options} value={value}
-                    onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
+                    className="react-select" classNamePrefix={handleSelectClass(error)}
+                    onChange={onChange} {...props}
+            />
             {smallText
                 ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
                 : ''
@@ -187,7 +189,8 @@ export const SelectReactCreatable = ({name, label, smallText, error, options, va
             : ''
         }
         <Creatable isLoading={isLoading} isDisabled={isDisabled} options={options} value={value}
-                   onChange={onChange} {...props} classNamePrefix={handleSelectClass(error)}/>
+                   className="react-select" classNamePrefix={handleSelectClass(error)}
+                   onChange={onChange} {...props} />
         {smallText
             ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
             : ''

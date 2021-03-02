@@ -75,6 +75,14 @@
     .fs__menu {
       background-color: var(--color-background-3);
       border-radius: $radius-big;
+
+      .fs__option, .fs__option--is-selected {
+        color: var(--color-text-white);
+      }
+
+      .fs__option--is-focused {
+        color: var(--color-background-1);
+      }
     }
 
     .fs__value-container {
