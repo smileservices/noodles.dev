@@ -118,7 +118,6 @@ def study_resources_edits_bulk(count=10):
 
 
 def reviews_bulk(count=10):
-    reviews = []
     users = CustomUser.objects.all()
     resources = models.StudyResource.objects.all()
     older_reviews = models.Review.objects.all()
@@ -131,5 +130,4 @@ def reviews_bulk(count=10):
         if identificator in only_one_review_per_user_check:
             continue
         only_one_review_per_user_check.append(identificator)
-        reviews.append(review)
-    models.Review.objects.bulk_create(reviews)
+        review.save()

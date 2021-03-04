@@ -1,11 +1,13 @@
 from technology.serializers import TechnologySerializer
 from category.models import Category
 from technology.models import Technology
-
+from users.models import CustomUser
+from random import choice
 
 # use technology serializer to save
 
 def make_technologies_and_categories():
+    users = CustomUser.objects.all()
     categories = {}
     categories['programming_language'] = Category.objects.create(
         name='Programming Language',
@@ -57,6 +59,7 @@ def make_technologies_and_categories():
                        'No support for multithreading or multiprocessor capabilities',
         "featured": True,
         "ecosystem": False,
+        "author_id": choice(users).pk
     }
     python = {
         "featured": True,
@@ -77,6 +80,7 @@ def make_technologies_and_categories():
         "cons": 'interpreted language',
         "limitations": 'multithreading: only one thread can access Python internals at a time',
         "ecosystem": False,
+        "author_id": choice(users).pk
     }
     php = {
         "featured": True,
@@ -95,6 +99,7 @@ def make_technologies_and_categories():
         "cons": 'interpreted language, scope limited to web applications',
         "limitations": 'fully synchronous language',
         "ecosystem": False,
+        "author_id": choice(users).pk
     }
     django = {
         "featured": True,
@@ -112,6 +117,7 @@ def make_technologies_and_categories():
         "cons": 'very oppinionated framework',
         "limitations": 'ORM supports only SQL databases',
         "ecosystem": False,
+        "author_id": choice(users).pk
     }
     react = {
         "featured": True,
@@ -132,6 +138,7 @@ def make_technologies_and_categories():
         "cons": 'state sharing between components',
         "limitations": 'complex state management requires external library',
         "ecosystem": False,
+        "author_id": choice(users).pk
     }
 
     TECHNOLOGIES = [javascript, python, php, django, react]
