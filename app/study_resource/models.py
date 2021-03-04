@@ -346,6 +346,7 @@ class Review(DateTimeModelMixin, VotableMixin):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         super(Review, self).save()
+        self.study_resource.save() # this to trigger syncing to elasticsearch
 
 
 models.signals.pre_save.connect(remove_old_image, sender=StudyResource, weak=False)

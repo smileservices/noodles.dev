@@ -1,152 +1,125 @@
 import React, {useState, useEffect, Fragment} from "react";
 import ReactDOM from "react-dom";
-import PaginatedLayout from "../../src/components/PaginatedLayout";
-import {FilterComponent} from "../../src/components/FilterComponent";
-import SearchBarComponent from "../../search/src/SearchBarComponent";
+
 import StudyResourceSearchListing from "../../study_resource/src/StudyResourceSearchListing";
 import CollectionSearchListing from "../../study_collection/src/CollectionSearchListing";
 import TechnologySearchListing from "../../technology/src/TechnologySearchListing";
+
+import {FilterComponent} from "../../src/components/FilterComponent";
+import SearchBarComponent from "../../search/src/SearchBarComponent";
 import RelatedComponent from "../../search/src/RelatedComponent";
 
-import {codeParamsToUrl, decodeParamsFromUrl, updateUrl, getAvailableFilters} from "../../src/components/utils";
 
+import {codeParamsToUrl, getAvailableFilters} from "../../src/components/utils";
 
-const NoResultsElement = (
-    <div className="no-results">
-        <h2>Too picky maybe?</h2>
-        <p>Try to broaden your filters.</p>
-    </div>
-)
+const url_aggregations = '/api/aggregations';
+const url_aggr_filters_resources = 'api/aggregations/study-resources';
+const url_aggr_filters_collections = '/api/aggregations/collections';
+const url_aggr_filters_technologies = '/api/aggregations/technologies';
 
 function HomepageApp() {
 
     /*
-    *   Open url:
-    *       . url  : /search?tab=resources&q={search term}&tech_v=python|gte:2&tag=python
-    *       . apply filters (if exist) and initiate search for the selected tab & open it
-    *       . initiate search with default filters for the other tabs - collections, technologies
+    *   Homepage App is a gateway to search page
     *
-    *   Modify search term
-    *       . search is initiated for all tabs
-    *       . selected filters apply
+    *   Search Section:
+    *       - show count of total available resources
+    *       - show total aggregates for filters
+    *       - can filter/search
+    *       - have to set Apply search or press enter in the search bar
     *
-    *   Save state into the url
-    *       . query, filters are saved in url as GET params
-    *       . syntax is compatible with apiList component and with django-rest filters
-    *       . have index name, pagination, search term, filters
+    *   Featured content based on the selected tab in the search section
+    *       - resources - get latest/most reviewed
+    *       - collections - latest/most voted
+    *       - technologies - latest/most voted
+    *
     * */
 
-    const urlParams = new URLSearchParams(document.location.search);
-
-    const defaultTab = urlParams.get('tab') ? urlParams.get('tab') : 'resources';
     const defaultTabState = {
-        results: [],
+        rated_highest: {},
         waiting: false,
-        filters: [],
+        filters: {},
         availableFilters: {},
-        sorting: [],
     };
-    const defaultPagination = {
-        resultsPerPage: 10,
-        current: 1,
-        offset: 0
-    }
 
     const [searchbarState, setSearchbarState] = useState({
         placeholder: 'Search For Something Specific',
-        q: urlParams.get('search') ? urlParams.get('search').split('+').join(' ') : '',
+        q: '',
     });
 
-    function initialTabState(tabname) {
-        let state = JSON.parse(JSON.stringify(defaultTabState));
-        let paginationState = JSON.parse(JSON.stringify(defaultPagination));
-        if (tabname === defaultTab) {
-            const [filters, sorting, pagination] = decodeParamsFromUrl();
-            paginationState = {...paginationState, ...pagination}
-            return [state, paginationState, filters, sorting];
-        }
-        return [state, paginationState, {}, {}];
-    }
+    const [aggregations, setAggregations] = useState(false);
+    const [currentTab, setCurrentTab] = useState('resources');
 
-    const [initialResources, initialResourcesPagination, resourcesFilterInitial, resourcesSortInitial] = initialTabState('resources')
-    const [initialCollections, initialCollectionsPagination, collectionsFilterInitial, collectionsSortInitial] = initialTabState('colections')
-    const [initialTechnologies, initialTechnologiesPagination, technologiesFilterInitial, technologiesSortInitial] = initialTabState('technologies')
-
-    const [currentTab, setCurrentTab] = useState(defaultTab);
-
-    const [resources, setResources] = useState(initialResources);
-    const [resourcesResultsPagination, setResourcesResultsPagination] = useState(initialResourcesPagination);
-    const [resourcesFilters, setResourcesFilters] = useState(resourcesFilterInitial);
-
-    const [collections, setCollections] = useState(initialCollections);
-    const [collectionsResultsPagination, setCollectionsResultsPagination] = useState(initialCollectionsPagination);
-    const [collectionsFilters, setCollectionsFilters] = useState(collectionsFilterInitial);
-
-    const [technologies, setTechnologies] = useState(initialTechnologies);
-    const [technologiesResultsPagination, setTechnologiesResultsPagination] = useState(initialTechnologiesPagination);
-    const [technologiesFilters, setTechnologiesFilters] = useState(technologiesFilterInitial);
+    const [resources, setResources] = useState(defaultTabState);
+    const [collections, setCollections] = useState(defaultTabState);
+    const [technologies, setTechnologies] = useState(defaultTabState);
 
     function setSearch(term) {
-        let params = new URLSearchParams(location.search);
-        if (term !== '') {
-            params.set('search', term);
-        } else {
-            params.delete('search');
-        }
-
-        history.pushState(null, 'Search', '?' + params.toString())
-        setSearchbarState({
-            ...searchbarState,
-            q: term.split('+').join(' '),
-            showSuggestions: false
-        })
-        searchInTab(term, currentTab);
-        getOtherTabs(currentTab).map(
-            tab => searchInTab(term, tab)
-        );
+        //todo get all tab/filters/searchterm and set location to search page with params
+        const [tabState, setTabState] = getTabState(currentTab);
+        console.log('initating search', currentTab, term, tabState.filters);
     }
 
-    function searchInTab(term, tab) {
-        const url = '/search/api/' + tab + '?';
-        let params = new URLSearchParams();
-        if (term !== '') {
-            params.set('search', term);
-        }
-        const [tabState, setTabState, pagination, setPagination, filters] = getTabState(tab);
-        const paginationList = Object.keys(pagination).map(k => {
-            let d = {};
-            d[k] = pagination[k];
-            return d
-        });
-        codeParamsToUrl(params, filters);
-        codeParamsToUrl(params, paginationList);
-        fetch(url + params.toString(), {
-            method: 'GET',
+
+    useEffect(e => {
+
+        //get aggregated results data
+        fetch(url_aggregations, {
+            method: 'GET'
         }).then(result => {
             if (result.ok) {
-                return result.json();
+                result.json().then(data => setAggregations(data));
+            } else {
+                alert('Could not read data: ' + result.statusText)
             }
-        }).then(data => {
-            setTabState({...tabState, availableFilters: getTabFilters(tab, data.filters), results: data});
         })
-    }
+        //get aggregated results data
+        fetch(url_aggr_filters_resources, {
+            method: 'GET'
+        }).then(result => {
+            if (result.ok) {
+                result.json().then(data => setResources({
+                    rated_highest: data.rated_highest,
+                    filters: {},
+                    availableFilters: getTabFilters('resources', data.all_filters)
+                }));
+            } else {
+                alert('Could not read resources data: ' + result.statusText)
+            }
+        })
 
-    function getOtherTabs(tabname) {
-        return ['resources', 'collections', 'technologies'].filter(i => i !== tabname);
-    }
-
-    function getTabState(tabname) {
-        switch (tabname) {
-            case 'resources':
-                return [resources, setResources, resourcesResultsPagination, setResourcesResultsPagination, resourcesFilters, setResourcesFilters]
-            case 'collections':
-                return [collections, setCollections, collectionsResultsPagination, setCollectionsResultsPagination, collectionsFilters, setCollectionsFilters]
-            case 'technologies':
-                return [technologies, setTechnologies, technologiesResultsPagination, setTechnologiesResultsPagination, technologiesFilters, setTechnologiesFilters]
-        }
-    }
+        fetch(url_aggr_filters_collections, {
+            method: 'GET'
+        }).then(result => {
+            if (result.ok) {
+                result.json().then(data => setCollections({
+                    rated_highest: data.rated_highest,
+                    filters: {},
+                    availableFilters: getTabFilters('collections', data.all_filters)
+                }));
+            } else {
+                alert('Could not read collections data: ' + result.statusText)
+            }
+        })
+        fetch(url_aggr_filters_technologies, {
+            method: 'GET'
+        }).then(result => {
+            if (result.ok) {
+                result.json().then(data => setTechnologies({
+                    rated_highest: data.rated_highest,
+                    filters: {},
+                    availableFilters: getTabFilters('technologies', data.all_filters)
+                }));
+            } else {
+                alert('Could not read technologies data: ' + result.statusText)
+            }
+        })
+    }, []);
 
     function getTabFilters(tabname, resultsFilters) {
+        // sets the available filters
+        // used when populating filter component
+        if (!Object.keys(resultsFilters).length) return {};
         switch (tabname) {
             case 'resources':
                 return {
@@ -170,55 +143,23 @@ function HomepageApp() {
         }
     }
 
-    useEffect(e => {
-        const [tab, setTabstate, pagination, setPagination, filters] = getTabState(currentTab);
-        updateUrl('/search/?', {
-            search: searchbarState.q,
-            tab: currentTab,
-            filters: filters
-        });
-        searchInTab(searchbarState.q, currentTab)
-    }, [resourcesFilters, collectionsFilters, technologiesFilters])
-
-    // useEffect(e => {
-    //     searchInTab(searchbarState.q, 'collections')
-    // }, [collectionsFilters,])
-    //
-    // useEffect(e => {
-    //     searchInTab(searchbarState.q, 'technologies')
-    // }, [technologiesFilters,])
-
-    useEffect(e => {
-        searchInTab(searchbarState.q, currentTab);
-        getOtherTabs(currentTab).map(
-            tab => searchInTab(searchbarState.q, tab)
-        );
-    }, []);
-
-    useEffect(e => {
-        searchInTab(searchbarState.q, currentTab);
-    }, [resourcesResultsPagination, collectionsResultsPagination, technologiesResultsPagination])
+    function getTabState(tabname) {
+        switch (tabname) {
+            case 'resources':
+                return [resources, setResources]
+            case 'collections':
+                return [collections, setCollections]
+            case 'technologies':
+                return [technologies, setTechnologies]
+        }
+    }
 
     function changeTab(tabname) {
         setCurrentTab(tabname);
-        const [tabState, setTabState, pagination, setPagination] = getTabState(tabname);
-        let params = new URLSearchParams();
-        params.set('tab', tabname);
-        if (searchbarState.q !== '') {
-            params.set('search', searchbarState.q);
-        }
-        codeParamsToUrl(params, tabState.filters)
-        history.pushState(null, 'Search for ' + tabname, '?' + params.toString())
     }
 
-    function factoryAddFilter(tab) {
-        return (name, value) => {
-            const [state, setState, pagination, setPagination, filters, setFilters] = getTabState(tab);
-            let newFilters = {...filters};
-            setCurrentTab(tab);
-            newFilters[name] = value;
-            setFilters(newFilters);
-        }
+    function addFilterfactory(tab) {
+        return (name, value) => window.location = '/search/?tab=' + tab + '&' + name + '=' + value;
     }
 
     function showCurrentTab(currentTab) {
@@ -229,26 +170,20 @@ function HomepageApp() {
                         <FilterComponent
                             key="resources-filters"
                             fields={resources.availableFilters}
-                            queryFilter={resourcesFilters}
-                            setQueryFilter={filter => {setResourcesResultsPagination(defaultPagination); setResourcesFilters(filter)}}
+                            queryFilter={resources.filters}
+                            setQueryFilter={filter => setResources({...resources, filters: filter})}
                         />
-                        {resources.results.items?.length > 0 ?
+                        {resources.rated_highest.items?.length > 0 ?
                             <Fragment>
-                                <h4>Resources Results</h4>
-                                <PaginatedLayout
-                                    pagination={resourcesResultsPagination}
-                                    resultsCount={resources.results.stats.total}
-                                    data={resources.results.items}
-                                    resultsContainerClass="results"
-                                    setPagination={setResourcesResultsPagination}
-                                    mapFunction={(item, idx) => <StudyResourceSearchListing
-                                        key={item.pk}
-                                        data={item}
-                                        addFilter={factoryAddFilter('resources')}
-                                    />}
-                                />
+                                <h4>Best Reviewed Resources</h4>
+                                <div className="results">
+                                    {resources.rated_highest.items.map(resource =>
+                                        <StudyResourceSearchListing data={resource}
+                                                                    addFilter={addFilterfactory('resources')}/>
+                                    )}
+                                </div>
                             </Fragment>
-                            : NoResultsElement}
+                            : ''}
                     </div>
                 );
             case 'collections':
@@ -257,26 +192,14 @@ function HomepageApp() {
                         <FilterComponent
                             key="collections-filters"
                             fields={collections.availableFilters}
-                            queryFilter={collectionsFilters}
-                            setQueryFilter={filter => {setCollectionsResultsPagination(defaultPagination); setCollectionsFilters(filter)}}
+                            queryFilter={collections.filters}
+                            setQueryFilter={filter => setCollections({...collections, filters: filter})}
                         />
-                        {collections.results.items?.length > 0 ?
+                        {collections.rated_highest.items?.length > 0 ?
                             <Fragment>
-                                <h4>Collections Results</h4>
-                                <PaginatedLayout
-                                    pagination={collectionsResultsPagination}
-                                    resultsCount={collections.results.stats.total}
-                                    data={collections.results.items}
-                                    resultsContainerClass="results"
-                                    setPagination={setCollectionsResultsPagination}
-                                    mapFunction={(item, idx) => <CollectionSearchListing
-                                        key={item.pk}
-                                        data={item}
-                                        addFilter={factoryAddFilter('collections')}
-                                    />}
-                                />
+                                <h4>Collections</h4>
                             </Fragment>
-                            : NoResultsElement}
+                            : ''}
                     </div>
                 );
             case 'technologies':
@@ -285,37 +208,25 @@ function HomepageApp() {
                         <FilterComponent
                             key="technologies-filters"
                             fields={technologies.availableFilters}
-                            queryFilter={technologiesFilters}
-                            setQueryFilter={filter => {setTechnologiesResultsPagination(defaultPagination); setTechnologiesFilters(filter)}}
+                            queryFilter={technologies.filters}
+                            setQueryFilter={filter => setTechnologies({...technologies, filters: filter})}
                         />
-                        {technologies.results.items?.length > 0 ?
+                        {technologies.rated_highest.items?.length > 0 ?
                             <Fragment>
-                                <h4>Technologies Results</h4>
-                                <PaginatedLayout
-                                    pagination={technologiesResultsPagination}
-                                    resultsCount={technologies.results.stats.total}
-                                    data={technologies.results.items}
-                                    resultsContainerClass="results"
-                                    setPagination={setTechnologiesResultsPagination}
-                                    mapFunction={(item, idx) => <TechnologySearchListing
-                                        key={item.pk}
-                                        data={item}
-                                        addFilter={factoryAddFilter('technologies')}
-                                    />}
-                                />
+                                <h4>Technologies</h4>
                             </Fragment>
-                            : NoResultsElement}
+                            : ''}
                     </div>
                 );
         }
     }
 
-    function getCounter(state) {
-        if (state.waiting) return 'wait..';
-        if (state.results.stats) {
-            return state.results.stats.total;
+    function getAggregationsCounter(name) {
+        if (!aggregations) return '';
+        if (aggregations[name]) {
+            return (<span className="aggregation">{aggregations[name]}</span>);
         } else {
-            return 'error';
+            return '';
         }
     }
 
@@ -328,21 +239,18 @@ function HomepageApp() {
             <section className="tab-navigation search">
                 <div className="tab-headers">
                     <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources
-                        ({getCounter(resources)})</h4>
+                        {getAggregationsCounter('study_resources')}</h4>
                     <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections
-                        ({getCounter(collections)})</h4>
-                    <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies
-                        ({getCounter(technologies)})</h4>
+                        {getAggregationsCounter('collections')}</h4>
+                    <h4 onClick={e => changeTab('technologies')}
+                        className={headerClass('technologies')}>Technologies
+                        {getAggregationsCounter('technologies')}</h4>
                 </div>
                 <SearchBarComponent search={setSearch} state={searchbarState}/>
                 {showCurrentTab(currentTab)}
-                <div className="semi-footer">
-                    <h4>Turn Noodles into Solutions</h4>
-                    <p>Join Noodles.dev community to solves issues, help others and find learning ressources</p>
-                </div>
             </section>
             <section id="related" className="column-container">
-                <RelatedComponent addFilter={factoryAddFilter('resources')}/>
+                <RelatedComponent/>
             </section>
         </Fragment>
     );

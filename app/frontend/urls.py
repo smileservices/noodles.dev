@@ -4,6 +4,10 @@ from frontend import views
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
+    path('api/aggregations/study-resources', views.homepage_resources, name='homepage_resources'),
+    path('api/aggregations/collections', views.homepage_collections, name='collections'),
+    path('api/aggregations/technologies', views.homepage_technologies, name='technologies'),
+    path('api/aggregations', views.aggregations, name='aggregations'),
     path('terms/privacy-policy', lambda request: render(request, 'frontend/static/privacy.html'), name='privacy-policy'),
     path('terms/terms-conditions', lambda request: render(request, 'frontend/static/terms.html'), name='terms-policy'),
     path('terms/cookies-policy', lambda request: render(request, 'frontend/static/cookie-terms.html'), name='cookie-policy'),

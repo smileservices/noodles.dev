@@ -1,3 +1,4 @@
+import json
 from rest_framework.test import APITestCase
 from django.urls import reverse
 from random import choice, choices
@@ -453,8 +454,8 @@ class RestIntegrationTest(APITestCase):
                 'media': 0,
                 'experience': 0,
                 'category': self.categories[0].pk,
-                'tags': [self.tags[1].pk, self.tags[2].pk],
-                'technologies': [
+                'tags': json.dumps([self.tags[1].pk, self.tags[2].pk]),
+                'technologies': json.dumps([
                     {
                         'technology_id': self.technologies[0].pk,
                         'version': '123',
@@ -463,7 +464,7 @@ class RestIntegrationTest(APITestCase):
                         'technology_id': self.technologies[1].pk,
                         'version': 0,
                     },
-                ]
+                ])
             },
             format='json'
         )
@@ -499,13 +500,13 @@ class RestIntegrationTest(APITestCase):
             'media': 0,
             'experience': 0,
             'category': choice(self.categories).pk,
-            'tags': [self.tags[1].pk, self.tags[2].pk],
-            'technologies': [
+            'tags': json.dumps([self.tags[1].pk, self.tags[2].pk]),
+            'technologies': json.dumps([
                 {
                     'technology_id': self.technologies[2].pk,
                     'version': 123.4,
                 },
-            ]
+            ])
         }
         res_edit = self.client.put(
             reverse('study-resource-viewset-detail', kwargs={'pk': resource_pk}),

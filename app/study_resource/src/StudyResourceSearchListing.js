@@ -9,7 +9,7 @@ const flagIcon = (
             fill="black"/>
     </svg>);
 
-export default function StudyResourceSearchListing({data, addFilter}) {
+    export default function StudyResourceSearchListing({data, addFilter}) {
     const MAX_RATING = 5
     return (
         <div className="card">

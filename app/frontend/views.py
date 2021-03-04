@@ -1,24 +1,64 @@
 from django.shortcuts import render
 from study_resource.models import StudyResource
-from study_resource import filters
-from django.db.models import Avg, Q
-from problem_solution.models import Problem, Solution
+from technology.models import Technology
 from study_collection.models import Collection
+from django.http.response import JsonResponse
+from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
+
 
 def homepage(request):
-    queryset = StudyResource.objects.order_by('-publication_date')
-    latest = queryset[:5]
-    collections = Collection.objects.filter(is_public=True).all()[:5]
-    most_appreciated = queryset.filter(~Q(reviews=None)).order_by('-rating')[:5]
+    return render(request, 'frontend/homepage.html')
+
+
+def aggregations(request):
+    # return total number of items
     data = {
-        'hide_navbar_search': False,
-        'filter': filters.StudyResourceFilter,
-        'latest': latest,
-        'collections': collections,
-        'most_appreciated': most_appreciated,
-        'problems': Problem.objects.order_by('-created_at')[:5],
-        'solutions': Solution.objects.order_by('-created_at')[:5],
+        'study_resources': StudyResource.objects.count(),
+        'collections': Collection.objects.filter(is_public=True).count(),
+        'technologies': Technology.objects.count(),
     }
-    return render(request, 'frontend/homepage.html', data)
+    return JsonResponse(data)
 
 
+def homepage_resources(request):
+    es = ElasticSearchInterface(['study_resources'])
+    aggregates_results = es.aggregates({
+        "price": {"terms": {"field": "price"}},
+        "media": {"terms": {"field": "media"}},
+        "experience_level": {"terms": {"field": "experience_level"}},
+        "technologies": {"terms": {"field": "technologies.name"}},
+        "tags": {"terms": {"field": "tags", "size": 20}},
+        "category": {"terms": {"field": "category"}},
+    })
+    rating = [{"rating": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, {"reviews": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}]
+    data = {
+        'all_filters': aggregates_results,
+        'rated_highest': es.sort_by(rating, page_size=5)
+    }
+    return JsonResponse(data)
+
+
+def homepage_collections(request):
+    es = ElasticSearchInterface(['collections'])
+    aggregates_results = es.aggregates({
+        "technologies": {"terms": {"field": "technologies"}},
+        "tags": {"terms": {"field": "tags", "size": 20}},
+    })
+    data = {
+        'all_filters': aggregates_results,
+        'latest': es.latest(page_size=5)
+    }
+    return JsonResponse(data)
+
+
+def homepage_technologies(request):
+    es = ElasticSearchInterface(['technologies'])
+    aggregates_results = es.aggregates({
+        "ecosystem": {"terms": {"field": "ecosystem", "size": 20}},
+        "category": {"terms": {"field": "category"}},
+    })
+    data = {
+        'all_filters': aggregates_results,
+        'latest': es.latest(page_size=5)
+    }
+    return JsonResponse(data)

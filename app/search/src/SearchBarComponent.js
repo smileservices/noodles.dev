@@ -1,6 +1,11 @@
 import React, {useState, useEffect, Fragment} from "react";
 
 export default function SearchBarComponent({search, state}) {
+    /*
+    * search - search function to be executed when submiting search
+    * state - {q: search term, placeholder: placeholder text}
+    *
+    * */
 
     const [formData, setFormData] = useState(state.q);
     const [suggestions, setSuggestions] = useState([]);

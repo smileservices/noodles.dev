@@ -49,10 +49,12 @@ class VotableMixin(models.Model):
         author = self._get_author()
         if user.pk in self.thumbs_up_array:
             self.thumbs_up_array.remove(user.pk)
+            self.save()
             user.cancel_thumb_up()
             author.positive_score -= 1
         elif user.pk in self.thumbs_down_array:
             self.thumbs_down_array.remove(user.pk)
+            self.save()
             user.cancel_thumb_down()
             author.negative_score -= 1
         else:

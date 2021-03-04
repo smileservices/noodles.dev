@@ -79,19 +79,39 @@ class ElasticSearchInterface:
         res = self.connection.search(self.indexes, body=q)
         return self._extract_results(res, 'suggest')
 
-    def latest(self, page=0, page_size=10):
+    def sort_by(self, sort, page=0, page_size=10):
         page_offset = page * page_size
         q = {
             "from": page_offset,
             "size": page_size,
-            "sort": [
-                {"date": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},
-            ]
+            "sort": sort
         }
         res = self.connection.search(self.indexes, body=q)
         extracted_response = self._extract_results(res, 'search')
         extracted_response['stats']['page_size'] = page_size
         return extracted_response
+
+    def get_by_pk(self, pk):
+        q = {
+            "from": 0,
+            "size": 1,
+            "query": {
+                "bool": {
+                    "filter": {"term":{"pk": pk}}
+                }
+            }
+        }
+        res = self.connection.search(self.indexes, body=q)
+        extracted_response = self._extract_results(res, 'search')
+        return extracted_response
+
+
+    def latest(self, page=0, page_size=10):
+        return self.sort_by(
+            [{"date": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},],
+            page,
+            page_size
+        )
 
     def _extract_results(self, res, type):
         extracted = {}
@@ -107,7 +127,6 @@ class ElasticSearchInterface:
                         filters[name][item['key']] = item['doc_count']
             extracted = {
                 'items': results,
-                'filters': filters,
                 'stats': {
                     'total': res['hits']['total']['value'],
                     'count': len(results)

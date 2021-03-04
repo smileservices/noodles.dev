@@ -25,6 +25,15 @@ export default function RelatedComponent({addFilter}) {
 
     if (!Object.keys(data).length) return 'waiting...'
 
+    const clickTechTag = addFilter
+        ? tech => addFilter('tech_v', tech)
+        : tech => window.location = '/search/?tab=resources&tech_v='+tech;
+    const clickTag = addFilter
+        ? tag => addFilter('tags', tag)
+        : (tag,tab) => window.location = '/search/?tab='+tab+'&tags='+tag;
+
+    const resourceFilter = addFilter ? addFilter : (name, value) => window.location = '/search/?tab=resources&'+name +'='+value;
+
     return (
         <Fragment>
             {Object.keys(data.aggregations.technologies).length ?
@@ -32,7 +41,7 @@ export default function RelatedComponent({addFilter}) {
                     <h4>Popular Technologies</h4>
                     <div className="tags">
                         {Object.keys(data.aggregations.technologies).map(tech =>
-                            <span key={'popular-tech-'+tech} className="tech" onClick={e => addFilter('tech_v', tech)}>
+                            <span key={'popular-tech-'+tech} className="tech" onClick={e => clickTechTag(tech)}>
                                 {flagIcon} {tech} ({data.aggregations.technologies[tech]})
                             </span>
                         )}
@@ -45,7 +54,7 @@ export default function RelatedComponent({addFilter}) {
                     <h4>Tags to follow</h4>
                     <div className="tags">
                         {Object.keys(data.aggregations.tags).map(tag =>
-                            <span key={'popular-tag-'+tag} onClick={e => addFilter('tags', tag)}>
+                            <span key={'popular-tag-'+tag} onClick={e => clickTag(tag, 'resources')}>
                                 # {tag} ({data.aggregations.tags[tag]})
                             </span>
                         )}
@@ -54,7 +63,7 @@ export default function RelatedComponent({addFilter}) {
                 : ''
             }
             <h4>Latest Added Resources</h4>
-            {data.resources.items.map(resource => <StudyResourceSearchListing key={'latest-resource-'+resource.pk} data={resource} addFilter={addFilter}/>)}
+            {data.resources.items.map(resource => <StudyResourceSearchListing key={'latest-resource-'+resource.pk} data={resource} addFilter={resourceFilter}/>)}
         </Fragment>
     )
 }

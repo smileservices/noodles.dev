@@ -15,6 +15,15 @@ main {
     cursor: pointer;
   }
 
+  .tab-headers span.aggregation {
+    margin-left: $padding-unit-sm;
+    padding: $padding-unit-sm/2;
+    font-size: $fontsize-tn;
+    background-color: var(--color-background-1);
+    color: var(--color-background-4);
+    border-radius: $radius-small;
+  }
+
   .tab-headers > *.active {
     color: var(--color-blue);
     border-bottom: $fontsize-sm/4 solid var(--color-blue);

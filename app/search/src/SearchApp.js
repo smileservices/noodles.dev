@@ -87,9 +87,6 @@ function SearchApp() {
     const [technologiesResultsPagination, setTechnologiesResultsPagination] = useState(initialTechnologiesPagination);
     const [technologiesFilters, setTechnologiesFilters] = useState(technologiesFilterInitial);
 
-    let firstRun = true;
-
-
     function setSearch(term) {
         let params = new URLSearchParams(location.search);
         if (term !== '') {
@@ -151,6 +148,8 @@ function SearchApp() {
     }
 
     function getTabFilters(tabname, resultsFilters) {
+        // sets the available filters
+        // used when populating filter component
         switch (tabname) {
             case 'resources':
                 return {
@@ -216,6 +215,8 @@ function SearchApp() {
     }
 
     function factoryAddFilter(tab) {
+        // created the addFilter function used by
+        // clickable tags/technologies
         return (name, value) => {
             const [state, setState, pagination, setPagination, filters, setFilters] = getTabState(tab);
             let newFilters = {...filters};
