@@ -5,7 +5,7 @@ export default function ResourceRating({data, maxRating}) {
     if (data.rating) return (
         <div className="rating">
             <span className="stars"><StarRating maxRating={maxRating} rating={data.rating}/></span>
-            <span itemProp="ratingCount">{data.reviewsCount} Reviews</span>
+            <span itemProp="ratingCount">{data.reviews_count} Reviews</span>
         </div>
     )
     return (

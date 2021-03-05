@@ -49,27 +49,28 @@
 
   main {
     padding: 0.75rem !important;
-  }
 
-  main .search-page {
-    display: flex;
-    flex-direction: column;
-  }
+    #homepage-app {
+      display: flex;
+      flex-direction: column;
+    }
 
-  main .detail-page {
-    display: flex;
-    flex-direction: column;
-  }
+    .search-page {
+      display: flex;
+      flex-direction: column;
+    }
 
-  main .homepage {
-    display: flex;
-    flex-direction: column;
-  }
+    .detail-page {
+      display: flex;
+      flex-direction: column;
+    }
 
-  main .collapsible:not(.show) .collapsible-content {
-    display: none;
+    .collapsible:not(.show) .collapsible-content {
+      display: none;
+    }
   }
 }
+
 
 @media only screen and (max-width: 700px) {
 

@@ -315,12 +315,11 @@ function SearchApp() {
         }
     }
 
-    function getCounter(state) {
-        if (state.waiting) return 'wait..';
-        if (state.results.stats) {
-            return state.results.stats.total;
+    function getAggregationsCounter(state) {
+        if (state.results.stats?.total) {
+            return (<span className="aggregation">{state.results.stats.total}</span>);
         } else {
-            return 'error';
+            return '';
         }
     }
 
@@ -333,11 +332,11 @@ function SearchApp() {
             <section className="tab-navigation search">
                 <div className="tab-headers">
                     <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources
-                        ({getCounter(resources)})</h4>
+                        {getAggregationsCounter(resources)}</h4>
                     <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections
-                        ({getCounter(collections)})</h4>
+                        {getAggregationsCounter(collections)}</h4>
                     <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies
-                        ({getCounter(technologies)})</h4>
+                        {getAggregationsCounter(technologies)}</h4>
                 </div>
                 <SearchBarComponent search={setSearch} state={searchbarState}/>
                 {showCurrentTab(currentTab)}

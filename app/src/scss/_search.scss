@@ -4,6 +4,12 @@
   grid-template-columns: 2.5fr 1fr;
   grid-template-areas:
   "search related";
+
+  .resources, .collections, .technologies {
+    .results {
+      margin-bottom: $padding-unit-big*3;
+    }
+  }
 }
 
 .tab-navigation.search {
@@ -96,6 +102,12 @@
 
   .btn.reset-filters {
     background-color: var(--color-text-red);
+  }
+
+  .filter-buttons {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: $padding-unit;
   }
 }
 

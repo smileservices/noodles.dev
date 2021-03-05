@@ -4,9 +4,9 @@ import shutil
 from faker import Faker
 from .models import Technology
 from users.fake import create_user_single, create_bulk_users
+from users.models import CustomUser
 from category.models import Category
 from core.fixtures.technologies import make_technologies_and_categories
-
 
 f = Faker()
 MEDIA_IMAGES_PATH = os.path.join(os.getcwd(), '..', 'MEDIA', 'technologies')
@@ -84,6 +84,18 @@ def create_technology_edit_suggestions():
             'edit_suggestion_author': choice(users)
         })
         edsug.ecosystem.add(technologies[0])
+
+
+def bulk_votes(n=30):
+    create_bulk_users(n)
+    users = CustomUser.objects.all()
+    techs = Technology.objects.all()
+    for tech in techs:
+        for _ in range(randint(0, n)):
+            try:
+                tech.vote_up(choice(users)) if randint(0, 1) else tech.vote_down(choice(users))
+            except:
+                pass
 
 
 def create_technologies_from_fixtures():

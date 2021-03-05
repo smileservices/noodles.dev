@@ -30,10 +30,10 @@ def homepage_resources(request):
         "tags": {"terms": {"field": "tags", "size": 20}},
         "category": {"terms": {"field": "category"}},
     })
-    rating = [{"rating": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, {"reviews": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}]
+    rating_sort = [{"rating": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, {"reviews": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}]
     data = {
         'all_filters': aggregates_results,
-        'rated_highest': es.sort_by(rating, page_size=5)
+        'rated_highest': es.sort_by(rating_sort, page_size=5)
     }
     return JsonResponse(data)
 
@@ -44,9 +44,11 @@ def homepage_collections(request):
         "technologies": {"terms": {"field": "technologies"}},
         "tags": {"terms": {"field": "tags", "size": 20}},
     })
+    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},]
     data = {
         'all_filters': aggregates_results,
-        'latest': es.latest(page_size=5)
+        'rated_highest': es.sort_by(votes_sort, page_size=4),
+        'latest': es.latest(page_size=3)
     }
     return JsonResponse(data)
 
@@ -57,8 +59,10 @@ def homepage_technologies(request):
         "ecosystem": {"terms": {"field": "ecosystem", "size": 20}},
         "category": {"terms": {"field": "category"}},
     })
+    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},]
     data = {
         'all_filters': aggregates_results,
-        'latest': es.latest(page_size=5)
+        'rated_highest': es.sort_by(votes_sort, page_size=4),
+        'latest': es.latest(page_size=3)
     }
     return JsonResponse(data)

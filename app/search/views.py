@@ -23,10 +23,12 @@ def _search_study_resources(term, filter, page, page_size):
         "tags": {"terms": {"field": "tags", "size": 20}},
         "category": {"terms": {"field": "category"}},
     }
+    rating_sort = [{"rating": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, {"reviews": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}]
     results = es_res.search(
         fields=resources_fields,
         term=term,
         filter=filter,
+        sort=rating_sort,
         aggregates=aggregates,
         page=page,
         page_size=page_size
@@ -42,10 +44,12 @@ def _search_collections(term, filter, page, page_size):
         "tags": {"terms": {"field": "tags", "size": 20}},
     }
     filter.append({"term": {"is_public": True}})
+    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},]
     results = es_res.search(
         fields=collections_fields,
         term=term,
         filter=filter,
+        sort=votes_sort,
         aggregates=aggregates,
         page=page,
         page_size=page_size
@@ -60,10 +64,12 @@ def _search_technologies(term, filter, page, page_size):
         "ecosystem": {"terms": {"field": "ecosystem", "size": 20}},
         "category": {"terms": {"field": "category"}},
     }
+    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},]
     results = es_res.search(
         fields=technologies_fields,
         term=term,
         filter=filter,
+        sort=votes_sort,
         aggregates=aggregates,
         page=page,
         page_size=page_size

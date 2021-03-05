@@ -6,9 +6,10 @@ from random import randint, choice, choices
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from category.fake import clean_categories, create_categories
 from tag.fake import clean_tags, create_tags
-from technology.fake import clean_technologies, create_technologies_from_fixtures, create_technology_edit_suggestions
 from users.models import CustomUser
 from users import fake as fake_users
+
+from technology import fake as fake_tech
 from problem_solution import fake as fake_problem_solution
 from study_collection import fake as fake_collections
 from study_resource import fake as fake_study_resource
@@ -78,7 +79,7 @@ class Command(BaseCommand):
             fake_study_resource.clean()
             fake_problem_solution.clean()
             clean_tags()
-            clean_technologies()
+            fake_tech.clean_technologies()
             clean_categories()
             CustomUser.objects.all().delete()
             self.stdout.write("Removed all p/s/sr/t/techs and users!")
@@ -91,11 +92,11 @@ class Command(BaseCommand):
         fake_users.create_bulk_users(options['users'])
         self.stdout.write(" >> Created users: done")
 
-        create_technologies_from_fixtures()
+        fake_tech.create_technologies_from_fixtures()
         self.stdout.write(" >> Created technologies from fixtures: done")
 
         # create edit suggestions
-        create_technology_edit_suggestions()
+        fake_tech.create_technology_edit_suggestions()
         self.stdout.write(" >> Created technologies edit suggestions: done")
 
         create_tags()
@@ -106,3 +107,7 @@ class Command(BaseCommand):
         fake_study_resource.reviews_bulk()
         fake_collections.collections_bulk()
         self.stdout.write(" >> Created study resources, edit suggestions, reviews, collections: done")
+
+        # vote
+        fake_tech.bulk_votes(30)
+        fake_collections.bulk_votes(30)

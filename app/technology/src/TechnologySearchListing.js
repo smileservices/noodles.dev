@@ -23,8 +23,8 @@ export default function TechnologySearchListing({data, addFilter}) {
             {data.ecosystem.length ?
                 <span className="tags">
                     <span>Ecosystem: </span>
-                    {data.technologies.map(t => <a key={'tech' + t.value} className="tech"
-                                                   onClick={e => addFilter('ecosystem', t)}>{t.name}</a>)}
+                    {data.ecosystem.map(t => <a key={'tech' + t} className="tech"
+                                                   onClick={e => addFilter('ecosystem', t)}>{t}</a>)}
                 </span>
                 : ''}
             <div className="thumbs">

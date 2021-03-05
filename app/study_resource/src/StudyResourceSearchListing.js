@@ -27,14 +27,16 @@ const flagIcon = (
                             <a href={data.url} target="new">{data.name}</a>
                         </h4>
                         <span className="published">{data.created_at} By {data.author.full_name}</span>
-                        <span className="published">{data.items_count} Resources</span>
+                        <div className="tags">
+                            <span onClick={e => addFilter('media', data.media)}>{data.media}</span>
+                        </div>
                     </div>
                     <div className="description">
                         <TruncatedTextComponent fullText={data.summary} charLimit={250}/>
                     </div>
                     <div className="tags">
                         {data.tags.map(t => <span key={'tag' + t} onClick={e => addFilter('tags', t)}
-                                                  className="tag">{t}</span>)}
+                                                  className="tag">#{t}</span>)}
                     </div>
                     <ResourceRating data={data} maxRating={MAX_RATING}/>
                 </div>

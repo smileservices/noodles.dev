@@ -32,11 +32,12 @@ class ElasticSearchInterface:
         connection = Elasticsearch()
         connection.indices.delete('_all')
 
-    def search(self, fields, term, filter, aggregates=None, page=0, page_size=10):
+    def search(self, fields, term, filter, sort={}, aggregates=None, page=0, page_size=10):
         page_offset = page * page_size
         q = {
             "from": page_offset,
             "size": page_size,
+            "sort": sort,
             "query": {
                 "bool": {
                     "filter": filter
@@ -127,6 +128,7 @@ class ElasticSearchInterface:
                         filters[name][item['key']] = item['doc_count']
             extracted = {
                 'items': results,
+                'filters': filters,
                 'stats': {
                     'total': res['hits']['total']['value'],
                     'count': len(results)

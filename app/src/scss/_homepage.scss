@@ -4,4 +4,11 @@
   grid-template-columns: 2.5fr 1fr;
   grid-template-areas:
   "search related";
+
+
+  .resources, .collections, .technologies {
+    .most-voted, .latest {
+      margin-bottom: $padding-unit-big*3;
+    }
+  }
 }

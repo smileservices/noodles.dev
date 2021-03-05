@@ -2,7 +2,7 @@ from technology.serializers import TechnologySerializer
 from category.models import Category
 from technology.models import Technology
 from users.models import CustomUser
-from random import choice
+from random import choice, choices
 
 # use technology serializer to save
 
@@ -59,7 +59,6 @@ def make_technologies_and_categories():
                        'No support for multithreading or multiprocessor capabilities',
         "featured": True,
         "ecosystem": False,
-        "author_id": choice(users).pk
     }
     python = {
         "featured": True,
@@ -80,7 +79,6 @@ def make_technologies_and_categories():
         "cons": 'interpreted language',
         "limitations": 'multithreading: only one thread can access Python internals at a time',
         "ecosystem": False,
-        "author_id": choice(users).pk
     }
     php = {
         "featured": True,
@@ -99,7 +97,6 @@ def make_technologies_and_categories():
         "cons": 'interpreted language, scope limited to web applications',
         "limitations": 'fully synchronous language',
         "ecosystem": False,
-        "author_id": choice(users).pk
     }
     django = {
         "featured": True,
@@ -117,7 +114,6 @@ def make_technologies_and_categories():
         "cons": 'very oppinionated framework',
         "limitations": 'ORM supports only SQL databases',
         "ecosystem": False,
-        "author_id": choice(users).pk
     }
     react = {
         "featured": True,
@@ -138,7 +134,6 @@ def make_technologies_and_categories():
         "cons": 'state sharing between components',
         "limitations": 'complex state management requires external library',
         "ecosystem": False,
-        "author_id": choice(users).pk
     }
 
     TECHNOLOGIES = [javascript, python, php, django, react]
@@ -154,10 +149,11 @@ def make_technologies_and_categories():
             serialized.save()
     created_techs = {}
     for tech in Technology.objects.all():
+        tech.author = choice(users)
         created_techs[tech.name] = tech
         if tech.name in FEATURED_TECHS:
             tech.featured = True
-            tech.save()
+        tech.save()
     for tech in LINKED_TECH:
         created_techs[tech[0]['name']].ecosystem.add(*[created_techs[t['name']] for t in tech[1]])
     return categories, created_techs

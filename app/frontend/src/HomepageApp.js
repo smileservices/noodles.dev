@@ -35,19 +35,16 @@ function HomepageApp() {
     *
     * */
 
+    const SEARCH_URL = '/search/'
+
     const defaultTabState = {
         rated_highest: {},
+        latest: {},
         waiting: false,
         filters: {},
         availableFilters: {},
     };
 
-    const [searchbarState, setSearchbarState] = useState({
-        placeholder: 'Search For Something Specific',
-        q: '',
-    });
-
-    const [aggregations, setAggregations] = useState(false);
     const [currentTab, setCurrentTab] = useState('resources');
 
     const [resources, setResources] = useState(defaultTabState);
@@ -55,24 +52,19 @@ function HomepageApp() {
     const [technologies, setTechnologies] = useState(defaultTabState);
 
     function setSearch(term) {
-        //todo get all tab/filters/searchterm and set location to search page with params
+        // this gets all search params (tab, term, filters) and redirects to the search page
         const [tabState, setTabState] = getTabState(currentTab);
-        console.log('initating search', currentTab, term, tabState.filters);
+        let params = new URLSearchParams();
+        params.set('tab', currentTab);
+        if (term) {
+            params.set('search', term);
+        }
+        codeParamsToUrl(params, tabState.filters);
+        window.location = SEARCH_URL+'?'+params.toString();
     }
 
 
     useEffect(e => {
-
-        //get aggregated results data
-        fetch(url_aggregations, {
-            method: 'GET'
-        }).then(result => {
-            if (result.ok) {
-                result.json().then(data => setAggregations(data));
-            } else {
-                alert('Could not read data: ' + result.statusText)
-            }
-        })
         //get aggregated results data
         fetch(url_aggr_filters_resources, {
             method: 'GET'
@@ -94,6 +86,7 @@ function HomepageApp() {
             if (result.ok) {
                 result.json().then(data => setCollections({
                     rated_highest: data.rated_highest,
+                    latest: data.latest,
                     filters: {},
                     availableFilters: getTabFilters('collections', data.all_filters)
                 }));
@@ -107,6 +100,7 @@ function HomepageApp() {
             if (result.ok) {
                 result.json().then(data => setTechnologies({
                     rated_highest: data.rated_highest,
+                    latest: data.latest,
                     filters: {},
                     availableFilters: getTabFilters('technologies', data.all_filters)
                 }));
@@ -172,17 +166,18 @@ function HomepageApp() {
                             fields={resources.availableFilters}
                             queryFilter={resources.filters}
                             setQueryFilter={filter => setResources({...resources, filters: filter})}
+                            applyButtonAction={e=>setSearch(false)} //because we have to bind data to searchBar 2way
                         />
                         {resources.rated_highest.items?.length > 0 ?
-                            <Fragment>
+                            <div className="most-voted">
                                 <h4>Best Reviewed Resources</h4>
                                 <div className="results">
                                     {resources.rated_highest.items.map(resource =>
-                                        <StudyResourceSearchListing data={resource}
+                                        <StudyResourceSearchListing key={"rated-resource"+resource.pk} data={resource}
                                                                     addFilter={addFilterfactory('resources')}/>
                                     )}
                                 </div>
-                            </Fragment>
+                            </div>
                             : ''}
                     </div>
                 );
@@ -194,11 +189,29 @@ function HomepageApp() {
                             fields={collections.availableFilters}
                             queryFilter={collections.filters}
                             setQueryFilter={filter => setCollections({...collections, filters: filter})}
+                            applyButtonAction={e=>setSearch(false)}//because we have to bind data to searchBar 2way
                         />
                         {collections.rated_highest.items?.length > 0 ?
-                            <Fragment>
-                                <h4>Collections</h4>
-                            </Fragment>
+                            <div className="most-voted">
+                                <h4>Most Up Voted Collections</h4>
+                                <div className="results">
+                                    {collections.rated_highest.items.map(resource =>
+                                        <CollectionSearchListing key={"rated-collection"+resource.pk} data={resource}
+                                                                    addFilter={addFilterfactory('collections')}/>
+                                    )}
+                                </div>
+                            </div>
+                            : ''}
+                            {collections.latest.items?.length > 0 ?
+                            <div className="latest">
+                                <h4>Latest Added Collections</h4>
+                                <div className="results">
+                                    {collections.latest.items.map(resource =>
+                                        <CollectionSearchListing key={"latest-collection"+resource.pk} data={resource}
+                                                                    addFilter={addFilterfactory('collections')}/>
+                                    )}
+                                </div>
+                            </div>
                             : ''}
                     </div>
                 );
@@ -210,21 +223,38 @@ function HomepageApp() {
                             fields={technologies.availableFilters}
                             queryFilter={technologies.filters}
                             setQueryFilter={filter => setTechnologies({...technologies, filters: filter})}
+                            applyButtonAction={e=>setSearch(false)}//because we have to bind data to searchBar 2way
                         />
                         {technologies.rated_highest.items?.length > 0 ?
-                            <Fragment>
-                                <h4>Technologies</h4>
-                            </Fragment>
+                            <div className="most-voted">
+                                <h4>Most Up Voted Technologies</h4>
+                                <div className="results">
+                                    {technologies.rated_highest.items.map(resource =>
+                                        <TechnologySearchListing key={"rated-tech"+resource.pk} data={resource}
+                                                                    addFilter={addFilterfactory('technologies')}/>
+                                    )}
+                                </div>
+                            </div>
+                            : ''}
+                            {technologies.latest.items?.length > 0 ?
+                            <div className="latest">
+                                <h4>Latest Added Technologies</h4>
+                                <div className="results">
+                                    {technologies.latest.items.map(resource =>
+                                        <TechnologySearchListing key={"latest-tech"+resource.pk} data={resource}
+                                                                    addFilter={addFilterfactory('technologies')}/>
+                                    )}
+                                </div>
+                            </div>
                             : ''}
                     </div>
                 );
         }
     }
 
-    function getAggregationsCounter(name) {
-        if (!aggregations) return '';
-        if (aggregations[name]) {
-            return (<span className="aggregation">{aggregations[name]}</span>);
+    function getAggregationsCounter(state) {
+        if (state.rated_highest.stats?.total) {
+            return (<span className="aggregation">{state.rated_highest.stats.total}</span>);
         } else {
             return '';
         }
@@ -236,17 +266,17 @@ function HomepageApp() {
 
     return (
         <Fragment>
-            <section className="tab-navigation search">
+            <section className="tab-navigation" id="search">
                 <div className="tab-headers">
                     <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources
-                        {getAggregationsCounter('study_resources')}</h4>
+                        {getAggregationsCounter(resources)}</h4>
                     <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections
-                        {getAggregationsCounter('collections')}</h4>
+                        {getAggregationsCounter(collections)}</h4>
                     <h4 onClick={e => changeTab('technologies')}
                         className={headerClass('technologies')}>Technologies
-                        {getAggregationsCounter('technologies')}</h4>
+                        {getAggregationsCounter(technologies)}</h4>
                 </div>
-                <SearchBarComponent search={setSearch} state={searchbarState}/>
+                <SearchBarComponent search={setSearch} state={{placeholder: 'Search For Something Specific',q: ''}}/>
                 {showCurrentTab(currentTab)}
             </section>
             <section id="related" className="column-container">
