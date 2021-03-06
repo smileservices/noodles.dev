@@ -24,7 +24,7 @@ export default function CollectionSearchListing({data, addFilter}) {
                 <h4 className="title" itemProp="name">
                     <a itemProp="name" href={data.url}>{data.name}</a>
                 </h4>
-                <span className="published">{data.created_at} By {data.author.full_name}</span>
+                <span className="published">{data.created_at} By {data.author.username}</span>
                 <span className="published">{data.items_count} Resources</span>
             </div>
 

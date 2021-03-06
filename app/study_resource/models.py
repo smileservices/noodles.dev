@@ -273,7 +273,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
 
             "author": {
                 "pk": self.author.pk,
-                "full_name": self.author.get_full_name()
+                "username": self.author.username
             },
             "price": self.price_label,
             "media": self.media_label,

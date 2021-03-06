@@ -118,7 +118,7 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
             "description": self.description,
             "author": {
                 "pk": self.author.pk,
-                "full_name": self.author.get_full_name()
+                "username": self.author.username
             },
             "tags": [t.name for t in self.tags.all()],
             "technologies": [t.name for t in self.technologies.all()],

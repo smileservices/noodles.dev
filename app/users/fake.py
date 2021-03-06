@@ -15,6 +15,7 @@ def create_user(locale=False):
     new_user = CustomUser(
         first_name=fname,
         last_name=lname,
+        username=fake.user_name(),
         email=email
     )
     password = '123'

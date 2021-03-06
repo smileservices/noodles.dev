@@ -1,6 +1,7 @@
 from django.db import models
 from .manager import CustomUserManager
 from django.contrib.auth.models import AbstractUser
+from django.urls import reverse_lazy
 
 class CustomUser(AbstractUser):
     """
@@ -11,12 +12,12 @@ class CustomUser(AbstractUser):
     """
 
     id = models
-    username = None
     email = models.EmailField('email address', unique=True)
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['username',]
     objects = CustomUserManager()
+    about = models.TextField(null=True, blank=True)
 
     # keeps track of other users feedback on user
     positive_score = models.IntegerField(default=0)
@@ -28,7 +29,7 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         """A string representation of the model."""
-        return self.get_full_name()
+        return self.username
 
     def community_score(self):
         return self.positive_score - self.negative_score
@@ -62,3 +63,7 @@ class CustomUser(AbstractUser):
     def cancel_thumb_down(self):
         self.negative_thumbs -= 1
         self.save()
+
+
+    def profile_url(self):
+        return reverse_lazy('user-profile')

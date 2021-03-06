@@ -26,7 +26,7 @@ const flagIcon = (
                         <h4 className="title" itemProp="name">
                             <a href={data.url} target="new">{data.name}</a>
                         </h4>
-                        <span className="published">{data.created_at} By {data.author.full_name}</span>
+                        <span className="published">{data.publication_date} By {data.published_by}</span>
                         <div className="tags">
                             <span onClick={e => addFilter('media', data.media)}>{data.media}</span>
                         </div>
