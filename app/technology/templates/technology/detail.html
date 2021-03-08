@@ -32,3 +32,5 @@
         {% endfor %}
     </div>
 {% endif %}
+
+<span class="published">Added By <a href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>

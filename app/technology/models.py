@@ -143,6 +143,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
                 "featured": {"type": "boolean"},
                 "description": {"type": "text", "copy_to": "suggest"},
                 "owner": {"type": "text"},
+                "author": {"type": "nested"},
                 "category": {"type": "keyword"},
                 "ecosystem": {"type": "keyword"},
                 "thumbs_up": {"type": "short"},
@@ -165,6 +166,10 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
             "featured": self.featured,
             "description": self.description,
             "owner": self.owner,
+            "author": {
+                "pk": self.author.pk,
+                "username": self.author.username
+            } if self.author else {},
             "category": self.category.name,
             "ecosystem": [t.name for t in self.ecosystem.all()],
             "thumbs_up": self.thumbs_up,

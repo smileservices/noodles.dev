@@ -51,6 +51,12 @@ module.exports = {
         '/static/technology/edit': './app/technology/src/EditApp.js',
         '/static/study_resource/edit': './app/study_resource/src/EditApp.js',
 
+        //related section
+        '/static/related-app': './app/frontend/src/RelatedApp.js',
+
+        //users
+        '/static/profile-app': './app/users/src/ProfileApp.js',
+
         // admin dashboard
         // '/static/dashboard/admin/dashboard': './app/dashboard/src/main-page/App.js'
     },

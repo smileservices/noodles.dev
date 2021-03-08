@@ -63,7 +63,7 @@ def make_technologies_and_categories():
     python = {
         "featured": True,
         "name": 'Python',
-        "image_url": 'https://www.freepngimg.com/thumb/android/72537-icons-python-programming-computer-social-tutorial.png',
+        "image_url": 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png',
         "category": categories['programming_language'].pk,
         "description": "Python is an interpreted, high-level and general-purpose programming language. "
                        "Python's design philosophy emphasizes code readability with its notable use of significant "

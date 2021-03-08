@@ -26,6 +26,7 @@ def detail(request, id, slug):
     resource = queryset.get(pk=id)
     study_resources = resource.get_study_resources()
     related = queryset.filter(
+        Q(is_public=True),
         Q(tags__in=resource.tags.all()),
         Q(technologies__in=resource.technologies.all()),
         ~Q(id=resource.id)

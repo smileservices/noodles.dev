@@ -1,0 +1,17 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block content %}
+    <script>
+        const IS_OWNER = {{ is_owner }};
+        const USER = {{ profile|safe }};
+    </script>
+    <div class="detail-page">
+        <section id="profile-app" class="column-container"></section>
+        <section id="related-app" class="column-container"></section>
+    </div>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'related-app.js' %}"></script>
+    <script src="{% static 'profile-app.js' %}"></script>
+{% endblock %}

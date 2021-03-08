@@ -1,0 +1,7 @@
+#profile-app {
+  .search {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-unit-big*2;
+  }
+}

@@ -174,6 +174,10 @@ function SearchApp() {
     }
 
     useEffect(e => {
+        searchInTab(searchbarState.q, currentTab);
+    }, [resourcesResultsPagination, collectionsResultsPagination, technologiesResultsPagination])
+
+    useEffect(e => {
         const [tab, setTabstate, pagination, setPagination, filters] = getTabState(currentTab);
         updateUrl('/search/?', {
             search: searchbarState.q,
@@ -183,14 +187,6 @@ function SearchApp() {
         searchInTab(searchbarState.q, currentTab)
     }, [resourcesFilters, collectionsFilters, technologiesFilters])
 
-    // useEffect(e => {
-    //     searchInTab(searchbarState.q, 'collections')
-    // }, [collectionsFilters,])
-    //
-    // useEffect(e => {
-    //     searchInTab(searchbarState.q, 'technologies')
-    // }, [technologiesFilters,])
-
     useEffect(e => {
         searchInTab(searchbarState.q, currentTab);
         getOtherTabs(currentTab).map(
@@ -198,9 +194,6 @@ function SearchApp() {
         );
     }, []);
 
-    useEffect(e => {
-        searchInTab(searchbarState.q, currentTab);
-    }, [resourcesResultsPagination, collectionsResultsPagination, technologiesResultsPagination])
 
     function changeTab(tabname) {
         setCurrentTab(tabname);
@@ -235,7 +228,10 @@ function SearchApp() {
                             key="resources-filters"
                             fields={resources.availableFilters}
                             queryFilter={resourcesFilters}
-                            setQueryFilter={filter => {setResourcesResultsPagination(defaultPagination); setResourcesFilters(filter)}}
+                            setQueryFilter={filter => {
+                                setResourcesResultsPagination(defaultPagination);
+                                setResourcesFilters(filter)
+                            }}
                         />
                         {resources.results.items?.length > 0 ?
                             <Fragment>
@@ -263,7 +259,10 @@ function SearchApp() {
                             key="collections-filters"
                             fields={collections.availableFilters}
                             queryFilter={collectionsFilters}
-                            setQueryFilter={filter => {setCollectionsResultsPagination(defaultPagination); setCollectionsFilters(filter)}}
+                            setQueryFilter={filter => {
+                                setCollectionsResultsPagination(defaultPagination);
+                                setCollectionsFilters(filter)
+                            }}
                         />
                         {collections.results.items?.length > 0 ?
                             <Fragment>
@@ -291,7 +290,10 @@ function SearchApp() {
                             key="technologies-filters"
                             fields={technologies.availableFilters}
                             queryFilter={technologiesFilters}
-                            setQueryFilter={filter => {setTechnologiesResultsPagination(defaultPagination); setTechnologiesFilters(filter)}}
+                            setQueryFilter={filter => {
+                                setTechnologiesResultsPagination(defaultPagination);
+                                setTechnologiesFilters(filter)
+                            }}
                         />
                         {technologies.results.items?.length > 0 ?
                             <Fragment>
@@ -342,7 +344,7 @@ function SearchApp() {
                 {showCurrentTab(currentTab)}
             </section>
             <section id="related" className="column-container">
-                <RelatedComponent addFilter={factoryAddFilter('resources')} />
+                <RelatedComponent addFilter={factoryAddFilter('resources')}/>
             </section>
         </Fragment>
     );

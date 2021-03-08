@@ -6,4 +6,7 @@ urlpatterns = [
     path('my-profile/edit', views.EditProfile.as_view(), name='my-profile-edit'),
     path('my-resources', views.my_resources, name='my-resources'),
     path('my-reviews', views.my_reviews, name='my-reviews'),
+
+    path('profile/<str:username>', views.user_profile, name='user-profile'),
+    path('api/<str:user_pk>/<str:index>', views.user_content, name='user-profile-content')
 ]

@@ -55,4 +55,4 @@
 
 
 <a href="{{ result.url }}" class="btn resource-url">Go To Resource</a>
-<span class="published">Added here on {{ result.created_at }} By {{ result.author }}</span>
+<span class="published">Added here on {{ result.created_at }} By <a href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
