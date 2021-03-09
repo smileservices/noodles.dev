@@ -41,11 +41,11 @@ function ToolbarApp() {
                 ?
                 (<Fragment>
                     <a onClick={e => setConfirmDelete(true)}>delete</a>
-                    <a href={RESOURCE_EDIT_URL}>edit</a>
+                    <a href={RESOURCE_EDIT_URL}>suggest edit</a>
                 </Fragment>)
                 :
                 (<Fragment>
-                    <a href={RESOURCE_EDIT_URL}>edit</a>
+                    <a href={RESOURCE_EDIT_URL}>suggest edit</a>
                 </Fragment>)
             }
             <a className="icon-bookmark" onClick={e => setShowModal(true)}/>

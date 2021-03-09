@@ -14,6 +14,12 @@ main .detail-page.resource {
       }
     }
 
+    #detail-toolbar {
+      display: flex;
+      align-items: center;
+      gap: $padding-unit-big;
+    }
+
     header {
       margin: $padding-unit-big 0;
 

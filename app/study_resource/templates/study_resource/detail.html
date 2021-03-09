@@ -25,9 +25,9 @@
             <a href="{% url 'search_page' %}?tab=resources&media={{ result.media_label }}"
                itemProp="learningResourceType">{{ result.media_label }}</a>
         </div>
-        <div id="toolbar">
+        <div id="detail-toolbar">
             <a href="{% url 'study-resource-edit' result.pk %}">suggest edit</a>
-            <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" class="icon-bookmark"></a>
+            <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" class="icon-bookmark" id=""></a>
         </div>
     </div>
     <h1 class="title" itemProp="name">{{ result.name }}</h1>
