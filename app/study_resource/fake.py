@@ -15,7 +15,7 @@ from category.models import Category
 from versatileimagefield.files import VersatileImageFieldFile
 f = Faker()
 FAKE_IMAGES_PATH = os.path.join(os.getcwd(), 'study_resource', 'fake_images')
-MEDIA_IMAGES_PATH = os.path.join(os.getcwd(), '..', 'MEDIA', 'tutorials')
+MEDIA_IMAGES_PATH = os.path.join(settings.MEDIA_ROOT, 'tutorials')
 
 
 def clean():
