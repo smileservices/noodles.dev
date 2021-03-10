@@ -24,7 +24,12 @@ class ElasticSearchInterface:
         :param idx_prefix: index name
         :param settings: settings for building the index (mapping, analyze)
         '''
-        self.connection = Elasticsearch()
+        self.connection = Elasticsearch(
+            settings.ELASTICSEARCH_HOST,
+            http_auth=settings.ELASTICSEARCH_AUTH,
+            schema=settings.ELASTICSEARCH_AUTH,
+            port=settings.ELASTICSEARCH_PORT
+        )
         self.indexes = [get_index_name(i) for i in indexes]
 
     @staticmethod
