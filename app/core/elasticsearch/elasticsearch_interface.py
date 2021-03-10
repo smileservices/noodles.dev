@@ -34,8 +34,13 @@ class ElasticSearchInterface:
 
     @staticmethod
     def clean():
-        connection = Elasticsearch()
-        connection.indices.delete('_all')
+        connection = Elasticsearch(
+            settings.ELASTICSEARCH_HOST,
+            http_auth=settings.ELASTICSEARCH_AUTH,
+            schema=settings.ELASTICSEARCH_AUTH,
+            port=settings.ELASTICSEARCH_PORT
+        )
+        connection.indices.delete([get_index_name(i) for i in ('study_resources', 'collections', 'technologies')], ignore_unavailable=True)
 
     def search(self, fields, term, filter, sort={}, aggregates=None, page=0, page_size=10):
         page_offset = page * page_size
