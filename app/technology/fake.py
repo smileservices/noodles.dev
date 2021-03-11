@@ -82,7 +82,8 @@ def create_technology_edit_suggestions():
             'cons': tech.cons,
             'category': tech.category,
             'limitations': tech.limitations,
-            'edit_suggestion_author': choice(users)
+            'edit_suggestion_author': choice(users),
+            'image_file': tech.image_file,
         })
         edsug.ecosystem.add(technologies[0])
 

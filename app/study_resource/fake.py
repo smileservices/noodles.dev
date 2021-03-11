@@ -45,8 +45,8 @@ def new_study_resource(user):
         author=user,
         category=choice(categories),
     )
-    sr.save()
     sr.image_file.save(image_name, content=File(image_file))
+    sr.save()
     return sr
 
 
@@ -66,6 +66,7 @@ def study_resource_edit_suggestions(resource: models.StudyResource, author=None)
         'publication_date': resource.publication_date,
         'published_by': resource.published_by,
         'url': resource.url,
+        'image_file': resource.image_file,
         'summary': resource.summary,
         'price': resource.price,
         'media': resource.media,
