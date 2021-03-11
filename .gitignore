@@ -5,6 +5,7 @@
 */migrations/*
 static_col/*
 MEDIA/*
+STATIC_COL/*
 #ext/
 *.log
 .env
