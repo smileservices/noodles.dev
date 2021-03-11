@@ -36,7 +36,7 @@ def warm_study_resource_primary_image(sender, instance, **kwargs):
     """Ensures Technologies logos are created post-save"""
     sr_images_warmer = VersatileImageFieldWarmer(
         instance_or_queryset=instance,
-        rendition_key_set='technology_logo',
+        rendition_key_set='resource_image',
         image_attr='image_file'
     )
     num_created, failed_to_create = sr_images_warmer.warm()
