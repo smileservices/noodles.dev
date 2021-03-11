@@ -2,6 +2,7 @@ from random import choice, randint, choices
 import os
 import shutil
 from faker import Faker
+from django.conf import settings
 from .models import Technology
 from users.fake import create_user_single, create_bulk_users
 from users.models import CustomUser
@@ -9,7 +10,7 @@ from category.models import Category
 from core.fixtures.technologies import make_technologies_and_categories
 
 f = Faker()
-MEDIA_IMAGES_PATH = os.path.join(os.getcwd(), '..', 'MEDIA', 'technologies')
+MEDIA_IMAGES_PATH = os.path.join(settings.MEDIA_ROOT, 'technologies')
 
 
 def clean_technologies():
