@@ -2,9 +2,7 @@ import json
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
-from study_resource.models import StudyResource
-from study_resource.serializers import StudyResourceSerializer
-
+from elasticsearch import exceptions as es_ex
 
 def autocomplete(request, prefix):
     es = ElasticSearchInterface(['collections', 'study_resources', 'technologies'])
@@ -170,13 +168,18 @@ def search_page(request):
 
 
 def related_data(request):
-    es = ElasticSearchInterface(['study_resources'])
-    aggregates_results = es.aggregates({
-        "technologies": {"terms": {"field": "technologies.name", "size": 10}},
-        "tags": {"terms": {"field": "tags", "size": 10}},
-    })
-    data = {
-        'aggregations': aggregates_results,
-        'resources': es.latest(page_size=5)
-    }
+    try:
+        es = ElasticSearchInterface(['study_resources'])
+        aggregates_results = es.aggregates({
+            "technologies": {"terms": {"field": "technologies.name", "size": 10}},
+            "tags": {"terms": {"field": "tags", "size": 10}},
+        })
+        data = {
+            'aggregations': aggregates_results,
+            'resources': es.latest(page_size=5)
+        }
+    except es_ex.NotFoundError as e:
+        return JsonResponse(data={
+            'error': 'ElasticSearch Error: Index study_resources not found'
+        }, status=500)
     return JsonResponse(data)
