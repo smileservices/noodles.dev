@@ -6,7 +6,7 @@
 static_col/*
 MEDIA/*
 STATIC_COL/*
-#ext/
+ext/
 *.log
 .env
 venv/

@@ -41,7 +41,7 @@ LOGGING = {
 GOOGLE_APPLICATION_CREDENTIALS = env.str('GOOGLE_APPLICATION_CREDENTIALS')
 AUTOTRANSLATE_TRANSLATOR_SERVICE = 'autotranslate.services.GoogleAPITranslatorService'
 VERSATILEIMAGEFIELD_SETTINGS = {
-    'create_images_on_demand': True,
+    'create_images_on_demand': False,
     'jpeg_resize_quality': 80,
 }
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

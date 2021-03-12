@@ -60,6 +60,18 @@ SEO first strategy:
 
 ========================== 
 
+## Management Scripts:
+python manage.py clean_migrations - deletes all migrations files; 
+python manage.py clean_db - recreates the DB
+python manage.py populate_initial_fixtures - populates the DB with test data
+
+## Deployment Steps
+- add ssh creds to user (cat /home/noodles/add_ssh)
+- git pull origin {branch}
+- migrate
+- manage.py collectstatic
+- restart systemd task
+
 ## Done:
 - users (register, rating, dashboard)
 - problems
