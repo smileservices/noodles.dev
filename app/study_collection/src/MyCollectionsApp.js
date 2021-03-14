@@ -9,7 +9,7 @@ import EditableComponent from "../../src/components/EditableComponent";
 import CollectionForm from "./CollectionForm";
 import CollectionListing from "./CollectionListing";
 
-function UserCollectionsApp() {
+function MyCollectionsApp() {
 
     /*
     * Displays a modal for managing the resource in relation to the user collections
@@ -87,4 +87,4 @@ function UserCollectionsApp() {
     );
 }
 
-ReactDOM.render(<UserCollectionsApp/>, document.getElementById('collections-app'));
+ReactDOM.render(<MyCollectionsApp/>, document.getElementById('collections-app'));

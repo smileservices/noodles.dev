@@ -1,8 +1,7 @@
-{% extends "frontend/base.html" %}
+{% extends 'users/_my_profile_base.html' %}
 {% load static %}
-{% load star_rating %}
 
-{% block content %}
+{% block sub_content %}
     <script>
         const USER_ID = {{ user.id }};
         const RESOURCE_URL = "/tutorials/"
@@ -16,14 +15,11 @@
         const MAX_RATING = 5;
     </script>
     <div class="my-collections-page column-container">
-        <section class="header">
-            <h1>My Collections</h1>
-        </section>
         <section id="collections-app" class="column-container"></section>
     </div>
 {% endblock %}
 
 {% block extra_js %}
-
-    <script src="{% static 'user-study-collections.js' %}"></script>
+    <script src="{% static 'my-study-collections.js' %}"></script>
+    <script src="{% static 'related-app.js' %}"></script>
 {% endblock %}

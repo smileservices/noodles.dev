@@ -1,24 +1,23 @@
-{% extends 'frontend/base.html' %}
+{% extends 'users/_my_profile_base.html' %}
 {% load crispy_forms_tags %}
 
 
-{% block content %}
+{% block sub_content %}
     <div class="my-reviews-page">
-        <section class="header">
-            <h1>My Reviews</h1>
-        </section>
         <section class="results-container column-container">
             {% if not results %}
-                <h3>You didn't review anything :(</h3>
+                <div class="no-results">
+                    <h2>You haven't reviewed anything</h2>
+                    <p>To review a resource just go to their detail page</p>
+                    <p>And scroll down to the write review form</p>
+                </div>
             {% else %}
                 <h3>You submitted {{ results.paginator.count }} reviews:</h3>
-                <div class="tile-container">
-                    {% for review in results %}
-                        <div class="resource-review-container card">
-                            {% include 'users/review_listing.html' %}
-                        </div>
-                    {% endfor %}
-                </div>
+                {% for review in results %}
+                    <div class="resource-review-container card">
+                        {% include 'users/review_listing.html' %}
+                    </div>
+                {% endfor %}
                 {% if results.has_other_pages %}
                     {% include 'static_pagination.html' %}
                 {% endif %}

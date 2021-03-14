@@ -1,35 +1,21 @@
-{% extends 'frontend/base.html' %}
+{% extends 'users/_my_profile_base.html' %}
 {% load crispy_forms_tags %}
 
 
-{% block content %}
-    <div class="search-page">
-        <section class="header">
-            <h1>Resources Added By Me</h1>
-            <section class="search-bar">
-                <form action="{% url 'my-resources' %}" method="GET">
-                    <input class="form-control" type="text" name="contains"
-                           placeholder="Search for a tutorial or course..."
-                           required value="{% if filter.data.contains %}{{ filter.data.contains }}{% endif %}"/>
-                    <button class="btn submit"><span class="icon-search"> </span> Search</button>
-                </form>
-            </section>
-        </section>
-        {% include 'frontend/filter.html' with filter_url='my-resources' %}
-        <section class="results-container column-container">
-            {% if not results %}
-                <h3>Did not find any results :(</h3>
-            {% else %}
-                <h3>Found {{ results.paginator.count }} results matching your query:</h3>
-                <div class="tile-container">
-                    {% for result in results %}
-                        {% include 'study_resource/result.html' %}
-                    {% endfor %}
-                </div>
-                {% if results.has_other_pages %}
-                    {% include 'static_pagination.html' %}
-                {% endif %}
+{% block sub_content %}
+    <section class="column-container">
+        {% if not results %}
+            <div class="no-results">
+                <h2>No Ressouces Yet</h2>
+                <p>Add a new resource by clicking <a href="{% url 'create-resource' %}">here</a></p>
+            </div>
+        {% else %}
+            {% for result in results %}
+                {% include 'study_resource/result.html' %}
+            {% endfor %}
+            {% if results.has_other_pages %}
+                {% include 'static_pagination.html' %}
             {% endif %}
-        </section>
-    </div>
+        {% endif %}
+    </section>
 {% endblock %}

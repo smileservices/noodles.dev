@@ -51,23 +51,6 @@ def detail(request, id, slug):
     return render(request, 'study_collection/detail_page.seo.html', data)
 
 
-@login_required
-def my_collections(request):
-    data = {
-        'urls': {
-            'study_resource_options': reverse_lazy('study-resource-viewset-options'),
-            'tag_options_api': reverse_lazy('tags-options-list'),
-            'tech_options_api': reverse_lazy('techs-options-list'),
-
-            'collections_api': reverse_lazy('collection-viewset-list'),
-            'user_collections_list': reverse_lazy('collection-viewset-owned'),
-            'update_collection_items': reverse_lazy('collection-viewset-update-collection-items'),
-
-        }
-    }
-    return render(request, 'study_collection/my_collections.html', data)
-
-
 class CollectionViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
     serializer_class = serializers.CollectionSerializer
     queryset = serializers.CollectionSerializer.queryset.order_by('-created_at')

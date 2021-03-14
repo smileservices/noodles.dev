@@ -3,7 +3,7 @@
     {% with res=review.study_resource %}
         <p class="rating">{% star_rating res.rating %}</p>
         <p class="title">
-            <a href="{% url 'detail' res.id %}">{{ res.name }}</a>
+            <a href="{% url 'study-resource-detail' res.id res.slug %}">{{ res.name }}</a>
         </p>
 
         <div class="group-muted">

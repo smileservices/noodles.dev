@@ -41,12 +41,20 @@ def user_profile(request, username):
 @login_required
 def my_profile(request):
     data = {
+        'active': 'profile',
         'statistics': {
             'average_given_rating': Review.objects.filter(author=request.user).only('rating__avg').aggregate(
                 Avg('rating'))
         }
     }
     return render(request, 'users/my_profile.html', data)
+
+@login_required
+def my_settings(request):
+    data = {
+        'active': 'settings'
+    }
+    return render(request, 'users/my_settings.html', data)
 
 
 class EditProfile(FormView, LoginRequiredMixin):
@@ -84,6 +92,7 @@ def my_resources(request):
     except EmptyPage:
         results = paginator.page(paginator.num_pages)
     data = {
+        'active': 'resources',
         'filter': filtered,
         'paginator': paginator,
         'results': results,
@@ -102,10 +111,29 @@ def my_reviews(request):
     except EmptyPage:
         results = paginator.page(paginator.num_pages)
     data = {
+        'active': 'reviews',
         'paginator': paginator,
         'results': results,
     }
     return render(request, 'users/my_reviews.html', data)
+
+
+@login_required
+def my_collections(request):
+    data = {
+        'active': 'collections',
+        'urls': {
+            'study_resource_options': reverse_lazy('study-resource-viewset-options'),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'tech_options_api': reverse_lazy('techs-options-list'),
+
+            'collections_api': reverse_lazy('collection-viewset-list'),
+            'user_collections_list': reverse_lazy('collection-viewset-owned'),
+            'update_collection_items': reverse_lazy('collection-viewset-update-collection-items'),
+
+        }
+    }
+    return render(request, 'users/my_collections.html', data)
 
 
 def _search_study_resources(term, filter, page, page_size):
