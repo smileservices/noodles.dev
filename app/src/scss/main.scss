@@ -38,11 +38,10 @@ body {
 @import "node_modules/bootstrap/scss/alert";
 @import "app/static/slim-select/src/slim-select/slimselect.scss";
 
-@import "old/reset";
-@import "old/animations";
-@import "old/modal";
-@import "old/footer";
-@import "old/search_window";
+@import "reset";
+@import "animations";
+@import "modal";
+@import "footer";
 @import "forms";
 
 @import "dropdowns";
@@ -60,6 +59,7 @@ body {
 @import "detail_page";
 @import "detail_page_resource";
 @import "detail_page_technology";
+@import "detail_page_my_profile";
 @import "review";
 @import "search";
 @import "homepage";

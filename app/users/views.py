@@ -18,6 +18,8 @@ from django.http.response import JsonResponse
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from users.models import CustomUser
 from users.serializers import UserSerializerMinimal
+from technology.models import Technology
+
 
 class UsersViewset(ModelViewSet):
     serializer_class = UserSerializer
@@ -48,6 +50,7 @@ def my_profile(request):
         }
     }
     return render(request, 'users/my_profile.html', data)
+
 
 @login_required
 def my_settings(request):
@@ -136,6 +139,24 @@ def my_collections(request):
     return render(request, 'users/my_collections.html', data)
 
 
+@login_required
+def my_technologies(request):
+    queryset = Technology.objects.filter(author=request.user)
+    paginator = Paginator(queryset, 10)
+    try:
+        results = paginator.page(request.GET.get('page', 1))
+    except PageNotAnInteger:
+        results = paginator.page(1)
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
+    data = {
+        'active': 'technologies',
+        'paginator': paginator,
+        'results': results,
+    }
+    return render(request, 'users/my_technologies.html', data)
+
+
 def _search_study_resources(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['study_resources'])
     resources_fields = ['name', 'summary', 'category', 'technologies', 'tags']
@@ -192,16 +213,16 @@ def user_content(request, user_pk, index):
     offset_results = int(request.GET.get('offset', 0))
     page = 0 if not offset_results else offset_results / page_size
     filter = [{"nested": {"path": "author",
-                         "query": {
-                             "bool": {
-                                 "must": {
-                                     "match": {
-                                         "author.pk": user_pk
-                                     }
-                                 }
-                             }
-                         }
-                         }},]
+                          "query": {
+                              "bool": {
+                                  "must": {
+                                      "match": {
+                                          "author.pk": user_pk
+                                      }
+                                  }
+                              }
+                          }
+                          }}, ]
     if index == 'resources':
         results = _search_study_resources(term, filter, page, page_size)
     elif index == 'collections':

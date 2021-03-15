@@ -27,6 +27,7 @@ main .detail-page {
 
     header {
       margin: $padding-unit-big 0;
+      margin-bottom: $padding-unit-big*2;
 
       > * {
         display: inline-block;

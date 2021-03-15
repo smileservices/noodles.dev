@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block content %}
-    <div class="detail-page">
-        <section class="profile">
-            <div class="header">
+    <div class="detail-page profile">
+        <section id="detail">
+            <header>
                 <h1>My Profile</h1>
-            </div>
-            <section class="tab-navigation profile">
+            </header>
+            <section class="tab-navigation">
                 <div class="tab-headers">
                     <h4 {% if active == 'profile' %}class="active"{% endif %}><a href="{% url 'my-profile' %}">Profile</a></h4>
                     <h4 {% if active == 'settings' %}class="active"{% endif %}><a href="{% url 'my-settings' %}">Settings</a></h4>

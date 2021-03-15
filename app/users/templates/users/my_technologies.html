@@ -1,17 +1,16 @@
 {% extends 'users/_my_profile_base.html' %}
 {% load crispy_forms_tags %}
 
-
 {% block sub_content %}
     <section class="column-container">
         {% if not results %}
             <div class="no-results">
-                <h2>No Resources Yet</h2>
-                <p>Add a new resource by clicking <a href="{% url 'create-resource' %}">here</a></p>
+                <h2>No Technologies Yet</h2>
+                <p>Add a new technology by clicking <a href="{% url 'tech-create' %}">here</a></p>
             </div>
         {% else %}
             {% for result in results %}
-                {% include 'study_resource/result.html' %}
+                {% include 'technology/result.html' %}
             {% endfor %}
             {% if results.has_other_pages %}
                 {% include 'static_pagination.html' %}
