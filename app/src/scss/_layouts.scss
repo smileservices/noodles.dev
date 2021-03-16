@@ -13,8 +13,9 @@ main {
     margin-right: $padding-unit*2;
     padding-bottom: $padding-unit-md;
     cursor: pointer;
+    color: var(--color-background-5);
     a, a:visited {
-      color: var(--color-blue);
+      color: var(--color-background-5);
     }
   }
 
@@ -23,13 +24,16 @@ main {
     padding: $padding-unit-sm/2;
     font-size: $fontsize-tn;
     background-color: var(--color-background-1);
-    color: var(--color-background-4);
+    color: var(--color-text-white);
     border-radius: $radius-small;
   }
 
   .tab-headers > *.active {
     color: var(--color-blue);
     border-bottom: $fontsize-sm/4 solid var(--color-blue);
+    a, a:visited {
+      color: var(--color-blue);
+    }
   }
 
   .tab-content {

@@ -1,6 +1,6 @@
 .form-container {
   position: relative;
-  background-color: var(--color-background-3);
+  background-color: var(--color-background-1);
   padding: $padding-unit;
   border-radius: $border-radius-lg;
 
@@ -10,10 +10,10 @@
 }
 
 form {
-  margin: 1rem 0;
+  margin: $padding-unit-big;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: $padding-unit-md*2;
 
   > * {
     margin: 0;
@@ -39,8 +39,17 @@ form {
     flex-direction: column;
     gap: 0.3rem;
 
+    label {
+      font-size: $fontsize-md;
+      margin-bottom: $padding-unit-md;
+    }
+
     input {
       flex-grow: 1;
+    }
+
+    input, textarea {
+      color: var(--color-text-grey);
     }
   }
 
@@ -143,13 +152,21 @@ textarea {
   }
 
   .form-control__control {
-    background-color: var(--color-background-3);
+    background-color: var(--color-background);
     border: none;
     border-radius: $radius-medium;
   }
 
-  .form-control__multi-value {
+  .form-control__value-container, .form-control__single-value {
+    color: var(--color-text-white);
+  }
+
+  .form-control__value-container, .form-control__value-container--is-multi {
     background-color: var(--color-background);
+  }
+
+  .form-control__multi-value {
+    background-color: var(--color-background-3);
     border-radius: $radius-medium;
   }
 
@@ -171,7 +188,7 @@ textarea {
   }
 
   .form-control__multi-value__remove {
-    color: var(--color-background-3);
+    color: var(--color-text-grey);
     cursor: pointer;
   }
 
@@ -187,12 +204,29 @@ textarea {
       color: var(--color-background-1);
     }
   }
+}
 
-  .form-control__value-container {
-    color: var(--color-text-white);
+.study-resource-technologies {
+  margin-bottom: $padding-unit;
+  .header {
+    margin-bottom: $padding-unit-md;
   }
+  .technology-version {
+    display: grid;
+    gap: $padding-unit-sm;
+    grid-template-columns: minmax($fontsize-md*6, $fontsize-md*20) minmax($fontsize-md*4, $fontsize-md*7) $fontsize-md;
+    align-items: center;
 
-  .form-control__single-value {
-    color: var(--color-text-white);
+     a.remove, a.remove:visited {
+      color: var(--color-background-3);
+    }
+
+    a.remove:hover {
+      color: var(--color-text-red);
+    }
+  }
+  .buttons-container {
+    display: inline-flex;
+    margin-top: $padding-unit-md*2;
   }
 }

@@ -60,18 +60,13 @@ export function FormElement({data, children, callback, alert, waiting}) {
 }
 
 export const Input = ({name, label, inputProps, smallText, error}) => {
+    const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
+    const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
     return (
         <div className="form-group">
-            {label
-                ? (<label htmlFor={name}>{label}</label>)
-                : ''
-            }
+            {labelOutput}
             <input {...inputProps} id={name} name={name} aria-describedby={name + 'help'}
                    className={handleInputClass(error)}/>
-            {smallText
-                ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
-                : ''
-            }
             {error
                 ? (<div className="invalid-feedback">{error}</div>)
                 : ''
@@ -89,10 +84,6 @@ export const ImageInput = ({name, label, inputProps, smallText, error, selectedI
             }
             <input type="file" {...inputProps} id={name} name={name} aria-describedby={name + 'help'}
                    className={handleInputClass(error)}/>
-            {smallText
-                ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
-                : ''
-            }
             {error
                 ? (<div className="invalid-feedback">{error}</div>)
                 : ''
@@ -109,21 +100,16 @@ export const ImageInput = ({name, label, inputProps, smallText, error, selectedI
 }
 
 export const Textarea = ({name, label, inputProps, smallText, error}) => {
+    const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
+    const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
     return (
         <div className="form-group">
-            {label
-                ? (<label htmlFor={name}>{label}</label>)
-                : ''
-            }
+            {labelOutput}
             <textarea id={name} name={name} cols="30" rows="5"
                       aria-describedby={name + 'help'}
                       className={handleInputClass(error)}
                       {...inputProps}
             />
-            {smallText
-                ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
-                : ''
-            }
             {error
                 ? (<div className="invalid-feedback">{error}</div>)
                 : ''
@@ -160,20 +146,15 @@ export const SelectVanilla = ({name, label, inputProps, smallText, error, Option
 }
 
 export const SelectReact = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => {
+    const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
+    const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
     return (
         <div className="form-group">
-            {label
-                ? (<label htmlFor={name}>{label}</label>)
-                : ''
-            }
+            {labelOutput}
             <Select isLoading={isLoading} isDisabled={isDisabled} options={options} value={value}
                     className="react-select" classNamePrefix={handleSelectClass(error)}
                     onChange={onChange} {...props}
             />
-            {smallText
-                ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
-                : ''
-            }
             {error
                 ? (<div className="invalid-feedback">{error}</div>)
                 : ''
@@ -182,25 +163,20 @@ export const SelectReact = ({name, label, smallText, error, options, value, onCh
     )
 }
 
-export const SelectReactCreatable = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => (
-    <div className="form-group">
-        {label
-            ? (<label htmlFor={name}>{label}</label>)
-            : ''
-        }
+export const SelectReactCreatable = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => {
+    const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
+    const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
+    return (<div className="form-group">
+        {labelOutput}
         <Creatable isLoading={isLoading} isDisabled={isDisabled} options={options} value={value}
                    className="react-select" classNamePrefix={handleSelectClass(error)}
                    onChange={onChange} {...props} />
-        {smallText
-            ? <small id={name + 'help'} className="form-text text-muted">{smallText}</small>
-            : ''
-        }
         {error
             ? (<div className="invalid-feedback">{error}</div>)
             : ''
         }
-    </div>
-)
+    </div>)
+}
 
 export function ImageInputComponent({inputProps, data, setValue}) {
     const [activeTab, setActiveTab] = useState('url');

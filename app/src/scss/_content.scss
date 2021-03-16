@@ -95,9 +95,11 @@
 .rating {
   font-size: $fontsize-sm;
   color: var(--color-text-white);
+
   a {
     color: var(--color-blue);
   }
+
   .stars {
     color: var(--color-blue);
     margin-right: $padding-unit-sm;
@@ -163,4 +165,46 @@ img {
   h4 {
     margin-bottom: $padding-unit-big;
   }
+}
+
+.icon-info {
+  color: var(--color-text-grey);
+  margin-left: $padding-unit;
+  cursor: pointer;
+}
+
+.icon-info[data-tooltip]:hover {
+  position: relative;
+}
+
+.icon-info[data-tooltip]:hover::before {
+  all: initial;
+  display: inline-block;
+  border-radius: 5px;
+  background-color: var(--color-background);
+  content: attr(data-tooltip);
+  color: var(--color-text-grey-2);
+  position: absolute;
+  bottom: 100%;
+  width: $fontsize-md*15;
+  left: 25%;
+  transform: translate(-25%, 0);
+  padding: $padding-unit;
+  margin-bottom: $padding-unit-md;
+  font-size: $fontsize-sm;
+}
+.icon-info[data-tooltip]:hover::after {
+	all: initial;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-left: $padding-unit solid transparent;
+	border-right: $padding-unit solid transparent;
+	border-top: $padding-unit solid var(--color-background);
+	position: absolute;
+	bottom: 100%;
+	content: '';
+	left: 25%;
+	transform: translate(-25%, 0);
+	margin-bottom: $padding-unit/2;
 }

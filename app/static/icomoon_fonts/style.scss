@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?updkmm');
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?updkmm#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?updkmm') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?updkmm') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?updkmm##{$icomoon-font-family}') format('svg');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?au22lr');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?au22lr#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?au22lr') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?au22lr') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?au22lr##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -135,6 +135,11 @@
 .icon-linkedin {
   &:before {
     content: $icon-linkedin; 
+  }
+}
+.icon-info-circle {
+  &:before {
+    content: $icon-info-circle; 
   }
 }
 .icon-thumbs-down {

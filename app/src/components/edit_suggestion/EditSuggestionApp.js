@@ -37,7 +37,6 @@ export default function EditApp({ResourceForm, api_urls}) {
     const [reloadResourceForm, setReloadResourceForm] = useState(false);
 
 
-
     useEffect(() => {
         //get edit suggestions
         apiList(
@@ -57,7 +56,7 @@ export default function EditApp({ResourceForm, api_urls}) {
 
     return (
         <div className="detail-page">
-            <div className="column-container card">
+            <div className="form-container">
                 <EditSuggestionForm addEditSuggestionCallback={resetEditSuggestionPagination}
                                     ResourceForm={ResourceForm}
                                     api_urls={api_urls}
@@ -81,7 +80,7 @@ export default function EditApp({ResourceForm, api_urls}) {
                                              remove_modal_class_from_body();
                                          }}
                                          api_urls={api_urls}
-                                         publishCallback={()=>{
+                                         publishCallback={() => {
                                              setReloadResourceForm(true)
                                          }}
                                      />

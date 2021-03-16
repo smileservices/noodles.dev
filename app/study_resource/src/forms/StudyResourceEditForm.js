@@ -2,7 +2,7 @@ import React, {useState, useEffect, Fragment} from "react";
 import Alert from "../../../src/components/Alert";
 import {
     FormElement,
-    ImageInput, ImageInputComponent,
+    ImageInputComponent,
     Input,
     SelectReact,
     SelectReactCreatable,

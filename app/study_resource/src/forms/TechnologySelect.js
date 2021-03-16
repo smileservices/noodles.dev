@@ -30,56 +30,64 @@ export default function TechnologySelect({techs, values, setValues, addNewTech, 
     }
 
     return (
-        <Fragment>
-            <label htmlFor="select-techs">Technologies used</label>
-            <small id="help" className="form-text text-muted">Can choose one or multiple or add a new one if
-                necessary.</small>
-            {values ? values.map((t, idx) =>
-                (<div className="row" key={"select-techs" + idx}>
-                    <SelectReact name={'select-tech' + idx}
-                                 onChange={selectedOptions => change(idx, 'technology', selectedOptions)}
-                                 options={techs}
-                                 value={{label: t.name, name: t.name, value: t.technology_id}}
-                                 isDisabled={Boolean(waiting)}
-                    />
-                    <Input
-                        name={'version' + idx}
-                        inputProps={{
-                            disabled: Boolean(waiting),
-                            type: 'number',
-                            placeholder: 'version',
-                            required: false,
-                            onChange: e => change(idx, 'version', e.target.value),
-                            value: t.version,
-                        }}
-                    />
-                    <a onClick={e => {
-                        e.preventDefault();
-                        setValues(values.filter((t, ridx) => ridx !== idx));
-                    }}>remove</a>
-                </div>)
-            ) : ''}
-            <span href="" onClick={e => {
+        <div className="study-resource-technologies">
+            <div className="header">
+                Technologies used
+                <span className="icon-info" data-tooltip={
+                    'Can choose one or multiple or add a new one if necessary.'
+                }>&#xe90c;</span>
+            </div>
+            <div className="column-container">
+                {values ? values.map((t, idx) =>
+                    (<div className="technology-version" key={"select-techs" + idx}>
+                        <SelectReact name={'select-tech' + idx}
+                                     onChange={selectedOptions => change(idx, 'technology', selectedOptions)}
+                                     options={techs}
+                                     value={{label: t.name, name: t.name, value: t.technology_id}}
+                                     isDisabled={Boolean(waiting)}
+                        />
+                        <Input
+                            name={'version' + idx}
+                            inputProps={{
+                                disabled: Boolean(waiting),
+                                type: 'number',
+                                placeholder: 'version',
+                                required: false,
+                                onChange: e => change(idx, 'version', e.target.value),
+                                value: t.version,
+                            }}
+                        />
+                        <a className="remove" onClick={e => {
+                            e.preventDefault();
+                            setValues(values.filter((t, ridx) => ridx !== idx));
+                        }}><span className="icon-close"/></a>
+                    </div>)
+                ) : ''}
+            </div>
+            <div className="row buttons-container">
+            <span className="btn dark" onClick={e => {
                 e.preventDefault();
                 setValues([...values, emptyForm]);
-            }}>add new</span>
-            <CreateableComponent
-                endpoint={TECH_API}
-                data={{
-                    'name': '',
-                    'image_file': {content: '', name: ''},
-                    'description': '',
-                    'pros': '',
-                    'cons': '',
-                    'limitations': '',
-                    'owner': '',
-                    'category': '',
-                    'ecosystem': [],
-                }}
-                extraData={{addButtonText: 'create technology', formTitle: 'Create New Technology'}}
-                FormViewComponent={TechForm}
-                successCallback={data => addNewTech(data)}
-            />
-        </Fragment>
+            }}>Add Technology Row</span>
+                <CreateableComponent
+                    endpoint={TECH_API}
+                    data={{
+                        'name': '',
+                        'image_file': {content: '', name: ''},
+                        'description': '',
+                        'pros': '',
+                        'cons': '',
+                        'limitations': '',
+                        'owner': '',
+                        'category': '',
+                        'ecosystem': [],
+                    }}
+                    extraData={{addButtonText: 'Create New Technology', formTitle: 'Create New Technology'}}
+                    FormViewComponent={TechForm}
+                    successCallback={data => addNewTech(data)}
+                    buttonClassName='btn secondary'
+                />
+            </div>
+        </div>
     );
 }

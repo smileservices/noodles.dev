@@ -59,3 +59,10 @@
 .btn.block {
   width: 100%;
 }
+
+.btn.dark {
+  background-color: var(--color-background);
+}
+.btn.dark:hover {
+  background-color: var(--color-text-gray-2);
+}

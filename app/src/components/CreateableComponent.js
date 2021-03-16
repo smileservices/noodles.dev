@@ -2,7 +2,7 @@ import React, {useState, Fragment} from 'react';
 import Modal from "./Modal";
 import CreateableFormComponent from "./CreateableFormComponent";
 
-export default function CreateableComponent({endpoint, data, extraData, FormViewComponent, successCallback}) {
+export default function CreateableComponent({endpoint, data, extraData, FormViewComponent, successCallback, buttonClassName}) {
     const [showForm, setShowForm] = useState(false);
 
     function displayFormModal() {
@@ -27,7 +27,7 @@ export default function CreateableComponent({endpoint, data, extraData, FormView
 
     return (
         <Fragment>
-            <button type="button" className="btn" onClick={e => setShowForm(true)}>{extraData.addButtonText}</button>
+            <button type="button" className={buttonClassName ? buttonClassName : 'btn'} onClick={e => setShowForm(true)}>{extraData.addButtonText}</button>
             {showForm ? displayFormModal() : ''}
         </Fragment>
     )
