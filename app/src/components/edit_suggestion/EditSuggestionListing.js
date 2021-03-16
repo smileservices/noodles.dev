@@ -1,8 +1,5 @@
 import React, {Fragment, useState} from "react"
 import FormatDate from "../../vanilla/date";
-import apiDelete from "../../api_interface/apiDelete";
-import Alert from "../Alert";
-import {makeId} from "../utils";
 import Modal from "../Modal";
 import EditSuggestionDetail from "./EditSuggestionDetail";
 
@@ -38,7 +35,7 @@ export default function EditSuggestionListing({data, api_urls, deleteCallback, p
         <Fragment>
             <span className="card" onClick={e => setShowModal(true)}>
                 <div className="result">
-                    <p>author: {data.edit_suggestion_author.get_full_name}</p>
+                    <p>author: <a href={'/users/profile/'+data.edit_suggestion_author.username}>{data.edit_suggestion_author.username}</a></p>
                     <p>reason: {data.edit_suggestion_reason}</p>
                     <p>{FormatDate(data.edit_suggestion_date_created, 'datetime')}</p>
                     <div className="thumbs">

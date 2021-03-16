@@ -5,7 +5,7 @@ import {apiDetail} from "../../api_interface/apiDetail";
 import Thumbs from "../../../study_resource/src/Thumbs";
 import apiDelete from "../../api_interface/apiDelete";
 import apiPost from "../../api_interface/apiPost";
-import {getCsrfToken, makeId} from "../utils";
+import {makeId} from "../utils";
 import {Input} from "../form";
 
 export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publishCallback}) {
@@ -93,10 +93,9 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
             })
     }
 
-    function EditSuggestionToolbar({isOwner}) {
-
+    function EditSuggestionModeratorAction({isOwner}) {
         return (
-            <span className="toolbar">
+            <div className="edit-actions toolbar">
                 {isOwner ?
                     <a href="" onClick={e => {
                         e.preventDefault();
@@ -111,7 +110,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
                     e.preventDefault();
                     setRejectForm(true);
                 }}>reject</a>
-            </span>
+            </div>
         )
     }
 
@@ -157,40 +156,51 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
         </form>
     );
 
-    function displayChange(c) {
-        if (c.type === 'image') return (
-            <div key={"change" + c.field} className="edit-change">
-                <p>Field name: "{c.field}"</p>
-                <p>Old value:</p>
-                <img src={c.old.small} alt=""/>
-                <p>New value:</p>
-                <img src={c.new.small} alt=""/>
-            </div>
-        )
+    function ChangeComponent({c}) {
+        const [showNew, setShowNew] = useState(true);
+
+        function displayChange(change, type) {
+            if (change && type === 'image') return (<img className="changed" src={change.small} alt=""/>);
+            if (!change) return (<span className="changed empty">empty</span>);
+            if (change) return (<span className="changed">{change}</span>)
+        }
+
         return (
             <div key={"change" + c.field} className="edit-change">
-                <p>Field name: "{c.field}"</p>
-                <p>Old value:</p>
-                <p>"{c.old}"</p>
-                <p>New value:</p>
-                <p>"{c.new}"</p>
+                <div className="field-name">
+                    <span className={showNew ? "active" : ''} onClick={e => setShowNew(true)}>New {c.field}</span>
+                    <span className={showNew ? '' : "active"} onClick={e => setShowNew(false)}>Old</span>
+                </div>
+                {showNew
+                    ? displayChange(c.new, c.type)
+                    : displayChange(c.old, c.type)
+                }
             </div>
         )
     }
 
     return (
-        <div className="modal-content has-toolbar">
-            <EditSuggestionToolbar isOwner={isOwner}/>
+        <div className="modal-content">
             {Object.keys(data).length
                 ?
                 <div className="edit-suggestion-details">
-                    <h4>Changes:</h4>
-                    {data.changes.map(c => displayChange(c))}
-
-                    <p>author: {data.edit_suggestion_author.get_full_name}</p>
-                    <p>reason: {data.edit_suggestion_reason}</p>
-                    <p>created: {FormatDate(data.edit_suggestion_date_created, 'datetime')}</p>
-
+                    <header>
+                        <h3>Suggested Edit</h3>
+                        <p>By <a
+                            href={'/users/profile/' + data.edit_suggestion_author.username}>{data.edit_suggestion_author.username}</a> on {FormatDate(data.edit_suggestion_date_created, 'datetime')}
+                        </p>
+                        <EditSuggestionModeratorAction isOwner={isOwner}/>
+                    </header>
+                    <div className="changes-container">
+                        <h4 className="changes-title">Changes ({data.changes.length}):</h4>
+                        <div className="changes-list">
+                            {data.changes.map(c => <ChangeComponent c={c} key={makeId(3)}/>)}
+                        </div>
+                    </div>
+                    <div className="edit-reason">
+                        <h4>Edit Reason</h4>
+                        <p>{data.edit_suggestion_reason}</p>
+                    </div>
                     <div className="thumbs">
                         <Thumbs
                             thumbs_obj={{up: data.thumbs_up_array, down: data.thumbs_down_array}}

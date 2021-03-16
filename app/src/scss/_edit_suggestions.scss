@@ -1,0 +1,76 @@
+.edit-suggestion-details {
+  padding: $padding-unit*4;
+
+  header {
+    margin-bottom: $padding-unit*4;
+    position: relative;
+
+    h3 {
+      margin-bottom: $padding-unit-md;
+    }
+
+    .toolbar {
+      right: 0;
+      top: 0;
+    }
+  }
+
+  .changes-container {
+    .changes-title {
+      margin-bottom: $padding-unit;
+    }
+
+    .changes-list {
+      margin-bottom: $padding-unit-big;
+      padding: $padding-unit-big;
+      background-color: var(--color-background);
+      border-radius: $radius-small;
+
+      .edit-change {
+        margin-bottom: $padding-unit*2;
+
+        .field-name {
+          display: flex;
+          gap: $padding-unit;
+          margin-bottom: $padding-unit-md;
+
+          > * {
+            cursor: pointer;
+            font-size: $fontsize-sm;
+            font-style: italic;
+            font-weight: 200;
+            color: var(--color-background-3);
+          }
+
+          > *.active {
+            color: var(--color-text-grey);
+            font-weight: 400;
+            font-style: normal;
+          }
+        }
+
+        .changed {
+          font-size: $fontsize-md;
+          color: var(--color-text-white);
+          font-weight: 400;
+        }
+
+        .changed.empty {
+          font-size: $fontsize-md;
+          color: var(--color-background-3);
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  .edit-reason {
+    h4 {
+      margin-bottom: $padding-unit;
+    }
+  }
+
+  .edit-actions {
+
+  }
+}

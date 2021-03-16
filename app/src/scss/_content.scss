@@ -109,7 +109,7 @@
 .thumbs {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: flex-end;
   gap: $padding-unit-big;
 
   a, a:visited {
