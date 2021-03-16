@@ -32,6 +32,8 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
     const [options, setOptions] = useState({});
     const [categories, setCategories] = useState([]);
 
+    const [showAllFields, setShowAllFields] = useState(false);
+
     function makeStateProps(name) {
         function updateValue(name) {
             return e => {
@@ -214,43 +216,13 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
                 smallText="Resource name"
                 error={errors.name}
             />
-
-            <Input
-                type="text"
-                name='inputurl'
-                label="URL"
-                inputProps={{...makeStateProps('url')}}
-                smallText="Resource source url"
-                error={errors.url}
+            <Textarea
+                name={'summary'}
+                label="Summary"
+                inputProps={{...makeStateProps('summary')}}
+                smallText="What is it about"
+                error={errors.summary}
             />
-            <ImageInputComponent
-                data={formData.image_file}
-                setValue={valueObj => setFormData({...formData, image_file: valueObj})}
-                inputProps={{
-                    'name': 'image_file',
-                    'label': 'Primary Image',
-                    'error': errors.image_file,
-                    'waiting': waiting,
-                    'smallText': 'Primary image of the resource',
-                    'originalImage': extraData.originalData?.image_file ? extraData.originalData.image_file.small : false
-                }}
-            />
-            <div className="row">
-                <Input
-                    name={'publication_date'}
-                    label="Publishing Date"
-                    inputProps={{...makeStateProps('publication_date')}}
-                    smallText="Date the resource was published"
-                    error={errors.publication_date}
-                />
-                <Input
-                    name={'published_by'}
-                    label="Author"
-                    inputProps={{...makeStateProps('published_by')}}
-                    smallText="Who is the author of the resource"
-                    error={errors.published_by}
-                />
-            </div>
             <SelectReactCreatable name="select-tags" label="Choose tags"
                                   smallText="Can choose one or multiple or add a new one if necessary."
                                   onChange={selectedOptions => setFormData({...formData, tags: selectedOptions})}
@@ -268,52 +240,87 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
                               waiting={waiting}
                               errors={errors}
             />
-
-            <SelectReactCreatable name="select-category" label="Choose Category"
-                                  smallText="Can choose or add a new one if necessary."
-                                  onChange={selectedOptions => setFormData({...formData, category: selectedOptions})}
-                                  options={categories}
-                                  value={formData.category}
-                                  props={{isMulti: false, required: true}}
-                                  error={errors.category}
-            />
-
-            <div className="row">
-                <SelectReact label='Type'
-                             name='price-type'
-                             value={options['price'] ? options['price'].filter(i => i.value === formData.price) : {}}
-                             error={errors.type}
-                             options={options['price']}
-                             onChange={sel => setFormData({...formData, price: sel.value})}
-                             smallText="Free or paid"
-                             isDisabled={Boolean(waiting)}
-                />
-                <SelectReact label='Media'
-                             name='media'
-                             value={options['media'] ? options['media'].filter(i => i.value === formData.media) : {}}
-                             error={errors.media}
-                             options={options['media']}
-                             onChange={sel => setFormData({...formData, media: sel.value})}
-                             smallText="Media type"
-                             isDisabled={Boolean(waiting)}
-                />
-                <SelectReact label='Experience level'
-                             name='experience-level'
-                             value={options['experience_level'] ? options['experience_level'].filter(i => i.value === formData.experience_level) : {}}
-                             error={errors.experience_level}
-                             options={options['experience_level']}
-                             onChange={sel => setFormData({...formData, experience_level: sel.value})}
-                             smallText="Experience level required"
-                             isDisabled={Boolean(waiting)}
-                />
-            </div>
-            <Textarea
-                name={'summary'}
-                label="Summary"
-                inputProps={{...makeStateProps('summary')}}
-                smallText="What is it about"
-                error={errors.summary}
-            />
+            {showAllFields ?
+                <Fragment>
+                    <button className="btn secondary" onClick={e=>setShowAllFields(false)}>Hide Fields Below</button>
+                    <SelectReactCreatable name="select-category" label="Choose Category"
+                                          smallText="Can choose or add a new one if necessary."
+                                          onChange={selectedOptions => setFormData({
+                                              ...formData,
+                                              category: selectedOptions
+                                          })}
+                                          options={categories}
+                                          value={formData.category}
+                                          props={{isMulti: false, required: true}}
+                                          error={errors.category}
+                    />
+                    <div className="row">
+                        <SelectReact label='Type'
+                                     name='price-type'
+                                     value={options['price'] ? options['price'].filter(i => i.value === formData.price) : {}}
+                                     error={errors.type}
+                                     options={options['price']}
+                                     onChange={sel => setFormData({...formData, price: sel.value})}
+                                     smallText="Free or paid"
+                                     isDisabled={Boolean(waiting)}
+                        />
+                        <SelectReact label='Media'
+                                     name='media'
+                                     value={options['media'] ? options['media'].filter(i => i.value === formData.media) : {}}
+                                     error={errors.media}
+                                     options={options['media']}
+                                     onChange={sel => setFormData({...formData, media: sel.value})}
+                                     smallText="Media type"
+                                     isDisabled={Boolean(waiting)}
+                        />
+                        <SelectReact label='Experience level'
+                                     name='experience-level'
+                                     value={options['experience_level'] ? options['experience_level'].filter(i => i.value === formData.experience_level) : {}}
+                                     error={errors.experience_level}
+                                     options={options['experience_level']}
+                                     onChange={sel => setFormData({...formData, experience_level: sel.value})}
+                                     smallText="Experience level required"
+                                     isDisabled={Boolean(waiting)}
+                        />
+                    </div>
+                    <Input
+                        type="text"
+                        name='inputurl'
+                        label="URL"
+                        inputProps={{...makeStateProps('url')}}
+                        smallText="Resource source url"
+                        error={errors.url}
+                    />
+                    <ImageInputComponent
+                        data={formData.image_file}
+                        setValue={valueObj => setFormData({...formData, image_file: valueObj})}
+                        inputProps={{
+                            'name': 'image_file',
+                            'label': 'Primary Image',
+                            'error': errors.image_file,
+                            'waiting': waiting,
+                            'smallText': 'Primary image of the resource',
+                            'originalImage': extraData.originalData?.image_file ? extraData.originalData.image_file.small : false
+                        }}
+                    />
+                    <div className="row">
+                        <Input
+                            name={'publication_date'}
+                            label="Publishing Date"
+                            inputProps={{...makeStateProps('publication_date')}}
+                            smallText="Date the resource was published"
+                            error={errors.publication_date}
+                        />
+                        <Input
+                            name={'published_by'}
+                            label="Author"
+                            inputProps={{...makeStateProps('published_by')}}
+                            smallText="Who is the author of the resource"
+                            error={errors.published_by}
+                        />
+                    </div>
+                </Fragment> : <button className="btn secondary" onClick={e=>setShowAllFields(true)}>Show All Fields</button>
+            }
             {extraData.formElements ? extraData.formElements.get_list(waiting, errors) : ''}
         </FormElement>
     )
