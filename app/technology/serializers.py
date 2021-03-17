@@ -84,6 +84,8 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
                                'old': instance.edit_suggestion_parent.logo,
                                'new': instance.logo
                                })
+            elif change.field == 'slug':
+                continue
             else:
                 result.append(
                     {'field': change.field.capitalize(), 'type': 'text', 'old': change.old, 'new': change.new})

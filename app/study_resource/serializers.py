@@ -111,6 +111,8 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
                                'old': instance.edit_suggestion_parent.image,
                                'new': instance.image
                                })
+            elif change.field == 'slug':
+                continue
             else:
                 result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
         return result
