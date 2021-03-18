@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react"
 import Alert from "../../src/components/Alert";
-import {Input, SelectReact, SelectReactCreatable, Textarea, FormElement} from "../../src/components/form";
+import {Input, Checkbox, SelectReact, SelectReactCreatable, Textarea, FormElement} from "../../src/components/form";
 
 function CollectionForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {
 
@@ -95,12 +95,14 @@ function CollectionForm({formData, setFormData, extraData, submitCallback, waiti
                 inputProps={{...makeStateProps('name')}}
                 error={errors.name}
             />
-            <div>
-                <input type="checkbox" id="is_public" name="is_public" value={formData.is_public} onChange={e =>
-                    setFormData({...formData, is_public: !formData.is_public})
-                }/>
-                <label htmlFor="is_public"> Is Public</label>
-            </div>
+            <Checkbox name="is_public" label="Is Public" inputProps={{
+                checked: formData.is_public,
+                onChange: e => setFormData({...formData, 'is_public': !formData.is_public}),
+                disabled: Boolean(waiting)
+            }}
+                   smallText="Public collections are searchable and open to anyone to receive edit suggestions"
+                   error={errors.is_public}
+            />
             <Textarea
                 name={'description'}
                 label="Description"

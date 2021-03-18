@@ -75,6 +75,39 @@ export const Input = ({name, label, inputProps, smallText, error}) => {
     )
 }
 
+export const Textarea = ({name, label, inputProps, smallText, error}) => {
+    const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
+    const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
+    return (
+        <div className="form-group">
+            {labelOutput}
+            <textarea id={name} name={name} cols="30" rows="5"
+                      aria-describedby={name + 'help'}
+                      className={handleInputClass(error)}
+                      {...inputProps}
+            />
+            {error
+                ? (<div className="invalid-feedback">{error}</div>)
+                : ''
+            }
+        </div>
+    )
+}
+
+export const Checkbox = ({name, label, inputProps, smallText, error}) => {
+    const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
+    const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
+    return (
+        <div className="">
+            <input type="checkbox" id={name} name={name} className={error ? 'invalid' : ''} {...inputProps} /> {labelOutput}
+            {error
+                ? (<div className="invalid-feedback">{error}</div>)
+                : ''
+            }
+        </div>
+    )
+}
+
 export const ImageInput = ({name, label, inputProps, smallText, error, selectedImage}) => {
     return (
         <div className="form-group">
@@ -93,25 +126,6 @@ export const ImageInput = ({name, label, inputProps, smallText, error, selectedI
                     <p>Current Image:</p>
                     <img src={selectedImage} alt=""/>
                 </Fragment>
-                : ''
-            }
-        </div>
-    )
-}
-
-export const Textarea = ({name, label, inputProps, smallText, error}) => {
-    const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
-    const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
-    return (
-        <div className="form-group">
-            {labelOutput}
-            <textarea id={name} name={name} cols="30" rows="5"
-                      aria-describedby={name + 'help'}
-                      className={handleInputClass(error)}
-                      {...inputProps}
-            />
-            {error
-                ? (<div className="invalid-feedback">{error}</div>)
                 : ''
             }
         </div>

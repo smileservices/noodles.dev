@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react"
 
-import {Input, Textarea, SelectReact, SelectReactCreatable, ImageInputComponent} from "../../src/components/form";
+import {Input, Textarea, Checkbox, SelectReact, SelectReactCreatable, ImageInputComponent} from "../../src/components/form";
 import apiPost from "../../src/api_interface/apiPost";
 import {FormElement, ImageInput} from "../../src/components/form";
 import Alert from "../../src/components/Alert";
@@ -182,6 +182,14 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                    smallText="Url of docs or main page"
                    error={errors.url}
             />
+            <Checkbox name="featured" label="Is Featured" inputProps={{
+                checked: formData.featured,
+                onChange: e => setFormData({...formData, 'featured': !formData.featured}),
+                disabled: Boolean(waiting)
+            }}
+                   smallText="Featured technologies appear on the left sidebar. Only admins can set this."
+                   error={errors.featured}
+            />
             <Input name="owner" label="Tech Owner/Maintainer" inputProps={{
                 ...makeStateProps('owner'),
                 required: true,
@@ -191,7 +199,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                    smallText="Who is owning or developing the tech"
                    error={errors.owner}
             />
-            <Textarea name="pros" label={false}
+            <Textarea name="pros" label={"Pros for using it"}
                       inputProps={{
                           ...makeStateProps('pros'),
                           placeholder: "Good points",
@@ -201,7 +209,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                       smallText="What are the good parts of this tech?"
                       error={errors.pros}
             />
-            <Textarea name="cons" label={false}
+            <Textarea name="cons" label={"Cons against using it"}
                       inputProps={{
                           ...makeStateProps('cons'),
                           placeholder: "Bad points",
@@ -211,7 +219,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                       smallText="What are the bad parts of this tech?"
                       error={errors.cons}
             />
-            <Textarea name="limitations" label={false}
+            <Textarea name="limitations" label={"Limitations"}
                       inputProps={{
                           ...makeStateProps('limitations'),
                           placeholder: "Limitations",

@@ -53,10 +53,24 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
                   'edit_suggestion_date_created', 'edit_suggestion_author', 'edit_suggestion_status',
                   'edit_suggestion_reason', 'edit_suggestion_reject_reason', 'edit_suggestion_parent',
                   'changes',
-                  'thumbs_up_array', 'thumbs_down_array']
+                  'thumbs_up_array', 'thumbs_down_array', 'featured']
 
     def run_validation(self, data):
         validated_data = super(TechnologyEditSerializer, self).run_validation(data)
+        if data['featured']:
+            raise exceptions.ValidationError({'is_featured': 'Only admins can change the Is Featured status.'})
+        if 'pk' in data and ('image_file' not in data and 'image_url' not in data):
+            # edits without image (image_file or image_url) must not modify the model!
+            # populate with parent image file otherwise the edit will set the image_file blank
+            validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']
+        if 'image_url' in data:
+            # handle images from url and uploaded images
+            try:
+                validated_data['image_file'] = utils.get_temp_image_file_from_url(data['image_url'])
+                del validated_data['image_url']
+            except Exception as e:
+                raise exceptions.ValidationError('Error getting the image from specified url')
+        validated_data['slug'] = slugify(validated_data['name'])
         validated_data['ecosystem'] = [int(t) for t in data['ecosystem'].split(',')] if data['ecosystem'] else []
         validated_data['category_id'] = Category.objects.validate_category(int(data['category']))
         return validated_data
@@ -100,7 +114,7 @@ class TechnologySerializer(EditSuggestionSerializer):
         sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['technology_logo'],
         required=False,
     )
-    image_url = fields.CharField(required=False) # for handling image from url
+    image_url = fields.CharField(required=False)  # for handling image from url
 
     class Meta:
         model = Technology
@@ -108,7 +122,7 @@ class TechnologySerializer(EditSuggestionSerializer):
         fields = ['pk', 'name', 'image_file', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations',
                   'absolute_url', 'category',
                   'ecosystem', 'thumbs_up', 'thumbs_down',
-                  'image_url'
+                  'image_url', 'featured'
                   ]
 
     @staticmethod
@@ -121,10 +135,15 @@ class TechnologySerializer(EditSuggestionSerializer):
 
     def run_validation(self, data):
         validated_data = super(TechnologySerializer, self).run_validation(data)
-        if 'pk' in data and ('image_file' not in data and 'image_url' not in data):
+        db_instance = self.queryset.values('image_file', 'featured').get(pk=data['pk']) if 'pk' in data else False
+        if (not db_instance and validated_data['featured']) or (db_instance and db_instance['featured'] != validated_data['featured']):
+            if not self.context['request'].user.is_staff:
+                raise exceptions.ValidationError({'detail': 'Only admins can change or create Featured field',
+                                                  'featured': 'Only admins can create or change the Featured property of the technology'})
+        if db_instance and ('image_file' not in data and 'image_url' not in data):
             # edits without image (image_file or image_url) must not modify the model!
             # populate with parent image file otherwise the edit will set the image_file blank
-            validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']
+            validated_data['image_file'] = db_instance['image_file']
         if 'image_url' in data:
             # handle images from url and uploaded images
             try:

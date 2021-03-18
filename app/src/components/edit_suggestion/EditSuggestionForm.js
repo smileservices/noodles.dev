@@ -75,9 +75,17 @@ export default function EditForm({addEditSuggestionCallback, ResourceForm, api_u
             setWaiting,
             result => {
                 result.json().then(
-                    body => setAlert(<Alert close={e => setAlert(null)} text={body.detail} type="danger"
+                    body => {
+                        if (body.detail) {
+                            setAlert(<Alert close={e => setAlert(null)} text={body.detail} type="danger"
                                             hideable={false}
                                             stick={true}/>)
+                        }
+                        delete body.detail;
+                        if (Object.keys(body).length) {
+                            setErrors(body);
+                        }
+                    }
                 )
             }, ResourceForm.contentType
         )
