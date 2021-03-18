@@ -14,23 +14,23 @@
 
     <div class="right-side">
 
-        {% if user.is_authenticated %}
+{#        {% if user.is_authenticated %}#}
             {# NOTIFICATIONS DROPDOWN #}
-            <div class="dropdown hidden">
-                    <span class="dropdown-button" id="navbar-notifications-button">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22.3499 18.3C22.3499 18.3 19.4999 14.775 19.4999 11.25V8.25C19.4999 4.125 16.1249 0.75 11.9999 0.75C7.87493 0.75 4.49993 4.125 4.49993 8.25V11.25C4.49993 14.775 1.72493 18.225 1.64993 18.3C1.49993 18.525 1.42493 18.825 1.57493 19.125C1.72493 19.35 1.94993 19.5 2.24993 19.5H21.7499C22.0499 19.5 22.2749 19.35 22.4249 19.05C22.5749 18.825 22.4999 18.525 22.3499 18.3Z"
-                              fill="#90929C"/>
-                        <path d="M9.07495 21C9.37495 22.275 10.575 23.25 12 23.25C13.425 23.25 14.55 22.275 14.925 21H9.07495Z"
-                              fill="#90929C"/>
-                        </svg>
-                    </span>
-                <div class="dropdown-menu">
-                    <a href="">Some notification</a>
-                </div>
-            </div>
+{#            <div class="dropdown hidden">#}
+{#                    <span class="dropdown-button" id="navbar-notifications-button">#}
+{#                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">#}
+{#                        <path d="M22.3499 18.3C22.3499 18.3 19.4999 14.775 19.4999 11.25V8.25C19.4999 4.125 16.1249 0.75 11.9999 0.75C7.87493 0.75 4.49993 4.125 4.49993 8.25V11.25C4.49993 14.775 1.72493 18.225 1.64993 18.3C1.49993 18.525 1.42493 18.825 1.57493 19.125C1.72493 19.35 1.94993 19.5 2.24993 19.5H21.7499C22.0499 19.5 22.2749 19.35 22.4249 19.05C22.5749 18.825 22.4999 18.525 22.3499 18.3Z"#}
+{#                              fill="#90929C"/>#}
+{#                        <path d="M9.07495 21C9.37495 22.275 10.575 23.25 12 23.25C13.425 23.25 14.55 22.275 14.925 21H9.07495Z"#}
+{#                              fill="#90929C"/>#}
+{#                        </svg>#}
+{#                    </span>#}
+{#                <div class="dropdown-menu">#}
+{#                    <a href="">Some notification</a>#}
+{#                </div>#}
+{#            </div>#}
             {# NOTIFICATIONS DROPDOWN END #}
-        {% endif %}
+{#        {% endif %}#}
 
         {% if user.is_authenticated %}
             <div class="right-side collapsible-links">
@@ -65,7 +65,6 @@
                     <span class="btn create dropdown-button">Create</span>
                     <div class="dropdown-menu">
                         <a rel="nofollow noopener" href="{% url "create-resource" %}">Learning Resource</a>
-                        <a rel="nofollow noopener" href="{% url "problem-create" %}">Problem</a>
                         <a rel="nofollow noopener" href="{% url "tech-create" %}">Technology</a>
                     </div>
                 </div>
