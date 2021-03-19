@@ -23,10 +23,14 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': os.path.join(os.path.abspath('/home/vldmr/dev/play/social_auth_implem'), 'autotranslate.log'),
         },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
     },
     'loggers': {
         'django': {
-            'handlers': ['app_file'],
+            'handlers': ['app_file', 'mail_admins'],
             'level': 'INFO',
             'propagate': True,
         },
