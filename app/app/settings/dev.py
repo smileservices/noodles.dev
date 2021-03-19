@@ -16,12 +16,12 @@ LOGGING = {
         'app_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(os.path.abspath('/home/vldmr/dev/play/social_auth_implem'), 'app.log'),
+            'filename': os.path.join(os.path.abspath('/home/vldmr/dev/noodles'), 'app.log'),
         },
         'autotranslate_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(os.path.abspath('/home/vldmr/dev/play/social_auth_implem'), 'autotranslate.log'),
+            'filename': os.path.join(os.path.abspath('/home/vldmr/dev/noodles'), 'autotranslate.log'),
         },
         'mail_admins': {
             'level': 'ERROR',
@@ -48,6 +48,15 @@ VERSATILEIMAGEFIELD_SETTINGS = {
     'create_images_on_demand': False,
     'jpeg_resize_quality': 80,
 }
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# EMAIL_HOST = env.str('EMAIL_HOST')
+# EMAIL_PORT = env.str('EMAIL_PORT')
+# EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+# EMAIL_USE_TLS = env.str('EMAIL_USE_TLS', False)
+# EMAIL_USE_SSL = env.str('EMAIL_USE_SSL', False)
+# SERVER_EMAIL = env.str('EMAIL_HOST_USER')
 
 MODERATOR_USER_SCORE = 5
