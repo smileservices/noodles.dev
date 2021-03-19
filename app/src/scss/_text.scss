@@ -89,7 +89,8 @@ small, .small {
     margin-right: 0;
   }
 
-  > *:hover {
+  > span:hover, a:hover {
+    cursor: pointer;
     background-color: var(--color-background-2);
     color: var(--color-text-grey);
   }

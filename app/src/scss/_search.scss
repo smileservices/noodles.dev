@@ -20,8 +20,7 @@
 
 .search-bar-big > form {
   position: relative;
-  margin-top: $padding-unit-md*2;
-  margin-bottom: $padding-unit-md;
+  margin: $padding-unit-md*2 0 $padding-unit-md 0;
   padding-top: 0;
 
   input {

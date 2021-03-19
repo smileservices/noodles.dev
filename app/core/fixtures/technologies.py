@@ -3,7 +3,7 @@ from category.models import Category
 from technology.models import Technology
 from users.models import CustomUser
 from random import choice, choices
-
+from django.http import HttpRequest
 # use technology serializer to save
 
 def make_technologies_and_categories():
@@ -144,7 +144,13 @@ def make_technologies_and_categories():
     ]
 
     for tech in TECHNOLOGIES:
-        serialized = TechnologySerializer(data=tech)
+        user = choice(users)
+        user.is_staff = True
+        user.save()
+        request = HttpRequest()
+        request.method = 'GET'
+        request.user = user
+        serialized = TechnologySerializer(data=tech, context={'request': request})
         if serialized.is_valid():
             serialized.save()
     created_techs = {}

@@ -142,12 +142,6 @@ img {
   object-fit: scale-down;
 }
 
-.tags {
-  > * {
-    cursor: pointer;
-  }
-}
-
 .read-more {
   margin-left: $padding-unit;
   color: var(--color-blue);

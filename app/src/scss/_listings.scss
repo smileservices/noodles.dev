@@ -1,10 +1,12 @@
 .result {
   display: flex;
   flex-direction: column;
+  color: var(--color-text-white);
 
   > * {
     margin-bottom: $padding-unit-md;
   }
+
   > *:last-child {
     margin-bottom: 0;
   }
@@ -14,11 +16,13 @@
     gap: $padding-unit;
     flex-wrap: wrap;
     align-items: baseline;
+
     a, a:visited {
       color: var(--color-text-white);
     }
+
     a:hover {
-      color: var(--color-blue);
+      text-decoration: underline;
     }
 
     .published {
@@ -35,7 +39,12 @@
   .rating {
     padding-top: $padding-unit-md;
   }
+
   .thumbs {
     justify-content: flex-end;
   }
+}
+
+.result:hover {
+  color: var(--color-text-white);
 }
