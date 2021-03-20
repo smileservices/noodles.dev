@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from .views.study_resource import StudyResourceViewset, StudyResourceEditSuggestionViewset, create, detail, edit, search
+from .views.study_resource import StudyResourceViewset, StudyResourceEditSuggestionViewset, create, detail, edit, list_all
 from .views.image import StudyImageViewset
 from .views.review import ReviewVieset
 
@@ -15,5 +15,5 @@ urlpatterns = [
     path('<int:id>/edit/', edit, name='study-resource-edit'),
     path('<int:id>/<slug:slug>', detail, name='study-resource-detail'),
     path('create/', create, name='create-resource'),
-    path('', search, name='search')
+    path('', list_all, name='list-all-resources')
 ]

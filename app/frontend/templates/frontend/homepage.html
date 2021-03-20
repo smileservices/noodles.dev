@@ -13,9 +13,9 @@
 
 {% block content %}
     <section id="homepage-app">
-        <a href="">Browse Technologies</a>
-        <a href="">Browse Resources</a>
-        <a href="">Browse Collections</a>
+        <a href="{% url 'list-all-resources' %}">Browse Resources</a>
+        <a href="{% url 'list-all-technologies' %}">Browse Technologies</a>
+        <a href="{% url 'list-all-collections' %}">Browse Collections</a>
     </section>
 {% endblock %}
 

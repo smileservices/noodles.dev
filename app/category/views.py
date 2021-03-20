@@ -1,7 +1,6 @@
 import requests
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
 from .serializers import CategorySerializer, CategorySerializerOption
 
 

@@ -13,4 +13,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('<int:id>/edit', views.edit, name='tech-edit'),
     path('<int:id>/<slug:slug>', views.detail, name='tech-detail'),
+    path('', views.list_all, name='list-all-technologies'),
 ]

@@ -1,10 +1,10 @@
 <div class="result card technology">
     <header>
         <div class="logo">
-            <img src={{result.logo.medium}} alt=""/>
+            <img src={{ result.logo.medium }} alt=""/>
         </div>
         <div class="right">
-            <h4 class="title"><a href={result.absolute_url}>{{ result.name }}</a></h4>
+            <h4 class="title"><a href={{ result.absolute_url }}>{{ result.name }}</a></h4>
             <div class="tags">
                 <span>{{ result.license_label }}</span>
                 <span>{{ result.category }}</span>
@@ -14,14 +14,16 @@
     <div class="description">
         {{ result.description }}
     </div>
-    <span class="tags">
-                    <span>Ecosystem: </span>
-                {% for tech in result.ecosystem.all %}
-                    <span class="tech">{{ tech }}</span>
-        {% endfor %}
+    {% if result.ecosystem.count %}
+        <h5>Ecosystem: </h5>
+        <span class="tags">
+            {% for tech in result.ecosystem.all %}
+                <span class="tech">{{ tech }}</span>
+            {% endfor %}
                 </span>
+    {% endif %}
     <div class="thumbs">
-        <div class="down"><span class="icon-thumbs-o-down"> </span><span>{{ result.thumbs_down}}</span></div>
-        <div class="up"><span class="icon-thumbs-o-up"> </span><span>{{ result.thumbs_up}}</span></div>
+        <div class="down"><span class="icon-thumbs-o-down"> </span><span>{{ result.thumbs_down }}</span></div>
+        <div class="up"><span class="icon-thumbs-o-up"> </span><span>{{ result.thumbs_up }}</span></div>
     </div>
 </div>

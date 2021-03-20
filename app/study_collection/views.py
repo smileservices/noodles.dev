@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.viewsets import ModelViewSet
@@ -49,6 +50,22 @@ def detail(request, id, slug):
     if request.user.is_authenticated:
         return render(request, 'study_collection/detail_page.html', data)
     return render(request, 'study_collection/detail_page.seo.html', data)
+
+
+def list_all(request):
+    queryset = Collection.objects.all()
+    paginator = Paginator(queryset, 10)
+    try:
+        results = paginator.page(request.GET.get('page', 1))
+    except PageNotAnInteger:
+        results = paginator.page(1)
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
+    data = {
+        'paginator': paginator,
+        'results': results,
+    }
+    return render(request, 'study_collection/list_page_seo.html', data)
 
 
 class CollectionViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):

@@ -11,5 +11,5 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('<int:id>/<slug:slug>', views.detail, name='collection-detail'),
     path('<int:id>', views.detail, name='collection-edit'),
-    # todo edit
+    path('', views.list_all, name='list-all-collections'),
 ]

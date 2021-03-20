@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http.response import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -28,7 +28,8 @@ def detail(request, id, slug):
     # similar_techs = []
     # for tech_list in [solution.technologies.all() for solution in solutions.all()]:
     #     similar_techs += tech_list
-    resources_ids = [tech['study_resource_id'] for tech in detail.studyresourcetechnology_set.values('study_resource_id').all()]
+    resources_ids = [tech['study_resource_id'] for tech in
+                     detail.studyresourcetechnology_set.values('study_resource_id').all()]
     resources = StudyResource.objects.filter(pk__in=resources_ids).all()
     latest_resources = StudyResource.objects.all().order_by('created_at')[:5]
     tags = []
@@ -52,6 +53,22 @@ def detail(request, id, slug):
     if request.user.is_authenticated:
         return render(request, 'technology/detail_page.html', data)
     return render(request, 'technology/detail_page_seo.html', data)
+
+
+def list_all(request):
+    queryset = Technology.objects.all()
+    paginator = Paginator(queryset, 10)
+    try:
+        results = paginator.page(request.GET.get('page', 1))
+    except PageNotAnInteger:
+        results = paginator.page(1)
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
+    data = {
+        'paginator': paginator,
+        'results': results,
+    }
+    return render(request, 'technology/list_page_seo.html', data)
 
 
 @login_required

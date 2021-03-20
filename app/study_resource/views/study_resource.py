@@ -50,6 +50,22 @@ def search(request):
     return render(request, 'study_resource/search_page.html', data)
 
 
+def list_all(request):
+    queryset = StudyResource.objects.all()
+    paginator = Paginator(queryset, 10)
+    try:
+        results = paginator.page(request.GET.get('page', 1))
+    except PageNotAnInteger:
+        results = paginator.page(1)
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
+    data = {
+        'paginator': paginator,
+        'results': results,
+    }
+    return render(request, 'study_resource/list_page_seo.html', data)
+
+
 def detail(request, id, slug):
     queryset = StudyResource.objects
     resource = queryset.get(pk=id)
@@ -138,7 +154,6 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset, SearchableModelView
             serializers.StudyResourceListingSerializer,
             queryset
         )
-
 
     # technologies and tags are saved in the serializer
     def edit_suggestion_handle_m2m_through_field(self, instance, data, f):

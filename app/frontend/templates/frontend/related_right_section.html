@@ -1,7 +1,7 @@
 <h4>Tags to follow</h4>
 <div class="tags">
 {% for tag in latest.tags %}
-    <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}"># {{ tag }}</a>
+    <a class="tag" href="{% url 'search_page' %}?tab=resources&tags={{ tag.id }}"># {{ tag }}</a>
 {% endfor %}
 </div>
 <h4>Latest Added Resources</h4>
