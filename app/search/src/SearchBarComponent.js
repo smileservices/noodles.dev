@@ -46,7 +46,8 @@ export default function SearchBarComponent({search, state}) {
 
     function SuggestionsList({suggestions}) {
         return (
-            <div className="suggestions-list">
+            <div className="suggestions-list card">
+                <header>Search Suggestions:</header>
                 {suggestions.map(r => <span key={r} onClick={e => {
                     search(r);
                     setFormData(r);

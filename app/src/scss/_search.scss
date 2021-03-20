@@ -38,15 +38,34 @@
     top: $fontsize-sm*2;
     font-size: $fontsize-sm*2;
     color: var(--color-background-2);
+
     .clear {
       cursor: pointer;
       display: flex;
       gap: $padding-unit-sm;
       align-items: center;
       color: var(--color-text-grey-2);
+
       .icon {
         font-size: $fontsize-big;
       }
+    }
+  }
+
+  .suggestions-list {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-unit-sm;
+
+    header {
+      margin-bottom: 0;
+      color: var(--color-text-grey-2);
+      font-style: italic;
+    }
+
+    > span:hover {
+      cursor: pointer;
+      color: var(--color-blue);
     }
   }
 }
