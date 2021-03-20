@@ -66,3 +66,8 @@
 .btn.dark:hover {
   background-color: var(--color-text-gray-2);
 }
+
+.btn[disabled], .btn:disabled {
+  cursor: not-allowed;
+  background-color: var(--color-background-3);
+}

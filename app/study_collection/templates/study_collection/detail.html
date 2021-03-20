@@ -22,7 +22,7 @@
         href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
 <span class="published">{{ result.items_count }} Resources</span>
 
-<p class="description" itemProp="abstract">{{ result.description }}</p>
+<p class="description" itemProp="abstract">{{ result.description | linebreaks }}</p>
 
 <div class="tags" itemProp="keywords">
     {% for tag in result.tags.all %}

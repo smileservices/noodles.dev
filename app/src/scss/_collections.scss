@@ -1,0 +1,42 @@
+.collection-items-modal {
+  padding: $padding-unit-big;
+
+  header {
+    margin-bottom: $padding-unit-md*3;
+  }
+
+  .items-container {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-unit;
+
+    .resource {
+      display: grid;
+      grid-template-columns: $fontsize-big 3fr 1fr $fontsize-big;
+      justify-content: start;
+
+      background-color: var(--color-background);
+      border-radius: $radius-medium;
+      padding: $padding-unit;
+
+      .sort-handle, .remove {
+        cursor: pointer;
+        color: var(--color-background-3);
+      }
+
+      .sort-handle:hover {
+        color: var(--color-blue);
+      }
+
+      .remove:hover {
+        color: var(--color-text-red);
+      }
+    }
+  }
+
+  .buttons-container {
+    display: flex;
+    gap: $padding-unit;
+    justify-content: flex-end;
+  }
+}

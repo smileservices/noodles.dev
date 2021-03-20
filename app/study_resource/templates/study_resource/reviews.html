@@ -13,7 +13,7 @@
                 by
                 <span itemProp="author">{{ review.author }}</span>
             </p>
-            <p class="text" itemProp="ratingExplanation">{{ review.text }}</p>
+            <p class="text" itemProp="ratingExplanation">{{ review.text | linebreaks }}</p>
             {% include 'vote_not_logged.html' with resource=review %}
         </div>
     {% endfor %}
