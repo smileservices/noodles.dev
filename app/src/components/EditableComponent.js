@@ -38,7 +38,7 @@ export default function EditableComponent({endpoint, data, extraData, DisplayVie
         if (waiting) return waiting;
         if (alertDisplay) return alertDisplay;
         return (
-            <span className="toolbar" onClick={e => e.preventDefault()}>
+            <span className="toolbar" onClick={e => {e.preventDefault(); e.stopPropagation();}}>
                 {confirmDelete
                     ? <div className="confirm">
                         <span className="text">Are you sure?</span>
