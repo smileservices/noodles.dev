@@ -38,6 +38,16 @@
     top: $fontsize-sm*2;
     font-size: $fontsize-sm*2;
     color: var(--color-background-2);
+    .clear {
+      cursor: pointer;
+      display: flex;
+      gap: $padding-unit-sm;
+      align-items: center;
+      color: var(--color-text-grey-2);
+      .icon {
+        font-size: $fontsize-big;
+      }
+    }
   }
 }
 

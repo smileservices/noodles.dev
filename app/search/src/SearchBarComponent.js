@@ -56,6 +56,16 @@ export default function SearchBarComponent({search, state}) {
         )
     }
 
+    function searchOverlayContent(content, waiting){
+        if (waiting) {
+            return waiting;
+        }
+        if (content) return (<span className="clear" onClick={e=>{
+            setFormData('');
+            search('');
+        }}>Clear Search <span className="icon-cancel"/></span>);
+    }
+
     return (
         <div className="search-bar-big">
             <form onSubmit={e => {
@@ -71,7 +81,7 @@ export default function SearchBarComponent({search, state}) {
                            setFormData(e.target.value)
                        }}
                 />
-                <span className="search-overlay">{waiting ? waiting : 'Press Enter'}</span>
+                <span className="search-overlay">{searchOverlayContent(formData, waiting)}</span>
                 {showSuggestions ? <SuggestionsList suggestions={suggestions}/> : ''}
             </form>
         </div>
