@@ -1,37 +1,33 @@
 {% load static %}
-<footer class="footer column-container">
-    <section class="top-container column-container">
-        <div class="about">
-            <div class="text">
-                <h3>Why Noodles?</h3>
-                <p>We know how difficult is to learn software engineering.
-                    It's a steep learning curve and the threshold required for getting a job in the industry is pretty
-                    high.
-                    Therefore, many students have to live economically and eat the cheapest food there is: instant
-                    noodles!
-                    <br>
-                    We believe that noodles is a symbol for the empowered student that fights through messy lines of
-                    code and confusing bugs. Never loose hope!
-                    That's why we have noodles here.
-                </p>
-            </div>
-        </div>
+<footer class="footer">
+    <section class="about column-container">
+        <header>Why Noodles?</header>
+        <p>We know how difficult is to learn software engineering.
+            It's a steep learning curve and the threshold required for getting a job in the industry is pretty
+            high.
+            Therefore, many students have to live economically and eat the cheapest food there is: instant
+            noodles!
+            <br>
+            We believe that noodles is a symbol for the empowered student that fights through messy lines of
+            code and confusing bugs. Never loose hope!
+            That's why we have noodles here.
+        </p>
     </section>
-    <section class="bottom-container">
-        <div class="social">
-            <div class="follow">
-                <a href="https://www.facebook.com/Noodlesdev-246723616485973">
-                    <span class="icon-facebook2"> </span> Facebook Page
-                </a>
-                <a href="https://www.facebook.com/groups/noodles.dev">
-                    <span class="icon-facebook2"> </span> Discussion Group
-                </a>
-            </div>
-        </div>
-        <div class="terms">
-            <a href="{% url 'privacy-policy' %}">Privacy Policy</a>
-            <a href="{% url 'terms-policy' %}">Terms and Conditions</a>
-            <a href="{% url 'cookie-policy' %}">Cokies Policy</a>
+    <section class="links column-container">
+        <header>Resources</header>
+        <a href="{% url 'privacy-policy' %}">Privacy Policy</a>
+        <a href="{% url 'terms-policy' %}">Terms and Conditions</a>
+        <a href="{% url 'cookie-policy' %}">Cokies Policy</a>
+    </section>
+    <section class="social column-container">
+        <header>Follow Us</header>
+        <div class="links">
+            <a href="https://www.facebook.com/Noodlesdev-246723616485973">
+                <span class="icon-facebook2"> </span> Facebook Page
+            </a>
+            <a href="https://www.facebook.com/groups/noodles.dev">
+                <span class="icon-facebook2"> </span> Discussion Group
+            </a>
         </div>
     </section>
 </footer>
