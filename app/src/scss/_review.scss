@@ -1,11 +1,14 @@
 .review {
-  > * {
-    margin-bottom: $padding-unit;
-  }
-
-  > *:last-child {
-    margin-bottom: 0;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: $padding-unit;
+  //> * {
+  //  margin-bottom: $padding-unit;
+  //}
+  //
+  //> *:last-child {
+  //  margin-bottom: 0;
+  //}
 
   .rating {
     margin-bottom: 0;
@@ -21,5 +24,19 @@
   .description {
     font-size: $fontsize-md;
     max-width: $fontsize-big*40;
+  }
+}
+
+.review-listing {
+
+  .review-title {
+    font-size: $fontsize-md;
+    color: var(--color-text-grey-2);
+    margin: $padding-unit-md 0;
+  }
+  .review {
+    background-color: var(--color-background-3);
+    border-radius: $radius-medium;
+    padding: $padding-unit-big;
   }
 }

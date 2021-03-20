@@ -10,7 +10,6 @@ export default function Review({review}) {
     const [deleted, setDeleted] = useState(false);
     const [confirm, setConfirm] = useState('');
 
-    const author_full_name = review.author.get_full_name;
     const api_vote_url_endpoint = REVIEW_API + review.pk + '/vote/';
     const current_owner = review.author.id === USER_ID;
 
@@ -19,7 +18,7 @@ export default function Review({review}) {
             REVIEW_API + review.pk + '/',
             setWaiting,
             text => setDeleted(text),
-            data => setAlert(<Alert close={e=>setAlert(null)} text='An error occured' type='danger'/>)
+            data => setAlert(<Alert close={e => setAlert(null)} text='An error occured' type='danger'/>)
         )
     }
 
@@ -47,9 +46,9 @@ export default function Review({review}) {
             {waiting}
             {alert}
             <div className="rating">
-                <span className="stars"><StarRating rating={review.rating} maxRating={MAX_RATING} /></span>
+                <span className="stars"><StarRating rating={review.rating} maxRating={MAX_RATING}/></span>
+                <p className="published">{date.toUTCString()} by <a href={'/users/profile/'+review.author.username}>{review.author.username}</a></p>
             </div>
-            <p className="published">{date.toUTCString()} by {author_full_name}</p>
             {current_owner
                 ? <div className="toolbar">{deleteElement(confirm)}</div>
                 : ''

@@ -1,39 +1,65 @@
 {% load star_rating %}
-<div class="result">
-    {% with res=review.study_resource %}
-        <p class="rating">{% star_rating res.rating %}</p>
-        <p class="title">
-            <a href="{% url 'study-resource-detail' res.id res.slug %}">{{ res.name }}</a>
-        </p>
 
-        <div class="group-muted">
-        <p class="publication-date">{{ res.publication_date }}</p>
-        <p class="experience-level">Difficulty: {{ res.experience_level_label }}</p>
-        <p class="type">{{ res.media_label }}, {{ res.price_label }}</p>
-        </div>
+<div class="review-listing">
+    <div class="result resource">
+        {% with result=review.study_resource %}
+            <div class="left">
+                <p class="title">
+            <span class="tags">
+                {% for tech in result.studyresourcetechnology_set.all %}
+                    <a class="tech" href="{{ tech.absolute_url }}">
+                    <span>
+                    <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.50198 4.5L11.002 1H2.00198V0.5C2.00198 0.224 1.77798 0 1.50198 0C1.22598 0 1.00198 0.224 1.00198 0.5V11.5C1.00198 11.776 1.22598 12 1.50198 12C1.77798 12 2.00198 11.776 2.00198 11.5V8H11.002L9.50198 4.5Z"
+                          fill="black"/>
+                    </svg>
+                     {{ tech }}
+                    </span>
+                </a>
+                {% endfor %}
+                <a href="{% url 'search_page' %}?tab=resources&category={{ result.category }}">{{ result.category }}</a>
+                <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
+                   itemprop="educationalLevel">{{ result.experience_level_label }}</a>
+            </span>
+                </p>
+                <div class="listing-title">
+                    <h4 class="title" itemprop="name">
+                        <a itemprop="name"
+                           href="{% url 'study-resource-detail' result.id result.slug %}">{{ result.name }}</a>
+                    </h4>
+                    <span class="published">{{ result.publication_date }} By {{ result.published_by }}</span>
+                </div>
+                <div class="tags" itemprop="keywords">
+                    {% for tag in result.tags.all %}
+                        <a class="tag" href="{% url 'search_page' %}?tab=resources&tags={{ tag.name }}"># {{ tag }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if result.image %}
+                <div class="right">
+                    <div class="image">
+                        <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">
+                            <img class="primary-image" src="{{ result.image.small }}" alt="">
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
 
-        <p class="tags">{% for tag in res.tags.all %}
-            <a class="tag" href="{% url 'search' %}?tags={{ tag.id }}">{{ tag }}</a>
-        {% endfor %}
-            {% for tech in res.technologies.all %}
-                <a class="tech" href="{% url 'search' %}?technologies={{ tech.id }}">{{ tech }}</a>
-            {% endfor %}
-        </p>
-    {% endwith %}
-</div>
-
-<div class="review">
-    <p class="rating">{% star_rating review.rating %}</p>
-    <p class="date">{{ review.created_at }}</p>
-    <p class="text">{{ review.text }}</p>
-    <div class="thumbs">
-        <div class="down">
-            <span class="icon-thumbs-o-down"></span>
-            <span>{{ review.thumbs_down }}</span>
-        </div>
-        <div class="up">
-            <span class="icon-thumbs-o-up"></span>
-            <span>{{ review.thumbs_up }}</span>
+    <div class="review-title">Your review on {{ review.created_at }}</div>
+    <div class="review">
+        <span class="rating"><span class="stars">{% star_rating review.rating %}</span></span>
+        <div class="content">{{ review.text }}</div>
+        <div class="thumbs">
+            <div class="down">
+                <span class="icon-thumbs-o-down"></span>
+                <span>{{ review.thumbs_down }}</span>
+            </div>
+            <div class="up">
+                <span class="icon-thumbs-o-up"></span>
+                <span>{{ review.thumbs_up }}</span>
+            </div>
         </div>
     </div>
 </div>
