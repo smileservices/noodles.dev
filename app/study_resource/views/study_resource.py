@@ -23,33 +23,6 @@ from study_resource import serializers
 from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
 
 
-def search(request):
-    queryset = StudyResource.objects.order_by_rating_then_publishing_date()
-    filtered = filters.StudyResourceFilterMatches(request.GET, queryset=queryset)
-    user_query_term = filtered.data["contains"] if "contains" in filtered.data else "your query"
-    message = f'Found {filtered.qs.count()} results matching "{user_query_term}"'
-    if filtered.qs.count() == 0:
-        filtered = filters.StudyResourceFilterSimilar(request.GET, queryset=queryset)
-        if filtered.qs.count() > 0:
-            message = f'Found {filtered.qs.count()} results similar to "{user_query_term}"'
-        else:
-            message = f'Count not find any results matching or similar to "{user_query_term}"'
-    paginator = Paginator(filtered.qs, 10)
-    try:
-        results = paginator.page(request.GET.get('page', 1))
-    except PageNotAnInteger:
-        results = paginator.page(1)
-    except EmptyPage:
-        results = paginator.page(paginator.num_pages)
-    data = {
-        'message': message,
-        'filter': filtered,
-        'paginator': paginator,
-        'results': results,
-    }
-    return render(request, 'study_resource/search_page.html', data)
-
-
 def list_all(request):
     queryset = StudyResource.objects.all()
     paginator = Paginator(queryset, 10)
