@@ -5,6 +5,7 @@ import apiList from "../../src/api_interface/apiList";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
 import Review from "./Review";
 import ReviewCreateController from "./forms/ReviewCreateController";
+import {SkeletonLoadingReviews} from "../../src/components/skeleton/SkeletonLoadingReviews";
 
 function ResourceReviewsApp() {
     const [reviews, setReviews] = useState([]);
@@ -37,7 +38,7 @@ function ResourceReviewsApp() {
             <header>
                 <h3>Reviews</h3>
             </header>
-            {waiting}
+            {waiting ? SkeletonLoadingReviews : ''}
             {alert}
             <PaginatedLayout data={reviews.results} resultsCount={reviews.count} pagination={pagination}
                              setPagination={setPagination}

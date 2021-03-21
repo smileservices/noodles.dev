@@ -14,6 +14,12 @@
     height: $fontsize-md*13;
   }
 
+  &.review {
+    height: $fontsize-md*9;
+    background-color: var(--color-background);
+    background: linear-gradient(90deg, var(--color-background-5), transparent);
+  }
+
   &.header {
     height: $padding-unit-big + $fontsize-big;
     margin-bottom: $padding-unit-big;

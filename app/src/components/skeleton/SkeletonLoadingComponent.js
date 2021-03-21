@@ -3,6 +3,7 @@ import {makeId} from "../utils";
 
 const SkeletonFilter = () => (<div className="skeleton filter-select"/>);
 const SkeletonResult = () => (<div className="skeleton result"/>);
+const SkeletonReview = () => (<div className="skeleton review"/>);
 const SkeletonTag = () => (<span className="skeleton tag"/>);
 const SkeletonSidebarTech = () => (<span />);
 const SkeletonHeader = ({size}) => (<div className={'skeleton header '+size} />)
@@ -15,6 +16,9 @@ export function SkeletonChildrenFactory(name, count) {
             break;
         case 'result':
             Element = SkeletonResult;
+            break;
+        case 'review':
+            Element = SkeletonReview;
             break;
         case 'tag':
             Element = SkeletonTag;
