@@ -4,7 +4,7 @@ import {makeId} from "../utils";
 const SkeletonFilter = () => (<div className="skeleton filter-select"/>);
 const SkeletonResult = () => (<div className="skeleton result"/>);
 const SkeletonTag = () => (<span className="skeleton tag"/>);
-const SkeletonSidebarTech = () => (<a className="skeleton sidebar-link"/>);
+const SkeletonSidebarTech = () => (<span />);
 const SkeletonHeader = ({size}) => (<div className={'skeleton header '+size} />)
 
 export function SkeletonChildrenFactory(name, count) {

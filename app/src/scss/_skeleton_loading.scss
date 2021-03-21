@@ -38,12 +38,19 @@
     border-radius: 1.5rem;
   }
 
-  &.sidebar-link {
-    height: $fontsize-big;
-    margin: $padding-unit;
-    background-color: var(--color-background-5);
-    background: linear-gradient(90deg, var(--color-background-5), transparent);
-    border-radius: 1.5rem;
-  }
+  &.links {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-unit;
+    margin-top: $padding-unit*2;
+    padding: $padding-unit-sm;
+    background: none;
 
+    > * {
+      height: $fontsize-md*1.5;
+      border-radius: 1.5rem;
+      background-color: var(--color-background-5);
+      background: linear-gradient(90deg, var(--color-background-5), transparent);
+    }
+  }
 }
