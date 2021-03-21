@@ -72,17 +72,15 @@ aside.sidebar {
   }
 
   .links {
-    //padding-top: $padding-unit-big*2;
+    margin-top: $padding-unit-big*2;
     padding-bottom: $padding-unit-sm;
     overflow-y: auto;
     height: 100vh;
     font-size: $fontsize-sm;
 
-    h5 {
-      margin-top: $padding-unit-big*2;
-      margin-bottom: $padding-unit-sm;
-      padding-left: $padding-unit-sm;
-      padding-right: $padding-unit-sm;
+    .category {
+      position: relative;
+      margin-bottom: $padding-unit-big;
     }
 
     a {

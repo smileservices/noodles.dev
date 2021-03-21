@@ -8,7 +8,7 @@ import StudyResourceSearchListing from "../../study_resource/src/StudyResourceSe
 import CollectionSearchListing from "../../study_collection/src/CollectionSearchListing";
 import TechnologySearchListing from "../../technology/src/TechnologySearchListing";
 import RelatedComponent from "./RelatedComponent";
-
+import {SkeletonLoadingResults} from "../../src/components/skeleton/SkeletonLoadingResults";
 import {codeParamsToUrl, decodeParamsFromUrl, updateUrl, getAvailableFilters} from "../../src/components/utils";
 
 
@@ -42,7 +42,7 @@ function SearchApp() {
     const defaultTab = urlParams.get('tab') ? urlParams.get('tab') : 'resources';
     const defaultTabState = {
         results: [],
-        waiting: false,
+        waiting: true,
         filters: [],
         availableFilters: {},
         sorting: [],
@@ -119,6 +119,7 @@ function SearchApp() {
             d[k] = pagination[k];
             return d
         });
+        setTabState({...tabState, waiting: true});
         codeParamsToUrl(params, filters);
         codeParamsToUrl(params, paginationList);
         fetch(url + params.toString(), {
@@ -128,7 +129,7 @@ function SearchApp() {
                 return result.json();
             }
         }).then(data => {
-            setTabState({...tabState, availableFilters: getTabFilters(tab, data.filters), results: data});
+            setTabState({...tabState, availableFilters: getTabFilters(tab, data.filters), waiting:false, results: data});
         })
     }
 
@@ -222,6 +223,7 @@ function SearchApp() {
     function showCurrentTab(currentTab) {
         switch (currentTab) {
             case 'resources':
+                if (resources.waiting) return SkeletonLoadingResults;
                 return (
                     <div className="resources">
                         <FilterComponent
@@ -253,6 +255,7 @@ function SearchApp() {
                     </div>
                 );
             case 'collections':
+                if (collections.waiting) return SkeletonLoadingResults;
                 return (
                     <div className="collections">
                         <FilterComponent
@@ -284,6 +287,7 @@ function SearchApp() {
                     </div>
                 );
             case 'technologies':
+                if (technologies.waiting) return SkeletonLoadingResults;
                 return (
                     <div className="technologies">
                         <FilterComponent

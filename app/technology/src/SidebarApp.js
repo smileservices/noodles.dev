@@ -52,8 +52,7 @@ function SidebarApp() {
     </a>;
 
     const CategoryListing = ({c, techList}) => (
-        <div className="category">
-            <h5>{c}</h5>
+        <div className="category" data-tooltip={c}>
             {techList.map(t => <TechListing t={t} key={makeId(3)}/>)}
         </div>
     );
