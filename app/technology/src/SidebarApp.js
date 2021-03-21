@@ -1,6 +1,7 @@
 import React, {useEffect, useState, Fragment} from "react";
 import ReactDOM from "react-dom";
 import {makeId} from "../../src/components/utils";
+import {SkeletonLoadingResults} from "../../src/components/skeleton/SkeletonLoadingSidebar";
 
 const other_icon = (<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -19,12 +20,11 @@ function SidebarApp() {
     * */
 
     const [data, setData] = useState({'featured': [], 'other': []});
-    const [waiting, setWaiting] = useState('');
+    const [waiting, setWaiting] = useState(true);
     const [error, setError] = useState('');
     const [showOther, setShowOther] = useState(false);
 
     useEffect(e => {
-        //todo fetch technologies options
         /*
         * data should be like: {featured: {category: [{logo: ..., name: ..., url: ...}, ...], category2: ...}, other: {...same structure...}}
         *
@@ -32,7 +32,7 @@ function SidebarApp() {
         fetch(URL, {
             method: "GET",
         }).then(result => {
-            setWaiting('');
+            setWaiting(false);
             if (result.ok) {
                 return result.json();
             } else {
@@ -87,11 +87,7 @@ function SidebarApp() {
         }
     }
 
-    if (waiting) return (
-        <div className="links">
-            {waiting}
-        </div>
-    )
+    if (waiting) return SkeletonLoadingResults;
 
     if (error) return (
         <div className="links">

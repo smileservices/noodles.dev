@@ -1,5 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react";
 import StudyResourceSearchListing from "../../study_resource/src/StudyResourceSearchListing";
+import {SkeletonLoadingRelatedSection} from "../../src/components/skeleton/SkeletonLoadingRelatedSection";
 
 const flagIcon = (
     <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -10,11 +11,13 @@ const flagIcon = (
 
 export default function RelatedComponent({addFilter}) {
     const [data, setData] = useState({});
+    const [waiting, setWaiting] = useState(true);
 
     useEffect(e => {
         fetch('/search/api/related/', {
             method: 'GET',
         }).then(result => {
+            setWaiting(false);
             if (result.ok) {
                 return result.json();
             }
@@ -22,8 +25,6 @@ export default function RelatedComponent({addFilter}) {
             setData(data);
         })
     }, [])
-
-    if (!Object.keys(data).length) return 'waiting...'
 
     const clickTechTag = addFilter
         ? tech => addFilter('tech_v', tech)
@@ -34,6 +35,7 @@ export default function RelatedComponent({addFilter}) {
 
     const resourceFilter = addFilter ? addFilter : (name, value) => window.location = '/search/?tab=resources&'+name +'='+value;
 
+    if (waiting || Object.keys(data).length === 0) return SkeletonLoadingRelatedSection;
     return (
         <Fragment>
             {Object.keys(data.aggregations.technologies).length ?

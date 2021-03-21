@@ -1,0 +1,49 @@
+.skeleton {
+  background-color: var(--color-background-3);
+  background: linear-gradient(90deg, var(--color-background-3), transparent);
+  border-radius: $radius-medium;
+
+  &.filter-select {
+    height: $padding-unit-md*2+$fontsize-md;
+    margin-bottom: $padding-unit;
+    max-width: $fontsize-big*13;
+    border-radius: 1.5rem;
+  }
+
+  &.result {
+    height: $fontsize-md*13;
+  }
+
+  &.header {
+    height: $padding-unit-big + $fontsize-big;
+    margin-bottom: $padding-unit-big;
+    border-radius: 1.5rem;
+
+    &.sm {
+      width: $fontsize-big*10;
+    }
+
+    &.md {
+      width: $fontsize-big*15;
+    }
+
+    &.bg {
+      width: $fontsize-big*20;
+    }
+  }
+
+  &.tag {
+    height: $fontsize-big;
+    width: $fontsize-big*4;
+    border-radius: 1.5rem;
+  }
+
+  &.sidebar-link {
+    height: $fontsize-big;
+    margin: $padding-unit;
+    background-color: var(--color-background-5);
+    background: linear-gradient(90deg, var(--color-background-5), transparent);
+    border-radius: 1.5rem;
+  }
+
+}

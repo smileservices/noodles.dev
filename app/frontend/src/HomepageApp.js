@@ -9,13 +9,15 @@ import {FilterComponent} from "../../src/components/FilterComponent";
 import SearchBarComponent from "../../search/src/SearchBarComponent";
 import RelatedComponent from "../../search/src/RelatedComponent";
 
-
 import {codeParamsToUrl, getAvailableFilters} from "../../src/components/utils";
 
-const url_aggregations = '/api/aggregations';
+import {SkeletonLoadingResults} from "../../src/components/skeleton/SkeletonLoadingResults";
+
 const url_aggr_filters_resources = 'api/aggregations/study-resources';
 const url_aggr_filters_collections = '/api/aggregations/collections';
 const url_aggr_filters_technologies = '/api/aggregations/technologies';
+
+
 
 function HomepageApp() {
 
@@ -51,6 +53,10 @@ function HomepageApp() {
     const [collections, setCollections] = useState(defaultTabState);
     const [technologies, setTechnologies] = useState(defaultTabState);
 
+    const [waitingResources, setWaitingResources] = useState(true);
+    const [waitingCollections, setWaitingCollections] = useState(true);
+    const [waitingTechnologies, setWaitingTechnologies] = useState(true);
+
     function setSearch(term) {
         // this gets all search params (tab, term, filters) and redirects to the search page
         const [tabState, setTabState] = getTabState(currentTab);
@@ -60,7 +66,7 @@ function HomepageApp() {
             params.set('search', term);
         }
         codeParamsToUrl(params, tabState.filters);
-        window.location = SEARCH_URL+'?'+params.toString();
+        window.location = SEARCH_URL + '?' + params.toString();
     }
 
 
@@ -69,6 +75,7 @@ function HomepageApp() {
         fetch(url_aggr_filters_resources, {
             method: 'GET'
         }).then(result => {
+            setWaitingResources(false);
             if (result.ok) {
                 result.json().then(data => setResources({
                     rated_highest: data.rated_highest,
@@ -83,6 +90,7 @@ function HomepageApp() {
         fetch(url_aggr_filters_collections, {
             method: 'GET'
         }).then(result => {
+            setWaitingCollections(false);
             if (result.ok) {
                 result.json().then(data => setCollections({
                     rated_highest: data.rated_highest,
@@ -97,6 +105,7 @@ function HomepageApp() {
         fetch(url_aggr_filters_technologies, {
             method: 'GET'
         }).then(result => {
+            setWaitingTechnologies(false);
             if (result.ok) {
                 result.json().then(data => setTechnologies({
                     rated_highest: data.rated_highest,
@@ -159,6 +168,7 @@ function HomepageApp() {
     function showCurrentTab(currentTab) {
         switch (currentTab) {
             case 'resources':
+                if (waitingResources) return SkeletonLoadingResults;
                 return (
                     <div className="resources">
                         <FilterComponent
@@ -166,14 +176,14 @@ function HomepageApp() {
                             fields={resources.availableFilters}
                             queryFilter={resources.filters}
                             setQueryFilter={filter => setResources({...resources, filters: filter})}
-                            applyButtonAction={e=>setSearch(false)} //because we have to bind data to searchBar 2way
+                            applyButtonAction={e => setSearch(false)} //because we have to bind data to searchBar 2way
                         />
                         {resources.rated_highest.items?.length > 0 ?
                             <div className="most-voted">
                                 <h4>Best Reviewed Resources</h4>
                                 <div className="results">
                                     {resources.rated_highest.items.map(resource =>
-                                        <StudyResourceSearchListing key={"rated-resource"+resource.pk} data={resource}
+                                        <StudyResourceSearchListing key={"rated-resource" + resource.pk} data={resource}
                                                                     addFilter={addFilterfactory('resources')}/>
                                     )}
                                 </div>
@@ -182,6 +192,7 @@ function HomepageApp() {
                     </div>
                 );
             case 'collections':
+                if (waitingCollections) return SkeletonLoadingResults;
                 return (
                     <div className="collections">
                         <FilterComponent
@@ -189,26 +200,26 @@ function HomepageApp() {
                             fields={collections.availableFilters}
                             queryFilter={collections.filters}
                             setQueryFilter={filter => setCollections({...collections, filters: filter})}
-                            applyButtonAction={e=>setSearch(false)}//because we have to bind data to searchBar 2way
+                            applyButtonAction={e => setSearch(false)}//because we have to bind data to searchBar 2way
                         />
                         {collections.rated_highest.items?.length > 0 ?
                             <div className="most-voted">
                                 <h4>Most Up Voted Collections</h4>
                                 <div className="results">
                                     {collections.rated_highest.items.map(resource =>
-                                        <CollectionSearchListing key={"rated-collection"+resource.pk} data={resource}
-                                                                    addFilter={addFilterfactory('collections')}/>
+                                        <CollectionSearchListing key={"rated-collection" + resource.pk} data={resource}
+                                                                 addFilter={addFilterfactory('collections')}/>
                                     )}
                                 </div>
                             </div>
                             : ''}
-                            {collections.latest.items?.length > 0 ?
+                        {collections.latest.items?.length > 0 ?
                             <div className="latest">
                                 <h4>Latest Added Collections</h4>
                                 <div className="results">
                                     {collections.latest.items.map(resource =>
-                                        <CollectionSearchListing key={"latest-collection"+resource.pk} data={resource}
-                                                                    addFilter={addFilterfactory('collections')}/>
+                                        <CollectionSearchListing key={"latest-collection" + resource.pk} data={resource}
+                                                                 addFilter={addFilterfactory('collections')}/>
                                     )}
                                 </div>
                             </div>
@@ -216,6 +227,7 @@ function HomepageApp() {
                     </div>
                 );
             case 'technologies':
+                if (waitingTechnologies) return SkeletonLoadingResults;
                 return (
                     <div className="technologies">
                         <FilterComponent
@@ -223,26 +235,26 @@ function HomepageApp() {
                             fields={technologies.availableFilters}
                             queryFilter={technologies.filters}
                             setQueryFilter={filter => setTechnologies({...technologies, filters: filter})}
-                            applyButtonAction={e=>setSearch(false)}//because we have to bind data to searchBar 2way
+                            applyButtonAction={e => setSearch(false)}//because we have to bind data to searchBar 2way
                         />
                         {technologies.rated_highest.items?.length > 0 ?
                             <div className="most-voted">
                                 <h4>Most Up Voted Technologies</h4>
                                 <div className="results">
                                     {technologies.rated_highest.items.map(resource =>
-                                        <TechnologySearchListing key={"rated-tech"+resource.pk} data={resource}
-                                                                    addFilter={addFilterfactory('technologies')}/>
+                                        <TechnologySearchListing key={"rated-tech" + resource.pk} data={resource}
+                                                                 addFilter={addFilterfactory('technologies')}/>
                                     )}
                                 </div>
                             </div>
                             : ''}
-                            {technologies.latest.items?.length > 0 ?
+                        {technologies.latest.items?.length > 0 ?
                             <div className="latest">
                                 <h4>Latest Added Technologies</h4>
                                 <div className="results">
                                     {technologies.latest.items.map(resource =>
-                                        <TechnologySearchListing key={"latest-tech"+resource.pk} data={resource}
-                                                                    addFilter={addFilterfactory('technologies')}/>
+                                        <TechnologySearchListing key={"latest-tech" + resource.pk} data={resource}
+                                                                 addFilter={addFilterfactory('technologies')}/>
                                     )}
                                 </div>
                             </div>
@@ -276,7 +288,7 @@ function HomepageApp() {
                         className={headerClass('technologies')}>Technologies
                         {getAggregationsCounter(technologies)}</h4>
                 </div>
-                <SearchBarComponent search={setSearch} state={{placeholder: 'Search For Something Specific',q: ''}}/>
+                <SearchBarComponent search={setSearch} state={{placeholder: 'Search For Something Specific', q: ''}}/>
                 {showCurrentTab(currentTab)}
             </section>
             <section id="related" className="column-container">
