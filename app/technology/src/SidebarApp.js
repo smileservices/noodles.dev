@@ -1,7 +1,7 @@
 import React, {useEffect, useState, Fragment} from "react";
 import ReactDOM from "react-dom";
 import {makeId} from "../../src/components/utils";
-import {SkeletonLoadingResults} from "../../src/components/skeleton/SkeletonLoadingSidebar";
+import {SkeletonLoadingSidebar} from "../../src/components/skeleton/SkeletonLoadingSidebar";
 
 const other_icon = (<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -86,7 +86,7 @@ function SidebarApp() {
         }
     }
 
-    if (waiting) return SkeletonLoadingResults;
+    if (waiting) return SkeletonLoadingSidebar;
 
     if (error) return (
         <div className="links">
