@@ -6,7 +6,7 @@ import EditSuggestionListing from "../../components/edit_suggestion/EditSuggesti
 import {remove_modal_class_from_body} from "../../vanilla/modal";
 
 import EditSuggestionForm from "./EditSuggestionForm";
-
+import {SkeletonLoadingEdits} from "../skeleton/SkeletonLoadingEdits";
 /*
 *  Displays the edit form for resource and the paginated edit suggestion listings
 *
@@ -65,7 +65,7 @@ export default function EditApp({ResourceForm, api_urls}) {
             </div>
             <section className="related column-container">
                 <h3>Edit Suggestions</h3>
-                {editSuggestionsWaiting}
+                {editSuggestionsWaiting ? <div className="tile-container">{SkeletonLoadingEdits}</div> : ''}
                 {editSuggestionsAlert}
                 <PaginatedLayout data={editSuggestions.results} resultsCount={editSuggestions.count}
                                  pagination={editSuggestionsPagination}

@@ -1,7 +1,6 @@
 import React, {useState, useEffect, Fragment} from "react";
 
 import apiUpdate from "../../api_interface/apiUpdate";
-
 import Alert from "../Alert";
 import {Textarea} from "../form";
 import Waiting from "../Waiting";
