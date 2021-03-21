@@ -9,6 +9,7 @@
     <meta name="keywords" content="
 
 
+
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -49,10 +50,13 @@
             </section>
             <section id="reviews" class="column-container card reviews"></section>
         </div>
+        {% include 'study_resource/right_side.html' %}
     </div>
+
 {% endblock %}
 
 {% block extra_js %}
     <script src="{% static 'study_resource/study-resource-detail-reviews.js' %}"></script>
     <script src="{% static 'study_resource/detail-toolbar.js' %}"></script>
+    <script src="{% static 'related-app.js' %}"></script>
 {% endblock %}
