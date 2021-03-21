@@ -1,36 +1,31 @@
 import React from "react";
 import {makeId} from "../utils";
 
-const SkeletonFilter = () => (<div className="skeleton filter-select"/>);
-const SkeletonResult = () => (<div className="skeleton result"/>);
-const SkeletonReview = () => (<div className="skeleton review"/>);
-const SkeletonTag = () => (<span className="skeleton tag"/>);
-const SkeletonSidebarTech = () => (<span />);
-const SkeletonHeader = ({size}) => (<div className={'skeleton header '+size} />)
+const SkeletonHeader = ({size}) => (<div className={'skeleton header ' + size}/>)
 
 export function SkeletonChildrenFactory(name, count) {
     let Element = '';
     switch (name) {
         case 'filter':
-            Element = SkeletonFilter;
+            Element = () => (<div className="skeleton filter-select"/>);
             break;
         case 'result':
-            Element = SkeletonResult;
+            Element = () => (<div className="skeleton result"/>);
             break;
         case 'review':
-            Element = SkeletonReview;
+            Element = () => (<div className="skeleton review"/>);
             break;
         case 'tag':
-            Element = SkeletonTag;
+            Element = () => (<span className="skeleton tag"/>);
             break;
         case 'header':
             // count this time is string
-            return [<SkeletonHeader key={makeId(4)} size={count} />,];
+            return [<SkeletonHeader key={makeId(4)} size={count}/>,];
         case 'sidebar-tech':
-            Element = SkeletonSidebarTech;
+            Element = () => (<span/>);;
             break;
         default:
-            alert('Cannot find Skeleton Element of name '+name);
+            alert('Cannot find Skeleton Element of name ' + name);
     }
     let resultList = [];
     var i = 0;

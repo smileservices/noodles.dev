@@ -8,6 +8,7 @@ import EditableComponent from "../../src/components/EditableComponent";
 
 import CollectionForm from "./CollectionForm";
 import CollectionListing from "./CollectionListing";
+import {SkeletonLoadingCollections} from "../../src/components/skeleton/SkeletonLoadingCollections";
 
 function MyCollectionsApp() {
 
@@ -62,26 +63,28 @@ function MyCollectionsApp() {
                 FormViewComponent={CollectionForm}
                 successCallback={data => setPagination({...pagination, current: 1})}
             />
-            <div id="collections" className="column-container">
-                {waiting}
-                {alert}
-                <PaginatedLayout data={collections.results} resultsCount={collections.count} pagination={pagination}
-                                 setPagination={setPagination}
-                                 mapFunction={item => {
-                                     return (<EditableComponent
-                                         key={'collection' + item.pk}
-                                         endpoint={COLLECTIONS_API}
-                                         data={item}
-                                         extraData={{setModal: setDetailModal, setAlert: setAlert, formTitle: 'Edit Collection'}}
-                                         DisplayViewComponent={CollectionListing}
-                                         FormViewComponent={CollectionForm}
-                                         updateCallback={data => setPagination({...pagination, current: 1})}
-                                         deleteCallback={() => handleDelete(item)}
-                                     />)
-                                 }}
-                                 resultsContainerClass="tile-container"
-                />
-            </div>
+            {waiting ? SkeletonLoadingCollections : ''}
+            {alert}
+            <PaginatedLayout data={collections.results} resultsCount={collections.count} pagination={pagination}
+                             setPagination={setPagination}
+                             mapFunction={item => {
+                                 return (<EditableComponent
+                                     key={'collection' + item.pk}
+                                     endpoint={COLLECTIONS_API}
+                                     data={item}
+                                     extraData={{
+                                         setModal: setDetailModal,
+                                         setAlert: setAlert,
+                                         formTitle: 'Edit Collection'
+                                     }}
+                                     DisplayViewComponent={CollectionListing}
+                                     FormViewComponent={CollectionForm}
+                                     updateCallback={data => setPagination({...pagination, current: 1})}
+                                     deleteCallback={() => handleDelete(item)}
+                                 />)
+                             }}
+                             resultsContainerClass="column-container"
+            />
             {detailModal}
         </Fragment>
     );
