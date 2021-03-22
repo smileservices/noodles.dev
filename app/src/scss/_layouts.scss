@@ -14,6 +14,7 @@ main {
     padding-bottom: $padding-unit-md;
     cursor: pointer;
     color: var(--color-background-5);
+
     a, a:visited {
       color: var(--color-background-5);
     }
@@ -31,6 +32,7 @@ main {
   .tab-headers > *.active {
     color: var(--color-blue);
     border-bottom: $fontsize-sm/4 solid var(--color-blue);
+
     a, a:visited {
       color: var(--color-blue);
     }
@@ -89,4 +91,43 @@ main {
   background-color: var(--color-background-1);
   border-radius: $radius-big;
   overflow: initial;
+}
+
+.success-card {
+  padding: $fontsize-sm*4 $padding-unit-big;
+  justify-content: center;
+  text-align: center;
+
+  #confetti-canvas {
+    position: absolute;
+    margin-left: -$padding-unit-big;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  header, .body, .buttons-container {
+    z-index: 10;
+  }
+
+  header {
+    font-size: $fontsize-sm*2;
+    font-weight: 700;
+    line-height: $fontsize-tn*3;
+    margin-bottom: $fontsize-sm;
+  }
+
+  .body {
+    font-size: $fontsize-md;
+    margin-bottom: $fontsize-big*2;
+    color: var(--color-text-grey);
+  }
+
+  .buttons-container {
+    display: flex;
+    flex-direction: row;
+    gap: $padding-unit-sm;
+    justify-content: center;
+  }
+
 }

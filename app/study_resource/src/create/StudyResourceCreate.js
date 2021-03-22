@@ -7,6 +7,9 @@ import CreateFormStep3 from "./CreateFormStep3";
 import Alert from "../../../src/components/Alert";
 import apiCreate from "../../../src/api_interface/apiCreate";
 import FormatDate from "../../../src/vanilla/date";
+import confettiFactory from "../../../src/vanilla/confetti";
+
+const startConfetti = confettiFactory(100, 1);
 
 function StudyResourceCreateApp() {
     const emptyDataStep1 = {
@@ -51,6 +54,11 @@ function StudyResourceCreateApp() {
         (<p>Tags and Technology</p>),
         (<p>Final Details</p>),
     ]
+
+    useEffect(() => {
+        if (created) console.log('created effect');
+        if (created) startConfetti('confetti-canvas');
+    }, [created, ]);
 
     useEffect(() => {
         //get categories options
@@ -133,7 +141,7 @@ function StudyResourceCreateApp() {
 
         * */
         data.category = dataStep3.category.value;
-        data.technologies = dataStep2.technologies.map(tech=>{
+        data.technologies = dataStep2.technologies.map(tech => {
             if (!tech.version) tech.version = 0;
             return tech;
         });
@@ -256,18 +264,22 @@ function StudyResourceCreateApp() {
         }
     }
 
+    if (waiting) return (
+        <div className="success-card column-container card full-page-sm waiting">
+            {waiting}
+        </div>
+    )
+
     if (created) return (
-        <Fragment>
-            <Alert text={"Created successfully."} type="success"/>
-            <Alert
-                text={
-                    <span>
-                        <span>Resource is available here: </span>
-                        <a href={created.url}>your resource page</a>
-                    </span>
-                }
-                type="info"/>
-        </Fragment>
+        <div className="success-card column-container card full-page-sm">
+            <canvas id="confetti-canvas" key="confetti-canvas"/>
+            <header>Thank you!</header>
+            <div className="body">Thanks for adding a new resource!</div>
+            <div className="buttons-container">
+                <a className="btn" href={created.url}>View Created</a>
+                <a className="btn dark" href="/">Back to Homepage</a>
+            </div>
+        </div>
     );
 
     return (
