@@ -8,7 +8,7 @@ import Alert from "../../../src/components/Alert";
 import apiCreate from "../../../src/api_interface/apiCreate";
 import FormatDate from "../../../src/vanilla/date";
 import confettiFactory from "../../../src/vanilla/confetti";
-
+import Waiting from "../../../src/components/Waiting";
 const startConfetti = confettiFactory(100, 1);
 
 function StudyResourceCreateApp() {
@@ -265,8 +265,8 @@ function StudyResourceCreateApp() {
     }
 
     if (waiting) return (
-        <div className="success-card column-container card full-page-sm waiting">
-            {waiting}
+        <div className="card full-page-sm waiting">
+            <Waiting text={waiting}/>
         </div>
     )
 

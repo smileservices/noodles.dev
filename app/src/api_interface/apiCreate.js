@@ -1,4 +1,3 @@
-import Waiting from "../components/Waiting";
 import {formDataTransport} from "./utils";
 
 export default async function apiCreate(
@@ -7,7 +6,7 @@ export default async function apiCreate(
     success,
     setWaiting, setError, contentType
 ) {
-    setWaiting(<Waiting text={'Creating'}/>);
+    setWaiting('Creating');
     const [body, headers] = formDataTransport(data, contentType);
     await fetch(endpoint, {
         method: "POST",
