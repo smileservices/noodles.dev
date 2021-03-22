@@ -7,6 +7,11 @@ import {remove_modal_class_from_body} from "../../vanilla/modal";
 
 import EditSuggestionForm from "./EditSuggestionForm";
 import {SkeletonLoadingEdits} from "../skeleton/SkeletonLoadingEdits";
+import Modal from "../Modal";
+
+import confettiFactory from "../../vanilla/confetti";
+const startConfetti = confettiFactory(100, 1);
+
 /*
 *  Displays the edit form for resource and the paginated edit suggestion listings
 *
@@ -35,7 +40,7 @@ export default function EditApp({ResourceForm, api_urls}) {
     const [editSuggestionsAlert, setEditSuggestionsAlert] = useState(false);
 
     const [reloadResourceForm, setReloadResourceForm] = useState(false);
-
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     useEffect(() => {
         //get edit suggestions
@@ -50,6 +55,32 @@ export default function EditApp({ResourceForm, api_urls}) {
         )
     }, [editSuggestionsPagination,]);
 
+    useEffect(() => {
+        if (showSuccessModal) startConfetti('confetti-canvas');
+    }, [showSuccessModal]);
+
+    function displaySuccessModal() {
+        return (
+            <Modal close={e => {
+                setShowSuccessModal(false);
+            }}>
+                <div className="success-card column-container card full-page-sm">
+                    <canvas id="confetti-canvas" key="confetti-canvas"/>
+                    <header>Thank you!</header>
+                    <div className="body">
+                        Thanks for helping improve the content! <br/>
+                        Your edit suggestion can be voted by other users <br/>
+                        A moderator will publish or reject it
+                    </div>
+                    <div className="buttons-container">
+                        <a className="btn" href={api_urls.resource_detail}>Resource Detail</a>
+                        <a className="btn dark" href="/">Back to Homepage</a>
+                    </div>
+                </div>
+            </Modal>
+        )
+    }
+
     function resetEditSuggestionPagination() {
         setEditSuggestionsPagination({...editSuggestionsPagination, current: 1});
     }
@@ -57,7 +88,10 @@ export default function EditApp({ResourceForm, api_urls}) {
     return (
         <div className="detail-page">
             <div className="form-container">
-                <EditSuggestionForm addEditSuggestionCallback={resetEditSuggestionPagination}
+                <EditSuggestionForm addEditSuggestionCallback={()=>{
+                    resetEditSuggestionPagination();
+                    setShowSuccessModal(true);
+                }}
                                     ResourceForm={ResourceForm}
                                     api_urls={api_urls}
                                     mustReload={reloadResourceForm}
@@ -81,12 +115,13 @@ export default function EditApp({ResourceForm, api_urls}) {
                                          }}
                                          api_urls={api_urls}
                                          publishCallback={() => {
-                                             setReloadResourceForm(true)
+                                             setReloadResourceForm(true);
                                          }}
                                      />
                                  }
                 />
             </section>
+            {showSuccessModal ? displaySuccessModal() : ''}
         </div>
     );
 }
