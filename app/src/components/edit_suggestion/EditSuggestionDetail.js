@@ -63,25 +63,24 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
         let data = {'edit_suggestion_id': pk};
         if (type === 'reject') data['edit_suggestion_reject_reason'] = rejectReason;
 
-        await apiPost(url, data, wait => wait ? setWaiting('Processing your action') : setWaiting(false) )
+        await apiPost(url, data, wait => wait ? setWaiting('Processing your action') : setWaiting(false))
             .then(result => {
                 if (result.ok) {
                     result.json().then(data => {
-                            let content = (
-                                <Fragment>
-                                    <p>{data.message}</p>
-                                    <button className="btn" onClick={e => {
-                                        e.preventDefault();
-                                        if (type === 'publish') publishCallback();
-                                        deleteCallback();
-                                    }}>Ok
-                                    </button>
-                                </Fragment>
-                            );
-                            setAlertDisplay(<Alert text={content} type="success" hideable={false}
-                                                   close={e => {
-                                                       setAlertDisplay('');
-                                                   }}/>)
+                            setAlertDisplay((
+                                <div className="success-card column-container ">
+                                    <header>Thank you!</header>
+                                    <div className="body">{data.message}</div>
+                                    <div className="buttons-container">
+                                        <button className="btn" onClick={e => {
+                                            e.preventDefault();
+                                            if (type === 'publish') publishCallback();
+                                            deleteCallback();
+                                        }}>Ok
+                                        </button>
+                                    </div>
+                                </div>
+                            ))
                         }
                     );
                 } else {
