@@ -180,11 +180,19 @@ textarea {
 
   .form-control__control--is-disabled {
     background-color: var(--color-background-2);
-    color: var(--color-text-grey-2);
-  }
 
-  .form-control__control--is-disabled:hover {
-    cursor: not-allowed;
+    .form-control__indicator.form-control__dropdown-indicator {
+      color: var(--color-background-4);
+    }
+
+    .form-control__value-container {
+      background-color: var(--color-background-2);
+
+      .form-control__single-value {
+        color: var(--color-background-4);
+        font-style: italic;
+      }
+    }
   }
 
   .form-control__multi-value__remove {
@@ -208,16 +216,18 @@ textarea {
 
 .study-resource-technologies {
   margin-bottom: $padding-unit;
+
   .header {
     margin-bottom: $padding-unit-md;
   }
+
   .technology-version {
     display: grid;
     gap: $padding-unit-sm;
     grid-template-columns: minmax($fontsize-md*6, $fontsize-md*20) minmax($fontsize-md*4, $fontsize-md*7) $fontsize-md;
     align-items: center;
 
-     a.remove, a.remove:visited {
+    a.remove, a.remove:visited {
       color: var(--color-background-3);
     }
 
@@ -225,6 +235,7 @@ textarea {
       color: var(--color-text-red);
     }
   }
+
   .buttons-container {
     display: inline-flex;
     margin-top: $padding-unit-md*2;

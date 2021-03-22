@@ -94,7 +94,7 @@ export default function CreateFormStep3({data, options, categories, submit, wait
                                  error={errors.type}
                                  options={options.type}
                                  onChange={sel => setFormData({...formData, type: sel})}
-                                 props={{disabled: Boolean(waiting)}}
+                                 isDisabled={Boolean(waiting)}
                                  smallText="Free or paid"
                     />
                     <SelectReact label='Media'
@@ -102,7 +102,7 @@ export default function CreateFormStep3({data, options, categories, submit, wait
                                  error={errors.media}
                                  options={options.media}
                                  onChange={sel => setFormData({...formData, media: sel})}
-                                 props={{disabled: Boolean(waiting)}}
+                                 isDisabled={Boolean(waiting)}
                                  smallText="Media type"
                     />
                     <SelectReact label='Experience level'
@@ -110,7 +110,7 @@ export default function CreateFormStep3({data, options, categories, submit, wait
                                  error={errors.experience_level}
                                  options={options.experience_level}
                                  onChange={sel => setFormData({...formData, experience_level: sel})}
-                                 props={{disabled: Boolean(waiting)}}
+                                 isDisabled={Boolean(waiting)}
                                  smallText="Experience level required"
                     />
                 </div>
@@ -121,10 +121,10 @@ export default function CreateFormStep3({data, options, categories, submit, wait
                         'name': 'image_file',
                         'label': 'Primary Image',
                         'error': errors.image_file,
-                        'waiting': waiting,
                         'smallText': 'Primary image of the resource',
                         'originalImage': false
                     }}
+                    disabled={Boolean(waiting)}
                 />
                 <Textarea
                     id={'summary'}

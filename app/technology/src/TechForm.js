@@ -164,10 +164,10 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                     'name': 'image_file',
                     'label': 'Logo',
                     'error': errors.image_file,
-                    'waiting': waiting,
                     'smallText': 'The logo of the technology',
                     'originalImage': extraData.originalData?.image_file ? extraData.originalData.image_file.small : false
                 }}
+                disabled={Boolean(waiting)}
             />
 
             <Textarea name="description" label={false}

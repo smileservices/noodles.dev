@@ -192,7 +192,7 @@ export const SelectReactCreatable = ({name, label, smallText, error, options, va
     </div>)
 }
 
-export function ImageInputComponent({inputProps, data, setValue}) {
+export function ImageInputComponent({inputProps, data, setValue, disabled}) {
     const [activeTab, setActiveTab] = useState('url');
 
     function tabClass(tabName) {
@@ -210,7 +210,7 @@ export function ImageInputComponent({inputProps, data, setValue}) {
                         value: data.url,
                         onChange: e => setValue({url: e.target.value}),
                         type: 'text',
-                        disabled: Boolean(inputProps.waiting)
+                        disabled: Boolean(disabled)
                     }}
                            smallText={inputProps.smallText}
                            error={inputProps.error}
@@ -225,7 +225,7 @@ export function ImageInputComponent({inputProps, data, setValue}) {
                         name={inputProps.name} label={inputProps.label} inputProps={{
                         value: data.name ? data.name : '',
                         onChange: e => setValue({file: e.target.files[0], name: e.target.value}),
-                        disabled: Boolean(inputProps.waiting)
+                        disabled: Boolean(disabled)
                     }}
                         smallText={inputProps.smallText}
                         error={inputProps.error}

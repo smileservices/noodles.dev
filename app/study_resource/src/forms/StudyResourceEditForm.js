@@ -298,10 +298,10 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
                             'name': 'image_file',
                             'label': 'Primary Image',
                             'error': errors.image_file,
-                            'waiting': waiting,
                             'smallText': 'Primary image of the resource',
                             'originalImage': extraData.originalData?.image_file ? extraData.originalData.image_file.small : false
                         }}
+                        disabled={Boolean(waiting)}
                     />
                     <div className="row">
                         <Input
