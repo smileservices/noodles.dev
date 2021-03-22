@@ -56,7 +56,6 @@ function StudyResourceCreateApp() {
     ]
 
     useEffect(() => {
-        if (created) console.log('created effect');
         if (created) startConfetti('confetti-canvas');
     }, [created, ]);
 

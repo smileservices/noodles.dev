@@ -13,16 +13,7 @@ export default function CreateableFormComponent({endpoint, data, extraData, Form
         apiCreate(
             endpoint,
             validatedData,
-            (data) => {
-                let alert_text = (
-                    <Fragment>
-                        <span>Created successfully! You can see it </span>
-                        <a href={data.absolute_url}>here</a>
-                    </Fragment>
-                )
-                setAlert(<Alert text={alert_text} type="success"/>)
-                successCallback(data);
-            },
+            successCallback,
             setWaiting,
             result => {
                 if (result.status === 500) {

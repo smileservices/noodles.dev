@@ -2,8 +2,12 @@ import React, {useEffect, useState, Fragment} from "react";
 import ReactDOM from "react-dom";
 import CreateableFormComponent from "../../src/components/CreateableFormComponent";
 import TechForm from "./TechForm";
+import confettiFactory from "../../src/vanilla/confetti";
+const startConfetti = confettiFactory(100, 1);
 
 function Content() {
+
+    const [created, setCreated] = useState(false);
 
     const defaultData = {
         'name': '',
@@ -18,16 +22,32 @@ function Content() {
         'ecosystem': [],
     }
 
+    useEffect(() => {
+        if (created) startConfetti('confetti-canvas');
+    }, [created,]);
+
+    if (created) return (
+        <div className="success-card column-container card full-page-sm">
+            <canvas id="confetti-canvas" key="confetti-canvas"/>
+            <header>Thank you!</header>
+            <div className="body">Thanks for adding a new technology!</div>
+            <div className="buttons-container">
+                <a className="btn" href={created.absolute_url}>View Created</a>
+                <a className="btn dark" href="/">Back to Homepage</a>
+            </div>
+        </div>
+    );
+
     return (
-       <div className="form-container full-page-sm">
-           <CreateableFormComponent
+        <div className="form-container full-page-sm">
+            <CreateableFormComponent
                 endpoint={TECH_API}
                 FormViewComponent={TechForm}
-                successCallback={()=>{}}
+                successCallback={data => setCreated(data)}
                 data={defaultData}
                 extraData={{}}
                 contentType={'multipart'}
-           />
+            />
         </div>
     )
 }
