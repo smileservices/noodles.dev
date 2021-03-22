@@ -1,6 +1,13 @@
 import React, {useState, useEffect, Fragment} from "react"
 
-import {Input, Textarea, Checkbox, SelectReact, SelectReactCreatable, ImageInputComponent} from "../../src/components/form";
+import {
+    Input,
+    Textarea,
+    Checkbox,
+    SelectReact,
+    SelectReactCreatable,
+    ImageInputComponent
+} from "../../src/components/form";
 import apiPost from "../../src/api_interface/apiPost";
 import {FormElement, ImageInput} from "../../src/components/form";
 import Alert from "../../src/components/Alert";
@@ -187,8 +194,8 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                 onChange: e => setFormData({...formData, 'featured': !formData.featured}),
                 disabled: Boolean(waiting)
             }}
-                   smallText="Featured technologies appear on the left sidebar. Only admins can set this."
-                   error={errors.featured}
+                      smallText="Featured technologies appear on the left sidebar. Only admins can set this."
+                      error={errors.featured}
             />
             <Input name="owner" label="Tech Owner/Maintainer" inputProps={{
                 ...makeStateProps('owner'),
@@ -236,6 +243,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                                   value={formData.category}
                                   props={{isMulti: false, required: true}}
                                   error={errors.category}
+                                  isDisabled={Boolean(waiting)}
             />
             <SelectReact name="select-tags" label="Ecosystem"
                          smallText="The other technologies it's dependant on."
@@ -244,6 +252,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                          value={formData.ecosystem}
                          props={{isMulti: true}}
                          error={errors.ecosystem}
+                         isDisabled={Boolean(waiting)}
             />
             {extraData.formElements ? extraData.formElements.get_list(waiting, errors) : ''}
         </FormElement>
