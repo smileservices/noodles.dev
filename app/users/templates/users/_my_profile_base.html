@@ -9,19 +9,42 @@
             </header>
             <section class="tab-navigation">
                 <div class="tab-headers">
-                    <h4 {% if active == 'profile' %}class="active"{% endif %}><a href="{% url 'my-profile' %}">Profile</a></h4>
-                    <h4 {% if active == 'settings' %}class="active"{% endif %}><a href="{% url 'my-settings' %}">Settings</a></h4>
-                    <h4 {% if active == 'resources' %}class="active"{% endif %}><a href="{% url 'my-resources' %}">Resources</a></h4>
-                    <h4 {% if active == 'reviews' %}class="active"{% endif %}><a href="{% url 'my-reviews' %}">Reviews</a></h4>
-                    <h4 {% if active == 'collections' %}class="active"{% endif %}><a href="{% url 'my-collections' %}">Collections</a></h4>
-                    <h4 {% if active == 'technologies' %}class="active"{% endif %}><a href="{% url 'my-technologies' %}">Technologies</a></h4>
+                    <h4 {% if active == 'profile' %}class="active"{% endif %}><a
+                            href="{% url 'my-profile' %}">Profile</a></h4>
+                    <h4 {% if active == 'settings' %}class="active"{% endif %}><a href="{% url 'my-settings' %}">Settings</a>
+                    </h4>
+                    <h4 {% if active == 'resources' %}class="active"{% endif %}><a href="{% url 'my-resources' %}">Resources</a>
+                    </h4>
+                    <h4 {% if active == 'reviews' %}class="active"{% endif %}><a
+                            href="{% url 'my-reviews' %}">Reviews</a></h4>
+                    <h4 {% if active == 'collections' %}class="active"{% endif %}><a href="{% url 'my-collections' %}">Collections</a>
+                    </h4>
+                    <h4 {% if active == 'technologies' %}class="active"{% endif %}><a
+                            href="{% url 'my-technologies' %}">Technologies</a></h4>
                 </div>
                 <div class="results profile column-container">
                     {% block sub_content %}{% endblock %}
                 </div>
             </section>
         </section>
-        <section id="related-app" class="column-container"></section>
+        <section id="related-app" class="column-container">
+            <div class="skeleton header sm"></div>
+            <div class="tags">
+                <span class="skeleton tag"></span>
+                <span class="skeleton tag"></span>
+                <span class="skeleton tag"></span>
+            </div>
+            <div class="skeleton header sm"></div>
+            <div class="tags">
+                <span class="skeleton tag"></span>
+                <span class="skeleton tag"></span>
+                <span class="skeleton tag"></span>
+            </div>
+            <div class="skeleton header sm"></div>
+            <div class="skeleton result"></div>
+            <div class="skeleton result"></div>
+            <div class="skeleton result"></div>
+        </section>
     </div>
 {% endblock %}
 
