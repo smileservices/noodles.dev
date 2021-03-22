@@ -2,7 +2,12 @@
 {% load static %}
 
 {% block content %}
-    <div id="edit-app"></div>
+    <div id="edit-app">
+        <div class="waiting-container">
+            <span class="icon-hour-glass spin-stop"> </span>
+            <span class="text">Loading the Edit Suggestions App. It's a one time load.</span>
+        </div>
+    </div>
 {% endblock %}
 
 {% block extra_js %}
