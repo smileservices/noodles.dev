@@ -5,11 +5,11 @@ export const SkeletonLoadingRelatedSection = (
     <Fragment>
         {SkeletonChildrenFactory('header', 'sm')}
         <div className="tags">
-            {SkeletonChildrenFactory('tag', 5)}
+            {SkeletonChildrenFactory('tag', 3)}
         </div>
         {SkeletonChildrenFactory('header', 'sm')}
         <div className="tags">
-            {SkeletonChildrenFactory('tag', 4)}
+            {SkeletonChildrenFactory('tag', 3)}
         </div>
         {SkeletonChildrenFactory('header', 'sm')}
         {SkeletonChildrenFactory('result', 4)}

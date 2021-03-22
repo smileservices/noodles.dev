@@ -3,6 +3,12 @@
   background: linear-gradient(90deg, var(--color-background-3), transparent);
   border-radius: $radius-medium;
 
+  &.search-bar-big {
+    height: $padding-unit-md*6;
+    width: 100%;
+    margin-bottom: $padding-unit-big;
+  }
+
   &.filter-select {
     height: $padding-unit-md*2+$fontsize-md;
     margin-bottom: $padding-unit;
