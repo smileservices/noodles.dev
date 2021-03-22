@@ -1,7 +1,7 @@
 import React, {Fragment, useState} from "react";
 import apiPost from "../../src/api_interface/apiPost";
 import Alert from "../../src/components/Alert";
-
+import {WaitingInline} from "../../src/components/Waiting";
 export default function Thumbs({thumbs_obj, url_endpoint, user_id}) {
 
     /*
@@ -22,7 +22,7 @@ export default function Thumbs({thumbs_obj, url_endpoint, user_id}) {
         apiPost(
             url_endpoint,
             {vote: val},
-            setWaiting,
+            wait => wait ? setWaiting('Casting your vote') : setWaiting(''),
         ).then(
             result => {
                 if (result.ok) {
@@ -53,11 +53,11 @@ export default function Thumbs({thumbs_obj, url_endpoint, user_id}) {
         return initialClassList;
     }
 
-    if (waiting) return waiting;
+    if (waiting) return <WaitingInline text={waiting} />;
+    if (alert) return alert;
 
     return (
         <Fragment>
-            {alert}
             <div key={'vote-down' + url_endpoint} className={getThumbsClass('down', thumbs.down)}>
                 <a onClick={e => vote(e, -1)}>
                     <span className="icon-thumbs-o-down"/>

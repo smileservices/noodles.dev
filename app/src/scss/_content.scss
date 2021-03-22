@@ -1,14 +1,25 @@
 .waiting-container {
   display: block;
-  margin: 1rem 0;
+  margin: $padding-unit-big 0;
   text-align: center;
-  padding: 1rem;
+  padding: $padding-unit-big;
   color: var(--color-blue);
   border: 1px solid;
-  border-radius: 0.25rem;
+  border-radius: $radius-medium;
 
   span {
-    margin: 0 1rem;
+    margin: 0 $padding-unit-big;
+  }
+}
+
+.waiting-inline-container {
+  display: block;
+  text-align: center;
+  padding: $padding-unit-sm;
+  color: var(--color-blue);
+  background-color: var(--color-background-2);
+  span {
+    margin: 0 $padding-unit-sm;
   }
 }
 

@@ -155,7 +155,7 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
                 url: normalizedData.url,
                 pk: normalizedData.pk
             },
-            setWaiting,
+            wait => wait ? setWaiting('Validating URL') : setWaiting(''),
         ).then(result => {
             if (result.ok) {
                 return result.json();

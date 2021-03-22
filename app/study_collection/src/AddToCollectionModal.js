@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from "react";
 import {SelectReact} from "../../src/components/form";
-import Waiting from "../../src/components/Waiting";
 import Alert from "../../src/components/Alert";
 import apiPost from "../../src/api_interface/apiPost";
 import Modal from "../../src/components/Modal";
-
+import {FormElement} from "../../src/components/form";
 
 export default function AddToCollectionModal({close}) {
     const emptyForm = {
@@ -23,7 +22,7 @@ export default function AddToCollectionModal({close}) {
         // and if the resource belongs to one of it
         // should get data in select options format
 
-        setWaiting(<Waiting text="Retrieving your collections"/>);
+        setWaiting("Retrieving your collections");
         //get collections
         fetch(
             USER_COLLECTIONS_WITH_RESOURCE
@@ -47,10 +46,10 @@ export default function AddToCollectionModal({close}) {
         apiPost(
             USER_COLLECTIONS_SET_API + '?pk=' + RESOURCE_ID,
             data,
-            setWaiting,
+            wait => wait ? setWaiting('Adding resource to selected collections') : setWaiting(false),
         ).then(result => {
             if (result.ok) {
-                setAlert(<Alert close={e => setAlert(null)} text="Modified successfully" type="success" hideable={false}
+                setAlert(<Alert close={e => setAlert(null)} text="Updated successfully" type="success" hideable={false}
                                 stick={true}/>);
             } else {
                 setAlert(<Alert close={e => setAlert(null)} text="There was a problem" type="danger" hideable={false}
@@ -71,24 +70,26 @@ export default function AddToCollectionModal({close}) {
 
     return (
         <Modal close={close}>
-            <div className="header">
-                <h3>Manage Collections</h3>
-            </div>
-            <form action="" onSubmit={e => {
-                e.preventDefault();
-                validate({
-                    collections: formData.collections ? formData.collections.map(c => c.value) : []
-                }, submit);
-            }}>
+            <header><h3>Manage Collections</h3></header>
+            <FormElement
+                data={formData}
+                callback={data => {
+                    validate({
+                        collections: data.collections ? data.collections.map(c => c.value) : []
+                    }, submit);
+                }}
+                waiting={waiting}
+                alert={alert}
+            >
                 <div className="row">
                     <SelectReact
                         id="collection"
                         label="Collections"
-                        smallText={
-                            <span>
+                        smallTextUnder={
+                            (<span>
                                     <p>Select one or more collections for this resource.</p>
                                     <p><a href={MANAGE_COLLECTIONS_URL}>Manage your collections here</a></p>
-                                </span>
+                                </span>)
 
                         }
                         options={collections}
@@ -99,11 +100,7 @@ export default function AddToCollectionModal({close}) {
                         isDisabled={Boolean(waiting)}
                     />
                 </div>
-                {alert}
-                {waiting ? waiting
-                    : <button className="btn submit" type="submit">Set</button>
-                }
-            </form>
+            </FormElement>
         </Modal>
     )
 }

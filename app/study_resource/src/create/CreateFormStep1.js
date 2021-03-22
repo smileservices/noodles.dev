@@ -7,7 +7,7 @@ import {FormElement, Input} from "../../../src/components/form";
 export default function CreateFormStep1({data, submit}) {
     const [formData, setFormData] = useState(data);
     const [errors, setErrors] = useState({});
-    const [waiting, setWaiting] = useState('');
+    const [waiting, setWaiting] = useState(false);
     const [alert, setAlert] = useState('');
 
     function validate(formData) {
@@ -16,7 +16,7 @@ export default function CreateFormStep1({data, submit}) {
             {
                 url: formData.url
             },
-            setWaiting,
+            wait => wait ? setWaiting('Validating and extracting data from the URL') : setWaiting(false),
         ).then(result => {
             if (result.ok) {
                 return result.json();
@@ -52,7 +52,8 @@ export default function CreateFormStep1({data, submit}) {
                         onChange: e => setFormData({...formData, url: e.target.value}),
                         value: formData.url,
                         required: true,
-                        placeholder: "url"
+                        placeholder: "url",
+                        disabled: Boolean(waiting)
                     }}
                     smallText="Resource source url"
                     error={errors.url}

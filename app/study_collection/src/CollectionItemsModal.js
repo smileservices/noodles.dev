@@ -79,7 +79,7 @@ export default function CollectionItemsModal({collection, setMainAlert, close}) 
         apiPost(
             USER_COLLECTIONS_UPDATE_ITEMS_API,
             submit_data,
-            setWaiting,
+            wait => wait ? setWaiting('Applying changes to collection') : setWaiting(false),
         ).then(result => {
             if (result.ok) {
                 setAlert(<Alert text={'Collection ' + collection.name + ' updated'} type='success'
@@ -109,30 +109,31 @@ export default function CollectionItemsModal({collection, setMainAlert, close}) 
 
     return (
         <Modal close={close}>
-            <div className="collection-items-modal column-container">
-                <header>
-                    <h3>Collection {collection.name} items:</h3>
-                </header>
-                {alert}
-                {waiting}
-                <SortableContainer onSortEnd={onSortEnd} useDragHandle helperClass='sortableHelper'>
-                    {formData.map((item, index) => {
-                            const value = (
-                                <StudyResourceListingCompact
-                                    key={'resource' + item.study_resource.pk}
-                                    data={item.study_resource}
-                                    remove={e => handleSoftDelete(item.study_resource)}
-                                />
-                            );
-                            return <SortableItem key={`item-` + index} index={index} value={value}/>
-                        }
-                    )}
-                </SortableContainer>
-                <div className="buttons-container">
-                    <button className="btn" disabled={!changed} onClick={submit}>Apply</button>
-                    <button className="btn" disabled={!changed} onClick={reset}>Reset</button>
+            <header>
+                <h3>Collection {collection.name} items:</h3>
+            </header>
+            {waiting ? <Waiting text={waiting}/> :
+                <div className="collection-items-modal column-container">
+                    <SortableContainer onSortEnd={onSortEnd} useDragHandle helperClass='sortableHelper'>
+                        {formData.map((item, index) => {
+                                const value = (
+                                    <StudyResourceListingCompact
+                                        key={'resource' + item.study_resource.pk}
+                                        data={item.study_resource}
+                                        remove={e => handleSoftDelete(item.study_resource)}
+                                    />
+                                );
+                                return <SortableItem key={`item-` + index} index={index} value={value}/>
+                            }
+                        )}
+                    </SortableContainer>
+                    {alert}
+                    <div className="buttons-container">
+                        <button className="btn" disabled={!changed} onClick={submit}>Apply</button>
+                        <button className="btn" disabled={!changed} onClick={reset}>Reset</button>
+                    </div>
                 </div>
-            </div>
+            }
         </Modal>
     );
 }

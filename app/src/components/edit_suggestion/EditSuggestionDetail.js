@@ -63,7 +63,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
         let data = {'edit_suggestion_id': pk};
         if (type === 'reject') data['edit_suggestion_reject_reason'] = rejectReason;
 
-        await apiPost(url, data, setWaiting)
+        await apiPost(url, data, wait => wait ? setWaiting('Processing your action') : setWaiting(false) )
             .then(result => {
                 if (result.ok) {
                     result.json().then(data => {

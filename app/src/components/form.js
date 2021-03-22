@@ -1,6 +1,7 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import Select from 'react-select';
 import Creatable, {makeCreatableSelect} from 'react-select/creatable';
+import Waiting from "./Waiting";
 
 export const ConfirmComponent = ({buttonText, questionText, handleConfirm}) => {
     const [ask, setAsk] = useState(false);
@@ -45,7 +46,8 @@ function handleSelectClass(error) {
     }
 }
 
-export function FormElement({data, children, callback, alert, waiting}) {
+export function FormElement({data, children, callback, alert, waiting, buttonText}) {
+    if (waiting) return (<Waiting text={waiting} />);
     return (
         <form onSubmit={e => {
             e.preventDefault();
@@ -54,7 +56,7 @@ export function FormElement({data, children, callback, alert, waiting}) {
         }}>
             {children}
             {alert}
-            {waiting ? waiting : <button type="submit" className="btn submit">Submit</button>}
+            <button type="submit" className="btn submit">{buttonText ? buttonText : 'Submit' }</button>
         </form>
     )
 }
@@ -159,7 +161,7 @@ export const SelectVanilla = ({name, label, inputProps, smallText, error, Option
     )
 }
 
-export const SelectReact = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => {
+export const SelectReact = ({name, label, smallText, smallTextUnder, error, options, value, onChange, props, isLoading, isDisabled}) => {
     const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
     const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
     return (
@@ -169,6 +171,7 @@ export const SelectReact = ({name, label, smallText, error, options, value, onCh
                     className="react-select" classNamePrefix={handleSelectClass(error)}
                     onChange={onChange} {...props}
             />
+            {smallTextUnder ? smallTextUnder : ''}
             {error
                 ? (<div className="invalid-feedback">{error}</div>)
                 : ''

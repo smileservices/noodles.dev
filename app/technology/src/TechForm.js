@@ -88,7 +88,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
             {
                 url: normalizedData.url
             },
-            setWaiting,
+            wait => wait ? setWaiting('Validating URL') : setWaiting(''),
         ).then(result => {
             if (result.ok) {
                 return result.json();
