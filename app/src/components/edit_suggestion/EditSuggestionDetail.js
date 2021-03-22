@@ -85,8 +85,15 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
                     );
                 } else {
                     result.json().then(data =>
-                        setAlertDisplay(<Alert text={data.message} type="danger" hideable={true}
-                                               close={e => setAlertDisplay('')}/>)
+                        setAlertDisplay((
+                            <div className="success-card column-container error">
+                                <header>Something is wrong :(</header>
+                                <div className="body">{data.message}</div>
+                                <div className="buttons-container">
+                                    <button className="btn" onClick={e => setAlertDisplay(false)}>Ok</button>
+                                </div>
+                            </div>
+                        ))
                     );
                 }
             })
