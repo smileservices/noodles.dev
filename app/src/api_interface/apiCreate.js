@@ -1,5 +1,4 @@
-import {getCsrfToken} from "../components/utils";
-import {WaitingButton} from "../components/Waiting";
+import Waiting from "../components/Waiting";
 import {formDataTransport} from "./utils";
 
 export default async function apiCreate(
@@ -8,7 +7,7 @@ export default async function apiCreate(
     success,
     setWaiting, setError, contentType
 ) {
-    setWaiting(<WaitingButton text={'Creating'}/>);
+    setWaiting(<Waiting text={'Creating'}/>);
     const [body, headers] = formDataTransport(data, contentType);
     await fetch(endpoint, {
         method: "POST",
