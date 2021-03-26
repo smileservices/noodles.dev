@@ -153,7 +153,7 @@ class TechnologySerializer(EditSuggestionSerializer):
                 raise exceptions.ValidationError('Error getting the image from specified url')
         validated_data['slug'] = slugify(validated_data['name'])
         validated_data['ecosystem'] = [int(t) for t in data['ecosystem'].split(',')] if data['ecosystem'] else []
-        validated_data['category_id'] = Category.objects.validate_category(int(data['category']))
+        validated_data['category_id'] = Category.objects.validate_category(data['category'])
         return validated_data
 
 
