@@ -1,8 +1,8 @@
-from huey.contrib.djhuey import task
-from .elasticsearch.elasticsearch_interface import ElasticSearchIndexInterface, save_to_elastic
-from importlib import import_module
-
-technology_model_class_module = 'technology.models.Technology'
+from huey.contrib.djhuey import task, periodic_task
+from huey import crontab
+from .elasticsearch.elasticsearch_interface import save_to_elastic, delete_from_elastic
+from .elasticsearch.elasticsearch_interface import ElasticSearchInterface
+import logging
 
 
 def set_to_sync(syncable_instance):
@@ -14,6 +14,11 @@ def set_to_sync(syncable_instance):
 @task()
 def task_sync_data(index, mapping, data):
     save_to_elastic(index, mapping, data)
+
+
+@task()
+def task_delete_record(index, id):
+    delete_from_elastic(index, id)
 
 
 @task()
@@ -42,10 +47,42 @@ def task_sync_technologies_related(pk, TechnologyModel):
         set_to_sync(resource)
 
 
+@periodic_task(crontab(minute='*/15'))
+def sync_all_to_elastic():
+    from technology.models import Technology
+    from study_resource.models import StudyResource
+    from study_collection.models import Collection
+    # task to resync all resources to elasticsearch
+    logger = logging.getLogger('huey')
+    logger.info('syncing all resources to elasticsearch')
+    ElasticSearchInterface.clean()
+    logger.info('clean all elasticsearch indices - ok')
+    for technology_instance in Technology.objects.all():
+        mapping = technology_instance.get_elastic_mapping()
+        index, data = technology_instance.get_elastic_data()
+        save_to_elastic(index, mapping, data)
+    logger.info(f'synced {Technology.objects.count()} technologies - ok')
+    for study_resource in StudyResource.objects.all():
+        mapping = study_resource.get_elastic_mapping()
+        index, data = study_resource.get_elastic_data()
+        save_to_elastic(index, mapping, data)
+    logger.info(f'synced {StudyResource.objects.count()} study resources - ok')
+    for collection in Collection.objects.all():
+        mapping = collection.get_elastic_mapping()
+        index, data = collection.get_elastic_data()
+        save_to_elastic(index, mapping, data)
+    logger.info(f'synced {Collection.objects.count()} collections - ok')
+
+
 def sync_to_elastic(sender, **kwargs):
     mapping = sender.get_elastic_mapping()
     index, data = kwargs.get('instance').get_elastic_data()
     task_sync_data(index, mapping, data)
+
+
+def sync_delete_to_elastic(sender, **kwargs):
+    index, data = kwargs.get('instance').get_elastic_data()
+    task_delete_record(index, data['pk'])
 
 
 def sync_technology_resources_to_elastic(sender, **kwargs):

@@ -1,7 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
-from core.tasks import sync_to_elastic
+from core.tasks import sync_to_elastic, sync_delete_to_elastic
 
 
 class DateTimeModelMixin(models.Model):
@@ -68,3 +68,4 @@ class ElasticSearchIndexableMixin(models.Model):
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
         models.signals.post_save.connect(sync_to_elastic, sender=cls, weak=False)
+        models.signals.post_delete.connect(sync_delete_to_elastic, sender=cls, weak=False)

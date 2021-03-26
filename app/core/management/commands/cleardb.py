@@ -41,6 +41,3 @@ class Command(BaseCommand):
 
         clean_study_resource()
         self.stdout.write("Cleaned study_resource app")
-
-
-
