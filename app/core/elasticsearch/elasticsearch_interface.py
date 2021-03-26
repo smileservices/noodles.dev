@@ -16,6 +16,11 @@ def save_to_elastic(index, mapping, data):
         esi.save(data, data['pk'])
 
 
+def delete_from_elastic(index, id):
+    esi = ElasticSearchIndexInterface(mapping=False, index=index)
+    esi.delete(id)
+
+
 class ElasticSearchInterface:
 
     def __init__(self, indexes):
@@ -40,7 +45,8 @@ class ElasticSearchInterface:
             schema=settings.ELASTICSEARCH_AUTH,
             port=settings.ELASTICSEARCH_PORT
         )
-        connection.indices.delete([get_index_name(i) for i in ('study_resources', 'collections', 'technologies')], ignore_unavailable=True)
+        connection.indices.delete([get_index_name(i) for i in ('study_resources', 'collections', 'technologies')],
+                                  ignore_unavailable=True)
 
     def search(self, fields, term, filter, sort={}, aggregates=None, page=0, page_size=10):
         page_offset = page * page_size
@@ -108,7 +114,7 @@ class ElasticSearchInterface:
             "size": 1,
             "query": {
                 "bool": {
-                    "filter": {"term":{"pk": pk}}
+                    "filter": {"term": {"pk": pk}}
                 }
             }
         }
@@ -116,10 +122,9 @@ class ElasticSearchInterface:
         extracted_response = self._extract_results(res, 'search')
         return extracted_response
 
-
     def latest(self, page=0, page_size=10):
         return self.sort_by(
-            [{"date": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},],
+            [{"date": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ],
             page,
             page_size
         )
@@ -205,6 +210,9 @@ class ElasticSearchIndexInterface(ElasticSearchInterface):
 
     def save(self, obj, id):
         self.connection.index(index=self.index_name, doc_type='_doc', id=id, body=obj)
+
+    def delete(self, id):
+        self.connection.delete(index=self.index_name, id=id)
 
     def exists(self):
         return self.connection.indices.exists(index=self.index_name)
