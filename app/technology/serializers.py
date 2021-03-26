@@ -92,6 +92,12 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
                                'old': Category.objects.get(pk=change.old).name,
                                'new': Category.objects.get(pk=change.new).name
                                })
+            elif change.field == 'license':
+                result.append({'field': change.field.capitalize(),
+                               'type': 'text',
+                               'old': delta.old_record.license_label,
+                               'new': Technology.LicenseType(delta.new_record.license).label
+                               })
             elif change.field == 'image_file':
                 result.append({'field': 'Logo',
                                'type': 'image',
@@ -115,15 +121,20 @@ class TechnologySerializer(EditSuggestionSerializer):
         required=False,
     )
     image_url = fields.CharField(required=False)  # for handling image from url
+    license_option = SerializerMethodField()
 
     class Meta:
         model = Technology
         depth = 1
-        fields = ['pk', 'name', 'image_file', 'description', 'url', 'license', 'owner', 'pros', 'cons', 'limitations',
+        fields = ['pk', 'name', 'image_file', 'description', 'url', 'license_option', 'owner', 'pros', 'cons',
+                  'limitations', 'license',
                   'absolute_url', 'category',
                   'ecosystem', 'thumbs_up', 'thumbs_down',
                   'image_url', 'featured'
                   ]
+
+    def get_license_option(self, obj):
+        return {'value': obj.license, 'label': obj.license_label}
 
     @staticmethod
     def get_edit_suggestion_serializer():
@@ -136,7 +147,8 @@ class TechnologySerializer(EditSuggestionSerializer):
     def run_validation(self, data):
         validated_data = super(TechnologySerializer, self).run_validation(data)
         db_instance = self.queryset.values('image_file', 'featured').get(pk=data['pk']) if 'pk' in data else False
-        if (not db_instance and validated_data['featured']) or (db_instance and db_instance['featured'] != validated_data['featured']):
+        if (not db_instance and validated_data['featured']) or (
+                db_instance and db_instance['featured'] != validated_data['featured']):
             if not self.context['request'].user.is_staff:
                 raise exceptions.ValidationError({'detail': 'Only admins can change or create Featured field',
                                                   'featured': 'Only admins can create or change the Featured property of the technology'})

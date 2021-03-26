@@ -78,6 +78,7 @@ def create(request):
             'tech_api': reverse_lazy('techs-viewset-list'),
             'tech_options_api': reverse_lazy('techs-options-list'),
             'categories_options_api': reverse_lazy('categories-options-list'),
+            'license_options': reverse_lazy('license-options'),
         }
     }
     return render(request, 'technology/create_page.html', data)
@@ -98,6 +99,7 @@ def edit(request, id):
             'tag_options_api': reverse_lazy('tags-options-list'),
             'tech_options_api': reverse_lazy('techs-options-list'),
             'categories_options_api': reverse_lazy('categories-options-list'),
+            'license_options': reverse_lazy('license-options'),
         }
     }
     return render(request, 'technology/edit_page.html', data)
@@ -156,6 +158,11 @@ def sidebar(request):
         else:
             other[tech.category.name].append(techlisting(tech))
     return JsonResponse({'featured': featured, 'other': other})
+
+
+def license_options(request):
+    license = [{'value': o[0], 'label': o[1]} for o in Technology.LicenseType.choices]
+    return JsonResponse(license, safe=False)
 
 
 class TechEditSuggestionViewset(EditSuggestionViewset):

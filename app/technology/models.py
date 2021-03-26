@@ -64,12 +64,12 @@ class TechnologyQueryset(SearchAbleQuerysetMixin):
 
 class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin):
     class LicenseType(models.IntegerChoices):
-        PUBLIC_DOMAIN = (0, 'public domain')
-        PERMISSIVE_LICENSE = (1, 'permissive license')
-        COPYLEFT = (2, 'copyleft')
-        NONCOMMERCIAL = (3, 'noncommercial')
-        PROPRIETARY = (4, 'proprietary')
-        TRADE_SECRET = (5, 'trade secret')
+        PUBLIC_DOMAIN = (0, 'Public Domain')
+        PERMISSIVE_LICENSE = (1, 'Permissive License')
+        COPYLEFT = (2, 'Copyleft')
+        NONCOMMERCIAL = (3, 'Non-Commercial')
+        PROPRIETARY = (4, 'Proprietary')
+        TRADE_SECRET = (5, 'Trade Secret')
 
     objects = TechnologyManager()
     name = models.CharField(max_length=128, db_index=True)

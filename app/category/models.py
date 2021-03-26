@@ -8,6 +8,11 @@ class CategoryModelManager(models.Manager):
         if type(category) == int:
             return category
         else:
+            try:
+                # have to do this weird check if the category is actual int because everything is string in multiform data
+                return int(category)
+            except ValueError:
+                pass
             normalized = category.lower()
             try:
                 return self.get(name=normalized).pk

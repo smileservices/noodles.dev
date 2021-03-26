@@ -16,6 +16,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
 
     const [technologies, setTechnologies] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [licenseOptions, setLicenseOptions] = useState([]);
 
 
     useEffect(() => {
@@ -41,12 +42,28 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
             if (result.ok) {
                 return result.json();
             } else {
-                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve technologies" type="danger"/>);
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve technologies options"
+                                type="danger"/>);
                 return false;
             }
         }).then(data => {
             if (data) {
                 setTechnologies(data);
+            }
+        })
+        //get license options
+        fetch(
+            LICENSE_OPTIONS_API, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve license options" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) {
+                setLicenseOptions(data);
             }
         })
     }, []);
@@ -73,6 +90,8 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
         if (normalizedData.cons.length < 5) vErr.cons = 'Bad points cannot be empty. Add at least 5 characters';
         if (normalizedData.limitations.length < 30) vErr.limitations = 'Limitations cannot be empty. Add at least 30 characters';
         if (normalizedData.owner.length < 5) vErr.owner = 'Owner/Maintainer name is too short, has to be at least 5 characters';
+        if (!normalizedData.license) vErr.license_option = 'Please choose a license type';
+        console.log(normalizedData.license);
         if (extraData.formElements) {
             extraData.formElements.validate(normalizedData, vErr);
         }
@@ -121,6 +140,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
         cpd.ecosystem = data.ecosystem.map(t => {
             return t.value
         });
+        cpd.license = data.license_option.value;
         cpd.category = data.category.value;
         if (cpd.image_file && !cpd.image_file.url && !cpd.image_file.file) {
             delete cpd.image_file;
@@ -169,7 +189,14 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                 }}
                 disabled={Boolean(waiting)}
             />
-
+            <SelectReact name="select-license" label="License"
+                         smallText="Which type of license does it have"
+                         onChange={selectedOptions => setFormData({...formData, license_option: selectedOptions})}
+                         options={licenseOptions}
+                         value={formData.license_option}
+                         error={errors.license_option}
+                         isDisabled={Boolean(waiting)}
+            />
             <Textarea name="description" label={false}
                       inputProps={{
                           ...makeStateProps('description'),
