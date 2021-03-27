@@ -12,7 +12,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset, SearchableModelViewset
 from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
-from collections import defaultdict
 from study_collection.models import Collection
 from study_resource.models import StudyResource
 from . import filters
@@ -22,29 +21,14 @@ from .models import Technology
 
 def detail(request, id, slug):
     queryset = Technology.objects
-    detail = queryset.get(pk=id)
-    # solutions = detail.solutions
-    collections = Collection.objects.filter(technologies=detail).all()[:5]
-    # similar_techs = []
-    # for tech_list in [solution.technologies.all() for solution in solutions.all()]:
-    #     similar_techs += tech_list
+    detail = queryset.select_related().get(pk=id)
+    collections = Collection.objects.filter(technologies=detail).select_related().all()[:5]
     resources_ids = [tech['study_resource_id'] for tech in
                      detail.studyresourcetechnology_set.values('study_resource_id').all()]
-    resources = StudyResource.objects.filter(pk__in=resources_ids).all()
-    latest_resources = StudyResource.objects.all().order_by('created_at')[:5]
-    tags = []
-    for res in latest_resources:
-        [tags.append(tag) for tag in res.tags.all()]
-    latest = {
-        'tags': set(tags),
-        'resources': latest_resources
-    }
+    resources = StudyResource.objects.filter(pk__in=resources_ids).select_related().all()
     data = {
         'result': detail,
         'collections': collections,
-        'latest': latest,
-        # 'solutions': solutions,
-        # 'similar': similar_techs,
         'resources': resources,
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
         'thumbs_down_array': json.dumps(detail.thumbs_down_array),
@@ -141,23 +125,6 @@ class TechViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
         return Response({
             'error': False
         })
-
-
-def sidebar(request):
-    all = Technology.objects.select_related('category').all()
-    featured = defaultdict(list)
-    other = defaultdict(list)
-    techlisting = lambda t: {
-        'url': t.absolute_url,
-        'logo': t.logo,
-        'name': t.name
-    }
-    for tech in all:
-        if tech.featured:
-            featured[tech.category.name].append(techlisting(tech))
-        else:
-            other[tech.category.name].append(techlisting(tech))
-    return JsonResponse({'featured': featured, 'other': other})
 
 
 def license_options(request):

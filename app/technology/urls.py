@@ -8,7 +8,6 @@ router.register('edit-suggestions', views.TechEditSuggestionViewset, basename='t
 router.register('', views.TechViewset, basename='techs-viewset')
 
 urlpatterns = [
-    path('sidebar/', views.sidebar, name='tech-sidebar'),
     path('create/', views.create, name='tech-create'),
     path('api/', include(router.urls)),
     path('license-options/', views.license_options, name='license-options'),

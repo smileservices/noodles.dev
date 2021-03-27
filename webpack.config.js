@@ -7,10 +7,10 @@ module.exports = {
         // just create the react-bundle once
 
         //for dev
-        // 'static/js/react-bundle': ['./app/static/js/react.development.js', './app/static/js/react-dom.development.js'],
+        'static/js/react-bundle': ['./app/static/js/react.development.js', './app/static/js/react-dom.development.js'],
 
         //for prod
-        'static/js/react-bundle': ['./app/static/js/react.min.js', './app/static/js/react-dom.min.js'],
+        // 'static/js/react-bundle': ['./app/static/js/react.min.js', './app/static/js/react-dom.min.js'],
 
         //homepage
         '/static/homepage-app': './app/frontend/src/HomepageApp.js',
@@ -37,7 +37,6 @@ module.exports = {
 
         //technology
         '/static/technology/technology-create': './app/technology/src/TechCreateApp.js',
-        '/static/technology/sidebar-app': './app/technology/src/SidebarApp.js',
         '/static/technology/my-technologies-app': './app/technology/src/MyTechnologiesApp.js',
 
         //vote app
@@ -52,6 +51,10 @@ module.exports = {
         '/static/problem_solution/solution-edit': './app/problem_solution/src/solution/EditApp.js',
         '/static/technology/edit': './app/technology/src/EditApp.js',
         '/static/study_resource/edit': './app/study_resource/src/EditApp.js',
+
+        //sidebar
+        '/static/frontend/sidebar-app': './app/frontend/src/SidebarApp.js',
+
 
         //related section
         '/static/related-app': './app/frontend/src/RelatedApp.js',
