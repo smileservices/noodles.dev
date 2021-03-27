@@ -6,8 +6,10 @@ INTERNAL_IPS = [
 
 INSTALLED_APPS.append('debug_toolbar')
 INSTALLED_APPS.append('django_extensions')
+INSTALLED_APPS.append('silk')
 
-# MIDDLEWARE.insert(9, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+MIDDLEWARE.insert(9, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+MIDDLEWARE.insert(0, 'silk.middleware.SilkyMiddleware')
 
 LOGGING = {
     'version': 1,

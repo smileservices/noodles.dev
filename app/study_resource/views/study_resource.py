@@ -41,17 +41,9 @@ def list_all(request):
 
 def detail(request, id, slug):
     queryset = StudyResource.objects
-    resource = queryset.get(pk=id)
-    collections = resource.collections.all()[:5]
-    related = queryset.filter(
-        Q(tags__in=resource.tags.all()),
-        Q(technologies__in=resource.technologies.all()),
-        ~Q(id=resource.id)
-    ).order_by_rating_then_publishing_date()[:5]
+    resource = queryset.select_related().get(pk=id)
     data = {
         'result': resource,
-        'collections': collections,
-        'related': related,
         'reviews': resource.reviews.order_by('-created_at').all(),
         'MAX_RATING': settings.MAX_RATING,
         'urls': {
