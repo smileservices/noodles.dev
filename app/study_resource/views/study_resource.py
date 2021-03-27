@@ -1,15 +1,12 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -17,10 +14,10 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset, SearchableModelViewset
 from study_resource.scrape.main import scrape_tutorial
 from study_resource import filters
-from study_resource.models import StudyResource, StudyResourceImage
+from study_resource.models import StudyResource
 from study_resource import serializers
 
-from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
+from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
 
 
 def list_all(request):
