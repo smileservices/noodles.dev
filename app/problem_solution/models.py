@@ -2,8 +2,7 @@ from django.db import models
 from django.urls import reverse
 from tag.models import Tag
 from technology.models import Technology
-from core.abstract_models import SluggableModelMixin, DateTimeModelMixin, RequireAdminAprovalModelMixin, \
-    SearchAbleQuerysetMixin
+from core.abstract_models import SluggableModelMixin, DateTimeModelMixin
 from users.models import CustomUser
 from django_edit_suggestion.models import EditSuggestion
 from votable.models import VotableMixin
@@ -11,22 +10,12 @@ from core.edit_suggestions import edit_suggestion_change_status_condition, post_
 from category.models import Category
 
 
-class ProblemQueryset(SearchAbleQuerysetMixin):
-    pass
-
-
-class SolutionQueryset(SearchAbleQuerysetMixin):
-    pass
-
-
 class ProblemManager(models.Manager):
-    def get_queryset(self):
-        return ProblemQueryset(self.model, using=self.db)
+    pass
 
 
 class SolutionManager(models.Manager):
-    def get_queryset(self):
-        return SolutionQueryset(self.model, using=self.db)
+    pass
 
 
 class Problem(SluggableModelMixin, DateTimeModelMixin, VotableMixin):

@@ -11,7 +11,7 @@ from django.conf import settings
 from tag.models import Tag
 from technology.models import Technology
 from category.models import Category
-from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin
+from core.abstract_models import DateTimeModelMixin, SluggableModelMixin
 from votable.models import VotableMixin
 from django_edit_suggestion.models import EditSuggestion
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
@@ -59,7 +59,7 @@ class StudyResourceManager(models.Manager):
         )
 
 
-class StudyResourceQueryset(SearchAbleQuerysetMixin):
+class StudyResourceQueryset(models.QuerySet):
 
     def annotate_with_rating(self):
         return self.annotate(
@@ -244,6 +244,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
         rating = instance_from_manager['rating'] if instance_from_manager['rating'] else 0
         data = {
             "pk": self.pk,
+
             # model fields
             "name": self.name,
             "summary": self.summary,

@@ -24,7 +24,6 @@ PROBLEM_VIEWSET_URL = reverse('problem-viewset-list')
 SOLUTION_VIEWSET_URL = reverse('solution-viewset-list')
 STUDY_RESOURCE_VIEWSET_URL = reverse('study-resource-viewset-list')
 
-
 class RestIntegrationTest(APITestCase):
     """
     integration testing of rest endpoints

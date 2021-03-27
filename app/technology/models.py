@@ -5,7 +5,7 @@ from versatileimagefield.fields import VersatileImageField
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from versatileimagefield.utils import build_versatileimagefield_url_set
 from votable.models import VotableMixin
-from core.abstract_models import SluggableModelMixin, SearchAbleQuerysetMixin, ElasticSearchIndexableMixin
+from core.abstract_models import SluggableModelMixin, ElasticSearchIndexableMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 from django_edit_suggestion.models import EditSuggestion
 from django.urls import reverse
@@ -42,19 +42,12 @@ def remove_old_image(sender, instance, **kwargs):
 
 class TechnologyManager(models.Manager):
 
-    def get_queryset(self):
-        return TechnologyQueryset(self.model, using=self.db)
-
     def order_by_rating_then_publishing_date(self):
-        return TechnologyQueryset(self.model, using=self.db).order_by(
+        return self.get_queryset(self.model, using=self.db).order_by(
             models.F('rating').desc(nulls_last=True),
             '-reviews_count',
             'publication_date'
         )
-
-
-class TechnologyQueryset(SearchAbleQuerysetMixin):
-    pass
 
 
 class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin):

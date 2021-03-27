@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
-from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset, SearchableModelViewset
+from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
 from study_collection.models import Collection
 from study_resource.models import StudyResource
@@ -90,7 +90,7 @@ def edit(request, id):
     return render(request, 'technology/edit_page.html', data)
 
 
-class TechViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
+class TechViewset(ResourceWithEditSuggestionVieset):
     serializer_class = TechnologySerializer
     queryset = TechnologySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]

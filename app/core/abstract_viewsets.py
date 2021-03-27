@@ -3,36 +3,21 @@ from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
 from app.settings import rewards
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.decorators import action
 from core.status import HTTP_209_EDIT_SUGGESTION_CREATED
-from rest_framework.viewsets import ModelViewSet
-
-
-class SearchableModelViewset(ModelViewSet):
-
-    def filtered_response(self, request, search_fields, filterset_class, listing_serializer, queryset):
-        if 'search' in request.GET:
-            queryset = queryset.search_similar(search_fields, request.GET['search'], 0.1)
-        else:
-            queryset = queryset
-        filtered_queryset = filterset_class(request.GET, queryset)
-        # queryset = self.queryset.search_match(request.GET['term'], 0.01)
-        page = self.paginate_queryset(filtered_queryset.qs)
-        if page is not None:
-            serializer = listing_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = listing_serializer(filtered_queryset, many=True)
-        return Response(serializer.data)
 
 
 class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset):
     m2m_fields = None
 
     def perform_create(self, serializer):
-        resource = serializer.save(author=self.request.user)
-        self.request.user.positive_score += rewards.RESOURCE_CREATE
-        self.request.user.save()
-        return resource
+        try:
+            resource = serializer.save(author=self.request.user)
+            self.request.user.positive_score += rewards.RESOURCE_CREATE
+            self.request.user.save()
+            return resource
+        except Exception as e:
+
+            raise e
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()

@@ -24,15 +24,3 @@ class ProblemFilter(FilterSet):
             'tags',
             'ordering_by_date',
         ]
-
-
-class ProblemFilterMatches(ProblemFilter):
-
-    def search(self, queryset, name, value):
-        return queryset.search_match(value, min_rank=0.01)
-
-
-class ProblemFilterSimilar(ProblemFilter):
-
-    def search(self, queryset, name, value):
-        return queryset.search_similar(['name', 'description'], value, min_sim=0.2)

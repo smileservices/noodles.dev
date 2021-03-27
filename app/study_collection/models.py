@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin, \
+from core.abstract_models import DateTimeModelMixin, SluggableModelMixin, \
     ElasticSearchIndexableMixin
 from votable.models import VotableMixin
 from users.models import CustomUser
@@ -9,7 +9,7 @@ from technology.models import Technology
 from study_resource.models import StudyResource
 
 
-class CollectionQueryset(SearchAbleQuerysetMixin):
+class CollectionQueryset(models.QuerySet):
     def annotate_with_items_count(self):
         return self.annotate(items_count=models.Count('resources'))
 
