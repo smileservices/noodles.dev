@@ -28,7 +28,7 @@ with psycopg2.connect(**config) as conn:
             pass
         cur.execute(f"CREATE DATABASE {database} OWNER {owner}")
 
-with psycopg2.connect(host=config['host'], database=database, user=config['user'], password=config['password']) as conn:
-    with conn.cursor() as cur:
-        cur.execute(f'CREATE EXTENSION IF NOT EXISTS pg_trgm;')
-        cur.execute(f'CREATE EXTENSION IF NOT EXISTS unaccent;')
+# with psycopg2.connect(host=config['host'], database=database, user=config['user'], password=config['password']) as conn:
+#     with conn.cursor() as cur:
+#         cur.execute(f'CREATE EXTENSION IF NOT EXISTS pg_trgm;')
+#         cur.execute(f'CREATE EXTENSION IF NOT EXISTS unaccent;')

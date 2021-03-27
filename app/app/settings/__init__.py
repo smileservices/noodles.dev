@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     # 3rd party apps
     'captcha',
     'django_edit_suggestion',
-    'tsvector_field',
     'versatileimagefield',
     'easyaudit',
     'huey.contrib.djhuey',
@@ -69,7 +68,7 @@ INSTALLED_APPS = [
     'search',
     #
     'users',
-    'problem_solution',
+    # 'problem_solution',
     'tag',
     'technology',
     'category',
@@ -129,7 +128,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'db',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),

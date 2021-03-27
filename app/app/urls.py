@@ -13,7 +13,7 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
     path('tutorials/', include('study_resource.urls')),
     path('collections/', include('study_collection.urls')),
-    path('problems-solutions/', include('problem_solution.urls')),
+    # path('problems-solutions/', include('problem_solution.urls')),
     path('categories/', include('category.urls')),
     path('tags/', include('tag.urls')),
     path('technologies/', include('technology.urls')),
@@ -29,4 +29,3 @@ if settings.DEBUG:
     ] + urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += router.urls
-urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]

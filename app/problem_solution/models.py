@@ -2,7 +2,6 @@ from django.db import models
 from django.urls import reverse
 from tag.models import Tag
 from technology.models import Technology
-import tsvector_field
 from core.abstract_models import SluggableModelMixin, DateTimeModelMixin, RequireAdminAprovalModelMixin, \
     SearchAbleQuerysetMixin
 from users.models import CustomUser
@@ -34,7 +33,6 @@ class Problem(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     objects = ProblemManager()
     edit_suggestions = EditSuggestion(
         excluded_fields=[
-            'search_vector_index',
             'author',
             'thumbs_up_array',
             'thumbs_down_array',
@@ -57,11 +55,6 @@ class Problem(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     parent = models.ForeignKey('Solution', null=True, blank=True, on_delete=models.CASCADE, related_name='problems')
     tags = models.ManyToManyField(Tag, related_name='problems')
 
-    search_vector_index = tsvector_field.SearchVectorField([
-        tsvector_field.WeightedColumn('name', 'A'),
-        tsvector_field.WeightedColumn('description', 'B'),
-    ], 'english')
-
     def __str__(self):
         return self.name
 
@@ -81,7 +74,6 @@ class Solution(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
 
     edit_suggestions = EditSuggestion(
         excluded_fields=[
-            'search_vector_index',
             'author',
             'thumbs_up_array',
             'thumbs_down_array',
@@ -100,11 +92,6 @@ class Solution(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
         post_reject=post_reject_edit,
         bases=(VotableMixin,)
     )
-
-    search_vector_index = tsvector_field.SearchVectorField([
-        tsvector_field.WeightedColumn('name', 'A'),
-        tsvector_field.WeightedColumn('description', 'B'),
-    ], 'english')
 
     @property
     def absolute_url(self):
