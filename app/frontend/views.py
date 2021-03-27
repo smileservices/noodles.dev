@@ -6,12 +6,13 @@ from django.http.response import JsonResponse
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from elasticsearch import exceptions as es_ex
 from collections import defaultdict
+from django.views.decorators.cache import cache_page
 
-
+@cache_page(60*60*24)
 def homepage(request):
     return render(request, 'frontend/homepage.html')
 
-
+@cache_page(60)
 def aggregations(request):
     # return total number of items
     data = {
@@ -21,7 +22,7 @@ def aggregations(request):
     }
     return JsonResponse(data)
 
-
+@cache_page(60)
 def homepage_resources(request):
     try:
         es = ElasticSearchInterface(['study_resources'])
@@ -45,7 +46,7 @@ def homepage_resources(request):
         }, status=500)
     return JsonResponse(data)
 
-
+@cache_page(60)
 def homepage_collections(request):
     try:
         es = ElasticSearchInterface(['collections'])
@@ -65,7 +66,7 @@ def homepage_collections(request):
         }, status=500)
     return JsonResponse(data)
 
-
+@cache_page(60)
 def homepage_technologies(request):
     try:
         es = ElasticSearchInterface(['technologies'])
@@ -85,9 +86,9 @@ def homepage_technologies(request):
         }, status=500)
     return JsonResponse(data)
 
-
+@cache_page(60*60)
 def sidebar(request):
-    all = Technology.objects.select_related('category').all()
+    all = Technology.objects.select_related().all()
     featured = defaultdict(list)
     other = defaultdict(list)
     techlisting = lambda t: {

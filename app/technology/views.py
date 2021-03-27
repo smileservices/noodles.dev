@@ -17,8 +17,9 @@ from study_resource.models import StudyResource
 from . import filters
 from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyListing
 from .models import Technology
+from django.views.decorators.cache import cache_page
 
-
+@cache_page(60*5)
 def detail(request, id, slug):
     queryset = Technology.objects
     detail = queryset.select_related().get(pk=id)
@@ -38,7 +39,7 @@ def detail(request, id, slug):
         return render(request, 'technology/detail_page.html', data)
     return render(request, 'technology/detail_page_seo.html', data)
 
-
+@cache_page(60*5)
 def list_all(request):
     queryset = Technology.objects.all()
     paginator = Paginator(queryset, 10)
@@ -54,7 +55,7 @@ def list_all(request):
     }
     return render(request, 'technology/list_page_seo.html', data)
 
-
+@cache_page(60*60*24)
 @login_required
 def create(request):
     data = {
@@ -67,7 +68,7 @@ def create(request):
     }
     return render(request, 'technology/create_page.html', data)
 
-
+@cache_page(60*60*24)
 @login_required
 def edit(request, id):
     data = {
@@ -126,7 +127,7 @@ class TechViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
             'error': False
         })
 
-
+@cache_page(60*60*24)
 def license_options(request):
     license = [{'value': o[0], 'label': o[1]} for o in Technology.LicenseType.choices]
     return JsonResponse(license, safe=False)

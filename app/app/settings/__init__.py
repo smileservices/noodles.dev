@@ -216,6 +216,17 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env('REDIS'),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "noodles"
+    }
+}
+
 # allauth - main config
 AUTH_USER_MODEL = 'users.CustomUser'
 ACCOUNT_FORMS = {
