@@ -47,7 +47,7 @@ def task_sync_technologies_related(pk, TechnologyModel):
         set_to_sync(resource)
 
 
-@periodic_task(crontab(minute='*/15'))
+@periodic_task(crontab(hour='6'))
 def sync_all_to_elastic():
     from technology.models import Technology
     from study_resource.models import StudyResource
