@@ -85,9 +85,10 @@ def retry_send_email():
     call_command('retry_deferred')
 
 
-@periodic_task(crontab(day='*/7'))
-def clean_email_logs():
-    call_command('purge_mail_log 7 -r')
+# @periodic_task(crontab(day='*/7'))
+# def clean_email_logs():
+# i don't know how to send the `purge_mail_log 7 -r=all`
+#     call_command('purge_mail_log', 7, r='all')
 
 
 def sync_to_elastic(sender, **kwargs):
