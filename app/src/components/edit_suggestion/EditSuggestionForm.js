@@ -30,7 +30,7 @@ export default function EditForm({addEditSuggestionCallback, ResourceForm, api_u
 
     useEffect(() => {
         //get tags and technologies
-        setWaiting(<Waiting text="Retrieving resource"/>);
+        setWaiting('Retrieving resource');
         setAlert('');
         fetch(
             api_urls['resource_detail'], {method: 'GET'}
@@ -114,7 +114,7 @@ export default function EditForm({addEditSuggestionCallback, ResourceForm, api_u
         }
     }
 
-    if (Object.keys(formData).length === 0) return (waiting);
+    if (Object.keys(formData).length === 0) return (<Waiting text={'Setting form up...'} />);
 
     return (
         <Fragment>
@@ -127,7 +127,6 @@ export default function EditForm({addEditSuggestionCallback, ResourceForm, api_u
                 setFormData={setFormData}
                 submitCallback={submitEdit}
                 extraData={extraData}
-
                 waiting={waiting}
                 alert={alert}
                 errors={errors}

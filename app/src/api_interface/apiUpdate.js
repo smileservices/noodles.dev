@@ -1,4 +1,3 @@
-import Waiting from "../components/Waiting";
 import {formDataTransport} from "./utils";
 
 export default async function apiUpdate(
@@ -8,7 +7,7 @@ export default async function apiUpdate(
     success,
     setWaiting, setError, contentType
 ) {
-    setWaiting(<Waiting text="Updating"/>);
+    setWaiting('Updating');
     const [body, headers] = formDataTransport(data, contentType);
     await fetch(endpoint+id+'/', {
         method: "PUT",
