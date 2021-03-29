@@ -11,5 +11,4 @@ urlpatterns = [
     path('my-collections', views.my_collections, name='my-collections'),
 
     path('profile/<str:username>', views.user_profile, name='user-profile'),
-    path('api/<str:user_pk>/<str:index>', views.user_content, name='user-profile-content')
 ]

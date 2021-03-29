@@ -1,16 +1,11 @@
 from django.db import models
-import tsvector_field
 from users.models import CustomUser
-from django.contrib.postgres.indexes import GinIndex
 from django.conf import settings
-
 from versatileimagefield.fields import VersatileImageField
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from versatileimagefield.utils import build_versatileimagefield_url_set
-
-from django.dispatch import receiver
 from votable.models import VotableMixin
-from core.abstract_models import SluggableModelMixin, SearchAbleQuerysetMixin, ElasticSearchIndexableMixin
+from core.abstract_models import SluggableModelMixin, ElasticSearchIndexableMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 from django_edit_suggestion.models import EditSuggestion
 from django.urls import reverse
@@ -47,19 +42,12 @@ def remove_old_image(sender, instance, **kwargs):
 
 class TechnologyManager(models.Manager):
 
-    def get_queryset(self):
-        return TechnologyQueryset(self.model, using=self.db)
-
     def order_by_rating_then_publishing_date(self):
-        return TechnologyQueryset(self.model, using=self.db).order_by(
+        return self.get_queryset(self.model, using=self.db).order_by(
             models.F('rating').desc(nulls_last=True),
             '-reviews_count',
             'publication_date'
         )
-
-
-class TechnologyQueryset(SearchAbleQuerysetMixin):
-    pass
 
 
 class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin):
@@ -87,7 +75,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     featured = models.BooleanField(default=False)
 
     edit_suggestions = EditSuggestion(
-        excluded_fields=('search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+        excluded_fields=('author', 'thumbs_up_array', 'thumbs_down_array'),
         m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, ],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
@@ -99,17 +87,6 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
         },
         attrs_to_be_copied=['logo', ]
     )
-
-    search_vector_index = tsvector_field.SearchVectorField([
-        tsvector_field.WeightedColumn('name', 'A'),
-        tsvector_field.WeightedColumn('description', 'B'),
-    ], 'english')
-
-    class Meta:
-        indexes = [
-            GinIndex(fields=['name', 'description'], name='gintrgm_technology_index',
-                     opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
-        ]
 
     def __str__(self):
         return f'{self.name}'

@@ -90,8 +90,6 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
         if (normalizedData.cons.length < 5) vErr.cons = 'Bad points cannot be empty. Add at least 5 characters';
         if (normalizedData.limitations.length < 30) vErr.limitations = 'Limitations cannot be empty. Add at least 30 characters';
         if (normalizedData.owner.length < 5) vErr.owner = 'Owner/Maintainer name is too short, has to be at least 5 characters';
-        if (!normalizedData.license) vErr.license_option = 'Please choose a license type';
-        console.log(normalizedData.license);
         if (extraData.formElements) {
             extraData.formElements.validate(normalizedData, vErr);
         }

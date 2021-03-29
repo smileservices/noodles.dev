@@ -1,26 +1,23 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset, SearchableModelViewset
+from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from study_resource.scrape.main import scrape_tutorial
 from study_resource import filters
-from study_resource.models import StudyResource, StudyResourceImage
+from study_resource.models import StudyResource
 from study_resource import serializers
 
-from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
+from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
 
 
 def list_all(request):
@@ -41,18 +38,9 @@ def list_all(request):
 
 def detail(request, id, slug):
     queryset = StudyResource.objects
-    resource = queryset.get(pk=id)
-    collections = resource.collections.all()[:5]
-    related = queryset.filter(
-        Q(tags__in=resource.tags.all()),
-        Q(technologies__in=resource.technologies.all()),
-        ~Q(id=resource.id)
-    ).order_by_rating_then_publishing_date()[:5]
+    resource = queryset.select_related().get(pk=id)
     data = {
         'result': resource,
-        'collections': collections,
-        'related': related,
-        'reviews': resource.reviews.order_by('-created_at').all(),
         'MAX_RATING': settings.MAX_RATING,
         'urls': {
             'review_api': reverse_lazy('review-viewset-list'),
@@ -71,6 +59,7 @@ def detail(request, id, slug):
     }
     if request.user.is_authenticated:
         return render(request, 'study_resource/detail_page.html', data)
+    data['reviews'] = resource.reviews.order_by('-created_at').all(),
     return render(request, 'study_resource/detail_page_seo.html', data)
 
 
@@ -110,23 +99,13 @@ def create(request):
     return render(request, 'study_resource/create_page.html', data)
 
 
-class StudyResourceViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
+class StudyResourceViewset(ResourceWithEditSuggestionVieset):
     serializer_class = serializers.StudyResourceSerializer
     queryset = serializers.StudyResourceSerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
-
-    @action(methods=['GET'], detail=False)
-    def filter(self, request, *args, **kwargs):
-        queryset = self.queryset
-        return self.filtered_response(
-            request, ['name', 'summary'],
-            self.filterset_class,
-            serializers.StudyResourceListingSerializer,
-            queryset
-        )
 
     # technologies and tags are saved in the serializer
     def edit_suggestion_handle_m2m_through_field(self, instance, data, f):

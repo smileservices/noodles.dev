@@ -8,34 +8,23 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from core.abstract_viewsets import SearchableModelViewset, ResourceWithEditSuggestionVieset
+from core.abstract_viewsets import ResourceWithEditSuggestionVieset
 from . import serializers, filters
 from .models import CollectionResources, Collection
-
-
-def browse(request, **kwargs):
-    return True
+from django.views.decorators.cache import cache_page
 
 
 def detail(request, id, slug):
     queryset = Collection.objects
     resource = queryset.get(pk=id)
     study_resources = resource.get_study_resources()
-    related = queryset.filter(
-        Q(is_public=True),
-        Q(tags__in=resource.tags.all()),
-        Q(technologies__in=resource.technologies.all()),
-        ~Q(id=resource.id)
-    ).all()[:5]
     data = {
         'result': resource,
         'study_resources': study_resources,
-        'related': related,
         'thumbs_up_array': json.dumps(resource.thumbs_up_array),
         'thumbs_down_array': json.dumps(resource.thumbs_down_array),
         'urls': {
@@ -68,25 +57,11 @@ def list_all(request):
     return render(request, 'study_collection/list_page_seo.html', data)
 
 
-class CollectionViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
+class CollectionViewset(ResourceWithEditSuggestionVieset):
     serializer_class = serializers.CollectionSerializer
     queryset = serializers.CollectionSerializer.queryset.order_by('-created_at')
     permission_classes = [IsAuthenticatedOrReadOnly]
     filterset_class = filters.CollectionFilterRest
-
-    @action(methods=['GET'], detail=False)
-    def filter_public(self, request, *args, **kwargs):
-        queryset = self.queryset.filter(
-            items_count__gt=0,
-            is_public=True
-        )
-        return self.filtered_response(
-            request,
-            ['name', 'description'],
-            self.filterset_class,
-            serializers.CollectionSerializerListing,
-            queryset
-        )
 
     def perform_create(self, serializer):
         serializer.save(

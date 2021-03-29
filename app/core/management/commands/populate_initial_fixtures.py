@@ -10,7 +10,7 @@ from users.models import CustomUser
 from users import fake as fake_users
 
 from technology import fake as fake_tech
-from problem_solution import fake as fake_problem_solution
+# from problem_solution import fake as fake_problem_solution
 from study_collection import fake as fake_collections
 from study_resource import fake as fake_study_resource
 
@@ -77,7 +77,7 @@ class Command(BaseCommand):
             self.stdout.write('Cleaning all resources ... ')
             fake_collections.clean()
             fake_study_resource.clean()
-            fake_problem_solution.clean()
+            # fake_problem_solution.clean()
             clean_tags()
             fake_tech.clean_technologies()
             clean_categories()

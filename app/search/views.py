@@ -3,6 +3,7 @@ from django.http.response import JsonResponse
 from django.shortcuts import render
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from elasticsearch import exceptions as es_ex
+from django.views.decorators.cache import cache_page
 
 def autocomplete(request, prefix):
     es = ElasticSearchInterface(['collections', 'study_resources', 'technologies'])
@@ -156,7 +157,6 @@ def extract_filters(request) -> []:
                 filter.append(p_filter)
     return filter
 
-
 def search_page(request):
     data = {
         'hide_navbar_search': True,
@@ -166,7 +166,7 @@ def search_page(request):
     }
     return render(request, 'search/main.html', data)
 
-
+@cache_page(60*60)
 def related_data(request):
     try:
         es = ElasticSearchInterface(['study_resources'])

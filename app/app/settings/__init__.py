@@ -56,10 +56,10 @@ INSTALLED_APPS = [
     # 3rd party apps
     'captcha',
     'django_edit_suggestion',
-    'tsvector_field',
     'versatileimagefield',
     'easyaudit',
     'huey.contrib.djhuey',
+    'mailer',
     # our app
     'core',
     'rest_framework',
@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'search',
     #
     'users',
-    'problem_solution',
+    # 'problem_solution',
     'tag',
     'technology',
     'category',
@@ -129,7 +129,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'db',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
@@ -216,6 +216,17 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env('REDIS'),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "noodles"
+    }
+}
+
 # allauth - main config
 AUTH_USER_MODEL = 'users.CustomUser'
 ACCOUNT_FORMS = {
@@ -266,3 +277,13 @@ ELASTICSEARCH_HOST = env.list('ELASTICSEARCH_HOST')
 ELASTICSEARCH_AUTH = env.tuple('ELASTICSEARCH_AUTH')
 ELASTICSEARCH_SCHEMA = env.str('ELASTICSEARCH_SCHEMA')
 ELASTICSEARCH_PORT = env.int('ELASTICSEARCH_PORT')
+
+EMAIL_BACKEND = "mailer.backend.DbBackend"
+
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.str('EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env.str('EMAIL_USE_TLS', False)
+EMAIL_USE_SSL = env.str('EMAIL_USE_SSL', False)
+SERVER_EMAIL = env.str('EMAIL_HOST_USER')

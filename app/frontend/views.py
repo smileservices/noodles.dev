@@ -5,12 +5,15 @@ from study_collection.models import Collection
 from django.http.response import JsonResponse
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from elasticsearch import exceptions as es_ex
+from collections import defaultdict
+from django.views.decorators.cache import cache_page
 
 
 def homepage(request):
     return render(request, 'frontend/homepage.html')
 
 
+@cache_page(60)
 def aggregations(request):
     # return total number of items
     data = {
@@ -21,6 +24,7 @@ def aggregations(request):
     return JsonResponse(data)
 
 
+@cache_page(60)
 def homepage_resources(request):
     try:
         es = ElasticSearchInterface(['study_resources'])
@@ -32,7 +36,8 @@ def homepage_resources(request):
             "tags": {"terms": {"field": "tags", "size": 20}},
             "category": {"terms": {"field": "category"}},
         })
-        rating_sort = [{"rating": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, {"reviews": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}]
+        rating_sort = [{"rating": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},
+                       {"reviews": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}]
         data = {
             'all_filters': aggregates_results,
             'rated_highest': es.sort_by(rating_sort, page_size=5)
@@ -44,6 +49,7 @@ def homepage_resources(request):
     return JsonResponse(data)
 
 
+@cache_page(60)
 def homepage_collections(request):
     try:
         es = ElasticSearchInterface(['collections'])
@@ -51,7 +57,7 @@ def homepage_collections(request):
             "technologies": {"terms": {"field": "technologies"}},
             "tags": {"terms": {"field": "tags", "size": 20}},
         })
-        votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},]
+        votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ]
         data = {
             'all_filters': aggregates_results,
             'rated_highest': es.sort_by(votes_sort, page_size=4),
@@ -64,6 +70,7 @@ def homepage_collections(request):
     return JsonResponse(data)
 
 
+@cache_page(60)
 def homepage_technologies(request):
     try:
         es = ElasticSearchInterface(['technologies'])
@@ -71,7 +78,7 @@ def homepage_technologies(request):
             "ecosystem": {"terms": {"field": "ecosystem", "size": 20}},
             "category": {"terms": {"field": "category"}},
         })
-        votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},]
+        votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ]
         data = {
             'all_filters': aggregates_results,
             'rated_highest': es.sort_by(votes_sort, page_size=4),
@@ -82,3 +89,21 @@ def homepage_technologies(request):
             'error': 'ElasticSearch Error: Index technologies not found'
         }, status=500)
     return JsonResponse(data)
+
+
+@cache_page(60 * 5)
+def sidebar(request):
+    all = Technology.objects.select_related().all()
+    featured = defaultdict(list)
+    other = defaultdict(list)
+    techlisting = lambda t: {
+        'url': t.absolute_url,
+        'logo': t.logo,
+        'name': t.name
+    }
+    for tech in all:
+        if tech.featured:
+            featured[tech.category.name].append(techlisting(tech))
+        else:
+            other[tech.category.name].append(techlisting(tech))
+    return JsonResponse({'featured': featured, 'other': other})

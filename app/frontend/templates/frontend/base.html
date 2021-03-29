@@ -85,13 +85,8 @@
         })
     })
 </script>
-    <script>
-        const STUDY_COLLECTION_FILTER_URL = "{% url 'collection-viewset-filter-public' %}";
-        const STUDY_RESOURCE_FILTER_URL = "{% url 'study-resource-viewset-filter' %}";
-        const TECHNOLOGIES_FILTER_URL = "{% url 'techs-viewset-filter' %}";
-    </script>
     <script src="{% static 'js/react-bundle.js' %}"></script>
-    <script src="{% static 'technology/sidebar-app.js' %}"></script>
+    <script src="{% static 'frontend/sidebar-app.js' %}"></script>
 {#    {% if not hide_navbar_search %}#}
 {#        <script src="{% static 'navbar-search-bar-app.js' %}"></script>#}
 {#    {% endif %}#}

@@ -19,6 +19,7 @@ from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from users.models import CustomUser
 from users.serializers import UserSerializerMinimal
 from technology.models import Technology
+from django.views.decorators.cache import cache_page
 
 
 class UsersViewset(ModelViewSet):
@@ -31,14 +32,12 @@ class UsersViewset(ModelViewSet):
 
     # todo show latest users
 
-
 def user_profile(request, username):
     data = {
         'is_owner': json.dumps(request.user.username == username),
         'profile': json.dumps(UserSerializerMinimal(CustomUser.objects.get(username=username)).data)
     }
     return render(request, 'users/profile.html', data)
-
 
 @login_required
 def my_profile(request):
@@ -119,7 +118,6 @@ def my_reviews(request):
         'results': results,
     }
     return render(request, 'users/my_reviews.html', data)
-
 
 @login_required
 def my_collections(request):
@@ -205,30 +203,3 @@ def _search_technologies(term, filter, page, page_size):
         page_size=page_size
     )
     return results
-
-
-def user_content(request, user_pk, index):
-    term = False
-    page_size = int(request.GET.get('resultsPerPage', 10))
-    offset_results = int(request.GET.get('offset', 0))
-    page = 0 if not offset_results else offset_results / page_size
-    filter = [{"nested": {"path": "author",
-                          "query": {
-                              "bool": {
-                                  "must": {
-                                      "match": {
-                                          "author.pk": user_pk
-                                      }
-                                  }
-                              }
-                          }
-                          }}, ]
-    if index == 'resources':
-        results = _search_study_resources(term, filter, page, page_size)
-    elif index == 'collections':
-        results = _search_collections(term, filter, page, page_size)
-    elif index == 'technologies':
-        results = _search_technologies(term, filter, page, page_size)
-    else:
-        results = f'{index} does not exist'
-    return JsonResponse(results, safe=False)

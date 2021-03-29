@@ -3,6 +3,7 @@ from huey import crontab
 from .elasticsearch.elasticsearch_interface import save_to_elastic, delete_from_elastic
 from .elasticsearch.elasticsearch_interface import ElasticSearchInterface
 import logging
+from django.core.management import call_command
 
 
 def set_to_sync(syncable_instance):
@@ -47,7 +48,7 @@ def task_sync_technologies_related(pk, TechnologyModel):
         set_to_sync(resource)
 
 
-@periodic_task(crontab(minute='*/15'))
+@periodic_task(crontab(hour='6'))
 def sync_all_to_elastic():
     from technology.models import Technology
     from study_resource.models import StudyResource
@@ -72,6 +73,22 @@ def sync_all_to_elastic():
         index, data = collection.get_elastic_data()
         save_to_elastic(index, mapping, data)
     logger.info(f'synced {Collection.objects.count()} collections - ok')
+
+
+@periodic_task(crontab(minute='*/1'))
+def send_queued_email():
+    call_command('send_mail')
+
+
+@periodic_task(crontab(minute='*/5'))
+def retry_send_email():
+    call_command('retry_deferred')
+
+
+# @periodic_task(crontab(day='*/7'))
+# def clean_email_logs():
+# i don't know how to send the `purge_mail_log 7 -r=all`
+#     call_command('purge_mail_log', 7, r='all')
 
 
 def sync_to_elastic(sender, **kwargs):

@@ -1,6 +1,4 @@
 from django.db import models
-import tsvector_field
-
 
 class CategoryModelManager(models.Manager):
 
@@ -43,10 +41,6 @@ class CategoryModelManager(models.Manager):
 class Category(models.Model):
     name = models.CharField(max_length=128, db_index=True)
     description = models.TextField(max_length=1024, blank=True, null=True)
-    search_vector_index = tsvector_field.SearchVectorField([
-        tsvector_field.WeightedColumn('name', 'A'),
-        tsvector_field.WeightedColumn('description', 'B'),
-    ], 'english')
     objects = CategoryModelManager()
 
     def __str__(self):

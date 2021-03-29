@@ -1,11 +1,7 @@
 from django.db import models
-from django.contrib.postgres.indexes import GinIndex
 from django.urls import reverse
 from django.dispatch import receiver
-from django.core.files import File
 from uuid import uuid4
-from tempfile import NamedTemporaryFile
-import tsvector_field
 from versatileimagefield.fields import VersatileImageField
 from users.models import CustomUser
 import requests
@@ -15,7 +11,7 @@ from django.conf import settings
 from tag.models import Tag
 from technology.models import Technology
 from category.models import Category
-from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin
+from core.abstract_models import DateTimeModelMixin, SluggableModelMixin
 from votable.models import VotableMixin
 from django_edit_suggestion.models import EditSuggestion
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
@@ -63,7 +59,7 @@ class StudyResourceManager(models.Manager):
         )
 
 
-class StudyResourceQueryset(SearchAbleQuerysetMixin):
+class StudyResourceQueryset(models.QuerySet):
 
     def annotate_with_rating(self):
         return self.annotate(
@@ -138,13 +134,9 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
     price = models.IntegerField(default=0, choices=Price.choices, db_index=True)
     media = models.IntegerField(default=0, choices=Media.choices, db_index=True)
     experience_level = models.IntegerField(default=0, choices=ExperienceLevel.choices, db_index=True)
-    search_vector_index = tsvector_field.SearchVectorField([
-        tsvector_field.WeightedColumn('name', 'A'),
-        tsvector_field.WeightedColumn('summary', 'B'),
-    ], 'english')
     edit_suggestions = EditSuggestion(
         excluded_fields=(
-            'created_at', 'updated_at', 'search_vector_index', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+            'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
         m2m_fields=[
             {'name': 'tags', 'model': Tag},
             {
@@ -167,12 +159,6 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
         },
         attrs_to_be_copied=['image', ]
     )
-
-    class Meta:
-        indexes = [
-            GinIndex(fields=['name', 'summary'], name='gintrgm_study_resource_index',
-                     opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
-        ]
 
     def __str__(self):
         return f'{self.media_label} on {self.name}'

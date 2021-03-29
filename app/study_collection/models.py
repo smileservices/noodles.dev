@@ -1,18 +1,15 @@
 from django.db import models
 from django.urls import reverse
-from django.contrib.postgres.indexes import GinIndex
-import tsvector_field
-
-from core.abstract_models import SearchAbleQuerysetMixin, DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexableMixin
+from core.abstract_models import DateTimeModelMixin, SluggableModelMixin, \
+    ElasticSearchIndexableMixin
 from votable.models import VotableMixin
-
 from users.models import CustomUser
 from tag.models import Tag
 from technology.models import Technology
 from study_resource.models import StudyResource
 
 
-class CollectionQueryset(SearchAbleQuerysetMixin):
+class CollectionQueryset(models.QuerySet):
     def annotate_with_items_count(self):
         return self.annotate(items_count=models.Count('resources'))
 
@@ -34,16 +31,6 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
     )
     tags = models.ManyToManyField(Tag, related_name='collections')
     technologies = models.ManyToManyField(Technology, related_name='collections')
-    search_vector_index = tsvector_field.SearchVectorField([
-        tsvector_field.WeightedColumn('name', 'A'),
-        tsvector_field.WeightedColumn('description', 'B'),
-    ], 'english')
-
-    class Meta:
-        indexes = [
-            GinIndex(fields=['name', 'description'], name='gintrgm_collection_index',
-                     opclasses=['gin_trgm_ops', 'gin_trgm_ops'])
-        ]
 
     def __str__(self):
         return f'{self.name} by {self.author}'

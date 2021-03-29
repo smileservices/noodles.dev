@@ -10,41 +10,26 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter, SearchFilter
-from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset, SearchableModelViewset
+from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdminOrReadOnly
-from collections import defaultdict
 from study_collection.models import Collection
 from study_resource.models import StudyResource
 from . import filters
 from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyListing
 from .models import Technology
+from django.views.decorators.cache import cache_page
 
 
 def detail(request, id, slug):
     queryset = Technology.objects
-    detail = queryset.get(pk=id)
-    # solutions = detail.solutions
-    collections = Collection.objects.filter(technologies=detail).all()[:5]
-    # similar_techs = []
-    # for tech_list in [solution.technologies.all() for solution in solutions.all()]:
-    #     similar_techs += tech_list
+    detail = queryset.select_related().get(pk=id)
+    collections = Collection.objects.filter(technologies=detail).select_related().all()[:5]
     resources_ids = [tech['study_resource_id'] for tech in
                      detail.studyresourcetechnology_set.values('study_resource_id').all()]
-    resources = StudyResource.objects.filter(pk__in=resources_ids).all()
-    latest_resources = StudyResource.objects.all().order_by('created_at')[:5]
-    tags = []
-    for res in latest_resources:
-        [tags.append(tag) for tag in res.tags.all()]
-    latest = {
-        'tags': set(tags),
-        'resources': latest_resources
-    }
+    resources = StudyResource.objects.filter(pk__in=resources_ids).select_related().all()
     data = {
         'result': detail,
         'collections': collections,
-        'latest': latest,
-        # 'solutions': solutions,
-        # 'similar': similar_techs,
         'resources': resources,
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
         'thumbs_down_array': json.dumps(detail.thumbs_down_array),
@@ -105,24 +90,13 @@ def edit(request, id):
     return render(request, 'technology/edit_page.html', data)
 
 
-class TechViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
+class TechViewset(ResourceWithEditSuggestionVieset):
     serializer_class = TechnologySerializer
     queryset = TechnologySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     filter_backends = [SearchFilter, OrderingFilter]
     filterset_class = filters.TechnologyFilterRest
     search_fields = ['name', 'description']
-
-    @action(methods=['GET'], detail=False)
-    def filter(self, request, *args, **kwargs):
-        queryset = self.queryset
-        return self.filtered_response(
-            request,
-            ['name', 'description'],
-            self.filterset_class,
-            TechnologyListing,
-            queryset
-        )
 
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):
@@ -143,23 +117,7 @@ class TechViewset(ResourceWithEditSuggestionVieset, SearchableModelViewset):
         })
 
 
-def sidebar(request):
-    all = Technology.objects.select_related('category').all()
-    featured = defaultdict(list)
-    other = defaultdict(list)
-    techlisting = lambda t: {
-        'url': t.absolute_url,
-        'logo': t.logo,
-        'name': t.name
-    }
-    for tech in all:
-        if tech.featured:
-            featured[tech.category.name].append(techlisting(tech))
-        else:
-            other[tech.category.name].append(techlisting(tech))
-    return JsonResponse({'featured': featured, 'other': other})
-
-
+@cache_page(60 * 5)
 def license_options(request):
     license = [{'value': o[0], 'label': o[1]} for o in Technology.LicenseType.choices]
     return JsonResponse(license, safe=False)

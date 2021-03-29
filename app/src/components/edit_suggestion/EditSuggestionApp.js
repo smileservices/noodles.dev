@@ -73,7 +73,7 @@ export default function EditApp({ResourceForm, api_urls}) {
                         A moderator will publish or reject it
                     </div>
                     <div className="buttons-container">
-                        <a className="btn" href={api_urls.resource_detail}>Resource Detail</a>
+                        <a className="btn" href={showSuccessModal.detail_url}>Resource Detail</a>
                         <a className="btn dark" href="/">Back to Homepage</a>
                     </div>
                 </div>
@@ -88,9 +88,9 @@ export default function EditApp({ResourceForm, api_urls}) {
     return (
         <div className="detail-page">
             <div className="form-container">
-                <EditSuggestionForm addEditSuggestionCallback={()=>{
+                <EditSuggestionForm addEditSuggestionCallback={(data)=>{
                     resetEditSuggestionPagination();
-                    setShowSuccessModal(true);
+                    setShowSuccessModal(data);
                 }}
                                     ResourceForm={ResourceForm}
                                     api_urls={api_urls}
