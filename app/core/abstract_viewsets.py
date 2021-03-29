@@ -34,13 +34,37 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         if self.request.user.is_staff or instance.author == self.request.user:
-            return super(ResourceWithEditSuggestionVieset, self).update(request, *args, **kwargs)
+            try:
+                return super(ResourceWithEditSuggestionVieset, self).update(request, *args, **kwargs)
+            except ValidationError as e:
+                raise e
+            except Exception as e:
+                mail_admins(
+                    subject=f'Error Creating Resource: {self.request.META["PATH_INFO"]}',
+                    message=f'ERROR: \n'
+                            f'{e}\n\n'
+                            f'REQUEST DATA:\n'
+                            f'{self.request.data}'
+                )
+                return Response(status=502)
         else:
-            serialized_data = self.get_serializer(data=request.data)
-            validated_data = serialized_data.run_validation(request.data)
-            edsug = self.edit_suggestion_perform_create(instance, validated_data)
-            serializer = self.serializer_class.get_edit_suggestion_serializer()
-            return Response(serializer(edsug).data, status=HTTP_209_EDIT_SUGGESTION_CREATED)
+            try:
+                serialized_data = self.get_serializer(data=request.data)
+                validated_data = serialized_data.run_validation(request.data)
+                edsug = self.edit_suggestion_perform_create(instance, validated_data)
+                serializer = self.serializer_class.get_edit_suggestion_serializer()
+                return Response(serializer(edsug).data, status=HTTP_209_EDIT_SUGGESTION_CREATED)
+            except ValidationError as e:
+                raise e
+            except Exception as e:
+                mail_admins(
+                    subject=f'Error Creating Resource: {self.request.META["PATH_INFO"]}',
+                    message=f'ERROR: \n'
+                            f'{e}\n\n'
+                            f'REQUEST DATA:\n'
+                            f'{self.request.data}'
+                )
+                return Response(status=502)
 
     def perform_destroy(self, instance):
         if self.request.user.is_staff or instance.author == self.request.user:
