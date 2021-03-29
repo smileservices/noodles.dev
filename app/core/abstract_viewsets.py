@@ -40,7 +40,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                 raise e
             except Exception as e:
                 mail_admins(
-                    subject=f'Error Creating Resource: {self.request.META["PATH_INFO"]}',
+                    subject=f'Error Updating Resource: {self.request.META["PATH_INFO"]}',
                     message=f'ERROR: \n'
                             f'{e}\n\n'
                             f'REQUEST DATA:\n'
@@ -58,7 +58,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                 raise e
             except Exception as e:
                 mail_admins(
-                    subject=f'Error Creating Resource: {self.request.META["PATH_INFO"]}',
+                    subject=f'Error Creating Edit Suggestion for Resource: {self.request.META["PATH_INFO"]}',
                     message=f'ERROR: \n'
                             f'{e}\n\n'
                             f'REQUEST DATA:\n'
