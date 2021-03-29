@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'versatileimagefield',
     'easyaudit',
     'huey.contrib.djhuey',
+    'mailer',
     # our app
     'core',
     'rest_framework',
@@ -276,3 +277,13 @@ ELASTICSEARCH_HOST = env.list('ELASTICSEARCH_HOST')
 ELASTICSEARCH_AUTH = env.tuple('ELASTICSEARCH_AUTH')
 ELASTICSEARCH_SCHEMA = env.str('ELASTICSEARCH_SCHEMA')
 ELASTICSEARCH_PORT = env.int('ELASTICSEARCH_PORT')
+
+EMAIL_BACKEND = "mailer.backend.DbBackend"
+
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.str('EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env.str('EMAIL_USE_TLS', False)
+EMAIL_USE_SSL = env.str('EMAIL_USE_SSL', False)
+SERVER_EMAIL = env.str('EMAIL_HOST_USER')

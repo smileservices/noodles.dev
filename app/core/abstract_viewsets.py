@@ -2,22 +2,34 @@ from votable.viewsets import VotableVieset
 from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
 from app.settings import rewards
 from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from core.status import HTTP_209_EDIT_SUGGESTION_CREATED
+from django.core.mail import mail_admins
 
 
 class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset):
     m2m_fields = None
 
-    def perform_create(self, serializer):
+    def create(self, request, *args, **kwargs):
         try:
-            resource = serializer.save(author=self.request.user)
-            self.request.user.positive_score += rewards.RESOURCE_CREATE
-            self.request.user.save()
-            return resource
-        except Exception as e:
-
+            super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
+        except ValidationError as e:
             raise e
+        except Exception as e:
+            mail_admins(
+                subject=f'Error Creating Resource: {self.request.META["PATH_INFO"]}',
+                message=f'ERROR: \n'
+                        f'{e}\n\n'
+                        f'REQUEST DATA:\n'
+                        f'{self.request.data}'
+            )
+            return Response(status=502)
+
+    def perform_create(self, serializer):
+        resource = serializer.save(author=self.request.user)
+        self.request.user.positive_score += rewards.RESOURCE_CREATE
+        self.request.user.save()
+        return resource
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
