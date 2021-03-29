@@ -64,7 +64,7 @@ export default function EditForm({addEditSuggestionCallback, ResourceForm, api_u
                                     type="success"
                                     hideable={false}/>)
                     resetForm();
-                    addEditSuggestionCallback();
+                    addEditSuggestionCallback({response: data, detail_url: originalData.absolute_url});
                 } else {
                     setAlert(<Alert close={e => setAlert(null)} text="Successfully edited the resource" type="success"
                                     hideable={false}/>)
