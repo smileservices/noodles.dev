@@ -33,7 +33,7 @@ django-mailer==2.1
 django-recaptcha==2.0.6
 django-redis==4.12.1
 django-versatileimagefield==2.0
-djangorestframework==3.11.0git
+djangorestframework==3.11.0
 docker==4.3.1
 docutils==0.15.2
 elasticsearch==7.0.0
