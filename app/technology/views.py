@@ -19,7 +19,7 @@ from .serializers import TechnologySerializer, TechnologySerializerOption, Techn
 from .models import Technology
 from django.views.decorators.cache import cache_page
 
-@cache_page(60*5)
+
 def detail(request, id, slug):
     queryset = Technology.objects
     detail = queryset.select_related().get(pk=id)
@@ -39,7 +39,7 @@ def detail(request, id, slug):
         return render(request, 'technology/detail_page.html', data)
     return render(request, 'technology/detail_page_seo.html', data)
 
-@cache_page(60*5)
+
 def list_all(request):
     queryset = Technology.objects.all()
     paginator = Paginator(queryset, 10)
@@ -55,7 +55,7 @@ def list_all(request):
     }
     return render(request, 'technology/list_page_seo.html', data)
 
-@cache_page(60*60*24)
+
 @login_required
 def create(request):
     data = {
@@ -68,7 +68,7 @@ def create(request):
     }
     return render(request, 'technology/create_page.html', data)
 
-@cache_page(60*60*24)
+
 @login_required
 def edit(request, id):
     data = {
@@ -98,17 +98,6 @@ class TechViewset(ResourceWithEditSuggestionVieset):
     filterset_class = filters.TechnologyFilterRest
     search_fields = ['name', 'description']
 
-    @action(methods=['GET'], detail=False)
-    def filter(self, request, *args, **kwargs):
-        queryset = self.queryset
-        return self.filtered_response(
-            request,
-            ['name', 'description'],
-            self.filterset_class,
-            TechnologyListing,
-            queryset
-        )
-
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):
         try:
@@ -127,7 +116,8 @@ class TechViewset(ResourceWithEditSuggestionVieset):
             'error': False
         })
 
-@cache_page(60*60*24)
+
+@cache_page(60 * 5)
 def license_options(request):
     license = [{'value': o[0], 'label': o[1]} for o in Technology.LicenseType.choices]
     return JsonResponse(license, safe=False)

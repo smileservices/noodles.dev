@@ -17,7 +17,7 @@ from . import serializers, filters
 from .models import CollectionResources, Collection
 from django.views.decorators.cache import cache_page
 
-@cache_page(60*5)
+
 def detail(request, id, slug):
     queryset = Collection.objects
     resource = queryset.get(pk=id)
@@ -40,7 +40,7 @@ def detail(request, id, slug):
         return render(request, 'study_collection/detail_page.html', data)
     return render(request, 'study_collection/detail_page.seo.html', data)
 
-@cache_page(60*5)
+
 def list_all(request):
     queryset = Collection.objects.all()
     paginator = Paginator(queryset, 10)

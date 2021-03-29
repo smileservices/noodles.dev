@@ -157,7 +157,6 @@ def extract_filters(request) -> []:
                 filter.append(p_filter)
     return filter
 
-@cache_page(60*60*24)
 def search_page(request):
     data = {
         'hide_navbar_search': True,

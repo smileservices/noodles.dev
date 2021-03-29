@@ -8,9 +8,10 @@ from elasticsearch import exceptions as es_ex
 from collections import defaultdict
 from django.views.decorators.cache import cache_page
 
-@cache_page(60*60*24)
+
 def homepage(request):
     return render(request, 'frontend/homepage.html')
+
 
 @cache_page(60)
 def aggregations(request):
@@ -21,6 +22,7 @@ def aggregations(request):
         'technologies': Technology.objects.count(),
     }
     return JsonResponse(data)
+
 
 @cache_page(60)
 def homepage_resources(request):
@@ -46,6 +48,7 @@ def homepage_resources(request):
         }, status=500)
     return JsonResponse(data)
 
+
 @cache_page(60)
 def homepage_collections(request):
     try:
@@ -65,6 +68,7 @@ def homepage_collections(request):
             'error': 'ElasticSearch Error: Index collections not found'
         }, status=500)
     return JsonResponse(data)
+
 
 @cache_page(60)
 def homepage_technologies(request):
@@ -86,7 +90,8 @@ def homepage_technologies(request):
         }, status=500)
     return JsonResponse(data)
 
-@cache_page(60*60)
+
+@cache_page(60 * 5)
 def sidebar(request):
     all = Technology.objects.select_related().all()
     featured = defaultdict(list)

@@ -41,7 +41,6 @@ def detail(request, id, slug):
     resource = queryset.select_related().get(pk=id)
     data = {
         'result': resource,
-        'reviews': resource.reviews.order_by('-created_at').all(),
         'MAX_RATING': settings.MAX_RATING,
         'urls': {
             'review_api': reverse_lazy('review-viewset-list'),
@@ -60,6 +59,7 @@ def detail(request, id, slug):
     }
     if request.user.is_authenticated:
         return render(request, 'study_resource/detail_page.html', data)
+    data['reviews'] = resource.reviews.order_by('-created_at').all(),
     return render(request, 'study_resource/detail_page_seo.html', data)
 
 
@@ -106,16 +106,6 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
-
-    @action(methods=['GET'], detail=False)
-    def filter(self, request, *args, **kwargs):
-        queryset = self.queryset
-        return self.filtered_response(
-            request, ['name', 'summary'],
-            self.filterset_class,
-            serializers.StudyResourceListingSerializer,
-            queryset
-        )
 
     # technologies and tags are saved in the serializer
     def edit_suggestion_handle_m2m_through_field(self, instance, data, f):

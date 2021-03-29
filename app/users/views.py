@@ -32,7 +32,6 @@ class UsersViewset(ModelViewSet):
 
     # todo show latest users
 
-@cache_page(60)
 def user_profile(request, username):
     data = {
         'is_owner': json.dumps(request.user.username == username),
@@ -40,7 +39,6 @@ def user_profile(request, username):
     }
     return render(request, 'users/profile.html', data)
 
-@cache_page(60)
 @login_required
 def my_profile(request):
     data = {
@@ -121,7 +119,6 @@ def my_reviews(request):
     }
     return render(request, 'users/my_reviews.html', data)
 
-@cache_page(60*60*24)
 @login_required
 def my_collections(request):
     data = {
