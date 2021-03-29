@@ -12,7 +12,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
 
     def create(self, request, *args, **kwargs):
         try:
-            super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
+            return super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
         except ValidationError as e:
             raise e
         except Exception as e:
