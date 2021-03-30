@@ -1,0 +1,37 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block content %}
+    <section id="homepage-app">
+        <div class="section">
+            <div id="minimal-search-app" class="skeleton search-bar-big"></div>
+            <header>
+                <h2>The resource is not available anymore</h2>
+                <h4>Look for something similar instead</h4>
+            </header>
+        </div>
+        <section id="related-app" class="column-container">
+            <div class="skeleton header sm"></div>
+            <div class="tags">
+                <span class="skeleton tag"></span>
+                <span class="skeleton tag"></span>
+                <span class="skeleton tag"></span>
+            </div>
+            <div class="skeleton header sm"></div>
+            <div class="tags">
+                <span class="skeleton tag"></span>
+                <span class="skeleton tag"></span>
+                <span class="skeleton tag"></span>
+            </div>
+            <div class="skeleton header sm"></div>
+            <div class="skeleton result"></div>
+            <div class="skeleton result"></div>
+            <div class="skeleton result"></div>
+        </section>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+        <script src="{% static 'minimal-search-app.js' %}"></script>
+        <script src="{% static 'related-app.js' %}"></script>
+{% endblock %}

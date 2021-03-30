@@ -45,6 +45,7 @@ module.exports = {
         //search app
         '/static/navbar-search-bar-app': './app/search/src/NavbarSearchBarApp.js',
         '/static/search-app': './app/search/src/SearchApp.js',
+        '/static/minimal-search-app': './app/search/src/MinimalSearchApp.js',
 
         //edit suggestions
         '/static/problem_solution/problem-edit': './app/problem_solution/src/problem/EditApp.js',

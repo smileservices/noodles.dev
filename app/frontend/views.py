@@ -107,3 +107,15 @@ def sidebar(request):
         else:
             other[tech.category.name].append(techlisting(tech))
     return JsonResponse({'featured': featured, 'other': other})
+
+
+@cache_page(60*60*24)
+def error_404(request, exception):
+    from django.views.defaults import page_not_found
+    return page_not_found(request, exception, template_name='errors/404.html')
+
+
+@cache_page(60*60*24)
+def error_500(request):
+    from django.views.defaults import server_error
+    return server_error(request, template_name='errors/500.html')
