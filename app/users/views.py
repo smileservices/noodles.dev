@@ -15,11 +15,11 @@ from .forms import ProfileForm
 from django.urls import reverse_lazy
 import json
 from django.http.response import JsonResponse
-from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from users.models import CustomUser
 from users.serializers import UserSerializerMinimal
 from technology.models import Technology
 from django.views.decorators.cache import cache_page
+from search.helpers import _search_study_resources, _search_technologies, _search_collections
 
 
 class UsersViewset(ModelViewSet):
@@ -32,12 +32,14 @@ class UsersViewset(ModelViewSet):
 
     # todo show latest users
 
+
 def user_profile(request, username):
     data = {
         'is_owner': json.dumps(request.user.username == username),
         'profile': json.dumps(UserSerializerMinimal(CustomUser.objects.get(username=username)).data)
     }
     return render(request, 'users/profile.html', data)
+
 
 @login_required
 def my_profile(request):
@@ -119,6 +121,7 @@ def my_reviews(request):
     }
     return render(request, 'users/my_reviews.html', data)
 
+
 @login_required
 def my_collections(request):
     data = {
@@ -155,51 +158,32 @@ def my_technologies(request):
     return render(request, 'users/my_technologies.html', data)
 
 
-def _search_study_resources(term, filter, page, page_size):
-    es_res = ElasticSearchInterface(['study_resources'])
-    resources_fields = ['name', 'summary', 'category', 'technologies', 'tags']
-    rating_sort = [{"rating": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},
-                   {"reviews": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}]
-    results = es_res.search(
-        fields=resources_fields,
-        term=term,
-        filter=filter,
-        sort=rating_sort,
-        aggregates={},
-        page=page,
-        page_size=page_size
-    )
-    return results
-
-
-def _search_collections(term, filter, page, page_size):
-    es_res = ElasticSearchInterface(['collections'])
-    collections_fields = ['name', 'description', 'technologies', 'tags']
-    filter.append({"term": {"is_public": True}})
-    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ]
-    results = es_res.search(
-        fields=collections_fields,
-        term=term,
-        filter=filter,
-        sort=votes_sort,
-        aggregates={},
-        page=page,
-        page_size=page_size
-    )
-    return results
-
-
-def _search_technologies(term, filter, page, page_size):
-    es_res = ElasticSearchInterface(['technologies'])
-    technologies_fields = ['name', 'description', 'ecosystem', 'tags']
-    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ]
-    results = es_res.search(
-        fields=technologies_fields,
-        term=term,
-        filter=filter,
-        sort=votes_sort,
-        aggregates={},
-        page=page,
-        page_size=page_size
-    )
-    return results
+def user_content(request, pk, index):
+    term = request.GET.get('search', '')
+    index = index
+    page_size = int(request.GET.get('resultsPerPage', 10))
+    offset_results = int(request.GET.get('offset', 0))
+    page = 0 if not offset_results else offset_results / page_size;
+    filter = [{
+        "nested": {"path": "author",
+                   "query": {
+                       "bool": {
+                           "must": {
+                               "match": {
+                                   "author.pk": pk
+                               }
+                           },
+                           "filter": []
+                       }
+                   }
+                   }
+    },]
+    if index == 'resources':
+        results = _search_study_resources(term, filter, page, page_size)
+    elif index == 'collections':
+        results = _search_collections(term, filter, page, page_size)
+    elif index == 'technologies':
+        results = _search_technologies(term, filter, page, page_size)
+    else:
+        results = f'{index} does not exist'
+    return JsonResponse(results, safe=False)

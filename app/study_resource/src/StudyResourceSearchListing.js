@@ -17,7 +17,7 @@ export default function StudyResourceSearchListing({data, addFilter}) {
                     <div className="left">
                         <div className="tags">
                             {data.technologies.map(t => <a key={t.url} href={t.url}
-                                                           className="tech">{flagIcon} {t.name} {t.version}</a>)}
+                                                           className="tech">{flagIcon} {t.name}{t.version ? ' '+t.version : ''}</a>)}
                             <span onClick={e => {addFilter('category', data.category)}}>{data.category}</span>
                             <span
                                 onClick={e => addFilter('experience_level', data.experience_level)}>{data.experience_level}</span>

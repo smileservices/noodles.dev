@@ -15,7 +15,7 @@ const NoResultsElement = (
 
 function ProfileApp() {
     const SEARCH_URL = '/search/';
-    const SEARCH_API_URL = '/users/api/' + USER.pk + '/';
+    const USER_CONTENT_URL = '/users/api/' + USER.pk + '/';
     const defaultTabState = {
         rated_highest: {},
         latest: {},
@@ -43,25 +43,25 @@ function ProfileApp() {
         const paginationParams = new URLSearchParams();
         paginationParams.set('resultsPerPage', pagination.resultsPerPage);
         paginationParams.set('offset', pagination.offset);
-        await fetch(SEARCH_API_URL + tab + '?' + paginationParams.toString(), {
+        await fetch(USER_CONTENT_URL + tab + '?' + paginationParams.toString(), {
             method: 'GET'
         }).then(result => {
             if (result.ok) {
                 result.json().then(data => setResults(data));
             } else {
-                alert('Could not read '+tab+' data: ' + result.statusText)
+                alert('Could not read ' + tab + ' data: ' + result.statusText)
             }
         })
     }
 
     //listeners to pagination change for every resource type
-    useEffect(e=>{
+    useEffect(e => {
         getResource('resources', paginationResources, setResources);
     }, [paginationResources,]);
-    useEffect(e=>{
+    useEffect(e => {
         getResource('collections', paginationCollections, setCollections);
     }, [paginationCollections,]);
-    useEffect(e=>{
+    useEffect(e => {
         getResource('technologies', paginationTechnologies, setTechnologies);
     }, [paginationTechnologies,]);
 
@@ -79,20 +79,17 @@ function ProfileApp() {
                 return (
                     <div className="resources">
                         {resources.items?.length > 0 ?
-                            <div className="most-voted">
-                                <h4>Best Reviewed Resources</h4>
-                                <PaginatedLayout
-                                    pagination={paginationResources}
-                                    resultsCount={resources.stats.total}
-                                    data={resources.items}
-                                    resultsContainerClass="results"
-                                    setPagination={setPaginationResources}
-                                    mapFunction={(resource, idx) => <StudyResourceSearchListing
-                                        key={"user-resource" + resource.pk} data={resource}
-                                        addFilter={addFilterfactory('resources')}
-                                    />}
-                                />
-                            </div>
+                            <PaginatedLayout
+                                pagination={paginationResources}
+                                resultsCount={resources.stats.total}
+                                data={resources.items}
+                                resultsContainerClass="results"
+                                setPagination={setPaginationResources}
+                                mapFunction={(resource, idx) => <StudyResourceSearchListing
+                                    key={"user-resource" + resource.pk} data={resource}
+                                    addFilter={addFilterfactory('resources')}
+                                />}
+                            />
                             : NoResultsElement}
                     </div>
                 );
@@ -100,20 +97,17 @@ function ProfileApp() {
                 return (
                     <div className="collections">
                         {collections.items?.length > 0 ?
-                            <div className="most-voted">
-                                <h4>Most Up Voted Collections</h4>
-                                <PaginatedLayout
-                                    pagination={paginationCollections}
-                                    resultsCount={collections.stats.total}
-                                    data={collections.items}
-                                    resultsContainerClass="results"
-                                    setPagination={setPaginationCollections}
-                                    mapFunction={(resource, idx) => <CollectionSearchListing
-                                        key={"user-collection" + resource.pk} data={resource}
-                                        addFilter={addFilterfactory('collections')}
-                                    />}
-                                />
-                            </div>
+                            <PaginatedLayout
+                                pagination={paginationCollections}
+                                resultsCount={collections.stats.total}
+                                data={collections.items}
+                                resultsContainerClass="results"
+                                setPagination={setPaginationCollections}
+                                mapFunction={(resource, idx) => <CollectionSearchListing
+                                    key={"user-collection" + resource.pk} data={resource}
+                                    addFilter={addFilterfactory('collections')}
+                                />}
+                            />
                             : NoResultsElement}
                     </div>
                 );
@@ -121,20 +115,17 @@ function ProfileApp() {
                 return (
                     <div className="technologies">
                         {technologies.items?.length > 0 ?
-                            <div className="most-voted">
-                                <h4>Most Up Voted Technologies</h4>
-                                <PaginatedLayout
-                                    pagination={paginationTechnologies}
-                                    resultsCount={technologies.stats.total}
-                                    data={technologies.items}
-                                    resultsContainerClass="results"
-                                    setPagination={setPaginationTechnologies}
-                                    mapFunction={(resource, idx) => <TechnologySearchListing
-                                        key={"rated-tech" + resource.pk} data={resource}
-                                        addFilter={addFilterfactory('technologies')}
-                                    />}
-                                />
-                            </div>
+                            <PaginatedLayout
+                                pagination={paginationTechnologies}
+                                resultsCount={technologies.stats.total}
+                                data={technologies.items}
+                                resultsContainerClass="results"
+                                setPagination={setPaginationTechnologies}
+                                mapFunction={(resource, idx) => <TechnologySearchListing
+                                    key={"rated-tech" + resource.pk} data={resource}
+                                    addFilter={addFilterfactory('technologies')}
+                                />}
+                            />
                             : NoResultsElement}
                     </div>
                 );
