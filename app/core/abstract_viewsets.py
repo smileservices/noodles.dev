@@ -12,7 +12,11 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
 
     def create(self, request, *args, **kwargs):
         try:
-            return super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
+            response = super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
+            # we have to resync to elasticsearch because we now have finished adding the m2m data
+            instance = self.serializer_class.Meta.model.objects.get(pk=response.data['pk'])
+            instance.save()
+            return response
         except ValidationError as e:
             raise e
         except Exception as e:
