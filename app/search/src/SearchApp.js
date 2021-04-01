@@ -168,6 +168,7 @@ function SearchApp() {
                 }
             case 'technologies':
                 return {
+                    'license': getAvailableFilters(resultsFilters['license'], 'License Type', 'simple-select'),
                     'ecosystem': getAvailableFilters(resultsFilters['ecosystem'], 'Technology Ecosystem', 'simple-select'),
                     'category': getAvailableFilters(resultsFilters['category'], 'Category', 'simple-select'),
                 }

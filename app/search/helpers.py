@@ -49,6 +49,7 @@ def _search_aggr_technologies(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['technologies'])
     technologies_fields = ['name', 'description', 'ecosystem', 'tags']
     aggregates = {
+        "license": {"terms": {"field": "license", "size": 10}},
         "ecosystem": {"terms": {"field": "ecosystem", "size": 20}},
         "category": {"terms": {"field": "category"}},
     }
