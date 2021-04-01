@@ -9,7 +9,7 @@ import {
     ImageInputComponent
 } from "../../src/components/form";
 import apiPost from "../../src/api_interface/apiPost";
-import {FormElement, ImageInput} from "../../src/components/form";
+import {FormElement} from "../../src/components/form";
 import Alert from "../../src/components/Alert";
 
 function TechForm({formData, setFormData, extraData, submitCallback, waiting, alert, errors, setAlert, setErrors, setWaiting}) {

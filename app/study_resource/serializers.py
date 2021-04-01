@@ -168,7 +168,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
             try:
                 validated_data['image_file'] = utils.get_temp_image_file_from_url(data['image_url'])
             except Exception as e:
-                raise exceptions.ValidationError(e)
+                raise exceptions.ValidationError({'image_file': e})
         # validate technologies
         techs = []
         for tech in cleaned_technologies:

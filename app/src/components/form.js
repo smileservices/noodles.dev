@@ -47,7 +47,7 @@ function handleSelectClass(error) {
 }
 
 export function FormElement({data, children, callback, alert, waiting, buttonText}) {
-    if (waiting) return (<Waiting text={waiting} />);
+    if (waiting) return (<Waiting text={waiting}/>);
     return (
         <form onSubmit={e => {
             e.preventDefault();
@@ -56,7 +56,7 @@ export function FormElement({data, children, callback, alert, waiting, buttonTex
         }}>
             {children}
             {alert}
-            <button type="submit" className="btn submit">{buttonText ? buttonText : 'Submit' }</button>
+            <button type="submit" className="btn submit">{buttonText ? buttonText : 'Submit'}</button>
         </form>
     )
 }
@@ -101,33 +101,10 @@ export const Checkbox = ({name, label, inputProps, smallText, error}) => {
     const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
     return (
         <div className="">
-            <input type="checkbox" id={name} name={name} className={error ? 'invalid' : ''} {...inputProps} /> {labelOutput}
+            <input type="checkbox" id={name} name={name}
+                   className={error ? 'invalid' : ''} {...inputProps} /> {labelOutput}
             {error
                 ? (<div className="invalid-feedback">{error}</div>)
-                : ''
-            }
-        </div>
-    )
-}
-
-export const ImageInput = ({name, label, inputProps, smallText, error, selectedImage}) => {
-    return (
-        <div className="form-group">
-            {label
-                ? (<label htmlFor={name}>{label}</label>)
-                : ''
-            }
-            <input type="file" {...inputProps} id={name} name={name} aria-describedby={name + 'help'}
-                   className={handleInputClass(error)}/>
-            {error
-                ? (<div className="invalid-feedback">{error}</div>)
-                : ''
-            }
-            {selectedImage ?
-                <Fragment>
-                    <p>Current Image:</p>
-                    <img src={selectedImage} alt=""/>
-                </Fragment>
                 : ''
             }
         </div>
@@ -195,54 +172,60 @@ export const SelectReactCreatable = ({name, label, smallText, error, options, va
     </div>)
 }
 
-export function ImageInputComponent({inputProps, data, setValue, disabled}) {
+export function ImageInputComponent({inputProps, data, setValue, disabled}, smallText) {
+    const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
     const [activeTab, setActiveTab] = useState('url');
-
-    function tabClass(tabName) {
-        const base = 'tab';
-        return base + tabName === activeTab ? ' active' : '';
-    }
 
     return (
         <div className="image-input-component">
-            <div className={tabClass('url')} onClick={e => setActiveTab('url')}>Import From Url</div>
-            <div className={tabClass('file')} onClick={e => setActiveTab('file')}>Upload Local File</div>
-            {activeTab === 'url' ?
-                <div className="panel">
-                    <Input name={inputProps.name} label={inputProps.label} inputProps={{
-                        value: data.url,
-                        onChange: e => setValue({url: e.target.value}),
-                        type: 'text',
-                        disabled: Boolean(disabled)
-                    }}
-                           smallText={inputProps.smallText}
-                           error={inputProps.error}
-                    />
-                    <img className="preview" src={data.url} alt=""/>
+            <label htmlFor="">{inputProps.label} {infoIcon}</label>
+            <div className="flexible">
+                <div className="input-option">
+                    <div className="input-container">
+                        {activeTab === 'url'
+                            ? (<Fragment>
+                                <input id={inputProps.name} name={inputProps.name} aria-describedby={name + 'help'}
+                                       className={handleInputClass(inputProps.error)}
+                                       value={inputProps.url}
+                                       onChange={e => setValue({url: e.target.value})}
+                                       type='text'
+                                       disabled={Boolean(disabled)}
+                                       placeholder="Import from URL"
+                                />
+                                {inputProps.error
+                                    ? (<div className="invalid-feedback">{inputProps.error}</div>)
+                                    : ''
+                                }
+                                {data.url
+                                    ? (<img src={data.url} alt=""/>)
+                                    : ''
+                                }
+                            </Fragment>)
+                            : (<Fragment>
+                                <input type="file" disabled={Boolean(disabled)} id={inputProps.name}
+                                       name={inputProps.name}
+                                       onChange={e => setValue({file: e.target.files[0]})}
+                                       aria-describedby={name + 'help'}
+                                       className={handleInputClass(inputProps.error)}
+                                />
+                                {inputProps.error
+                                    ? (<div className="invalid-feedback">{inputProps.error}</div>)
+                                    : ''
+                                }
+                            </Fragment>)
+                        }
+                    </div>
+                    <div className="option-container">
+                        {activeTab === 'file'
+                            ? (<span>Or <a onClick={e => setActiveTab('url')}>Import from URL</a></span>)
+                            : (<span>Or <a onClick={e => setActiveTab('file')}>Choose File</a></span>)
+                        }
+                    </div>
                 </div>
-                : ''
-            }
-            {activeTab === 'file' ?
-                <div className="panel">
-                    <ImageInput
-                        name={inputProps.name} label={inputProps.label} inputProps={{
-                        value: data.name ? data.name : '',
-                        onChange: e => setValue({file: e.target.files[0], name: e.target.value}),
-                        disabled: Boolean(disabled)
-                    }}
-                        smallText={inputProps.smallText}
-                        error={inputProps.error}
-                        selectedImage={false}
-                    />
-                </div>
-                : ''
-            }
-            {inputProps.originalImage ?
-                <div>
-                    <h3>Current Selected:</h3>
-                    <img className="selected" src={inputProps.originalImage} alt=""/>
-                </div>
-                : ''}
+                {inputProps.originalImage
+                    ? (<img className="selected" src={inputProps.originalImage} alt=""/>)
+                    : ''}
+            </div>
         </div>
     )
 }

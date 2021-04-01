@@ -144,6 +144,7 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
                 delete cpd.image_file;
             }
         }
+        delete cpd.author;
         return cpd;
     }
 
