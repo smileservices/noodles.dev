@@ -70,7 +70,7 @@ def homepage_collections(request):
     return JsonResponse(data)
 
 
-# @cache_page(60)
+@cache_page(60)
 def homepage_technologies(request):
     try:
         es = ElasticSearchInterface(['technologies'])
