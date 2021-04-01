@@ -59,7 +59,8 @@ def detail(request, id, slug):
     }
     if request.user.is_authenticated:
         return render(request, 'study_resource/detail_page.html', data)
-    data['reviews'] = resource.reviews.order_by('-created_at').all(),
+    # data['reviews'] = resource.reviews.order_by('-created_at').select_related(),
+    # this shit is driving me nuts
     return render(request, 'study_resource/detail_page_seo.html', data)
 
 

@@ -26,7 +26,7 @@
                      itemtype="https://schema.org/CreativeWork">
                 {% include 'study_resource/detail.html' %}
             </section>
-            {% include 'study_resource/reviews.html' %}
+            {% include 'study_resource/reviews.html' with reviews=result.reviews.all %}
         </div>
         {% include 'study_resource/right_side.html' %}
     </div>
