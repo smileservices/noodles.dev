@@ -32,20 +32,12 @@
 
 {% include 'frontend/footer.html' %}
 
-<script defer src="{% static 'slim-select/dist/slimselect.min.js' %}"></script>
 <script>
     function toggle_sidebar() {
         document.querySelector('body').classList.toggle('sidebar-visible');
     }
 
     window.addEventListener('load', e => {
-        document.querySelectorAll('select').forEach(el => {
-            el.classList.remove('form-control');
-            new SlimSelect({
-                select: el,
-            })
-        })
-
         document.querySelectorAll('.collapsible .collapse-toggle').forEach(el => el.onclick = evt => {
             evt.preventDefault();
             evt.target.closest('.collapsible').classList.toggle('show');
