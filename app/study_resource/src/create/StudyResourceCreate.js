@@ -213,11 +213,11 @@ function StudyResourceCreateApp() {
         setDataStep3({
             name: scraped_data['name'],
             publication_date: FormatDate(scraped_data['publishing_date'], 'html-date'),
-            published_by: scraped_data['created_by'] ? scraped_data['created_by'].join(', ') : '',
+            published_by: scraped_data['created_by'].join(', '),
             category: null,
-            type: {label: 'free', value: 0},
-            media: {label: 'article', value: 0},
-            experience_level: false,
+            type: {label: 'Free', value: 0},
+            media: {label: 'Article', value: 0},
+            experience_level: {label: 'Absolute Beginner', value: 0},
             summary: scraped_data['summary'],
             image_file: {url: scraped_data['top_img']},
         })

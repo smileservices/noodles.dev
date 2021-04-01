@@ -150,17 +150,18 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):
         queryset = self.queryset
+        url = request.data['url'].split('?')[0]
         if 'pk' in request.data:
             queryset = queryset.only('pk').exclude(pk=request.data['pk'])
         try:
-            queryset.get(url=request.data['url'])
+            queryset.get(url=url)
             return Response({
                 'error': True,
                 'message': 'Resource with the same url already exists.'
             })
         except StudyResource.DoesNotExist:
             try:
-                result = scrape_tutorial(request.data['url'])
+                result = scrape_tutorial(url)
                 return Response(result)
             except Exception as e:
                 return Response({

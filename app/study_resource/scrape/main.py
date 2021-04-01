@@ -1,6 +1,6 @@
 from newspaper import Article, fulltext
 from gensim.summarization import summarize, keywords
-
+from requests import request
 
 def scrape_tutorial(url):
     '''
@@ -8,14 +8,25 @@ def scrape_tutorial(url):
     name, summary, publishing_date, created_by, tags
     '''
     result = {}
-    article = Article(url)
-    article.download()
-    article.parse()
+    try:
+        article = Article(url)
+        article.download()
+        article.parse()
+    except Exception as e:
+        try:
+            response = request('GET', url)
+            if response.status_code == 200:
+                return {'name': '', 'tags': [], 'top_img': '', 'publishing_date': '', 'created_by': []}
+            raise Exception('something went wrong')
+        except Exception as e:
+            raise Exception('Could not access or parse the URL. Please recheck it and try again.')
     result['name'] = article.title
     result['tags'] = article.tags | set(article.keywords)
     result['top_img'] = article.top_img.split('?')[0]
-    if not result['tags']:
+    if len(result['tags']) < 2:
         result['tags'] = keywords(article.text, ratio=0.03, split=True, lemmatize=True)
+    if len(result['tags']) > 7:
+        result['tags'] = list(result['tags'])[:7]
     result['publishing_date'] = article.publish_date
     result['created_by'] = article.authors
     try:

@@ -172,7 +172,7 @@ export const SelectReactCreatable = ({name, label, smallText, error, options, va
     </div>)
 }
 
-export function ImageInputComponent({inputProps, data, setValue, disabled}, smallText) {
+export function ImageInputComponent({inputProps, data, setValue, disabled, smallText}) {
     const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
     const [activeTab, setActiveTab] = useState('url');
 
@@ -186,7 +186,7 @@ export function ImageInputComponent({inputProps, data, setValue, disabled}, smal
                             ? (<Fragment>
                                 <input id={inputProps.name} name={inputProps.name} aria-describedby={name + 'help'}
                                        className={handleInputClass(inputProps.error)}
-                                       value={inputProps.url}
+                                       value={data.url}
                                        onChange={e => setValue({url: e.target.value})}
                                        type='text'
                                        disabled={Boolean(disabled)}
