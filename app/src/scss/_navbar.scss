@@ -61,7 +61,7 @@ nav {
 
   .dropdown .dropdown-menu {
     top: $nav-height + $padding-unit-md * 2;
-    width: $fontsize-big * 11;
+    min-width: $fontsize-big * 7;
   }
 }
 
