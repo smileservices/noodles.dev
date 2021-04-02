@@ -63,7 +63,6 @@ export default function SearchBarComponent({search, state}) {
         }
         if (content) return (<span className="clear" onClick={e=>{
             setFormData('');
-            search('');
         }}>Clear Search <span className="icon-cancel"/></span>);
     }
 
