@@ -137,6 +137,7 @@ textarea {
 .form-control:focus {
   color: var(--color-text-white);
   background-color: var(--color-background);
+  border-color: var(--color-blue);
 }
 
 .react-select {

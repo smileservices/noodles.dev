@@ -8,6 +8,7 @@ nav {
   justify-content: space-between;
   padding: $nav-padding;
   box-shadow: inset 0px -1px 0px #2F2F2F;
+  white-space: nowrap;
 
   #navbar-logo {
     padding: $padding-unit*2;
