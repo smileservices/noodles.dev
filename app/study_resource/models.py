@@ -87,7 +87,10 @@ class StudyResourceTechnology(models.Model):
         unique_together = ['technology', 'study_resource']
 
     def __str__(self):
-        return f"{self.name} {self.version}"
+        result = self.name
+        if self.version > 0:
+            result += f' {self.version}'
+        return result
 
     def save(self, *args, **kwargs):
         self.name = self.technology.name
