@@ -3,7 +3,7 @@ from django import template
 register = template.Library()
 
 
-@register.inclusion_tag('paginator_tag.html')
+@register.inclusion_tag('static_pagination.html')
 def paginator_tag(results, visible_pages):
     return {
         'visible_pages': visible_pages,

@@ -23,14 +23,28 @@ from django.views.decorators.cache import cache_page
 def detail(request, id, slug):
     queryset = Technology.objects
     detail = queryset.select_related().get(pk=id)
-    collections = Collection.objects.filter(technologies=detail).select_related().all()[:5]
     resources_ids = [tech['study_resource_id'] for tech in
                      detail.studyresourcetechnology_set.values('study_resource_id').all()]
-    resources = StudyResource.objects.filter(pk__in=resources_ids).select_related().all()
+    collections_paginator = Paginator(Collection.objects.filter(technologies=detail).select_related().order_by('created_at'), 4)
+    resources_paginator = Paginator(StudyResource.objects.filter(pk__in=resources_ids).select_related().order_by('created_at'), 4)
+    try:
+        collections = collections_paginator.page(request.GET.get('page', 1))
+    except PageNotAnInteger:
+        collections = collections_paginator.page(1)
+    except EmptyPage:
+        collections = collections_paginator.page(collections_paginator.num_pages)
+    try:
+        resources = resources_paginator.page(request.GET.get('page', 1))
+    except PageNotAnInteger:
+        resources = resources_paginator.page(1)
+    except EmptyPage:
+        resources = resources_paginator.page(resources_paginator.num_pages)
     data = {
         'result': detail,
         'collections': collections,
+        'collections_paginator': collections_paginator,
         'resources': resources,
+        'resources_paginator': resources_paginator,
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
         'thumbs_down_array': json.dumps(detail.thumbs_down_array),
         'vote_url': reverse_lazy('techs-viewset-vote', kwargs={'pk': detail.pk}),

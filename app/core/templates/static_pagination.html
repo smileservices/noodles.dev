@@ -1,0 +1,18 @@
+<ul class="pagination">
+    {% if results.has_previous %}
+        <li><a href="?page={{ results.previous_page_number }}"
+               data-page="{{ results.previous_page_number }}">&laquo;</a></li>
+    {% endif %}
+    {% for i in results.paginator.page_range %}
+        {% if results.number == i %}
+            <li class="active"><span>{{ i }}</span></li>
+        {% else %}
+            {% if i >= before_pages and i <= after_pages %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    {% if results.has_next %}
+        <li><a href="?page={{ results.next_page_number }}" data-page="{{ results.next_page_number }}">&raquo;</a></li>
+    {% endif %}
+</ul>

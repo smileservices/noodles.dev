@@ -1,7 +1,6 @@
 {% extends 'users/_my_profile_base.html' %}
 {% load crispy_forms_tags %}
-
-
+{% load paginator_tag %}
 {% block sub_content %}
     <section class="column-container">
         {% if not results %}
@@ -14,7 +13,7 @@
                 {% include 'study_resource/result.html' %}
             {% endfor %}
             {% if results.has_other_pages %}
-                {% include 'static_pagination.html' %}
+                {% paginator_tag results 3 %}
             {% endif %}
         {% endif %}
     </section>

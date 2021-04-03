@@ -88,7 +88,7 @@ class EditProfile(FormView, LoginRequiredMixin):
 def my_resources(request):
     queryset = StudyResource.objects.filter(author=request.user)
     filtered = filters.StudyResourceFilter(request.GET, queryset=queryset)
-    paginator = Paginator(filtered.qs.order_by('-publication_date'), 10)
+    paginator = Paginator(filtered.qs.order_by('-publication_date'), 5)
     try:
         results = paginator.page(request.GET.get('page', 1))
     except PageNotAnInteger:
@@ -130,7 +130,6 @@ def my_collections(request):
             'study_resource_options': reverse_lazy('study-resource-viewset-options'),
             'tag_options_api': reverse_lazy('tags-options-list'),
             'tech_options_api': reverse_lazy('techs-options-list'),
-
             'collections_api': reverse_lazy('collection-viewset-list'),
             'user_collections_list': reverse_lazy('collection-viewset-owned'),
             'update_collection_items': reverse_lazy('collection-viewset-update-collection-items'),

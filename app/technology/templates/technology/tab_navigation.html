@@ -1,3 +1,5 @@
+{% load paginator_tag %}
+
 <section class="tab-navigation">
     <div class="tab-headers">
         {% if resources %}
@@ -14,6 +16,9 @@
                     {% for resource in resources %}
                         {% include 'study_resource/result.html' with result=resource %}
                     {% endfor %}
+                    {% if resources.has_other_pages %}
+                        {% paginator_tag resources 3 %}
+                    {% endif %}
                 </div>
             </div>
         {% endif %}
@@ -23,6 +28,9 @@
                     {% for collection in collections %}
                         {% include 'study_collection/result.html' with result=collection %}
                     {% endfor %}
+                    {% if collections.has_other_pages %}
+                        {% paginator_tag collections 3 %}
+                    {% endif %}
                 </div>
             </div>
         {% endif %}
