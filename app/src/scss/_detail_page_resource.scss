@@ -28,10 +28,12 @@ main .detail-page.resource {
         justify-content: space-between;
         flex-wrap: nowrap;
 
-        #toolbar {
+        #detail-toolbar {
+          position: static;
           display: flex;
           align-items: center;
           flex-wrap: nowrap;
+          white-space: nowrap;
           gap: 10px;
         }
       }

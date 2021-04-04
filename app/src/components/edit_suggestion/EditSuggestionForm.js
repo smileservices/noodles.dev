@@ -119,7 +119,7 @@ export default function EditForm({addEditSuggestionCallback, ResourceForm, api_u
     return (
         <Fragment>
             <div className="toolbar">
-                <a href={originalData.absolute_url}>back to detail view</a>
+                <a href={originalData.absolute_url}>Back</a>
             </div>
             <h3>{TITLE}</h3>
             <ResourceForm

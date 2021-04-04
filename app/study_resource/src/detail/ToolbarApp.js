@@ -40,12 +40,12 @@ function ToolbarApp() {
             {isOwner
                 ?
                 (<Fragment>
-                    <a onClick={e => setConfirmDelete(true)}>delete</a>
-                    <a href={RESOURCE_EDIT_URL}>suggest edit</a>
+                    <a onClick={e => setConfirmDelete(true)}>Delete</a>
+                    <a href={RESOURCE_EDIT_URL}>Edit</a>
                 </Fragment>)
                 :
                 (<Fragment>
-                    <a href={RESOURCE_EDIT_URL}>suggest edit</a>
+                    <a href={RESOURCE_EDIT_URL}>Suggest Edit</a>
                 </Fragment>)
             }
             <a className="icon-bookmark" onClick={e => setShowModal(true)}/>

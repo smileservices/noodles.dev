@@ -20,6 +20,7 @@ export default function CreateFormStep3({data, options, categories, submit, wait
         if (formData.published_by.length < 3) vErrors.author = 'Author name is too short. It has to be at least 3 characters';
         if (formData.summary.length < 30) vErrors.summary = 'Summary is too short. It has to be at least 30 characters';
         if (!formData.type) vErrors.type = 'Required';
+        if (!formData.category) vErrors.category = 'Required';
         if (!formData.experience_level) vErrors.experience_level = 'Required';
         if (!formData.media) vErrors.media = 'Required';
         if (Object.keys(vErrors).length > 0) {
