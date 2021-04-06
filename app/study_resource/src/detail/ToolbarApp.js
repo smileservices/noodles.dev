@@ -12,13 +12,15 @@ function ToolbarApp() {
     const [alert, setAlert] = useState(false);
 
     const isOwner = RESOURCE_AUTHOR_ID === USER_ID;
+    const isAdmin = USER_ID === 0;
 
     function deleteResource() {
         apiDelete(
             RESOURCE_API_DELETE,
             setWaiting,
             data => {
-                setAlert(<Alert close={e=>setAlert(null)} text={"Successfully deleted. Returning to homepage..."} type="info" hideable={false} stick={false}/>)
+                setAlert(<Alert close={e=>setAlert(null)} text={"Successfully deleted. Returning to homepage..."} type="info" hideable={false} stick={false}/>);
+                setTimeout(()=>window.location='/', 2);
             },
             result => setAlert(<Alert close={e=>setAlert(null)} text={"Could not delete study resource"} type="danger" hideable={false}/>)
         )
@@ -37,7 +39,7 @@ function ToolbarApp() {
 
     return (
         <Fragment>
-            {isOwner
+            {isOwner || isAdmin
                 ?
                 (<Fragment>
                     <a onClick={e => setConfirmDelete(true)}>Delete</a>

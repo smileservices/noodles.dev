@@ -20,6 +20,8 @@ class CollectionManager(models.Manager):
 
 
 class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+    elastic_index = 'collections'
+
     objects = CollectionManager()
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL)
     is_public = models.BooleanField(default=False)
@@ -95,7 +97,6 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
         }
 
     def get_elastic_data(self) -> (str, list):
-        index_name = 'collections'
         data = {
             "pk": self.pk,
             "name": self.name,
@@ -112,7 +113,7 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
             "thumbs_up": self.thumbs_up,
             "thumbs_down": self.thumbs_down,
         }
-        return index_name, data
+        return self.elastic_index, data
 
 
 class CollectionResources(models.Model):

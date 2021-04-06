@@ -18,7 +18,7 @@
 
 {% block content %}
     <script>
-        const USER_ID = {{ user.id }};
+        const USER_ID = {% if user.is_staff %}0{% else %}{{ user.id }}{% endif %};
         const MAX_RATING = {{ MAX_RATING }};
         const RESOURCE_ID = {{ result.id }};
         const RESOURCE_AUTHOR_ID = {{ result.author.id }};

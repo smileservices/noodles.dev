@@ -103,6 +103,8 @@ class StudyResourceTechnology(models.Model):
 
 
 class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+    elastic_index = 'study_resources'
+
     class Price(models.IntegerChoices):
         FREE = (0, 'Free')
         PAID = (1, 'Paid')
@@ -242,7 +244,6 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
         }
 
     def get_elastic_data(self) -> (str, list):
-        index_name = 'study_resources'
         instance_from_manager = StudyResource.objects.values('rating', 'reviews_count').get(pk=self.pk)
         rating = instance_from_manager['rating'] if instance_from_manager['rating'] else 0
         data = {
@@ -275,7 +276,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
             "votes_down": self.thumbs_down,
             "edit_suggestions_count": self.edit_suggestions.filter(edit_suggestion_status=0).count(),
         }
-        return index_name, data
+        return self.elastic_index, data
 
 
 class StudyResourceImage(models.Model):

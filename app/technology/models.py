@@ -51,6 +51,8 @@ class TechnologyManager(models.Manager):
 
 
 class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+    elastic_index = 'technologies'
+
     class LicenseType(models.IntegerChoices):
         PUBLIC_DOMAIN = (0, 'Public Domain')
         PERMISSIVE_LICENSE = (1, 'Permissive License')
@@ -133,7 +135,6 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
         }
 
     def get_elastic_data(self) -> (str, list):
-        index_name = 'technologies'
         data = {
             "pk": self.pk,
             "name": self.name,
@@ -152,7 +153,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
             "thumbs_up": self.thumbs_up,
             "thumbs_down": self.thumbs_down,
         }
-        return index_name, data
+        return self.elastic_index, data
 
     def save(self, *args, **kwargs):
         # override the save method to add the updated fields

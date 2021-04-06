@@ -98,8 +98,8 @@ def sync_to_elastic(sender, **kwargs):
 
 
 def sync_delete_to_elastic(sender, **kwargs):
-    index, data = kwargs.get('instance').get_elastic_data()
-    task_delete_record(index, data['pk'])
+    instance = kwargs.get('instance')
+    task_delete_record(instance.elastic_index, instance.pk)
 
 
 def sync_technology_resources_to_elastic(sender, **kwargs):
