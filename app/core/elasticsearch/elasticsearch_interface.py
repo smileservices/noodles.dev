@@ -124,7 +124,7 @@ class ElasticSearchInterface:
 
     def latest(self, page=0, page_size=10):
         return self.sort_by(
-            [{"date": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ],
+            [{"created_at": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ],
             page,
             page_size
         )

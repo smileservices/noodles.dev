@@ -12,6 +12,36 @@ def set_to_sync(syncable_instance):
     save_to_elastic(index, mapping, data)
 
 
+def sync_technologies_to_elastic():
+    from technology.models import Technology
+    logger = logging.getLogger('huey')
+    for technology_instance in Technology.objects.all():
+        mapping = technology_instance.get_elastic_mapping()
+        index, data = technology_instance.get_elastic_data()
+        save_to_elastic(index, mapping, data)
+    logger.info(f'synced {Technology.objects.count()} technologies - ok')
+
+
+def sync_tutorials_to_elastic():
+    from study_resource.models import StudyResource
+    logger = logging.getLogger('huey')
+    for study_resource in StudyResource.objects.all():
+        mapping = study_resource.get_elastic_mapping()
+        index, data = study_resource.get_elastic_data()
+        save_to_elastic(index, mapping, data)
+    logger.info(f'synced {StudyResource.objects.count()} study resources - ok')
+
+
+def sync_collections_to_elastic():
+    from study_collection.models import Collection
+    logger = logging.getLogger('huey')
+    for collection in Collection.objects.all():
+        mapping = collection.get_elastic_mapping()
+        index, data = collection.get_elastic_data()
+        save_to_elastic(index, mapping, data)
+    logger.info(f'synced {Collection.objects.count()} collections - ok')
+
+
 @task()
 def task_sync_data(index, mapping, data):
     save_to_elastic(index, mapping, data)
@@ -49,30 +79,14 @@ def task_sync_technologies_related(pk, TechnologyModel):
 
 
 @periodic_task(crontab(hour='6'))
-def sync_all_to_elastic():
-    from technology.models import Technology
-    from study_resource.models import StudyResource
-    from study_collection.models import Collection
-    # task to resync all resources to elasticsearch
+def task_sync_all_to_elastic():
     logger = logging.getLogger('huey')
     logger.info('syncing all resources to elasticsearch')
     ElasticSearchInterface.clean()
     logger.info('clean all elasticsearch indices - ok')
-    for technology_instance in Technology.objects.all():
-        mapping = technology_instance.get_elastic_mapping()
-        index, data = technology_instance.get_elastic_data()
-        save_to_elastic(index, mapping, data)
-    logger.info(f'synced {Technology.objects.count()} technologies - ok')
-    for study_resource in StudyResource.objects.all():
-        mapping = study_resource.get_elastic_mapping()
-        index, data = study_resource.get_elastic_data()
-        save_to_elastic(index, mapping, data)
-    logger.info(f'synced {StudyResource.objects.count()} study resources - ok')
-    for collection in Collection.objects.all():
-        mapping = collection.get_elastic_mapping()
-        index, data = collection.get_elastic_data()
-        save_to_elastic(index, mapping, data)
-    logger.info(f'synced {Collection.objects.count()} collections - ok')
+    sync_technologies_to_elastic()
+    sync_tutorials_to_elastic()
+    sync_collections_to_elastic()
 
 
 @periodic_task(crontab(minute='*/1'))

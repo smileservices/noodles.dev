@@ -77,6 +77,7 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
         return {
             "properties": {
                 "pk": {"type": "integer"},
+                "created_at": {"type": "date", "format": "date_optional_time"},
 
                 # model fields
                 "name": {"type": "text", "copy_to": "suggest"},
@@ -99,6 +100,7 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
     def get_elastic_data(self) -> (str, list):
         data = {
             "pk": self.pk,
+            "created_at": self.created_at.replace(microsecond=0).isoformat(),
             "name": self.name,
             "url": self.absolute_url,
             "is_public": self.is_public,

@@ -40,7 +40,7 @@ def search_page(request):
     return render(request, 'search/main.html', data)
 
 
-@cache_page(60 * 60)
+@cache_page(60 * 5)
 def related_data(request):
     try:
         es = ElasticSearchInterface(['study_resources'])

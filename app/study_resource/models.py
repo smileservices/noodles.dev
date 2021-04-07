@@ -209,6 +209,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
                     "type": "text",
                     "copy_to": "suggest",
                 },
+                "created_at": {"type": "date", "format": "date_optional_time"},
                 "publication_date": {"type": "date", "format": "yyyy-MM-dd"},
                 "published_by": {"type": "text"},
                 "url": {"type": "text"},
@@ -252,6 +253,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
             # model fields
             "name": self.name,
             "summary": self.summary,
+            "created_at": self.created_at.replace(microsecond=0).isoformat(),
             "publication_date": self.publication_date.isoformat(),
             "published_by": self.published_by,
             "url": self.absolute_url,
