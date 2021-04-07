@@ -83,7 +83,6 @@ def homepage_technologies(request):
         data = {
             'all_filters': aggregates_results,
             'rated_highest': es.sort_by(votes_sort, page_size=4),
-            'latest': es.latest(page_size=3) #todo change this into "most popular"
         }
     except es_ex.NotFoundError as e:
         return JsonResponse(data={

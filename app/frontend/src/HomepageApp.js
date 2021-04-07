@@ -18,7 +18,6 @@ const url_aggr_filters_collections = '/api/aggregations/collections';
 const url_aggr_filters_technologies = '/api/aggregations/technologies';
 
 
-
 function HomepageApp() {
 
     /*
@@ -33,7 +32,7 @@ function HomepageApp() {
     *   Featured content based on the selected tab in the search section
     *       - resources - get latest/most reviewed
     *       - collections - latest/most voted
-    *       - technologies - latest/most voted
+    *       - technologies - most voted
     *
     * */
 
@@ -109,7 +108,6 @@ function HomepageApp() {
             if (result.ok) {
                 result.json().then(data => setTechnologies({
                     rated_highest: data.rated_highest,
-                    latest: data.latest,
                     filters: {},
                     availableFilters: getTabFilters('technologies', data.all_filters)
                 }));
@@ -244,17 +242,6 @@ function HomepageApp() {
                                 <div className="results">
                                     {technologies.rated_highest.items.map(resource =>
                                         <TechnologySearchListing key={"rated-tech" + resource.pk} data={resource}
-                                                                 addFilter={addFilterfactory('technologies')}/>
-                                    )}
-                                </div>
-                            </div>
-                            : ''}
-                        {technologies.latest.items?.length > 0 ?
-                            <div className="latest">
-                                <h4>Latest Added Technologies</h4>
-                                <div className="results">
-                                    {technologies.latest.items.map(resource =>
-                                        <TechnologySearchListing key={"latest-tech" + resource.pk} data={resource}
                                                                  addFilter={addFilterfactory('technologies')}/>
                                     )}
                                 </div>
