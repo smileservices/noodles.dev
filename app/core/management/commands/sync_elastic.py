@@ -32,12 +32,17 @@ class Command(BaseCommand):
             ElasticSearchInterface.clean()
             logger.info('clean all elasticsearch indices - ok')
             sync_technologies_to_elastic()
+            logger.info('sync technologies - ok')
             sync_tutorials_to_elastic()
+            logger.info('sync tutorials - ok')
             sync_collections_to_elastic()
+            logger.info('sync collections - ok')
         else:
             index = options['resource']
-            logger.info(f'syncing all {index} to elasticsearch')
-            ElasticSearchInterface.clean()
+            if index not in ['technologies', 'tutorials', 'collections']:
+                raise ValueError('index must be one of this: technologies/tutorials/collections')
+            logger.info(f'syncing {index} to elasticsearch')
+            ElasticSearchInterface.clean(index)
             logger.info(f'clean elasticsearch {index} - ok')
             if index == 'technologies':
                 sync_technologies_to_elastic()
@@ -46,3 +51,4 @@ class Command(BaseCommand):
             elif index == 'collections':
                 sync_collections_to_elastic()
             logger.info(f'sync {index} - ok')
+        logger.info('sync command finished')

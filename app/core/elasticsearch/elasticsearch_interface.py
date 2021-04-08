@@ -33,19 +33,24 @@ class ElasticSearchInterface:
             settings.ELASTICSEARCH_HOST,
             http_auth=settings.ELASTICSEARCH_AUTH,
             schema=settings.ELASTICSEARCH_AUTH,
-            port=settings.ELASTICSEARCH_PORT
+            port=settings.ELASTICSEARCH_PORT,
+            timeout=30, max_retries=10, retry_on_timeout=True
         )
         self.indexes = [get_index_name(i) for i in indexes]
 
     @staticmethod
-    def clean():
+    def clean(index=False):
         connection = Elasticsearch(
             settings.ELASTICSEARCH_HOST,
             http_auth=settings.ELASTICSEARCH_AUTH,
             schema=settings.ELASTICSEARCH_AUTH,
-            port=settings.ELASTICSEARCH_PORT
+            port=settings.ELASTICSEARCH_PORT,
+            timeout=30, max_retries=10, retry_on_timeout=True
         )
-        connection.indices.delete([get_index_name(i) for i in ('study_resources', 'collections', 'technologies')],
+        if index:
+            connection.indices.delete([get_index_name(index),], ignore_unavailable=True)
+        else:
+            connection.indices.delete([get_index_name(i) for i in ('study_resources', 'collections', 'technologies')],
                                   ignore_unavailable=True)
 
     def search(self, fields, term, filter, sort={}, aggregates=None, page=0, page_size=10):
