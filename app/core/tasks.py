@@ -78,7 +78,7 @@ def task_sync_technologies_related(pk, TechnologyModel):
         set_to_sync(resource)
 
 
-@periodic_task(crontab(hour='6'))
+# @periodic_task(crontab(hour='6'))
 def task_sync_all_to_elastic():
     logger = logging.getLogger('huey')
     logger.info('syncing all resources to elasticsearch')
