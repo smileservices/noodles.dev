@@ -4,6 +4,8 @@ from technology.models import Technology
 from users.models import CustomUser
 from random import choice, choices
 from django.http import HttpRequest
+
+
 # use technology serializer to save
 
 def make_technologies_and_categories():
@@ -135,9 +137,28 @@ def make_technologies_and_categories():
         "limitations": 'complex state management requires external library',
         "ecosystem": False,
     }
+    docker = {
+        "featured": True,
+        "name": 'Docker',
+        "image_url": 'https://www.pinclipart.com/picdir/middle/116-1161113_docker-logo-png-clipart.png',
+        "category": categories['devops'].pk,
+        "description": "Docker is a set of platform as a service (PaaS) products that use OS-level virtualization to deliver"
+                       " software in packages called containers. Containers are isolated from one another and bundle their"
+                       " own software, libraries and configuration files; they can communicate with each other through well-defined"
+                       " channels. \nBecause all of the containers share the services of a single operating system kernel, they use "
+                       "fewer resources than virtual machines. \n\nThe service has both free and premium tiers. The software that hosts "
+                       "the containers is called Docker Engine. It was first started in 2013",
+        "url": 'https://docker.com',
+        "license": PROPRIETARY[0],
+        "owner": 'Docker, Inc',
+        "pros": 'Make deployments more efficient\n',
+        "cons": 'state sharing between components',
+        "limitations": 'adding another layer of complexity',
+        "ecosystem": False,
+    }
 
-    TECHNOLOGIES = [javascript, python, php, django, react]
-    FEATURED_TECHS = [javascript['name'], python['name'], php['name'], django['name'], react['name']]
+    TECHNOLOGIES = [javascript, python, php, django, react, docker]
+    FEATURED_TECHS = [javascript['name'], python['name'], php['name'], django['name'], react['name'], docker['name']]
     LINKED_TECH = [
         (django, (python,)),
         (react, (javascript,))
