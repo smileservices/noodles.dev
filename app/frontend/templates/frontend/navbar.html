@@ -52,10 +52,11 @@
                     </span>
                     <div class="dropdown-menu">
                         <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
-                        <a rel="nofollow noopener"
-                           href={% url "my-profile" %}>Profile</a>
-                        <a rel="nofollow noopener"
-                           href={% url "my-profile-edit" %}>Account</a>
+                        <a rel="nofollow noopener" href={% url "my-profile-edit" %}>Account</a>
+                        <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
+                        <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
+                        <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
+                        <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
                     </div>
                 </div>
                 {# ACCOUNT DROPDOWN END #}
