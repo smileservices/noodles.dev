@@ -5,7 +5,7 @@ import TechForm from "./TechForm";
 import confettiFactory from "../../src/vanilla/confetti";
 const startConfetti = confettiFactory(100, 1);
 
-function Content() {
+function TechCreateApp() {
 
     const [created, setCreated] = useState(false);
 
@@ -30,7 +30,7 @@ function Content() {
         <div className="success-card column-container card full-page-sm">
             <canvas id="confetti-canvas" key="confetti-canvas"/>
             <header>Thank you!</header>
-            <div className="body">Thanks for adding a new technology!</div>
+            <div className="body" dangerouslySetInnerHTML={{__html: created.success.message}}/>
             <div className="buttons-container">
                 <a className="btn" href={created.absolute_url}>View Created</a>
                 <a className="btn dark" href="/">Back to Homepage</a>
@@ -52,4 +52,4 @@ function Content() {
     )
 }
 
-ReactDOM.render(<Content/>, document.getElementById('create-app'));
+ReactDOM.render(<TechCreateApp/>, document.getElementById('create-app'));

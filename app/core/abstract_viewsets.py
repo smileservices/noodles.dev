@@ -16,6 +16,13 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
             # we have to resync to elasticsearch because we now have finished adding the m2m data
             instance = self.serializer_class.Meta.model.objects.get(pk=response.data['pk'])
             instance.save()
+            response.data['success'] = {
+                'message': f'<div class="message">Keep up the good work!</div>'
+                           f'<div class="score-info">'
+                           f'You gained <span className="user-reward">{rewards.RESOURCE_CREATE}</span> points! '
+                           f'Your score is now <span className="user-score">{request.user.positive_score}</span>'
+                           f'</div>',
+            }
             return response
         except ValidationError as e:
             raise e

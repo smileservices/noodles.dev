@@ -124,6 +124,19 @@ main {
     font-size: $fontsize-md;
     margin-bottom: $fontsize-big*2;
     color: var(--color-text-grey);
+
+    .message {
+      margin-bottom: $padding-unit-big;
+    }
+
+    .score-info {
+      span.user-score, span.user-reward {
+        padding: $padding-unit/2;
+        background-color: var(--color-background);
+        color: var(--color-blue);
+        border-radius: $radius-small;
+      }
+    }
   }
 
   .buttons-container {

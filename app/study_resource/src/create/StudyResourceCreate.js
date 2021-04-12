@@ -179,7 +179,7 @@ function StudyResourceCreateApp() {
             STUDY_RESOURCE_API,
             packagedFormData,
             data => {
-                setCreated({url: data.absolute_url})
+                setCreated({url: data.absolute_url, success: data.success})
             },
             setWaiting,
             result => {
@@ -273,7 +273,7 @@ function StudyResourceCreateApp() {
         <div className="success-card column-container card full-page-sm">
             <canvas id="confetti-canvas" key="confetti-canvas"/>
             <header>Thank you!</header>
-            <div className="body">Thanks for adding a new resource!</div>
+            <div className="body" dangerouslySetInnerHTML={{__html: created.success.message}}/>
             <div className="buttons-container">
                 <a className="btn" href={created.url}>View Created</a>
                 <a className="btn dark" href="/">Back to Homepage</a>
