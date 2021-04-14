@@ -1,0 +1,162 @@
+{% extends 'frontend/base.html' %}
+
+{% block content %}
+    <div class="static-page">
+        <h1>What's behind noodles.dev</h1>
+
+        <section class="card padding-big">
+            <h2>Problem we'are trying to solve:</h2>
+            <p class="subgroup">Finding quality learning resources proved to be difficult as there are many low quality,
+                incomplete, outdated or
+                incomplete tutorials Search engines are not able to rate the quality of learning resources and
+                unfortunately
+                very good content gets burried under many SEO optimized articles.</p>
+            <div class="subgroup">
+                <h3>The solution:</h3>
+                <p class="subgroup">A community curated database of tutorials/courses/books would save developers
+                    countless
+                    hours on
+                    learning new
+                    technologies</p>
+            </div>
+        </section>
+
+        <section class="card padding-big features">
+            <h2>Features</h2>
+            <div class="subgroup">
+                <div class="card">
+                    <h3>User Types</h3>
+                    <div class="subgroup">
+                        <h4>Regular user</h4>
+                        <ul>
+                            <li>create new technology/learning resource</li>
+                            <li>can edit own resource</li>
+                            <li>submit edit suggestions on already created technology/learning resource</li>
+                            <li>review learning resource</li>
+                            <li>cast votes on technologies/edit suggestions</li>
+                        </ul>
+                        <h4>Moderator</h4>
+                        <ul>
+                            <li>can publish/reject edit suggestions</li>
+                            <li>can directly edit a resource</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Social Login</h3>
+                    <ul>
+                        <li>users can login/signup into noodles.dev by using their facebook/google account</li>
+                        <li>can be extended to use any other existing identity provider</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>User Content Type</h3>
+                    <div class="subgroup">
+                        <h4>Technologies</h4>
+                        <h4>Learning resources</h4>
+                        <ul>
+                            <li>can have one or many technologies.</li>
+                            <li>each technology can have a version</li>
+                        </ul>
+                        <h4>Collections</h4>
+                        <ul>
+                            <li>a grouping of multiple learning resources</li>
+                            <li>can be private or public</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Searchable Database of Content</h3>
+                    <ul>
+                        <li>all the user created content can be filtered and searched</li>
+                    </ul>
+                    <h3>Wikipedia-like editing</h3>
+                    <ul>
+                        <li>any registered user can suggest edits on a particular resource</li>
+                        <li>the suggested edits can be voted by the other users and can be published/rejected by
+                            moderators
+                        </li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Reward system for contributing</h3>
+                    <div class="subgroup">
+                        <h4>Every registered user has a score tracking the interactions</h4>
+                        <ul>
+                            <li>tracking other users voting on user’s content:
+                                <ul>
+                                    <li>whenever a user’s resource or review get voted by other users, we track both
+                                        thumbs
+                                        up
+                                        and
+                                        thumbs down for the author.
+                                    </li>
+                                    <li>thumbs up go into positive-score, thumbs down go into negative-score</li>
+                                </ul>
+                            </li>
+                            <li>tracking user voting on other authors:
+                                <ul>
+                                    <li>we keep track of user votes thumbs up/down on someone’s content</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h4>Adding any resource (technology/learning resource) will contribute to the user’s positive
+                            score</h4>
+                        <h4>Getting edit suggestions published will be rewarded, whereas getting rejected has a small
+                            score
+                            penalty</h4>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card padding-big">
+            <h2>Measurables</h2>
+            <div class="subgroup">
+                <h4>Curent capabilities</h4>
+                <ul>
+                    <li>up to 25 000 users/day</li>
+                    <li>search through up to 1.2 milion records in under 0.5s</li>
+                </ul>
+                <h4>Speed</h4>
+                <ul>
+                    <li> 0.7s load time for homepage</li>
+                    <li>0.7s load time for searchpage</li>
+                    <li>99/100 score on Google PageSpeed</li>
+                </ul>
+                <h4>Bundle Sizes</h4>
+                <ul>
+                    <li>1 .css file of 10.8 kB (top 10% of css bundle sizes &lt; 14 kB)</li>
+                    <li>3 .js files totaling 72.1 kB - in the top 10% js bundle sizes &lt; 108 kB)</li>
+                </ul>
+                <h4>Running costs</h4>
+                <ul>
+                    <li>16 USD/month</li>
+                </ul>
+            </div>
+        </section>
+        <section class="card padding-big">
+            <h2>Implementation &amp; Tech Stack</h2>
+            <div class="subgroup">
+                <h4>Priorites</h4>
+                <ul>
+                    <li>SEO optimized</li>
+                    <li>Fast</li>
+                    <li>Low running costs</li>
+                    <li>Maintainable</li>
+                </ul>
+                <h4>Tech Stack</h4>
+                <ul>
+                    <li>frontend: <code>CSS3</code>, <code>HTML5</code>, <code>ReactJS</code>, <code>JavaScript</code>
+                    </li>
+                    <li>backend: <code>django 3.11</code>, <code>PostgreSQL</code>, <code>Redis</code>, <code>Elasticsearch
+                        7.1</code></li>
+                    <li>served with: <code>nginx</code>, <code>gunicorn</code> - development tools: <code>git</code>,
+                        <code>webpack</code>,
+                        <code>npm</code></li>
+                </ul>
+            </div>
+        </section>
+    </div>
+{% endblock %}
