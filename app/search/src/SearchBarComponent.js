@@ -27,9 +27,9 @@ export default function SearchBarComponent({search, state}) {
                     alert('Could not read data: ' + result.statusText)
                 }
             }).then(data => {
-                if (data && data.length > 0) {
+                if (data && data.items.length > 0) {
                     setShowSuggestions(true)
-                    setSuggestions(data);
+                    setSuggestions(data.items);
                 } else {
                     setShowSuggestions(false)
                 }
@@ -47,12 +47,13 @@ export default function SearchBarComponent({search, state}) {
     function SuggestionsList({suggestions}) {
         return (
             <div className="suggestions-list card">
-                <header>Search Suggestions:</header>
-                {suggestions.map(r => <span key={r} onClick={e => {
-                    search(r);
-                    setFormData(r);
-                    setShowSuggestions(false)
-                }}>{r}</span>)}
+                <header>Live Results:</header>
+                {suggestions.map(s=> <a href={s.url}>{s.name}</a>)}
+                {/*{suggestions.map(r => <span key={r} onClick={e => {*/}
+                {/*    search(r);*/}
+                {/*    setFormData(r);*/}
+                {/*    setShowSuggestions(false)*/}
+                {/*}}>{r}</span>)}*/}
             </div>
         )
     }

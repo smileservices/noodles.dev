@@ -102,7 +102,7 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
                 "thumbs_down": {"type": "short"},
 
                 "suggest": {
-                    "type": "completion",
+                    "type": "search_as_you_type",
                 }
             }
         }

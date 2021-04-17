@@ -243,7 +243,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
                 "edit_suggestions_count": {"type": "integer"},
 
                 "suggest": {
-                    "type": "completion",
+                    "type": "search_as_you_type",
                 }
             }
         }

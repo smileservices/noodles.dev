@@ -98,8 +98,22 @@ class ElasticSearchInterface:
                 }
             }
         }
+        # using searc_as_you_type
+        q = {
+            "query": {
+                "multi_match": {
+                    "query": prefix,
+                    "type": "bool_prefix",
+                    "fields": [
+                        "suggest",
+                        "suggest._2gram",
+                        "suggest._3gram"
+                    ]
+                }
+            }
+        }
         res = self.connection.search(self.indexes, body=q)
-        return self._extract_results(res, 'suggest')
+        return self._extract_results(res, 'search')
 
     def sort_by(self, sort, page=0, page_size=10):
         page_offset = page * page_size
