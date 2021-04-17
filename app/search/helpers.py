@@ -2,7 +2,7 @@ from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 
 def _search_aggr_study_resources(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['study_resources'])
-    resources_fields = ['name', 'summary', 'category', 'technologies', 'tags']
+    resources_fields = ['name^4', 'summary', 'category', 'technologies', 'tags']
     aggregates = {
         "price": {"terms": {"field": "price"}},
         "media": {"terms": {"field": "media"}},
@@ -16,7 +16,7 @@ def _search_aggr_study_resources(term, filter, page, page_size):
         fields=resources_fields,
         term=term,
         filter=filter,
-        sort=rating_sort,
+        # sort=rating_sort,
         aggregates=aggregates,
         page=page,
         page_size=page_size
@@ -26,7 +26,7 @@ def _search_aggr_study_resources(term, filter, page, page_size):
 
 def _search_aggr_collections(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['collections'])
-    collections_fields = ['name', 'description', 'technologies', 'tags']
+    collections_fields = ['name^4', 'description', 'technologies', 'tags']
     aggregates = {
         "technologies": {"terms": {"field": "technologies", "size": 20}},
         "tags": {"terms": {"field": "tags", "size": 20}},
@@ -37,7 +37,7 @@ def _search_aggr_collections(term, filter, page, page_size):
         fields=collections_fields,
         term=term,
         filter=filter,
-        sort=votes_sort,
+        # sort=votes_sort,
         aggregates=aggregates,
         page=page,
         page_size=page_size
@@ -47,7 +47,7 @@ def _search_aggr_collections(term, filter, page, page_size):
 
 def _search_aggr_technologies(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['technologies'])
-    technologies_fields = ['name', 'description', 'ecosystem', 'tags']
+    technologies_fields = ['name^4', 'description', 'ecosystem', 'tags']
     aggregates = {
         "license": {"terms": {"field": "license", "size": 10}},
         "ecosystem": {"terms": {"field": "ecosystem", "size": 20}},
@@ -58,7 +58,7 @@ def _search_aggr_technologies(term, filter, page, page_size):
         fields=technologies_fields,
         term=term,
         filter=filter,
-        sort=votes_sort,
+        # sort=votes_sort,
         aggregates=aggregates,
         page=page,
         page_size=page_size
@@ -68,14 +68,14 @@ def _search_aggr_technologies(term, filter, page, page_size):
 
 def _search_study_resources(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['study_resources'])
-    resources_fields = ['name', 'summary', 'category', 'technologies', 'tags']
+    resources_fields = ['name^4', 'summary', 'category', 'technologies', 'tags']
     rating_sort = [{"rating": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},
                    {"reviews": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}]
     results = es_res.search(
         fields=resources_fields,
         term=term,
         filter=filter,
-        sort=rating_sort,
+        # sort=rating_sort,
         aggregates={},
         page=page,
         page_size=page_size
@@ -85,14 +85,14 @@ def _search_study_resources(term, filter, page, page_size):
 
 def _search_collections(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['collections'])
-    collections_fields = ['name', 'description', 'technologies', 'tags']
+    collections_fields = ['name^4', 'description', 'technologies', 'tags']
     filter.append({"term": {"is_public": True}})
     votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ]
     results = es_res.search(
         fields=collections_fields,
         term=term,
         filter=filter,
-        sort=votes_sort,
+        # sort=votes_sort,
         aggregates={},
         page=page,
         page_size=page_size
@@ -102,13 +102,13 @@ def _search_collections(term, filter, page, page_size):
 
 def _search_technologies(term, filter, page, page_size):
     es_res = ElasticSearchInterface(['technologies'])
-    technologies_fields = ['name', 'description', 'ecosystem', 'tags']
+    technologies_fields = ['name^4', 'description', 'ecosystem', 'tags']
     votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ]
     results = es_res.search(
         fields=technologies_fields,
         term=term,
         filter=filter,
-        sort=votes_sort,
+        # sort=votes_sort,
         aggregates={},
         page=page,
         page_size=page_size

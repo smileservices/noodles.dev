@@ -48,10 +48,10 @@ class ElasticSearchInterface:
             timeout=30, max_retries=10, retry_on_timeout=True
         )
         if index:
-            connection.indices.delete([get_index_name(index),], ignore_unavailable=True)
+            connection.indices.delete([get_index_name(index), ], ignore_unavailable=True)
         else:
             connection.indices.delete([get_index_name(i) for i in ('study_resources', 'collections', 'technologies')],
-                                  ignore_unavailable=True)
+                                      ignore_unavailable=True)
 
     def search(self, fields, term, filter, sort={}, aggregates=None, page=0, page_size=10):
         page_offset = page * page_size
@@ -171,24 +171,19 @@ class ElasticSearchIndexInterface(ElasticSearchInterface):
         "number_of_shards": 1,
         "analysis": {
             "analyzer": {
-                "autocomplete": {
-                    "tokenizer": "autocomplete",
-                    "filter": [
-                        "lowercase"
-                    ]
-                },
-                "autocomplete_search": {
-                    "tokenizer": "lowercase"
+                "ngram": {
+                    "type": "custom",
+                    "char_filter": ["html_strip"],
+                    "filter": ["lowercase", "asciifolding"],
+                    "tokenizer": "ngram"
                 }
             },
             "tokenizer": {
-                "autocomplete": {
+                "ngram": {
+                    "token_chars": ["letter", "digit"],
+                    "min_gram": "2",
                     "type": "edge_ngram",
-                    "min_gram": 2,
-                    "max_gram": 10,
-                    "token_chars": [
-                        "letter"
-                    ]
+                    "max_gram": "10"
                 }
             }
         }

@@ -204,10 +204,14 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
                 "name": {
                     "type": "text",
                     "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
                 },
                 "summary": {
                     "type": "text",
                     "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
                 },
                 "created_at": {"type": "date", "format": "date_optional_time"},
                 "publication_date": {"type": "date", "format": "yyyy-MM-dd"},

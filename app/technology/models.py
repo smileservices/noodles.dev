@@ -115,12 +115,22 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
                 "pk": {"type": "integer"},
 
                 # model fields
-                "name": {"type": "text", "copy_to": "suggest"},
+                "name": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
+                },
+                "description": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
+                },
                 "logo": {"type": "nested"},
                 "url": {"type": "keyword"},
                 "license": {"type": "keyword"},
                 "featured": {"type": "boolean"},
-                "description": {"type": "text", "copy_to": "suggest"},
                 "owner": {"type": "text"},
                 "author": {"type": "nested"},
                 "category": {"type": "keyword"},

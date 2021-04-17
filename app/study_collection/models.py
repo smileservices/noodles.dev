@@ -80,11 +80,21 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
                 "created_at": {"type": "date", "format": "date_optional_time"},
 
                 # model fields
-                "name": {"type": "text", "copy_to": "suggest"},
+                "name": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
+                },
+                "description": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
+                },
                 "url": {"type": "keyword"},
                 "is_public": {"type": "boolean"},
                 "items_count": {"type": "short"},
-                "description": {"type": "text", "copy_to": "suggest"},
                 "author": {"type": "nested"},
                 "tags": {"type": "keyword"},
                 "technologies": {"type": "keyword"},
