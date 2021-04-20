@@ -4,7 +4,7 @@ from django.shortcuts import render
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from elasticsearch import exceptions as es_ex
 from django.views.decorators.cache import cache_page
-from .helpers import _search_aggr_collections, _search_aggr_study_resources, _search_aggr_technologies, extract_filters
+from .helpers import _search_aggr_collections, _search_aggr_study_resources, _search_aggr_technologies, extract_filters, extract_sorting
 
 
 def autocomplete(request, prefix):
@@ -19,8 +19,9 @@ def search_specific(request, index):
     offset_results = int(request.GET.get('offset', 0))
     page = 0 if not offset_results else offset_results / page_size;
     filter = extract_filters(request)
+    sort = extract_sorting(request)
     if index == 'resources':
-        results = _search_aggr_study_resources(term, filter, page, page_size)
+        results = _search_aggr_study_resources(term, sort, filter, page, page_size)
     elif index == 'collections':
         results = _search_aggr_collections(term, filter, page, page_size)
     elif index == 'technologies':

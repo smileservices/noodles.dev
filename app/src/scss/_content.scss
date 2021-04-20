@@ -18,6 +18,7 @@
   padding: $padding-unit-sm;
   color: var(--color-blue);
   background-color: var(--color-background-2);
+
   span {
     margin: 0 $padding-unit-sm;
   }
@@ -202,22 +203,50 @@ img {
   margin-bottom: $padding-unit-md;
   font-size: $fontsize-sm;
 }
+
 .icon-info[data-tooltip]:hover::after {
-	all: initial;
-	display: inline-block;
-	width: 0;
-	height: 0;
-	border-left: $padding-unit solid transparent;
-	border-right: $padding-unit solid transparent;
-	border-top: $padding-unit solid var(--color-background);
-	position: absolute;
-	bottom: 100%;
-	content: '';
-	left: 25%;
-	transform: translate(-25%, 0);
-	margin-bottom: $padding-unit/2;
+  all: initial;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: $padding-unit solid transparent;
+  border-right: $padding-unit solid transparent;
+  border-top: $padding-unit solid var(--color-background);
+  position: absolute;
+  bottom: 100%;
+  content: '';
+  left: 25%;
+  transform: translate(-25%, 0);
+  margin-bottom: $padding-unit/2;
 }
 
 .selectable {
   cursor: pointer;
+}
+
+.has-sorting {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $padding-unit-big;
+
+  .sorting {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: $padding-unit;
+
+    label {
+      color: var(--color-background-5);
+    }
+
+    select {
+
+    }
+
+    .sorting-direction {
+
+    }
+  }
+
 }

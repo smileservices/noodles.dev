@@ -1,6 +1,7 @@
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 
-def _search_aggr_study_resources(term, filter, page, page_size):
+
+def _search_aggr_study_resources(term, sort, filter, page, page_size):
     es_res = ElasticSearchInterface(['study_resources'])
     resources_fields = ['name^4', 'summary', 'category', 'technologies', 'tags']
     aggregates = {
@@ -11,16 +12,22 @@ def _search_aggr_study_resources(term, filter, page, page_size):
         "tags": {"terms": {"field": "tags", "size": 20}},
         "category": {"terms": {"field": "category"}},
     }
-    rating_sort = [{"rating": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, {"reviews": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}]
     results = es_res.search(
         fields=resources_fields,
         term=term,
         filter=filter,
-        # sort=rating_sort,
+        sort=sort,
         aggregates=aggregates,
         page=page,
         page_size=page_size
     )
+    results['sorting'] = [
+        {"value": "default", "label": "Relevance"},
+        {"value": "rating", "label": "Rating"},
+        {"value": "reviews_count", "label": "Reviews Count"},
+        {"value": "publication_date", "label": "Published Date"},
+        {"value": "created_at", "label": "Added Date"},
+    ]
     return results
 
 
@@ -32,7 +39,7 @@ def _search_aggr_collections(term, filter, page, page_size):
         "tags": {"terms": {"field": "tags", "size": 20}},
     }
     filter.append({"term": {"is_public": True}})
-    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},]
+    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ]
     results = es_res.search(
         fields=collections_fields,
         term=term,
@@ -53,7 +60,7 @@ def _search_aggr_technologies(term, filter, page, page_size):
         "ecosystem": {"terms": {"field": "ecosystem", "size": 20}},
         "category": {"terms": {"field": "category"}},
     }
-    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}},]
+    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ]
     results = es_res.search(
         fields=technologies_fields,
         term=term,
@@ -114,6 +121,19 @@ def _search_technologies(term, filter, page, page_size):
         page_size=page_size
     )
     return results
+
+
+def extract_sorting(request) -> []:
+    sort = request.GET.get('sort', '').split('-')
+    if sort[0] == 'default':
+        return {}
+    if len(sort) == 0:
+        return {}
+    if len(sort) == 1:
+        sort.append('desc')
+    field, order = sort[0], sort[1] if sort[1] in ['asc', 'desc'] else 'desc'
+    return {field: {"order": order, "missing": "_last", "unmapped_type": "long"}}
+
 
 def extract_filters(request) -> []:
     # We cycle through each possible parameters

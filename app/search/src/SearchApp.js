@@ -45,7 +45,7 @@ function SearchApp() {
         waiting: true,
         filters: [],
         availableFilters: {},
-        sorting: [],
+        sorting: false,
     };
     const defaultPagination = {
         resultsPerPage: 10,
@@ -69,9 +69,9 @@ function SearchApp() {
         return [state, paginationState, {}, {}];
     }
 
-    const [initialResources, initialResourcesPagination, resourcesFilterInitial, resourcesSortInitial] = initialTabState('resources')
-    const [initialCollections, initialCollectionsPagination, collectionsFilterInitial, collectionsSortInitial] = initialTabState('colections')
-    const [initialTechnologies, initialTechnologiesPagination, technologiesFilterInitial, technologiesSortInitial] = initialTabState('technologies')
+    const [initialResources, initialResourcesPagination, resourcesFilterInitial] = initialTabState('resources')
+    const [initialCollections, initialCollectionsPagination, collectionsFilterInitial] = initialTabState('colections')
+    const [initialTechnologies, initialTechnologiesPagination, technologiesFilterInitial] = initialTabState('technologies')
 
     const [currentTab, setCurrentTab] = useState(defaultTab);
 
@@ -86,6 +86,8 @@ function SearchApp() {
     const [technologies, setTechnologies] = useState(initialTechnologies);
     const [technologiesResultsPagination, setTechnologiesResultsPagination] = useState(initialTechnologiesPagination);
     const [technologiesFilters, setTechnologiesFilters] = useState(technologiesFilterInitial);
+
+    const [sorting, setSorting] = useState(false);
 
     function setSearch(term) {
         let params = new URLSearchParams(location.search);
@@ -122,6 +124,9 @@ function SearchApp() {
         setTabState({...tabState, waiting: true});
         codeParamsToUrl(params, filters);
         codeParamsToUrl(params, paginationList);
+        if (sorting) {
+            codeParamsToUrl(params, {'sort': sorting});
+        }
         fetch(url + params.toString(), {
             method: 'GET',
         }).then(result => {
@@ -129,7 +134,12 @@ function SearchApp() {
                 return result.json();
             }
         }).then(data => {
-            setTabState({...tabState, availableFilters: getTabFilters(tab, data.filters), waiting:false, results: data});
+            setTabState({
+                ...tabState,
+                availableFilters: getTabFilters(tab, data.filters),
+                waiting: false,
+                results: data
+            });
         })
     }
 
@@ -177,7 +187,7 @@ function SearchApp() {
 
     useEffect(e => {
         searchInTab(searchbarState.q, currentTab);
-    }, [resourcesResultsPagination, collectionsResultsPagination, technologiesResultsPagination])
+    }, [resourcesResultsPagination, collectionsResultsPagination, technologiesResultsPagination, sorting])
 
     useEffect(e => {
         const [tab, setTabstate, pagination, setPagination, filters] = getTabState(currentTab);
@@ -221,6 +231,37 @@ function SearchApp() {
         }
     }
 
+    function SortComponent({sorting, sortOptions, callback}) {
+        console.log(sorting);
+        const sortingArr = sorting ? sorting.split('-') : [false, false];
+        const [sortField, setSortField] = useState(sortingArr[0]);
+        const [sortOrder, setSortOrder] = useState(sortingArr[1]);
+
+        //
+        // useEffect(e => {
+        //     callback([sortField, sortOrder ? 'desc' : 'asc'].join('-'));
+        // }, [sortField, sortOrder]);
+
+        function triggerSorting() {
+            callback([sortField, sortOrder ? 'desc' : 'asc'].join('-'));
+        }
+        return (
+            <div className="sorting">
+                <label htmlFor="sort_by">Sort By</label>
+                <select name="sort_by" id="sort_by" onChange={e => {setSortField(e.target.value); triggerSorting()}} value={sortField}>
+                    {sortOptions.map(opt =>
+                        <option key={'sort-' + opt.value} value={opt.value}>{opt.label}</option>
+                    )}
+                </select>
+                {sortField ?
+                    <span className="sorting-direction" onClick={e => {setSortOrder(!sortOrder); triggerSorting()}}>
+                    {sortOrder ? 'desc' : 'asc'}
+                </span>
+                    : ''}
+            </div>
+        )
+    }
+
     function showCurrentTab(currentTab) {
         switch (currentTab) {
             case 'resources':
@@ -238,7 +279,14 @@ function SearchApp() {
                         />
                         {resources.results.items?.length > 0 ?
                             <Fragment>
-                                <h4>Resources Results</h4>
+                                <div className="has-sorting">
+                                    <h4>Resources Results</h4>
+                                    <SortComponent
+                                        sorting={sorting}
+                                        sortOptions={resources.results.sorting}
+                                        callback={query => setSorting(query)}
+                                    />
+                                </div>
                                 <PaginatedLayout
                                     pagination={resourcesResultsPagination}
                                     resultsCount={resources.results.stats.total}
