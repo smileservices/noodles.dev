@@ -9,7 +9,7 @@ const flagIcon = (
             fill="black"/>
     </svg>);
 
-export default function RelatedComponent({addFilter}) {
+export default function RelatedComponent() {
     const [data, setData] = useState({});
     const [waiting, setWaiting] = useState(true);
 
@@ -26,15 +26,6 @@ export default function RelatedComponent({addFilter}) {
         })
     }, [])
 
-    const clickTechTag = addFilter
-        ? tech => addFilter('tech_v', tech)
-        : tech => window.location = '/search/?tab=resources&tech_v='+tech;
-    const clickTag = addFilter
-        ? tag => addFilter('tags', tag)
-        : (tag,tab) => window.location = '/search/?tab='+tab+'&tags='+tag;
-
-    const resourceFilter = addFilter ? addFilter : (name, value) => window.location = '/search/?tab=resources&'+name +'='+value;
-
     if (waiting || Object.keys(data).length === 0) return SkeletonLoadingRelatedSection;
     return (
         <Fragment>
@@ -43,9 +34,9 @@ export default function RelatedComponent({addFilter}) {
                     <h4>Popular Technologies</h4>
                     <div className="tags">
                         {Object.keys(data.aggregations.technologies).map(tech =>
-                            <span key={'popular-tech-'+tech} className="tech" onClick={e => clickTechTag(tech)}>
+                            <a key={'popular-tech-'+tech} className="tech" href={'/search/?tab=resources&tech_v='+tech}>
                                 {flagIcon} {tech} ({data.aggregations.technologies[tech]})
-                            </span>
+                            </a>
                         )}
                     </div>
                 </Fragment>
@@ -56,16 +47,16 @@ export default function RelatedComponent({addFilter}) {
                     <h4>Tags to follow</h4>
                     <div className="tags">
                         {Object.keys(data.aggregations.tags).map(tag =>
-                            <span key={'popular-tag-'+tag} onClick={e => clickTag(tag, 'resources')}>
+                            <a key={'popular-tag-'+tag} href={'/search/?tab=resources&tags='+tag}>
                                 # {tag} ({data.aggregations.tags[tag]})
-                            </span>
+                            </a>
                         )}
                     </div>
                 </Fragment>
                 : ''
             }
             <h4>Latest Added Resources</h4>
-            {data.resources.items.map(resource => <StudyResourceSearchListing key={'latest-resource-'+resource.pk} data={resource} addFilter={resourceFilter}/>)}
+            {data.resources.items.map(resource => <StudyResourceSearchListing key={'latest-resource-'+resource.pk} data={resource}/>)}
         </Fragment>
     )
 }

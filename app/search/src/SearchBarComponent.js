@@ -1,13 +1,13 @@
 import React, {useState, useEffect, Fragment} from "react";
 
-export default function SearchBarComponent({search, state}) {
+export default function SearchBarComponent({setSearchTerm, searchTerm, placeholder}) {
     /*
     * search - search function to be executed when submiting search
     * state - {q: search term, placeholder: placeholder text}
     *
     * */
 
-    const [formData, setFormData] = useState(state.q);
+    const [formData, setFormData] = useState(searchTerm);
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [waiting, setWaiting] = useState('');
@@ -15,7 +15,7 @@ export default function SearchBarComponent({search, state}) {
     const controller = new AbortController();
 
     useEffect(e => {
-        if (formData.length > 1 && state.q !== formData) {
+        if (formData.length > 1 && searchTerm !== formData) {
             fetch('/search/api/autocomplete/' + formData + '/', {
                 method: "GET",
                 signal: controller.signal
@@ -48,22 +48,18 @@ export default function SearchBarComponent({search, state}) {
         return (
             <div className="suggestions-list card">
                 <header>Live Results:</header>
-                {suggestions.map(s=> <a href={s.url}>{s.name}</a>)}
-                {/*{suggestions.map(r => <span key={r} onClick={e => {*/}
-                {/*    search(r);*/}
-                {/*    setFormData(r);*/}
-                {/*    setShowSuggestions(false)*/}
-                {/*}}>{r}</span>)}*/}
+                {suggestions.map(s=> <a key={s.url} href={s.url}>{s.name}</a>)}
             </div>
         )
     }
 
-    function searchOverlayContent(content, waiting){
+    function searchOverlayContent(content, waiting) {
         if (waiting) {
             return waiting;
         }
         if (content) return (<span className="clear" onClick={e=>{
             setFormData('');
+            setSearchTerm('');
         }}>Clear Search <span className="icon-cancel"/></span>);
     }
 
@@ -71,12 +67,12 @@ export default function SearchBarComponent({search, state}) {
         <div className="search-bar-big">
             <form onSubmit={e => {
                 e.preventDefault();
-                search(formData);
+                setSearchTerm(formData);
                 setShowSuggestions(false);
             }}>
                 <input type="text"
                        className="form-control"
-                       placeholder={state.placeholder}
+                       placeholder={placeholder}
                        value={formData}
                        onChange={e => {
                            setFormData(e.target.value)

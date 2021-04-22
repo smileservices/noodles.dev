@@ -21,7 +21,7 @@ def _search_aggr_study_resources(term, sort, filter, page, page_size):
         page=page,
         page_size=page_size
     )
-    results['sorting'] = [
+    results['sort'] = [
         {"value": "default", "label": "Relevance"},
         {"value": "rating", "label": "Rating"},
         {"value": "reviews_count", "label": "Reviews Count"},

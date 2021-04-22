@@ -224,14 +224,14 @@ img {
   cursor: pointer;
 }
 
-.has-sorting {
+.has-sort {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: $padding-unit-big;
 
-  .sorting {
+  .sort {
     display: flex;
     flex-wrap: nowrap;
     gap: $padding-unit;
@@ -244,7 +244,7 @@ img {
 
     }
 
-    .sorting-direction {
+    .sort-direction {
 
     }
   }

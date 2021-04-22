@@ -11,31 +11,38 @@ const flagIcon = (
 
 export default function StudyResourceSearchListing({data, addFilter}) {
     const MAX_RATING = 5
+
+    const technologies = data.technologies.map(t => <a key={t.url} href={t.url} className="tech">{flagIcon} {t.name}{t.version ? ' '+t.version : ''}</a>);
+    const category = addFilter
+        ? (<span onClick={e => {addFilter('category', data.category)}}>{data.category}</span>)
+        : (<a key={'cat' + data.media} href={'/search?tab=resources&category='+data.category}>{data.category}</a>)
+    const experience_level = addFilter
+        ? (<span onClick={e => addFilter('experience_level', data.experience_level)}>{data.experience_level}</span>)
+        : (<a key={'exp' + data.experience_level} href={'/search?tab=resources&experience_level='+data.experience_level}>{data.experience_level}</a>)
+    const tags = data.tags.map(t=>{
+        if (addFilter) return (<span key={'tag' + t} onClick={e => addFilter('tags', t)} className="tag">#{t}</span>);
+        return (<a key={'tag' + t} href={'/search?tab=resources&tags='+t}  className="tag">#{t}</a>);
+    });
+    const media = addFilter
+        ? (<span onClick={e => addFilter('media', data.media)}>{data.media}</span>)
+        : (<a key={'media' + data.media} href={'/search?tab=resources&media='+data.media}>{data.media}</a>)
+
     return (
             <div className="card">
                 <div className="result resource">
                     <div className="left">
                         <div className="tags">
-                            {data.technologies.map(t => <a key={t.url} href={t.url}
-                                                           className="tech">{flagIcon} {t.name}{t.version ? ' '+t.version : ''}</a>)}
-                            <span onClick={e => {addFilter('category', data.category)}}>{data.category}</span>
-                            <span
-                                onClick={e => addFilter('experience_level', data.experience_level)}>{data.experience_level}</span>
+                            {technologies}{category}{experience_level}
                         </div>
                         <div className="listing-title">
                             <h4 className="title" itemProp="name"><a href={data.url}>{data.name}</a></h4>
                             <span className="published">{data.publication_date} By {data.published_by}</span>
-                            <div className="tags">
-                                <span onClick={e => addFilter('media', data.media)}>{data.media}</span>
-                            </div>
+                            <div className="tags">{media}</div>
                         </div>
                         <div className="description">
                             <TruncatedTextComponent fullText={data.summary} charLimit={250}/>
                         </div>
-                        <div className="tags">
-                            {data.tags.map(t => <span key={'tag' + t} onClick={e => addFilter('tags', t)}
-                                                      className="tag">#{t}</span>)}
-                        </div>
+                        <div className="tags">{tags}</div>
                         <ResourceRating data={data} maxRating={MAX_RATING}/>
                     </div>
                     {data.image ?

@@ -39,7 +39,6 @@ export function FilterComponent({fields, queryFilter, setQueryFilter, applyButto
     *  fields: {filterName: {label: string, type: string, options: [[value, label],...]}, ...}
     *
     * */
-
     function onChange(name, value) {
         let clonedQueryFilter = {...queryFilter};
         if (value === INACTIVE) {

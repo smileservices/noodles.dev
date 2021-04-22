@@ -7,10 +7,10 @@ module.exports = {
         // just create the react-bundle once
 
         //for dev
-        // 'static/js/react-bundle': ['./app/static/js/react.development.js', './app/static/js/react-dom.development.js'],
+        'static/js/react-bundle': ['./app/static/js/react.development.js', './app/static/js/react-dom.development.js'],
 
         //for prod
-        'static/js/react-bundle': ['./app/static/js/react.min.js', './app/static/js/react-dom.min.js'],
+        // 'static/js/react-bundle': ['./app/static/js/react.min.js', './app/static/js/react-dom.min.js'],
 
         //homepage
         '/static/homepage-app': './app/frontend/src/HomepageApp.js',

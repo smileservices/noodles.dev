@@ -69,8 +69,8 @@ export function decodeParamsFromUrl() {
     const urlParams = new URLSearchParams(document.location.search);
     urlParams.delete('search');
     urlParams.delete('tab');
-    sorting = urlParams.get('sort_by')
-    urlParams.delete('sort_by');
+    sorting = urlParams.get('sort');
+    urlParams.delete('sort');
     Array.from(urlParams, ([key, value]) => {
         const f = {};
         if (paginationParamNames.indexOf(key) > -1) {
@@ -95,8 +95,14 @@ export function updateUrl(url, params) {
             codeParamsToUrl(paramsObj, params['filters'])
         }
     }
-    if (params['search'] !== '') {
+    if (params['search']) {
         paramsObj.set('search', params['search']);
+    }
+    if (Object.keys(params['filters']).length > 0) {
+        Object.keys(params['filters']).map(filter=>paramsObj.set(filter, params['filters'][filter]));
+    }
+    if (params['sort']) {
+        paramsObj.set('sort', params['sort']);
     }
     history.pushState(null, 'Search', url + paramsObj.toString())
 }
