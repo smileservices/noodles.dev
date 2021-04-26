@@ -276,7 +276,7 @@ function HomepageApp() {
                         className={headerClass('technologies')}>Technologies
                         {getAggregationsCounter(technologies)}</h4>
                 </div>
-                <SearchBarComponent search={setSearch} state={{placeholder: 'Search For Something Specific', q: ''}}/>
+                <SearchBarComponent setSearchTerm={setSearch} searchTerm='' placeholder="Search for something specific"/>
                 {showCurrentTab(currentTab)}
             </section>
             <section id="related" className="column-container">
