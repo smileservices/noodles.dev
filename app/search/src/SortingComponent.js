@@ -6,7 +6,7 @@ export default function SortComponent({sort, sortOptions, callback}) {
 
     return (
         <div className="sort">
-            <label htmlFor="sort_by">Sort By</label>
+            <label htmlFor="sort_by">Sort By:</label>
             <select name="sort_by" id="sort_by" onChange={e => {
                 setState({...state, field: e.target.value});
                 callback([e.target.value, state.order].join('-'));

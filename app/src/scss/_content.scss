@@ -235,17 +235,24 @@ img {
     display: flex;
     flex-wrap: nowrap;
     gap: $padding-unit;
+    align-items: baseline;
 
     label {
-      color: var(--color-background-5);
+      color: var(--color-text-grey);
     }
 
     select {
-
+      background-color: var(--color-background);
+      color: var(--color-text-white);
     }
 
     .sort-direction {
+      color: var(--color-text-white);
+      cursor: pointer;
+    }
 
+    .sort-direction:hover {
+      color: var(--color-blue);
     }
   }
 
