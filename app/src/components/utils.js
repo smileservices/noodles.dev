@@ -91,15 +91,12 @@ export function updateUrl(url, params) {
     if (params['tab'] !== '') {
         paramsObj.set('tab', params['tab']);
         // process filters per tab only!
-        if (Object.keys(params['filters']).length > 0) {
+        if (params['filters'] && Object.keys(params['filters']).length > 0) {
             codeParamsToUrl(paramsObj, params['filters'])
         }
     }
     if (params['search']) {
         paramsObj.set('search', params['search']);
-    }
-    if (Object.keys(params['filters']).length > 0) {
-        Object.keys(params['filters']).map(filter=>paramsObj.set(filter, params['filters'][filter]));
     }
     if (params['sort']) {
         paramsObj.set('sort', params['sort']);

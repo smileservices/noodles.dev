@@ -31,7 +31,7 @@ def _search_aggr_study_resources(term, sort, filter, page, page_size):
     return results
 
 
-def _search_aggr_collections(term, filter, page, page_size):
+def _search_aggr_collections(term, sort, filter, page, page_size):
     es_res = ElasticSearchInterface(['collections'])
     collections_fields = ['name^4', 'description', 'technologies', 'tags']
     aggregates = {
@@ -39,20 +39,24 @@ def _search_aggr_collections(term, filter, page, page_size):
         "tags": {"terms": {"field": "tags", "size": 20}},
     }
     filter.append({"term": {"is_public": True}})
-    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ]
     results = es_res.search(
         fields=collections_fields,
         term=term,
         filter=filter,
-        # sort=votes_sort,
+        sort=sort,
         aggregates=aggregates,
         page=page,
         page_size=page_size
     )
+    results['sort'] = [
+        {"value": "default", "label": "Relevance"},
+        {"value": "thumbs_up", "label": "Votes"},
+        {"value": "created_at", "label": "Added Date"},
+    ]
     return results
 
 
-def _search_aggr_technologies(term, filter, page, page_size):
+def _search_aggr_technologies(term, sort, filter, page, page_size):
     es_res = ElasticSearchInterface(['technologies'])
     technologies_fields = ['name^4', 'description', 'ecosystem', 'tags']
     aggregates = {
@@ -60,16 +64,20 @@ def _search_aggr_technologies(term, filter, page, page_size):
         "ecosystem": {"terms": {"field": "ecosystem", "size": 20}},
         "category": {"terms": {"field": "category"}},
     }
-    votes_sort = [{"thumbs_up": {"order": "desc", "missing": "_last", "unmapped_type": "long"}}, ]
     results = es_res.search(
         fields=technologies_fields,
         term=term,
         filter=filter,
-        # sort=votes_sort,
+        sort=sort,
         aggregates=aggregates,
         page=page,
         page_size=page_size
     )
+    results['sort'] = [
+        {"value": "default", "label": "Relevance"},
+        {"value": "thumbs_up", "label": "Votes"},
+        {"value": "created_at", "label": "Added Date"},
+    ]
     return results
 
 

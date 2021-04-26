@@ -13,6 +13,7 @@ const NoResultsElement = (
     </div>
 )
 
+const CHANGE_TAB = 'CHANGE_TAB';
 const SET_FILTER = 'SET_FILTER';
 const SET_PAGINATION = 'SET_PAGINATION';
 const SET_SEARCH = 'SET_SEARCH';
@@ -41,9 +42,9 @@ const initialTabState = {
 const tabStateReducer = (state, {type, payload}) => {
     switch (type) {
         case SET_PAGINATION:
-            //todo update url
             return {
                 ...state,
+                results: [],
                 pagination: payload,
             }
         case SET_SORT:
@@ -56,7 +57,8 @@ const tabStateReducer = (state, {type, payload}) => {
             return {
                 ...state,
                 sort: payload,
-                pagination: initialTabState.pagination
+                results: [],
+                pagination: initialTabState.pagination,
             }
         case SET_SEARCH:
             updateUrl('/search?', {
@@ -67,14 +69,29 @@ const tabStateReducer = (state, {type, payload}) => {
             });
             return {
                 ...state,
+                results: [],
                 search: payload,
-                pagination: initialTabState.pagination
+                pagination: initialTabState.pagination,
             }
         case FETCH_INIT:
-            return {
-                ...state,
-                waiting: true,
-                errors: false
+            if (state.tab !== payload.tab) {
+                return {
+                    ...state,
+                    tab: payload.tab,
+                    results: [],
+                    waiting: true,
+                    errors: false,
+                    filters: {},
+                    sort: 'default',
+                    pagination: initialTabState.pagination
+                }
+            } else {
+                return {
+                    ...state,
+                    results: [],
+                    waiting: true,
+                    errors: false,
+                }
             }
         case SET_FILTER:
             updateUrl('/search?', {
@@ -85,8 +102,9 @@ const tabStateReducer = (state, {type, payload}) => {
             });
             return {
                 ...state,
+                results: [],
                 filters: payload,
-                pagination: initialTabState.pagination
+                pagination: initialTabState.pagination,
             }
         case SET_ERROR:
             return {
@@ -137,11 +155,13 @@ function getTabFilters(tabname, resultsFilters) {
 
 export default function TabComponent({tabname, searchTerm, title, containerClass, ListingComponent}) {
     const [state, dispatch] = useReducer(tabStateReducer, {...initialTabState, tab: tabname, search: searchTerm});
-
-    useEffect(()=>dispatch({type: SET_SEARCH, payload: searchTerm}), [searchTerm]);
+    useEffect(() => dispatch({type: SET_SEARCH, payload: searchTerm}), [searchTerm]);
 
     useEffect(() => {
-        dispatch({type: FETCH_INIT});
+        dispatch({type: FETCH_INIT, payload: {tab: tabname}});
+        if (tabname !== state.tab) {
+            return ()=>{};
+        }
         const url = '/search/api/' + tabname + '?';
         let params = new URLSearchParams();
         const paginationList = Object.keys(state.pagination).map(k => {
@@ -168,9 +188,9 @@ export default function TabComponent({tabname, searchTerm, title, containerClass
         }).then(data => {
             dispatch({type: SET_SUCCESS, payload: data});
         })
-    }, [state.search, state.filters, state.pagination, state.sort]);
+    }, [tabname, state.search, state.filters, state.pagination, state.sort]);
 
-    if (state.waiting) return SkeletonLoadingResults;
+    if (state.waiting || tabname !== state.tab) return SkeletonLoadingResults;
     if (state.errors) return (
         <div className="no-results">
             <h2>Encountered errors :(</h2>

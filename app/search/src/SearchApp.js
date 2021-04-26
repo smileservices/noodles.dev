@@ -7,6 +7,7 @@ import CollectionSearchListing from "../../study_collection/src/CollectionSearch
 import TechnologySearchListing from "../../technology/src/TechnologySearchListing";
 import RelatedComponent from "./RelatedComponent";
 import TabComponent from "./TabComponent";
+import {updateUrl} from "../../src/components/utils";
 
 const urlParams = new URLSearchParams(document.location.search);
 
@@ -32,17 +33,8 @@ function SearchApp() {
         q: urlParams.get('search') ? urlParams.get('search') : '',
         currentTab: urlParams.get('tab') ? urlParams.get('tab') : 'resources',
     })
-
-    function headerClass(tabname) {
-        return tabname === state.currentTab ? 'active' : '';
-    }
-
-    function changeTab(tabname) {
-        setState({...state, currentTab: tabname});
-    }
-
-    function getTabContent(state) {
-        switch (state.currentTab) {
+    const getTabContent = tabName => {
+        switch (tabName) {
             case 'resources':
                 return (<TabComponent
                     tabname="resources" searchTerm={state.q} title={'Resources Results'}
@@ -56,9 +48,21 @@ function SearchApp() {
                     tabname="technologies" searchTerm={state.q} title={'Technologies Results'}
                     containerClass={'technologies'} ListingComponent={TechnologySearchListing}/>)
             default:
-                alert('current tab value not recognized:' + state.currentTab);
+                alert('current tab value not recognized:' + tabName);
         }
     }
+
+    function headerClass(tabname) {
+        return tabname === state.currentTab ? 'active' : '';
+    }
+
+    function changeTab(tabname) {
+        updateUrl('/search?', {
+            tab: tabname,
+        });
+        setState({...state, currentTab: tabname});
+    }
+
 
     return (
         <Fragment>
@@ -71,10 +75,10 @@ function SearchApp() {
                 </div>
                 <SearchBarComponent searchTerm={state.q} setSearchTerm={term => setState({...state, q: term})}
                                     placeholder="Search for something specific"/>
-                {getTabContent(state)}
+                {getTabContent(state.currentTab)}
             </section>
             <section id="related" className="column-container">
-                <RelatedComponent />
+                <RelatedComponent/>
             </section>
         </Fragment>
     );

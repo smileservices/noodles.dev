@@ -23,9 +23,9 @@ def search_specific(request, index):
     if index == 'resources':
         results = _search_aggr_study_resources(term, sort, filter, page, page_size)
     elif index == 'collections':
-        results = _search_aggr_collections(term, filter, page, page_size)
+        results = _search_aggr_collections(term, sort, filter, page, page_size)
     elif index == 'technologies':
-        results = _search_aggr_technologies(term, filter, page, page_size)
+        results = _search_aggr_technologies(term, sort, filter, page, page_size)
     else:
         results = f'{index} does not exist'
     return JsonResponse(results, safe=False)
