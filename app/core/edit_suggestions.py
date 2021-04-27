@@ -6,7 +6,7 @@ AUTHOR_FIELDS = ['author', 'edit_suggestion_author']
 
 
 def edit_suggestion_change_status_condition(instance, user: CustomUser):
-    if user.is_staff or user.community_score() >= settings.MODERATOR_USER_SCORE:
+    if instance.edit_suggestion_parent.author == user or user.is_staff or user.community_score() >= settings.MODERATOR_USER_SCORE:
         return True
     return False
 

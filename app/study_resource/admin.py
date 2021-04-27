@@ -10,7 +10,7 @@ class StudyResourceAdmin(admin.ModelAdmin):
     list_filter = ('created_at', 'updated_at', 'tags', 'technologies')
 
     def view_on_site(self, obj):
-        return reverse('detail', kwargs={'id': obj.id, 'slug': obj.slug})
+        return reverse('study-resource-detail', kwargs={'id': obj.id, 'slug': obj.slug})
 
 
 @admin.register(models.Review)

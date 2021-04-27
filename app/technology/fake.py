@@ -22,7 +22,9 @@ def clean_technologies():
 def create_technologies():
     created_tech = {}
     user = create_user_single()
-    categories = Category.objects.all()
+    cats_backend = Category.objects.get(name='Backend')
+    cats_frontend = Category.objects.get(name='Frontend')
+    cats_lang = Category.objects.get(name='Programming Languages')
     for t in ['reactJs', 'python', 'django', 'php', 'ruby', 'laravel', 'linux', 'docker', 'nginx']:
         tobj = Technology(
             name=t,
@@ -34,7 +36,6 @@ def create_technologies():
             pros=f.text(),
             cons=f.text(),
             limitations=f.text(),
-            category=choice(categories),
             image_file='',
             featured=True
         )
@@ -42,11 +43,13 @@ def create_technologies():
         created_tech[t] = tobj
 
     created_tech['django'].ecosystem.add(created_tech['python'])
+    created_tech['django'].ecosystem.add(created_tech['python'])
     created_tech['laravel'].ecosystem.add(created_tech['php'])
     created_tech['nginx'].ecosystem.add(created_tech['linux'])
     created_tech['django'].save()
     created_tech['laravel'].save()
     created_tech['nginx'].save()
+    categories = Category.objects.all()
 
     for t in ['nextjs', 'sphinx', 'mino', 'bibigi', 'futarelo', 'vuejs']:
         tobj = Technology(
@@ -59,10 +62,11 @@ def create_technologies():
             pros=f.text(),
             cons=f.text(),
             limitations=f.text(),
-            category=choice(categories),
             image_file='',
         )
         tobj.save()
+        for _ in range(choice([0,1,2])):
+            tobj.category.add(choice(categories))
         created_tech[t] = tobj
 
     return created_tech
@@ -80,13 +84,13 @@ def create_technology_edit_suggestions():
             'owner': tech.owner,
             'pros': tech.pros,
             'cons': tech.cons,
-            'category': tech.category,
             'limitations': tech.limitations,
             'edit_suggestion_author': choice(users),
             'image_file': tech.image_file,
         })
         edsug.ecosystem.add(technologies[0])
-
+        for c in tech.category.all():
+            edsug.category.add(c)
 
 def bulk_votes(n=30):
     create_bulk_users(n)

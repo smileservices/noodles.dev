@@ -13,7 +13,7 @@ export default function TechnologySearchListing({data, addFilter}) {
                     <h4 className="title"><a href={data.url}>{data.name}</a></h4>
                     <div className="tags">
                         <span onClick={e=>addFilter('license', data.license)}>{data.license}</span>
-                        <span onClick={e=>addFilter('category', data.category)}>{data.category}</span>
+                        {data.category.map(cat=><span onClick={e=>addFilter('category', cat)}>{cat}</span>)}
                     </div>
                 </div>
             </header>

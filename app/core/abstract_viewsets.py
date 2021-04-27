@@ -25,7 +25,9 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
             }
             return response
         except ValidationError as e:
-            raise e
+            return Response(status=502, data={
+                'error': e
+            })
         except Exception as e:
             mail_admins(
                 subject=f'Error Creating Resource: {self.request.META["PATH_INFO"]}',

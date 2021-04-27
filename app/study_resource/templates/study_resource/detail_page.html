@@ -8,8 +8,6 @@
           content="{{ result.summary }}"/>
     <meta name="keywords" content="
 
-
-
             {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -39,8 +37,11 @@
         const USER_COLLECTIONS_SET_API = "{{ urls.user_collections_set_resource_to_collections }}";
     </script>
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / Resources / {{ result.category }} /
-        <a href="{{ result.absolute_url }}">{{ result.name }}</a>
+        <a href="/">Homepage</a> / Resources /
+        {% for cat in result.category.get_ancestors %}
+            <a href="{% url 'search_page' %}?tab=resources&category={{ cat }}">{{ cat }}</a> >
+        {% endfor %}
+         <a href="{% url 'search_page' %}?tab=resources&category={{ result.category.name }}">{{ result.category.name }}</a> / {{ result.name }}
     </div>
     <div class="detail-page resource">
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">

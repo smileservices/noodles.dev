@@ -5,10 +5,14 @@ from .models import Category
 
 class CategorySerializer(serializers.ModelSerializer):
     queryset = Category.objects
+    path = SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = ['pk', 'name', 'description']
+        fields = ['pk', 'name', 'description', 'path']
+
+    def get_path(self, obj):
+        return ' > '.join([c.name for c in obj.get_ancestors()])
 
 
 class CategorySerializerOption(serializers.ModelSerializer):
@@ -21,7 +25,7 @@ class CategorySerializerOption(serializers.ModelSerializer):
         fields = ['value', 'label']
 
     def get_label(self, obj):
-        return obj.name
+        return obj.name_tree
 
     def get_value(self, obj):
         return obj.pk

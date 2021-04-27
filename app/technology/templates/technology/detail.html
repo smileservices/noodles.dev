@@ -1,3 +1,5 @@
+{% load mptt_tags %}
+
 <header>
     <div class="left-side">
         <img src="{{ result.logo.medium }}" alt="">
@@ -7,8 +9,15 @@
 </header>
 <p class="tags">
     <a href="{% url 'search_page' %}?tab=technologies&license={{ result.license_label }}">{{ result.license_label }}</a>
-    <a href="{% url 'search_page' %}?tab=technologies&category={{ result.category }}">{{ result.category }}</a>
 </p>
+{% for category in result.category.all %}
+    <p class="tags">
+        {% for cat in category.get_ancestors %}
+            <a href="{% url 'search_page' %}?tab=technologies&category={{ cat }}">{{ cat }}</a>
+        {% endfor %}
+        <a href="{% url 'search_page' %}?tab=technologies&category={{ category }}">{{ category }}</a>
+    </p>
+{% endfor %}
 <div class="description">
     <p class="summary" itemProp="abstract">{{ result.description | linebreaks }}</p>
     <p>Technology maintained by <span class="highlighted">{{ result.owner }}</span></p>
@@ -33,4 +42,5 @@
     </div>
 {% endif %}
 
-<span class="published">Added By <a href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
+<span class="published">Added By <a
+        href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>

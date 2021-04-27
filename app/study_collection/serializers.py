@@ -44,7 +44,8 @@ class CollectionSerializer(serializers.ModelSerializer):
     def run_validation(self, data):
         validated_data = super(CollectionSerializer, self).run_validation(data)
         validated_data['tags'] = Tag.objects.validate_tags(data['tags'])
-        validated_data['technologies'] = data['technologies']
+        if 'technologies' in data:
+            validated_data['technologies'] = data['technologies']
         if 'resources' in data:
             validated_data['resources'] = data['resources']
         return validated_data

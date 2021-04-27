@@ -15,7 +15,6 @@ module.exports = {
         //homepage
         '/static/homepage-app': './app/frontend/src/HomepageApp.js',
 
-
         //study resource related
         '/static/study_resource/study-resource-detail-reviews': './app/study_resource/src/StudyResourceDetailReviews.js',
         '/static/study_resource/study-resource-create': './app/study_resource/src/create/StudyResourceCreate.js',
@@ -25,15 +24,6 @@ module.exports = {
 
         //study resource collections
         '/static/my-study-collections': './app/study_collection/src/MyCollectionsApp.js',
-
-        //problem-related
-        // '/static/problem_solution/problem-create': './app/problem_solution/src/problem/ProblemCreateApp.js',
-        // '/static/problem_solution/problem-children-tree': './app/problem_solution/src/problem/ChildrenTree.js',
-        // '/static/problem_solution/solution-create-modal': './app/problem_solution/src/solution/CreateSolutionModalApp.js',
-
-        //solution-related
-        // '/static/problem_solution/problem-create-modal': './app/problem_solution/src/problem/CreateProblemModalApp.js',
-        // '/static/problem_solution/solution-children-tree': './app/problem_solution/src/solution/ChildrenTree.js',
 
         //technology
         '/static/technology/technology-create': './app/technology/src/TechCreateApp.js',
@@ -48,8 +38,6 @@ module.exports = {
         '/static/minimal-search-app': './app/search/src/MinimalSearchApp.js',
 
         //edit suggestions
-        '/static/problem_solution/problem-edit': './app/problem_solution/src/problem/EditApp.js',
-        '/static/problem_solution/solution-edit': './app/problem_solution/src/solution/EditApp.js',
         '/static/technology/edit': './app/technology/src/EditApp.js',
         '/static/study_resource/edit': './app/study_resource/src/EditApp.js',
 

@@ -71,14 +71,15 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     pros = models.TextField()
     cons = models.TextField()
     limitations = models.TextField()
-    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.DO_NOTHING)
-    ecosystem = models.ManyToManyField('Technology', related_name='related_technologies')
     image_file = VersatileImageField(upload_to='technologies', blank=True, null=True)
     featured = models.BooleanField(default=False)
 
+    category = models.ManyToManyField(Category, related_name='related_technologies')
+    ecosystem = models.ManyToManyField('Technology', related_name='related_technologies')
+
     edit_suggestions = EditSuggestion(
         excluded_fields=('author', 'thumbs_up_array', 'thumbs_down_array'),
-        m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, ],
+        m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category}],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
@@ -158,7 +159,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
                 "pk": self.author.pk,
                 "username": self.author.username
             } if self.author else {},
-            "category": self.category.name,
+            "category": [c.name for c in self.category.all()],
             "ecosystem": [t.name for t in self.ecosystem.all()],
             "thumbs_up": self.thumbs_up,
             "thumbs_down": self.thumbs_down,

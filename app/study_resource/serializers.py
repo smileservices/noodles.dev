@@ -150,15 +150,9 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         if 'slug' not in data:
             data['slug'] = slugify(data['name'])
         validated_data = super(StudyResourceSerializer, self).run_validation(data)
-        # get tags out of the formdata serialized data
-        # cleaned_tags = [int(t) for t in data['tags'].split(',')]
-        # get category out of the data
-        try:
-            cleaned_category = int(data['category'])
-        except ValueError:
-            cleaned_category = data['category']
         # get technologies out of the data
         cleaned_technologies = json.loads(data['technologies'])
+        validated_data['category_id'] = int(data['category'])
         validated_data['tags'] = Tag.objects.validate_tags(json.loads(data['tags']))
         if 'pk' in data and 'image_file' not in data:
             # populate with parent image file otherwise the edit will set the image_file blank
@@ -176,7 +170,6 @@ class StudyResourceSerializer(EditSuggestionSerializer):
                 raise AttributeError('Cannot add same technology multiple times')
             techs.append(tech['technology_id'])
         validated_data['technologies'] = cleaned_technologies
-        validated_data['category_id'] = Category.objects.validate_category(cleaned_category)
         return validated_data
 
     def create(self, validated_data):

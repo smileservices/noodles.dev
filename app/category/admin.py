@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Category
-
+from mptt.admin import MPTTModelAdmin
+from category.models import Category
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(MPTTModelAdmin):
     list_display = ('name',)

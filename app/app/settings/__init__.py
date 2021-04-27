@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
     # 3rd party apps
+    'mptt',
     'captcha',
     'django_edit_suggestion',
     'versatileimagefield',

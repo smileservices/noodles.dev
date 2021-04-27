@@ -71,8 +71,8 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
             except Exception as e:
                 raise exceptions.ValidationError('Error getting the image from specified url')
         validated_data['slug'] = slugify(validated_data['name'])
+        validated_data['category'] = [int(t) for t in data['category'].split(',')] if data['category'] else []
         validated_data['ecosystem'] = [int(t) for t in data['ecosystem'].split(',')] if data['ecosystem'] else []
-        validated_data['category_id'] = Category.objects.validate_category(int(data['category']))
         return validated_data
 
     def get_changes(self, instance):
@@ -89,8 +89,8 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
             elif change.field == 'category':
                 result.append({'field': change.field.capitalize(),
                                'type': 'text',
-                               'old': Category.objects.get(pk=change.old).name,
-                               'new': Category.objects.get(pk=change.new).name
+                               'old': ', '.join([c.name_tree for c in change.old]),
+                               'new': ', '.join([c.name_tree for c in change.new])
                                })
             elif change.field == 'license':
                 result.append({'field': change.field.capitalize(),
@@ -115,7 +115,7 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
 class TechnologySerializer(EditSuggestionSerializer):
     queryset = Technology.objects.all()
     ecosystem = TechnologySerializerOption(many=True, read_only=True)
-    category = CategorySerializerOption(read_only=True)
+    category = CategorySerializerOption(read_only=True, many=True)
     image_file = VersatileImageFieldSerializer(
         sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['technology_logo'],
         required=False,
@@ -164,14 +164,14 @@ class TechnologySerializer(EditSuggestionSerializer):
             except Exception as e:
                 raise exceptions.ValidationError('Error getting the image from specified url')
         validated_data['slug'] = slugify(validated_data['name'])
+        validated_data['category'] = [int(t) for t in data['category'].split(',')] if data['category'] else []
         validated_data['ecosystem'] = [int(t) for t in data['ecosystem'].split(',')] if data['ecosystem'] else []
-        validated_data['category_id'] = Category.objects.validate_category(data['category'])
         return validated_data
 
 
 class TechnologyListing(serializers.ModelSerializer):
     queryset = Technology.objects.all()
-    category = CategorySerializerOption(read_only=True)
+    category = CategorySerializerOption(read_only=True, many=True)
     ecosystem = TechnologySerializerOption(read_only=True, many=True)
 
     class Meta:

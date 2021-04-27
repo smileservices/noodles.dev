@@ -5,25 +5,31 @@ from users.models import CustomUser
 from random import choice, choices
 from django.http import HttpRequest
 
+from faker import Faker
+
+f = Faker()
+
 
 # use technology serializer to save
 
 def make_technologies_and_categories():
     users = CustomUser.objects.all()
     categories = {}
-    categories['programming_language'] = Category.objects.create(
-        name='Programming Language',
-        description='A programming language is a formal language comprising'
-                    ' a set of instructions that produce various kinds of output.'
-                    ' Programming languages are used in computer programming'
-                    ' to implement algorithms.'
-    )
-    categories['frontend'] = Category.objects.create(name='Web Development - Frontend')
-    categories['backend'] = Category.objects.create(name='Web Development - Backend')
-    categories['web_backend_framework'] = Category.objects.create(name='Web Development Frameworks - Backend')
-    categories['databases'] = Category.objects.create(name='Databases')
-    categories['algorithms'] = Category.objects.create(name='Linux')
-    categories['devops'] = Category.objects.create(name='Dev Ops')
+
+    web_dev = Category.objects.create(name='Web Dev', description=f.text(), parent=None)
+    lang = Category.objects.create(name='Programming Languages', description=f.text(), parent=None)
+    dbs = Category.objects.create(name='Databases', description=f.text(), parent=None)
+    Category.objects.create(name='Relational', description=f.text(), parent=dbs)
+    Category.objects.create(name='Non-Relational', description=f.text(), parent=dbs)
+
+    categories['programming_language'] = lang
+    categories['frontend'] = Category.objects.create(name='Frontend', description=f.text(), parent=web_dev)
+    categories['backend'] = Category.objects.create(name='Backend', description=f.text(), parent=web_dev)
+    categories['web_backend_framework'] = Category.objects.create(name='Frameworks', description=f.text(),
+                                                                  parent=categories['backend'])
+    categories['databases'] = dbs
+    categories['algorithms'] = Category.objects.create(name='Algorithms', description=f.text(), parent=lang)
+    categories['devops'] = Category.objects.create(name='Dev Ops', description=f.text(), parent=web_dev)
 
     PUBLIC_DOMAIN = (0, 'Public Domain')
     PERMISSIVE_LICENSE = (1, 'Permissive License')
@@ -35,7 +41,7 @@ def make_technologies_and_categories():
     javascript = {
         "name": 'Javascript',
         "image_url": 'https://www.postscapes.com/wp-content/uploads/bb-plugin/cache/MST8CKVShX8cHwVIZ_FUR42xQZAEpUOLiHTsWrcG0o-SKEjCIq1KhCGHshgxTlTJ0CaHlJpBZ3pbT7zlyRQyq-dzFosiw-circle.jpeg',
-        "category": categories['programming_language'].pk,
+        "category": ','.join([str(cid) for cid in [categories['programming_language'].pk, categories['frontend'].pk]]),
         "description": "Often abbreviated as JS, is a programming language that conforms to the ECMAScript specification."
                        " JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax,"
                        " dynamic typing, prototype-based object-orientation, and first-class functions.\n"
@@ -66,7 +72,7 @@ def make_technologies_and_categories():
         "featured": True,
         "name": 'Python',
         "image_url": 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png',
-        "category": categories['programming_language'].pk,
+        "category": ','.join([str(cid) for cid in [categories['programming_language'].pk, categories['backend'].pk]]),
         "description": "Python is an interpreted, high-level and general-purpose programming language. "
                        "Python's design philosophy emphasizes code readability with its notable use of significant "
                        "indentation.\n Its language constructs and object-oriented approach aim to help programmers"
@@ -86,7 +92,7 @@ def make_technologies_and_categories():
         "featured": True,
         "name": 'Php',
         "image_url": 'https://www.lije-creative.com/wp-content/uploads/2015/03/php7.jpeg',
-        "category": categories['programming_language'].pk,
+        "category": ','.join([str(cid) for cid in [categories['programming_language'].pk, categories['backend'].pk]]),
         "description": "PHP is a general-purpose scripting language especially suited to web development."
                        " It was originally created by Danish-Canadian programmer Rasmus Lerdorf in 1994.\n"
                        " The PHP reference implementation is now produced by The PHP Group. "
@@ -104,7 +110,7 @@ def make_technologies_and_categories():
         "featured": True,
         "name": 'Django',
         "image_url": 'https://static.djangoproject.com/img/logos/django-logo-negative.png',
-        "category": categories['web_backend_framework'].pk,
+        "category": ','.join([str(cid) for cid in [categories['web_backend_framework'].pk, ]]),
         "description": "Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.\n"
                        " Built by experienced developers, it takes care of much of the hassle of Web development,"
                        " so you can focus on writing your app without needing to reinvent the wheel. \n"
@@ -121,7 +127,7 @@ def make_technologies_and_categories():
         "featured": True,
         "name": 'ReactJs',
         "image_url": 'https://chloerei.com/rails-frontend/images/reactjs-logo.png',
-        "category": categories['frontend'].pk,
+        "category": ','.join([str(cid) for cid in [categories['frontend'].pk, ]]),
         "description": "React (also known as React.js or ReactJS) is an open-source, front end, JavaScript library"
                        " for building user interfaces or UI components. It is maintained by Facebook and a community "
                        "of individual developers and companies. React can be used as a base in the development"
@@ -141,7 +147,7 @@ def make_technologies_and_categories():
         "featured": True,
         "name": 'Docker',
         "image_url": 'https://www.pinclipart.com/picdir/middle/116-1161113_docker-logo-png-clipart.png',
-        "category": categories['devops'].pk,
+        "category": ','.join([str(cid) for cid in [categories['devops'].pk, ]]),
         "description": "Docker is a set of platform as a service (PaaS) products that use OS-level virtualization to deliver"
                        " software in packages called containers. Containers are isolated from one another and bundle their"
                        " own software, libraries and configuration files; they can communicate with each other through well-defined"

@@ -139,7 +139,9 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
             return t.value
         });
         cpd.license = data.license_option.value;
-        cpd.category = data.category.value;
+        cpd.category = data.category.map(t => {
+            return t.value
+        });
         if (cpd.image_file && !cpd.image_file.url && !cpd.image_file.file) {
             delete cpd.image_file;
             delete cpd.image_url;
@@ -261,16 +263,16 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                       smallText="What are the limitations of this tech?"
                       error={errors.limitations}
             />
-            <SelectReactCreatable name="select-category" label="Choose Category"
-                                  smallText="Can choose or add a new one if necessary."
-                                  onChange={selectedOptions => setFormData({...formData, category: selectedOptions})}
-                                  options={categories}
-                                  value={formData.category}
-                                  props={{isMulti: false, required: true}}
-                                  error={errors.category}
-                                  isDisabled={Boolean(waiting)}
+            <SelectReact name="select-category" label="Choose Category"
+                         smallText="Can have one or multiple categories"
+                         onChange={selectedOptions => setFormData({...formData, category: selectedOptions})}
+                         options={categories}
+                         value={formData.category}
+                         props={{isMulti: true}}
+                         error={errors.category}
+                         isDisabled={Boolean(waiting)}
             />
-            <SelectReact name="select-tags" label="Ecosystem"
+            <SelectReact name="select-ecosystem" label="Ecosystem"
                          smallText="The other technologies it's dependant on."
                          onChange={selectedOptions => setFormData({...formData, ecosystem: selectedOptions})}
                          options={technologies}

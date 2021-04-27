@@ -18,9 +18,12 @@
             </span>
                 </a>
             {% endfor %}
+            {% for cat in result.category.get_ancestors %}
+                <a href="{% url 'search_page' %}?tab=resources&category={{ cat }}">{{ cat }}</a>
+            {% endfor %}
             <a href="{% url 'search_page' %}?tab=resources&category={{ result.category }}">{{ result.category }}</a>
             <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
-               itemprop="educationalLevel">{{ result.experience_level_label }}</a>
+               itemprop="educationalLevel">Experience Level {{ result.experience_level_label }}</a>
             <a href="{% url 'search_page' %}?tab=resources&price={{ result.price_label }}">{{ result.price_label }}</a>
             <a href="{% url 'search_page' %}?tab=resources&media={{ result.media_label }}"
                itemProp="learningResourceType">{{ result.media_label }}</a>
@@ -55,4 +58,5 @@
 
 
 <a href="{{ result.url }}" target="_blank" class="btn resource-url">Go To Resource</a>
-<span class="published">Added here on {{ result.created_at }} By <a href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
+<span class="published">Added here on {{ result.created_at }} By <a
+        href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
