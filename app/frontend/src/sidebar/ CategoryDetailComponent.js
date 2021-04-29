@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useCallback, useReducer, Fragment} from "react";
-import {makeId} from "../../../src/components/utils";
+import React, {useEffect, useReducer} from "react";
 import TechnologyMinimalListing from "../../../technology/src/TechnologyMinimalListing";
 import Alert from "../../../src/components/Alert";
+import {SkeletonLoadingSidebarDetail} from "../../../src/components/skeleton/SkeletonLoadingSidebarDetail";
 
 const URL_TECHNOLOGIES = '/categories/api/';
 const URL_CREATE_TECHNOLOGY = '/technologies/create/';
@@ -94,8 +94,18 @@ export default function CategoryDetailComponent({category}) {
     }, [category])
 
     useEffect(() => {
-        console.log('fetch resources', category.name)
+        // console.log('fetch resources', category.name)
+        //todo
     }, [category])
+
+    const technologiesList = () => {
+        if (state.waitingTechnologies) return (SkeletonLoadingSidebarDetail);
+        if (state.errorsTechnologies) return state.errorsTechnologies.map(err => (
+            <Alert text={err} type="danger" hideable={false} stick={true}/>
+        ));
+        if (state.technologies.length === 0) return (NoTechs);
+        return state.technologies.map(t => <TechnologyMinimalListing key={'tech-' + t.pk} data={t}/>);
+    }
 
     return (
         <div className="category-detail">
@@ -103,14 +113,7 @@ export default function CategoryDetailComponent({category}) {
             <div className="description">{category.description}</div>
             <h5>Associated Technologies:</h5>
             <div className="technologies-container">
-                {state.waitingTechnologies ? 'waiting' : ''}
-                {state.errorsTechnologies ? state.errorsTechnologies.map(err => (
-                    <Alert text={err} type="danger" hideable={false} stick={true}/>
-                )) : ''}
-                {state.technologies.length > 0
-                    ? state.technologies.map(t => <TechnologyMinimalListing key={'tech-' + t.pk} data={t}/>)
-                    : NoTechs
-                }
+                {technologiesList()}
             </div>
             <div className="contribute-container">
                 <a className="btn contribute" href={URL_CREATE_TECHNOLOGY}>Add New Technology</a>

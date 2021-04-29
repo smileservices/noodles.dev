@@ -22,7 +22,7 @@ export function SkeletonChildrenFactory(name, count) {
             // count this time is string
             return [<SkeletonHeader key={makeId(4)} size={count}/>,];
         case 'sidebar-tech':
-            Element = () => (<span/>);
+            Element = () => (<div className="result-minimal skeleton"/>);
             break;
         default:
             alert('Cannot find Skeleton Element of name ' + name);

@@ -27,6 +27,7 @@ class CategoryViewset(ModelViewSet):
         techs = []
         for cat in instance_descendants.select_related():
             techs += [{
+                'pk': tech.pk,
                 'category': cat.name,
                 'name': tech.name,
                 'url': tech.absolute_url,
