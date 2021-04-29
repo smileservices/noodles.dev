@@ -44,7 +44,6 @@ module.exports = {
         //sidebar
         '/static/frontend/sidebar-app': './app/frontend/src/sidebar/SidebarApp.js',
 
-
         //related section
         '/static/related-app': './app/frontend/src/RelatedApp.js',
 
