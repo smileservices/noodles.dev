@@ -42,7 +42,7 @@ module.exports = {
         '/static/study_resource/edit': './app/study_resource/src/EditApp.js',
 
         //sidebar
-        '/static/frontend/sidebar-app': './app/frontend/src/SidebarApp.js',
+        '/static/frontend/sidebar-app': './app/frontend/src/sidebar/SidebarApp.js',
 
 
         //related section

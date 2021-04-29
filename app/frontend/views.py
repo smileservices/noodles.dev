@@ -7,6 +7,8 @@ from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from elasticsearch import exceptions as es_ex
 from collections import defaultdict
 from django.views.decorators.cache import cache_page
+from category.models import Category
+import time
 
 
 def homepage(request):
@@ -92,30 +94,72 @@ def homepage_technologies(request):
 
 
 @cache_page(60 * 5)
-def sidebar(request):
-    all = Technology.objects.select_related().all()
-    featured = defaultdict(list)
-    other = defaultdict(list)
-    techlisting = lambda t: {
-        'url': t.absolute_url,
-        'logo': t.logo,
-        'name': t.name
-    }
-    for tech in all:
-        if tech.featured:
-            featured[tech.category.name].append(techlisting(tech))
-        else:
-            other[tech.category.name].append(techlisting(tech))
-    return JsonResponse({'featured': featured, 'other': other})
+def sidebar_categories(request):
+    '''
+    Returns a dict with root categories
+    in the frontend:
+        - categories will expand when clicked and reveal the technologies and how many resources each have
+    '''
+    start_time = time.time()
+    roots = Category.objects.filter(level=0).all()
+    response_data = {'categories': []}
+
+    def __get_descendants(node):
+        return {
+            'pk': node.pk,
+            'slug': node.slug,
+            'name': node.name,
+            'description': node.description,
+            'descendants_count': node.get_descendant_count(),
+            'children': [__get_descendants(d) for d in node.get_children()] if node.get_descendant_count() > 0 else [],
+        }
+
+    def __get_short_family(parent):
+        short_family = {
+            'pk': parent.pk,
+            'slug': parent.slug,
+            'name': parent.name,
+            'description': parent.description,
+            'descendants_count': parent.get_descendant_count(),
+            'children': []
+        }
+        for node in parent.get_children():
+            short_family['children'].append({
+                'pk': node.pk,
+                'slug': node.slug,
+                'name': node.name,
+                'description': parent.description,
+                'descendants_count': node.get_descendant_count(),
+            })
+        return short_family
+
+    for root in roots:
+        response_data['categories'].append(__get_descendants(root))
+    response_data['time'] = f'took {time.time() - start_time} seconds'
+    return JsonResponse(response_data)
+    # all = Technology.objects.select_related().all()
+    # featured = defaultdict(list)
+    # other = defaultdict(list)
+    # techlisting = lambda t: {
+    #     'url': t.absolute_url,
+    #     'logo': t.logo,
+    #     'name': t.name
+    # }
+    # for tech in all:
+    #     if tech.featured:
+    #         featured[tech.category.name].append(techlisting(tech))
+    #     else:
+    #         other[tech.category.name].append(techlisting(tech))
+    # return JsonResponse({'featured': featured, 'other': other})
 
 
-@cache_page(60*60*24)
+@cache_page(60 * 60 * 24)
 def error_404(request, exception):
     from django.views.defaults import page_not_found
     return page_not_found(request, exception, template_name='errors/404.html')
 
 
-@cache_page(60*60*24)
+@cache_page(60 * 60 * 24)
 def error_500(request):
     from django.views.defaults import server_error
     return server_error(request, template_name='errors/500.html')

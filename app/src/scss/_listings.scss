@@ -48,3 +48,11 @@
 .result:hover {
   color: var(--color-text-white);
 }
+
+.result-minimal {
+  padding: $padding-unit-md;
+  display: flex;
+  flex-direction: row;
+  gap: $padding-unit-big;
+  border-radius: $border-radius;
+}

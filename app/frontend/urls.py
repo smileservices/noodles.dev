@@ -4,7 +4,7 @@ from frontend import views
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
-    path('sidebar/', views.sidebar, name='sidebar-content'),
+    path('sidebar/', views.sidebar_categories, name='sidebar-content'),
     path('api/aggregations/study-resources', views.homepage_resources, name='homepage_resources'),
     path('api/aggregations/collections', views.homepage_collections, name='homepage_collections'),
     path('api/aggregations/technologies', views.homepage_technologies, name='homepage_technologies'),

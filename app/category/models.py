@@ -1,4 +1,5 @@
 from django.db import models
+from core.abstract_models import SluggableModelMixin
 from mptt.models import MPTTModel, TreeForeignKey
 
 class CategoryModelManager(models.Manager):
@@ -39,7 +40,7 @@ class CategoryModelManager(models.Manager):
         return validated_categories
 
 
-class Category(MPTTModel):
+class Category(MPTTModel, SluggableModelMixin):
     name = models.CharField(max_length=128, db_index=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     description = models.TextField(max_length=1024, blank=True, null=True)
