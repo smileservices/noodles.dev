@@ -114,43 +114,10 @@ def sidebar_categories(request):
             'children': [__get_descendants(d) for d in node.get_children()] if node.get_descendant_count() > 0 else [],
         }
 
-    def __get_short_family(parent):
-        short_family = {
-            'pk': parent.pk,
-            'slug': parent.slug,
-            'name': parent.name,
-            'description': parent.description,
-            'descendants_count': parent.get_descendant_count(),
-            'children': []
-        }
-        for node in parent.get_children():
-            short_family['children'].append({
-                'pk': node.pk,
-                'slug': node.slug,
-                'name': node.name,
-                'description': parent.description,
-                'descendants_count': node.get_descendant_count(),
-            })
-        return short_family
-
     for root in roots:
         response_data['categories'].append(__get_descendants(root))
     response_data['time'] = f'took {time.time() - start_time} seconds'
     return JsonResponse(response_data)
-    # all = Technology.objects.select_related().all()
-    # featured = defaultdict(list)
-    # other = defaultdict(list)
-    # techlisting = lambda t: {
-    #     'url': t.absolute_url,
-    #     'logo': t.logo,
-    #     'name': t.name
-    # }
-    # for tech in all:
-    #     if tech.featured:
-    #         featured[tech.category.name].append(techlisting(tech))
-    #     else:
-    #         other[tech.category.name].append(techlisting(tech))
-    # return JsonResponse({'featured': featured, 'other': other})
 
 
 @cache_page(60 * 60 * 24)
