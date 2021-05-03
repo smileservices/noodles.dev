@@ -25,8 +25,7 @@ aside.sidebar {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: var(--color-background-2);
-  width: $sidebar-width;
+  //width: $sidebar-width;
   font-size: $fontsize-md;
   font-weight: 400;
   height: 100vh;
@@ -35,9 +34,13 @@ aside.sidebar {
   //transform-origin: top left;
 
   .top-section {
+    position: absolute;
+    top: 0;
+    left: 0;
     display: flex;
     flex-direction: row;
     line-height: $fontsize-big*2;
+    width: $sidebar-width;
     font-size: $fontsize-big;
     font-weight: 700;
     background-color: var(--color-background-1);
@@ -45,13 +48,13 @@ aside.sidebar {
     box-shadow: inset 0px -1px 0px #2F2F2F;
 
     a {
-      padding: $nav-padding;
+      //padding: $padding-unit*2;
       text-decoration: none;
       color: var(--color-text-white);
     }
 
     a.collapse-button {
-      //padding: $nav-padding;
+      padding: $padding-unit*2 0;
     }
 
     a > svg {
@@ -72,142 +75,160 @@ aside.sidebar {
     }
   }
 
-  .links {
-    margin-top: $padding-unit-big*2;
-    padding-bottom: $padding-unit-sm;
-    overflow-y: auto;
-    height: 100vh;
-    font-size: $fontsize-sm;
-
-    .category {
-      position: relative;
-    }
-
-    a {
-      padding: $padding-unit $padding-unit-sm;
-      display: flex;
-      gap: $padding-unit-big/2;
-      flex-direction: row;
-      align-items: center;
-      justify-content: start;
-      flex-wrap: nowrap;
-      text-decoration: none;
-      color: var(--color-text-grey);
-
-      img {
-        width: $fontsize-big;
-        height: $fontsize-big;
-      }
-
-      span.no-logo {
-        display: inline-block;
-        width: $fontsize-big;
-        height: $fontsize-big;
-        padding-right: $padding-unit-sm;
-      }
-    }
-
-    a:hover {
-      background-color: var(--color-sidebar-hover-bg);
-      color: var(--color-sidebar-hover-txt);
-    }
-
-    .other {
-      margin-top: $padding-unit-big*2;
-      padding: $padding-unit $padding-unit-sm;
-
-      svg {
-        width: $fontsize-big;
-        height: $fontsize-big;
-        padding-right: $padding-unit-sm;
-      }
-    }
-  }
-
-  .dropdown {
-    .dropdown-menu {
-      position: static;
-
-      a {
-        padding-left: 2rem;
-      }
-    }
-
-    .dropdown-button {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
-  }
-
-  .categories {
-    margin-top: $padding-unit-big*2;
-    padding-bottom: $padding-unit-sm;
-    overflow-y: auto;
-    height: 100vh;
-    font-size: $fontsize-sm;
-
-    .tree {
-
-      li.parent {
-        color: var(--color-text-grey-2);
-        padding-left: $padding-unit-sm;
-      }
-
-      li.parent.expanded {
-        color: var(--color-blue);
-        font-weight: 700;
-      }
-
-      li.children {
-        margin-left: $padding-unit-sm;
-        border-left: 1px dashed var(--color-background-4);
-      }
-
-      li {
-        padding: $padding-unit-sm/2;
-
-        span.expander {
-          color: var(--color-text-white);
-          margin-right: $padding-unit;
-          padding: 0 $padding-unit-sm/2;
-          background-color: var(--color-background-4);
-        }
-        span.expander:hover {
-          background-color: var(--color-blue-dark);
-        }
-      }
-
-      li.parent:hover {
-        cursor: pointer;
-        background-color: var(--color-background-1);
-        color: var(--color-blue-dark);
-      }
-    }
-  }
-}
-
-aside.sidebar.expanded {
-  width: 50vw;
+  //.links {
+  //  margin-top: $padding-unit-big*2;
+  //  padding-bottom: $padding-unit-sm;
+  //  overflow-y: auto;
+  //  height: 100vh;
+  //  font-size: $fontsize-sm;
+  //
+  //  .category {
+  //    position: relative;
+  //  }
+  //
+  //  a {
+  //    padding: $padding-unit $padding-unit-sm;
+  //    display: flex;
+  //    gap: $padding-unit-big/2;
+  //    flex-direction: row;
+  //    align-items: center;
+  //    justify-content: start;
+  //    flex-wrap: nowrap;
+  //    text-decoration: none;
+  //    color: var(--color-text-grey);
+  //
+  //    img {
+  //      width: $fontsize-big;
+  //      height: $fontsize-big;
+  //    }
+  //
+  //    span.no-logo {
+  //      display: inline-block;
+  //      width: $fontsize-big;
+  //      height: $fontsize-big;
+  //      padding-right: $padding-unit-sm;
+  //    }
+  //  }
+  //
+  //  a:hover {
+  //    background-color: var(--color-sidebar-hover-bg);
+  //    color: var(--color-sidebar-hover-txt);
+  //  }
+  //
+  //  .other {
+  //    margin-top: $padding-unit-big*2;
+  //    padding: $padding-unit $padding-unit-sm;
+  //
+  //    svg {
+  //      width: $fontsize-big;
+  //      height: $fontsize-big;
+  //      padding-right: $padding-unit-sm;
+  //    }
+  //  }
+  //}
+  //
+  //.dropdown {
+  //  .dropdown-menu {
+  //    position: static;
+  //
+  //    a {
+  //      padding-left: 2rem;
+  //    }
+  //  }
+  //
+  //  .dropdown-button {
+  //    display: flex;
+  //    flex-direction: row;
+  //    justify-content: space-between;
+  //  }
+  //}
 
   #sidebar-app {
-    display: flex;
+    position: absolute;
+    top: $nav-height;
+    background-color: var(--color-background-2);
 
-    .category-detail {
+    .categories {
       margin-top: $padding-unit-big*2;
       padding-bottom: $padding-unit-sm;
       overflow-y: auto;
       height: 100vh;
-      width: 70%;
+      font-size: $fontsize-sm;
+      min-width: $sidebar-width;
+
+      .tree {
+
+        li.parent {
+          color: var(--color-text-grey-2);
+          padding-left: $padding-unit-sm;
+        }
+
+        li.parent.expanded {
+          color: var(--color-blue);
+          font-weight: 700;
+        }
+
+        li.children {
+          margin-left: $padding-unit-sm;
+          border-left: 1px dashed var(--color-background-4);
+        }
+
+        li {
+          padding: $padding-unit-sm/2;
+
+          span.expander {
+            color: var(--color-text-white);
+            margin-right: $padding-unit;
+            padding: 0 $padding-unit-sm/2;
+            background-color: var(--color-background-4);
+          }
+
+          span.expander:hover {
+            background-color: var(--color-blue-dark);
+          }
+        }
+
+        li.parent:hover {
+          cursor: pointer;
+          background-color: var(--color-background-1);
+          color: var(--color-blue-dark);
+        }
+      }
+    }
+  }
+
+}
+
+body.sidebar-visible {
+  overflow-y: hidden;
+
+  aside#sidebar {
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+aside.sidebar.expanded {
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.8);
+
+  #sidebar-app {
+    display: flex;
+    min-width: $fontsize-big*40;
+
+    .category-detail {
+      padding: $padding-unit-big;
+      overflow: auto;
+      height: 100vh;
+      width: 40vw;
       font-size: $fontsize-md;
-      padding-left: $padding-unit-big*2;
-      margin-left: $padding-unit-big*2;
       border-left: 1px dashed var(--color-background-4);
       display: flex;
       flex-direction: column;
       gap: $padding-unit-big;
+      background-color: var(--color-sidebar-bg-2);
 
-      h4,h5 {
+      h4, h5 {
         color: var(--color-text-grey-2);
         text-align: center;
       }
@@ -221,22 +242,26 @@ aside.sidebar.expanded {
         .technology {
           background-color: var(--color-background-1);
           max-height: $fontsize-big*2;
+
           .text {
             .name {
               color: var(--color-text-white);
             }
+
             .category {
               color: var(--color-text-grey-2);
               font-size: $fontsize-sm;
             }
           }
         }
+
         .technology:hover {
           background-color: var(--color-background);
         }
-        .contribute-container {
-          text-align: right;
-        }
+      }
+
+      .contribute-container {
+        text-align: center;
       }
     }
 
@@ -245,11 +270,10 @@ aside.sidebar.expanded {
       padding: $padding-unit-md;
       background-color: var(--color-blue-dark);
       position: absolute;
-      top: $nav-height;
-      left: 50vw;
+      right: 0;
       cursor: pointer;
-      margin-top: $padding-unit-big;
     }
+
     .minimize:hover {
       background-color: var(--color-blue);
     }

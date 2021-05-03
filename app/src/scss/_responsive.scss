@@ -11,6 +11,9 @@
     grid-template-columns: 1fr 1fr;
     grid-template-areas: 'collections related';
   }
+  .collapse-button {
+    display: none;
+  }
 }
 
 @media only screen and (min-width: 900px) {
@@ -53,6 +56,12 @@
 
     aside.sidebar {
       display: none;
+    }
+  }
+
+  body.sidebar-visible {
+    aside.sidebar {
+      display: block;
     }
   }
 }
@@ -178,6 +187,9 @@
     }
   }
 
+  aside.sidebar.expanded {
+    min-width: 100vw;
+  }
 }
 
 @media only screen and (max-width: 473px) {
@@ -185,6 +197,7 @@
     .right-side .login-button {
       display: none;
     }
+
     .dropdown .dropdown-menu {
       top: $nav-height+$padding-unit*2;
       left: 0;
@@ -197,6 +210,7 @@
     .tab-headers {
       gap: $padding-unit-md;
     }
+
     .tab-headers > * {
       font-size: $fontsize-md;
     }

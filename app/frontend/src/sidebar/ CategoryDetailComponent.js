@@ -116,7 +116,7 @@ export default function CategoryDetailComponent({category}) {
                 {technologiesList()}
             </div>
             <div className="contribute-container">
-                <a className="btn contribute" href={URL_CREATE_TECHNOLOGY}>Add New Technology</a>
+                <a className="contribute" href={URL_CREATE_TECHNOLOGY}>Add New Technology</a>
             </div>
         </div>
     )
