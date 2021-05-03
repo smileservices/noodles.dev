@@ -62,6 +62,10 @@
   body.sidebar-visible {
     aside.sidebar {
       display: block;
+
+      #sidebar-app .category-detail {
+        width: 60vw;
+      }
     }
   }
 }
@@ -186,9 +190,15 @@
       display: flex;
     }
   }
+  aside.sidebar #sidebar-app {
+    width: $sidebar-width;
+  }
+  aside.sidebar.expanded #sidebar-app {
+    width: 100vw;
 
-  aside.sidebar.expanded {
-    min-width: 100vw;
+    .category-detail {
+      width: 50%
+    }
   }
 }
 
@@ -229,5 +239,12 @@
   }
   .filters .filter-select {
     width: 100%;
+  }
+  aside.sidebar #sidebar-app {
+    width: 100vw;
+
+    .category-detail {
+      width: 50%
+    }
   }
 }
