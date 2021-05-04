@@ -5,7 +5,8 @@
 {% block meta_tags %}
     <title>Noodles.com - add resource</title>
     <meta name="description"
-          content="Add a study resource to the curated collection"/>
+          content="Add a study resource to the curated collection. You will be rewarded {{ data.reward }} points.
+                    Resources can be reviewed by registered users and they can also add edit suggestions to improve the listing."/>
 {% endblock %}
 
 {% block content %}
@@ -19,7 +20,11 @@
     </script>
     <div class="create-page">
         <section class="header">
-            <h1>Create new resource</h1>
+            <h1>Add Resource</h1>
+            <div class="explanation">
+                You will be rewarded <span class="blue">{{ data.reward }} points</span>. Resources can be reviewed by registered users
+                and they can also add edit suggestions to improve the listing.
+            </div>
         </section>
         <section id="create-app">
             <div class="waiting-container">

@@ -10,10 +10,10 @@
     font-weight: 400;
     background-color: var(--color-background-2);
     color: var(--color-text-grey);
-    border-radius: $radius-medium;
+    border-radius: $radius-small;
 
     > * {
-        padding: $padding-unit-sm;
+        padding: $padding-unit-sm $padding-unit-big;
     }
 }
 

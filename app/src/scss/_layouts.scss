@@ -57,22 +57,22 @@ main {
 
 
 .full-page-sm {
-  max-width: 450px;
+  max-width: $width-sm;
   margin: auto;
 }
 
 .full-page-md {
-  max-width: 650px;
+  max-width: $width-md;
   margin: auto;
 }
 
 .full-page-lg {
-  max-width: 850px;
+  max-width: $width-lg;
   margin: auto;
 }
 
 .full-page-xl {
-  max-width: 1050px;
+  max-width: $width-xl;
   margin: auto;
 }
 

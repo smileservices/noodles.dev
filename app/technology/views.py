@@ -18,7 +18,7 @@ from . import filters
 from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyListing
 from .models import Technology
 from django.views.decorators.cache import cache_page
-
+from app.settings import rewards
 
 def detail(request, id, slug):
     queryset = Technology.objects
@@ -73,6 +73,9 @@ def list_all(request):
 @login_required
 def create(request):
     data = {
+        'data': {
+            'reward': rewards.RESOURCE_CREATE
+        },
         'urls': {
             'tech_api': reverse_lazy('techs-viewset-list'),
             'tech_options_api': reverse_lazy('techs-options-list'),

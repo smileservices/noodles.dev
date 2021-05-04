@@ -18,7 +18,7 @@ from study_resource.models import StudyResource
 from study_resource import serializers
 
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
-
+from app.settings import rewards
 
 def list_all(request):
     queryset = StudyResource.objects.all()
@@ -89,6 +89,9 @@ def edit(request, id):
 @login_required
 def create(request):
     data = {
+        'data': {
+            'reward': rewards.RESOURCE_CREATE
+        },
         'urls': {
             'study_resource_api': reverse_lazy('study-resource-viewset-list'),
             'tag_options_api': reverse_lazy('tags-options-list'),

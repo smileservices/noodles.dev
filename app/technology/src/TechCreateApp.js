@@ -39,7 +39,7 @@ function TechCreateApp() {
     );
 
     return (
-        <div className="form-container full-page-sm">
+        <div className="form-container full-page-md">
             <CreateableFormComponent
                 endpoint={TECH_API}
                 FormViewComponent={TechForm}

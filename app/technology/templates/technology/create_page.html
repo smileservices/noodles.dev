@@ -5,7 +5,8 @@
 {% block meta_tags %}
     <title>Noodles.com - add technology</title>
     <meta name="description"
-          content="Add a technology"/>
+          content="Add a technology to the curated list! Adding technologies will reward the user with {{ data.reward }} points! Technologies can be voted by registered users
+                and they can also add edit suggestions to improve the listing. Each up vote will increase your score!"/>
 {% endblock %}
 
 {% block content %}
@@ -17,12 +18,16 @@
     </script>
     <div class="create-page">
         <section class="header">
-            <h1>Add new technology</h1>
+            <h1>Add Technology</h1>
+            <div class="explanation">
+                You will be rewarded <span class="blue">{{ data.reward }} points</span>. Technologies can be voted by registered users
+                and they can also add edit suggestions to improve the listing. Each up vote will increase your score!
+            </div>
         </section>
         <section id="create-app">
             <div class="waiting-container">
                 <span class="icon-hour-glass spin-stop"> </span>
-                <span class="text">Loading the Edit Suggestions App. It's a one time load.</span>
+                <span class="text">Loading the Create Technologies App. It's a one time load.</span>
             </div>
         </section>
     </div>

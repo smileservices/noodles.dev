@@ -1,0 +1,17 @@
+.create-page {
+  section.header {
+      margin-top: $padding-unit-big*2;
+      margin-right: auto;
+      margin-left: auto;
+      max-width: $width-md;
+      h1 {
+        margin-bottom: $padding-unit;
+      }
+    .explanation {
+      color: var(--color-text-grey);
+    }
+  }
+  .form-multistep-container .form-container {
+    margin-top: $padding-unit-big;
+  }
+}
