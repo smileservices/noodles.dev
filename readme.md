@@ -9,21 +9,29 @@ An wikipedia of software development with community created content
 
 ## Definitions
 
-Problems (p):
----------
-a problem that can be solved using software technology
-ex: Serving an app to a large number of requests
-
-Solutions (s):
-----------
-a software solution brought by a technology
-ex: A load balancer that can redirect traffic to multiple servers running the app
-
 Technologies (t):
 --------------
 a specific implementation of a solution. has version number because some features may only be available for certain version
 ex: Nginx
 have root technology + version
+
+Categories (cats)
+-----------
+A technology can belong to one or more categories. A study resource can only be in 1 category.
+
+Concepts (concept)
+----------------
+A concept is a like a tag but with description Technologies, Categories have o2m concepts.
+Concepts have `learn_level` same to learning resource `difficulty_level` but different.
+Learn Levels: `junior`, `middle`, `senior`
+
+## Category concepts
+- theoretical
+- can have parent from ancestor category
+
+## Technology concepts
+- practical on current implementation
+- can have parent from ancestor category
 
 Learning Resources (lr):
 -------------------
