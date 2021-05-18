@@ -4,6 +4,7 @@ from technology.models import Technology
 from users.models import CustomUser
 from random import choice, choices
 from django.http import HttpRequest
+from concepts.models import CategoryConcept, TechnologyConcept
 
 from faker import Faker
 
@@ -19,8 +20,8 @@ def make_technologies_and_categories():
     web_dev = Category.objects.create(name='Web Dev', description=f.text(), parent=None)
     lang = Category.objects.create(name='Programming Languages', description=f.text(), parent=None)
     dbs = Category.objects.create(name='Databases', description=f.text(), parent=None)
-    Category.objects.create(name='Relational', description=f.text(), parent=dbs)
-    Category.objects.create(name='Non-Relational', description=f.text(), parent=dbs)
+    relational = Category.objects.create(name='Relational', description=f.text(), parent=dbs)
+    nonrelational = Category.objects.create(name='Non-Relational', description=f.text(), parent=dbs)
 
     categories['programming_language'] = lang
     categories['frontend'] = Category.objects.create(name='Frontend', description=f.text(), parent=web_dev)
@@ -30,6 +31,39 @@ def make_technologies_and_categories():
     categories['databases'] = dbs
     categories['algorithms'] = Category.objects.create(name='Algorithms', description=f.text(), parent=lang)
     categories['devops'] = Category.objects.create(name='Dev Ops', description=f.text(), parent=web_dev)
+
+    # CREATE CATEGORY CONCEPTS
+    CONCEPT_DB_POINTERS = CategoryConcept.objects.create(
+        name='Pointers',
+        description=f.text(),
+        category=dbs,
+        experience_level=CategoryConcept.ExperienceLevel.MIDDLE
+    )
+    CONCEPT_DB_INDICES = CategoryConcept.objects.create(
+        name='Indices',
+        description=f.text(),
+        category=relational,
+        experience_level=CategoryConcept.ExperienceLevel.JUNIOR
+    )
+    CONCEPT_LANG_OOP = CategoryConcept.objects.create(
+        name='OOP',
+        description=f.text(),
+        category=lang,
+        experience_level=CategoryConcept.ExperienceLevel.JUNIOR
+    )
+    CONCEPT_LANG_FACTORY = CategoryConcept.objects.create(
+        name='Factory',
+        description=f.text(),
+        parent=CONCEPT_LANG_OOP,
+        category=lang,
+        experience_level=CategoryConcept.ExperienceLevel.MIDDLE
+    )
+    CONCEPT_LANG_FFUNC = CategoryConcept.objects.create(
+        name='First Class Functions',
+        description=f.text(),
+        category=lang,
+        experience_level=CategoryConcept.ExperienceLevel.JUNIOR
+    )
 
     PUBLIC_DOMAIN = (0, 'Public Domain')
     PERMISSIVE_LICENSE = (1, 'Permissive License')
@@ -68,6 +102,7 @@ def make_technologies_and_categories():
         "featured": True,
         "ecosystem": False,
     }
+
     python = {
         "featured": True,
         "name": 'Python',
@@ -189,4 +224,23 @@ def make_technologies_and_categories():
         tech.save()
     for tech in LINKED_TECH:
         created_techs[tech[0]['name']].ecosystem.add(*[created_techs[t['name']] for t in tech[1]])
+    CONCEPT_TECH_JS_CLOSURES = TechnologyConcept.objects.create(
+        name='Closures',
+        description=f.text(),
+        technology=created_techs['Javascript'],
+        parent=CONCEPT_LANG_FFUNC,
+        experience_level=CategoryConcept.ExperienceLevel.JUNIOR
+    )
+    CONCEPT_TECH_JS_PROMISES = TechnologyConcept.objects.create(
+        name='Promises',
+        description=f.text(),
+        technology=created_techs['Javascript'],
+        experience_level=CategoryConcept.ExperienceLevel.JUNIOR
+    )
+    CONCEPT_TECH_JS_PROMISES = TechnologyConcept.objects.create(
+        name='Higher-Order Functions',
+        description=f.text(),
+        technology=created_techs['Javascript'],
+        experience_level=CategoryConcept.ExperienceLevel.JUNIOR
+    )
     return categories, created_techs

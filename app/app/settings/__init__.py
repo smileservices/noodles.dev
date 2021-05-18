@@ -68,12 +68,12 @@ INSTALLED_APPS = [
     'dashboard',
     'frontend',
     'search',
-    #
+    # models
     'users',
-    # 'problem_solution',
     'tag',
     'technology',
     'category',
+    'concepts',
     'study_resource',
     'study_collection',
 ]

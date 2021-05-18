@@ -68,14 +68,16 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     license = models.IntegerField(default=0, choices=LicenseType.choices, db_index=True)
     url = models.TextField(max_length=1024)
     owner = models.CharField(max_length=128, db_index=True)
+
+    image_file = VersatileImageField(upload_to='technologies', blank=True, null=True)
+    featured = models.BooleanField(default=False)
     pros = models.TextField()
     cons = models.TextField()
     limitations = models.TextField()
-    image_file = VersatileImageField(upload_to='technologies', blank=True, null=True)
-    featured = models.BooleanField(default=False)
 
     category = models.ManyToManyField(Category, related_name='related_technologies')
     ecosystem = models.ManyToManyField('Technology', related_name='related_technologies')
+    category_concepts = models.ManyToManyField('concepts.CategoryConcept', related_name='related_technologies')
 
     edit_suggestions = EditSuggestion(
         excluded_fields=('author', 'thumbs_up_array', 'thumbs_down_array'),

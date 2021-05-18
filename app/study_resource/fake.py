@@ -59,6 +59,7 @@ def new_study_resource_review(study_resource, author):
     )
     return review
 
+
 def study_resource_edit_suggestions(resource: models.StudyResource, author=None):
     users = CustomUser.objects.all()
     data = {
