@@ -82,7 +82,7 @@ class TestConcepts(APITestCase):
             }
         )
         self.assertEqual(201, res_sub.status_code)
-        self.assertEqual(res_root.data['pk'], res_sub.data['parent'])
+        self.assertEqual(res_root.data['pk'], res_sub.data['parent']['pk'])
         self.assertEqual('category > sub', res_sub.data['name_tree'])
 
     def test_create_technology_concept(self):
