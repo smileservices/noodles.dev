@@ -15,7 +15,7 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
     path('tutorials/', include('study_resource.urls')),
     path('collections/', include('study_collection.urls')),
-    # path('problems-solutions/', include('problem_solution.urls')),
+    path('concepts/', include('concepts.urls')),
     path('categories/', include('category.urls')),
     path('tags/', include('tag.urls')),
     path('technologies/', include('technology.urls')),

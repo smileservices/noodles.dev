@@ -178,3 +178,11 @@ class TechnologyListing(serializers.ModelSerializer):
         model = Technology
         fields = ['pk', 'name', 'license', 'absolute_url', 'category', 'ecosystem',
                   'thumbs_up', 'thumbs_down']
+
+
+class TechnologyMinimal(serializers.ModelSerializer):
+    queryset = Technology.objects.all()
+
+    class Meta:
+        model = Technology
+        fields = ['pk', 'name', 'absolute_url','thumbs_up', 'thumbs_down']

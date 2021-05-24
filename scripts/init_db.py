@@ -21,4 +21,5 @@ with psycopg2.connect(**config) as conn:
     with conn.cursor() as cur:
         conn.set_isolation_level(0)
         cur.execute(f"CREATE USER {owner} WITH PASSWORD '{pswd}'")
+        cur.execute(f"ALTER USER {owner} CREATEDB")
         cur.execute(f"CREATE DATABASE {database} OWNER {owner}")

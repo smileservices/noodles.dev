@@ -55,9 +55,6 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
     edit_suggestion_author = UserSerializerMinimal(read_only=True)
     changes = serializers.SerializerMethodField()
 
-    # handling images for edit suggestions is a todo
-    # images = ImageSerializer(many=True, read_only=True)
-
     class Meta:
         model = StudyResource.edit_suggestions.model
         fields = ['pk',

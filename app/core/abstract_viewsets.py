@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from core.status import HTTP_209_EDIT_SUGGESTION_CREATED
 from django.core.mail import mail_admins
-
+from core.serializers import serializeValidationError
 
 class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset):
     m2m_fields = None
@@ -26,7 +26,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
             return response
         except ValidationError as e:
             return Response(status=502, data={
-                'error': e
+                'error': serializeValidationError(e)
             })
         except Exception as e:
             mail_admins(
