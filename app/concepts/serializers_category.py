@@ -12,7 +12,7 @@ class CategoryConceptSerializerListing(serializers.ModelSerializer):
 
     class Meta:
         model = CategoryConcept
-        fields = ['pk', 'name', 'absolute_url']
+        fields = ['pk', 'name', 'absolute_url', 'experience_level']
 
 
 class CategoryConceptSerializerOption(serializers.ModelSerializer):

@@ -1,14 +1,11 @@
 import time
 from django.http.response import JsonResponse
-from .models import Category
-from technology.models import Technology
-from study_resource.models import StudyResource
-from django.contrib.admin.utils import flatten
-
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from .serializers import CategorySerializer, CategorySerializerOption
+from concepts.serializers_category import CategoryConceptSerializerListing
 
 
 class CategoryViewset(ModelViewSet):
@@ -35,8 +32,18 @@ class CategoryViewset(ModelViewSet):
             } for tech in cat.related_technologies.all()]
         return JsonResponse({
             'technologies': techs,
-            'time': f'{time.time()-time_start} seconds'
+            'time': f'{time.time() - time_start} seconds'
         })
+
+    @action(methods=['GET'], detail=True)
+    def concepts(self, *args, **kwargs):
+        # getting the category concepts should return concepts of all children
+        instance = self.get_object()
+        instance_descendants = instance.get_descendants(include_self=True)
+        concepts = []
+        for subcat in instance_descendants:
+            concepts += [CategoryConceptSerializerListing(c).data for c in subcat.concepts.order_by('experience_level').all()]
+        return Response(concepts)
 
 
 class CategoryViewsetSelect(ModelViewSet):

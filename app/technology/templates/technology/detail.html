@@ -42,5 +42,14 @@
     </div>
 {% endif %}
 
+{% if result.concepts.count > 0 %}
+    <p>Concepts:</p>
+    <div class="tags">
+        {% for concept in result.concepts.all %}
+            <a class="concept" href="{% url 'concept-technology-detail' concept.pk concept.slug %}">{{ concept.name }}</a>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <span class="published">Added By <a
         href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>

@@ -115,6 +115,16 @@ small, .small {
     display: flex;
     align-content: center;
   }
+
+  > *.concept, > a.concept:visited {
+    background-color: var(--color-text-white);
+    color: var(--color-blue-dark);
+  }
+
+  > *.concept:hover {
+    background-color: var(--color-text-grey);
+    color: var(--color-blue-dark);
+  }
 }
 
 .blue-text {

@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from . import serializers_category
 from . import serializers_technology
 from . import models
@@ -10,6 +12,7 @@ class ConceptCategoryViewset(ResourceWithEditSuggestionVieset):
     serializer_class = serializers_category.CategoryConceptSerializer
     queryset = serializers_category.CategoryConceptSerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
+    filterset_fields = ['category']
 
 
 class ConceptTechnologyViewset(ResourceWithEditSuggestionVieset):

@@ -41,6 +41,7 @@ def detail(request, id, slug):
         resources = resources_paginator.page(resources_paginator.num_pages)
     data = {
         'result': detail,
+        'concepts': detail.concepts.values('name', 'pk', 'slug').order_by('experience_level').all(),
         'collections': collections,
         'collections_paginator': collections_paginator,
         'resources': resources,

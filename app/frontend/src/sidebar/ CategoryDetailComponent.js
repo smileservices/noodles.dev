@@ -2,6 +2,7 @@ import React, {useEffect, useReducer} from "react";
 import TechnologyMinimalListing from "../../../technology/src/TechnologyMinimalListing";
 import Alert from "../../../src/components/Alert";
 import {SkeletonLoadingSidebarDetail} from "../../../src/components/skeleton/SkeletonLoadingSidebarDetail";
+import CategoryConceptsComponent from "../../../concepts/src/CategoryConceptsComponent";
 
 const URL_TECHNOLOGIES = '/categories/api/';
 const URL_CREATE_TECHNOLOGY = '/technologies/create/';
@@ -111,6 +112,10 @@ export default function CategoryDetailComponent({category}) {
         <div className="category-detail">
             <h4 className="name">{category.name}</h4>
             <div className="description">{category.description}</div>
+            <h5>Concepts</h5>
+            <div className="concepts-container">
+                {<CategoryConceptsComponent category={category} />}
+            </div>
             <h5>Associated Technologies:</h5>
             <div className="technologies-container">
                 {technologiesList()}
