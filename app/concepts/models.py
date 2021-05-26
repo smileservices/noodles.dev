@@ -24,14 +24,6 @@ class AbstractConcept(MPTTModel, SluggableModelMixin, DateTimeModelMixin, Votabl
     experience_level = models.IntegerField(default=0, choices=ExperienceLevel.choices, db_index=True)
     author = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
     meta = JSONField(null=True, blank=True)
-    edit_suggestions = EditSuggestion(
-        excluded_fields=(
-            'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
-        change_status_condition=edit_suggestion_change_status_condition,
-        post_publish=post_publish_edit,
-        post_reject=post_reject_edit,
-        bases=(VotableMixin,)
-    )
 
     class Meta:
         abstract = True
@@ -52,6 +44,10 @@ class AbstractConcept(MPTTModel, SluggableModelMixin, DateTimeModelMixin, Votabl
     def absolute_url(self):
         return reverse_lazy('concept-category-detail', kwargs={'id': self.id, 'slug': self.slug})
 
+    @property
+    def experience_level_label(self):
+        return self.ExperienceLevel(self.experience_level).label
+
 
 class CategoryConcept(AbstractConcept):
     parent = TreeForeignKey(
@@ -64,6 +60,15 @@ class CategoryConcept(AbstractConcept):
         Category,
         on_delete=models.CASCADE,
         related_name='concepts'
+    )
+    edit_suggestions = EditSuggestion(
+        excluded_fields=(
+            'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+        special_foreign_fields=['parent',],
+        change_status_condition=edit_suggestion_change_status_condition,
+        post_publish=post_publish_edit,
+        post_reject=post_reject_edit,
+        bases=(VotableMixin,)
     )
 
     @property
@@ -84,4 +89,12 @@ class TechnologyConcept(AbstractConcept):
         Technology,
         on_delete=models.CASCADE,
         related_name='concepts'
+    )
+    edit_suggestions = EditSuggestion(
+        excluded_fields=(
+            'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+        change_status_condition=edit_suggestion_change_status_condition,
+        post_publish=post_publish_edit,
+        post_reject=post_reject_edit,
+        bases=(VotableMixin,)
     )

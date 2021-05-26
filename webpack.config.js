@@ -7,10 +7,10 @@ module.exports = {
         // just create the react-bundle once
 
         //for dev
-        // 'static/js/react-bundle': ['./app/static/js/react.development.js', './app/static/js/react-dom.development.js'],
+        'static/js/react-bundle': ['./app/static/js/react.development.js', './app/static/js/react-dom.development.js'],
 
         //for prod
-        'static/js/react-bundle': ['./app/static/js/react.min.js', './app/static/js/react-dom.min.js'],
+        // 'static/js/react-bundle': ['./app/static/js/react.min.js', './app/static/js/react-dom.min.js'],
 
         //homepage
         '/static/homepage-app': './app/frontend/src/HomepageApp.js',
@@ -28,6 +28,9 @@ module.exports = {
         //technology
         '/static/technology/technology-create': './app/technology/src/TechCreateApp.js',
         '/static/technology/my-technologies-app': './app/technology/src/MyTechnologiesApp.js',
+
+        //concept
+        '/static/concepts/category/edit': './app/concepts/src/category/EditApp.js',
 
         //vote app
         '/static/votes': './app/src/core/VotesApp.js',

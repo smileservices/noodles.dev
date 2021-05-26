@@ -1,0 +1,32 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block meta_tags %}
+    <title>{{ result.name }}</title>
+    <meta name="description"
+          content="{{ result.summary }}"/>
+    <meta name="keywords" content="{{ result.name }}"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
+{% block content %}
+    <div class="breadcrumbs">
+        <a href="/">Homepage</a> / Concepts / {{ result.name_tree }}
+    </div>
+    <div class="detail-page resource">
+        <div class="column-container detail-container" itemscope itemtype="https://schema.org/AggregateRating">
+            <section id="detail" class="card" itemprop="itemReviewed" itemscope
+                     itemtype="https://schema.org/CreativeWork">
+                {% include 'concepts/category/detail.html' %}
+            </section>
+        </div>
+        {% include 'concepts/category/right_side.html' %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+{#    <script src="{% static 'related-app.js' %}"></script>#}
+{% endblock %}

@@ -5,7 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from .serializers import CategorySerializer, CategorySerializerOption
-from concepts.serializers_category import CategoryConceptSerializerListing
+from concepts.serializers_category import CategoryConceptSerializerListing, CategoryConceptSerializerOption
 
 
 class CategoryViewset(ModelViewSet):
@@ -43,6 +43,17 @@ class CategoryViewset(ModelViewSet):
         concepts = []
         for subcat in instance_descendants:
             concepts += [CategoryConceptSerializerListing(c).data for c in subcat.concepts.order_by('experience_level').all()]
+        return Response(concepts)
+
+    @action(methods=['GET'], detail=True)
+    def higher_concepts_options(self, *args, **kwargs):
+        # getting the category concepts should return concepts of all children in value/label form
+        instance = self.get_object()
+        instance_ancestors = instance.get_ancestors(include_self=True)
+        concepts = []
+        for subcat in instance_ancestors:
+            concepts += [CategoryConceptSerializerOption(c).data for c in
+                         subcat.concepts.order_by('experience_level').all()]
         return Response(concepts)
 
 

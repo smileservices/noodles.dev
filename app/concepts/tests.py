@@ -122,3 +122,56 @@ class TestConcepts(APITestCase):
         )
         self.assertEqual(201, res_sub.status_code)
         self.assertEqual(category_concept.pk, res_sub.data['parent']['pk'])
+
+    def test_edit_suggest_category_concept(self):
+        '''
+        create a category concept
+        user submits edit suggestion for each field
+        check edit suggestion data
+        admin publishes the edit suggestion
+        check category concept is updated
+        '''
+        user_edit = create_user_single()
+        parent_concept = CategoryConcept.objects.create(**{
+            'name': 'parent',
+            'author': self.users['normal'],
+            'description': f.text(),
+            'category': self.categories['root'],
+            'experience_level': 0,
+            'meta': ''
+        })
+        concept = CategoryConcept.objects.create(**{
+                'name': 'category',
+                'author': self.users['normal'],
+                'description': f.text(),
+                'category': self.categories['root'],
+                'experience_level': 0,
+                'meta': ''
+            })
+        self.client.force_login(user_edit)
+        edit_submit_response = self.client.put(
+            reverse('concept-category-viewset-detail', kwargs={'pk': concept.pk}),
+            {
+                'name': 'category edit',
+                'description': f.text()+' edited',
+                'category': self.categories['sub'].pk,
+                'parent': parent_concept.pk,
+                'experience_level': 1,
+                'meta': '',
+                'edit_suggestion_reason': 'testing out'
+            }
+        )
+        self.assertEqual(209, edit_submit_response.status_code)
+        # test publishing the change
+        self.client.force_login(self.users['admin'])
+        publish_response = self.client.post(
+            reverse('concept-category-viewset-edit-suggestion-publish', kwargs={'pk': concept.pk}),
+            {'edit_suggestion_id': edit_submit_response.data['pk']},
+            format='json'
+        )
+        self.assertEqual(200, publish_response.status_code)
+        concept.refresh_from_db()
+        self.assertEqual(concept.name, 'category edit')
+        self.assertEqual(concept.experience_level, 1)
+        self.assertEqual(concept.category, self.categories['sub'])
+        self.assertEqual(concept.parent, parent_concept)

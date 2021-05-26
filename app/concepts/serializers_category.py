@@ -5,7 +5,7 @@ from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
 from users.serializers import UserSerializerMinimal
 from category.models import Category
 from django.template.defaultfilters import slugify
-
+from category.serializers import CategorySerializerOption
 
 class CategoryConceptSerializerListing(serializers.ModelSerializer):
     queryset = CategoryConcept.objects
@@ -58,6 +58,13 @@ class CategoryConceptEditSuggestionSerializer(serializers.ModelSerializer):
                                'old': Category.objects.get(pk=change.old).name,
                                'new': Category.objects.get(pk=change.new).name
                                })
+            elif change.field == 'parent':
+                old_val = CategoryConcept.objects.get(pk=change.old) if change.old else False
+                new_val = CategoryConcept.objects.get(pk=change.new) if change.new else False
+                result.append({'field': change.field.capitalize(),
+                               'old': old_val.name if old_val else '',
+                               'new': new_val.name if new_val else ''
+                               })
             elif change.field == 'slug':
                 continue
             else:
@@ -79,6 +86,7 @@ class CategoryConceptEditSuggestionListingSerializer(serializers.ModelSerializer
 class CategoryConceptSerializer(EditSuggestionSerializer):
     queryset = CategoryConcept.objects.all()
     author = UserSerializerMinimal(many=False, read_only=True)
+    category = CategorySerializerOption(many=False, read_only=True)
     parent = CategoryConceptSerializerListing(many=False, read_only=True)
 
     class Meta:
@@ -97,9 +105,9 @@ class CategoryConceptSerializer(EditSuggestionSerializer):
 
     def run_validation(self, data):
         data_copy = data.copy()
-        if 'slug' not in data:
-            data_copy['slug'] = slugify(data['name'])
+        data_copy['slug'] = slugify(data['name'])
         validated_data = super(CategoryConceptSerializer, self).run_validation(data_copy)
+        validated_data['category_id'] = int(data_copy['category'])
         if 'parent' in data_copy and data_copy['parent']:
             validated_data['parent_id'] = int(data_copy['parent'])
         return validated_data

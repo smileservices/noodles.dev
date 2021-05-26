@@ -231,6 +231,13 @@ aside.sidebar.expanded {
         text-align: center;
       }
 
+      .concepts-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
       .technologies-container {
         display: flex;
         flex-direction: row;

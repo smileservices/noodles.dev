@@ -1,0 +1,19 @@
+<header>
+    <div class="top">
+        <div class="tags">
+            {% for cat in result.category.get_ancestors %}
+                <a href="{% url 'search_page' %}?tab=resources&category={{ cat }}">{{ cat }}</a>
+            {% endfor %}
+            <a href="{% url 'search_page' %}?tab=resources&category={{ result.category }}">{{ result.category }}</a>
+            <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
+               itemprop="educationalLevel">Experience Level {{ result.experience_level_label }}</a>
+        </div>
+        <div id="detail-toolbar" class="toolbar">
+            <a href="{% url 'category-concept-edit' result.pk %}">Suggest Edit</a>
+        </div>
+    </div>
+    <h1 class="title" itemProp="name">{{ result.name }}</h1>
+</header>
+<div class="description">
+    {{ result.description | linebreaks }}
+</div>
