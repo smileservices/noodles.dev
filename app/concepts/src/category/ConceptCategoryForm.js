@@ -39,30 +39,37 @@ function ConceptCategoryForm({formData, setFormData, extraData, submitCallback, 
                 return false;
             }
         }).then(data => {
-            if (data) setOptions(data);
-        })
-    }, []);
-
-    useEffect(e=>{
-        fetch(
-            '/categories/api/' + formData.category['value'] + '/higher_concepts_options/', {method: 'GET'}
-        ).then(result => {
-            if (result.ok) {
-                return result.json();
-            } else {
-                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve parent category concepts" type="danger"/>);
-                return false;
-            }
-        }).then(data => {
             if (data) {
                 if (formData.pk) {
                     //we filter out current concept (if editing)
                     data = data.filter(opt => opt['value'] !== formData.pk)
                 }
-                setConcepts(data);
+                setOptions(data);
             }
         })
-    }, [formData.category])
+    }, []);
+
+    // useEffect(e=>{
+    //     if (!formData.category.value) return ()=>{};
+    //     fetch(
+    //         '/categories/api/' + formData.category['value'] + '/higher_concepts_options/', {method: 'GET'}
+    //     ).then(result => {
+    //         if (result.ok) {
+    //             return result.json();
+    //         } else {
+    //             setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve parent category concepts" type="danger"/>);
+    //             return false;
+    //         }
+    //     }).then(data => {
+    //         if (data) {
+    //             if (formData.pk) {
+    //                 //we filter out current concept (if editing)
+    //                 data = data.filter(opt => opt['value'] !== formData.pk)
+    //             }
+    //             setConcepts(data);
+    //         }
+    //     })
+    // }, [formData.category])
 
     function makeStateProps(name) {
         function updateValue(name) {
@@ -140,10 +147,10 @@ function ConceptCategoryForm({formData, setFormData, extraData, submitCallback, 
                          error={errors.category}
                          isDisabled={Boolean(waiting)}
             />
-            <SelectReact name="select-category" label="Choose Parent Concept (if any)"
+            <SelectReact name="select-parent" label="Choose Parent Concept (if any)"
                          smallText="A parent concept is a higher level category concept"
                          onChange={selectedOption => setFormData({...formData, parent: selectedOption})}
-                         options={concepts}
+                         options={options.concepts}
                          value={formData.parent}
                          props={{isMulti: false}}
                          error={errors.parent}

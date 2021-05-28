@@ -11,6 +11,9 @@ from . import serializers_technology
 from . import models
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
+from app.settings import rewards
+from .serializers_category import CategoryConceptSerializerOption
+import json
 
 
 class ConceptCategoryViewset(ResourceWithEditSuggestionVieset):
@@ -22,7 +25,8 @@ class ConceptCategoryViewset(ResourceWithEditSuggestionVieset):
     @action(methods=['GET'], detail=False)
     def options(self, request, *args, **kwargs):
         return Response({
-            'experience_level': [{'value': c[0], 'label': c[1]} for c in models.CategoryConcept.ExperienceLevel.choices]
+            'experience_level': [{'value': c[0], 'label': c[1]} for c in models.CategoryConcept.ExperienceLevel.choices],
+            'concepts': [CategoryConceptSerializerOption(c).data for c in models.CategoryConcept.objects.all()]
         })
 
 
@@ -76,6 +80,22 @@ def category_edit(request, id):
         }
     }
     return render(request, 'concepts/category/edit_page.html', data)
+
+@login_required
+def category_create(request):
+    data = {
+        'data': {
+            'reward': rewards.RESOURCE_CREATE,
+        },
+        'urls': {
+            'concept_category_api': reverse_lazy('concept-category-viewset-list'),
+            'categories_options_api': reverse_lazy('categories-options-list'),
+        }
+    }
+    if request.GET['category']:
+        category = models.Category.objects.get(pk=request.GET['category'])
+        data['data']['preselected_category'] = json.dumps(CategoryConceptSerializerOption(category).data)
+    return render(request, 'concepts/category/create_page.html', data)
 
 
 def technology_detail(request, id, slug):

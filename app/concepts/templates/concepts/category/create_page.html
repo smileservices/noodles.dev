@@ -12,11 +12,9 @@
 {% block content %}
     <script>
         const USER_ID = {{ user.id }};
-        const STUDY_RESOURCE_API = "{{ urls.study_resource_api }}";
-        const TECH_API = "{{ urls.tech_api }}";
-        const TAGS_OPTIONS_API = "{{ urls.tag_options_api }}";
-        const TECH_OPTIONS_API = "{{ urls.tech_options_api }}";
+        const RESOURCE_API = "{{ urls.concept_category_api }}";
         const CATEGORIES_OPTIONS_API = "{{ urls.categories_options_api }}";
+        const PRESELECTED_CATEGORY = {{ data.preselected_category|safe }};
     </script>
     <div class="create-page">
         <section class="header">
@@ -37,5 +35,5 @@
 
 {% block extra_js %}
     <script src="{% static 'js/react-bundle.js' %}"></script>
-    <script src="{% static 'study_resource/study-resource-create.js' %}"></script>
+    <script src="{% static 'concepts/category/create.js' %}"></script>
 {% endblock %}

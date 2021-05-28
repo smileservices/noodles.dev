@@ -115,6 +115,7 @@ export default function CategoryDetailComponent({category}) {
             <h5>Concepts</h5>
             <div className="concepts-container">
                 {<CategoryConceptsComponent category={category} />}
+                <a className="contribute" href={'/concepts/category/create?category='+category.pk}>Add New Concept</a>
             </div>
             <h5>Associated Technologies:</h5>
             <div className="technologies-container">
