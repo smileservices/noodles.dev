@@ -131,7 +131,7 @@ class TestConcepts(APITestCase):
             }
         )
         self.assertEqual(201, res_sub.status_code)
-        self.assertEqual(category_concept.pk, res_sub.data['parent']['pk'])
+        self.assertEqual(category_concept.pk, res_sub.data['parent']['value'])
 
     def test_edit_suggest_category_concept(self):
         '''
