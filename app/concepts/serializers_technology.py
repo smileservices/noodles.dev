@@ -3,11 +3,11 @@ from django.template.defaultfilters import slugify
 from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
 
 from users.serializers import UserSerializerMinimal
-from technology.serializers import TechnologyMinimal
+from technology.serializers import TechnologySerializerOption
 from technology.models import Technology
 
-from .models import TechnologyConcept
-from .serializers_category import CategoryConceptSerializerListing
+from .models import TechnologyConcept, CategoryConcept
+from .serializers_category import CategoryConceptSerializerListing, CategoryConceptSerializerOption
 
 
 class TechnologyConceptEditSuggestionSerializer(serializers.ModelSerializer):
@@ -37,6 +37,13 @@ class TechnologyConceptEditSuggestionSerializer(serializers.ModelSerializer):
                                'old': Technology.objects.get(pk=change.old).name,
                                'new': Technology.objects.get(pk=change.new).name
                                })
+            elif change.field == 'parent':
+                old_val = CategoryConcept.objects.get(pk=change.old) if change.old else False
+                new_val = CategoryConcept.objects.get(pk=change.new) if change.new else False
+                result.append({'field': change.field.capitalize(),
+                               'old': old_val.name if old_val else '',
+                               'new': new_val.name if new_val else ''
+                               })
             elif change.field == 'slug':
                 continue
             else:
@@ -58,8 +65,8 @@ class TechnologyConceptEditSuggestionListingSerializer(serializers.ModelSerializ
 class TechnologyConceptSerializer(EditSuggestionSerializer):
     queryset = TechnologyConcept.objects.all()
     author = UserSerializerMinimal(many=False, read_only=True)
-    technology = TechnologyMinimal(many=False, read_only=True)
-    parent = CategoryConceptSerializerListing(many=False, read_only=True)
+    technology = TechnologySerializerOption(many=False, read_only=True)
+    parent = CategoryConceptSerializerOption(many=False, read_only=True)
 
     class Meta:
         model = TechnologyConcept

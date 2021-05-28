@@ -37,18 +37,21 @@ def make_technologies_and_categories():
         name='Pointers',
         description=f.text(),
         category=dbs,
+        author=choice(users),
         experience_level=CategoryConcept.ExperienceLevel.MIDDLE
     )
     CONCEPT_DB_INDICES = CategoryConcept.objects.create(
         name='Indices',
         description=f.text(),
         category=relational,
+        author=choice(users),
         experience_level=CategoryConcept.ExperienceLevel.JUNIOR
     )
     CONCEPT_LANG_OOP = CategoryConcept.objects.create(
         name='OOP',
         description=f.text(),
         category=lang,
+        author=choice(users),
         experience_level=CategoryConcept.ExperienceLevel.JUNIOR
     )
     CONCEPT_LANG_FACTORY = CategoryConcept.objects.create(
@@ -56,12 +59,14 @@ def make_technologies_and_categories():
         description=f.text(),
         parent=CONCEPT_LANG_OOP,
         category=lang,
+        author=choice(users),
         experience_level=CategoryConcept.ExperienceLevel.MIDDLE
     )
     CONCEPT_LANG_FFUNC = CategoryConcept.objects.create(
         name='First Class Functions',
         description=f.text(),
         category=lang,
+        author=choice(users),
         experience_level=CategoryConcept.ExperienceLevel.JUNIOR
     )
 
@@ -229,18 +234,22 @@ def make_technologies_and_categories():
         description=f.text(),
         technology=created_techs['Javascript'],
         parent=CONCEPT_LANG_FFUNC,
-        experience_level=CategoryConcept.ExperienceLevel.JUNIOR
+        experience_level=CategoryConcept.ExperienceLevel.JUNIOR,
+        author=choice(users)
     )
     CONCEPT_TECH_JS_PROMISES = TechnologyConcept.objects.create(
         name='Promises',
         description=f.text(),
         technology=created_techs['Javascript'],
+        author=choice(users),
         experience_level=CategoryConcept.ExperienceLevel.JUNIOR
     )
-    CONCEPT_TECH_JS_PROMISES = TechnologyConcept.objects.create(
+    CONCEPT_TECH_JS_HIGH_FUNC = TechnologyConcept.objects.create(
         name='Higher-Order Functions',
         description=f.text(),
         technology=created_techs['Javascript'],
+        author=choice(users),
+        parent=CONCEPT_LANG_FFUNC,
         experience_level=CategoryConcept.ExperienceLevel.JUNIOR
     )
     return categories, created_techs

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
+from technology.models import Technology
 from .serializers import CategorySerializer, CategorySerializerOption
 from concepts.serializers_category import CategoryConceptSerializerListing, CategoryConceptSerializerOption
 
@@ -42,7 +43,8 @@ class CategoryViewset(ModelViewSet):
         instance_descendants = instance.get_descendants(include_self=True)
         concepts = []
         for subcat in instance_descendants:
-            concepts += [CategoryConceptSerializerListing(c).data for c in subcat.concepts.order_by('experience_level').all()]
+            concepts += [CategoryConceptSerializerListing(c).data for c in
+                         subcat.concepts.order_by('experience_level').all()]
         return Response(concepts)
 
     @action(methods=['GET'], detail=True)
@@ -54,6 +56,18 @@ class CategoryViewset(ModelViewSet):
         for subcat in instance_ancestors:
             concepts += [CategoryConceptSerializerOption(c).data for c in
                          subcat.concepts.order_by('experience_level').all()]
+        return Response(concepts)
+
+    @action(methods=['GET'], detail=True)
+    def technology_higher_concepts_options(self, *args, **kwargs):
+        # we are getting the category concepts of a technology. first get the technology then the category, only then the concepts
+        # getting the category concepts should return concepts of all children in value/label form
+        categories = Technology.objects.get(pk=kwargs['pk']).category.all()
+        concepts = []
+        for categ in categories:
+            for subcat in categ.get_ancestors(include_self=True):
+                concepts += [CategoryConceptSerializerOption(c).data for c in
+                             subcat.concepts.order_by('experience_level').all()]
         return Response(concepts)
 
 

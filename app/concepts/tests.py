@@ -24,17 +24,27 @@ class TestConcepts(APITestCase):
         }
         root_categ = Category.objects.create(name='RootCategory', description=f.text(), parent=None)
         sub_categ = Category.objects.create(name='SubCategory', description=f.text(), parent=root_categ)
-        technology = Technology.objects.create(
-            name='Tech',
+        technology_1 = Technology.objects.create(
+            name='Tech 1',
             description=f.text(),
             author=self.users['admin'],
             license=0,
             url=f.url(),
             owner=f.company(),
         )
-        technology.category.add(sub_categ)
+        technology_2 = Technology.objects.create(
+            name='Tech 2',
+            description=f.text(),
+            author=self.users['admin'],
+            license=0,
+            url=f.url(),
+            owner=f.company(),
+        )
+        technology_1.category.add(sub_categ)
+        technology_2.category.add(sub_categ)
         self.technologies = {
-            'root': technology
+            'root': technology_1,
+            'sub': technology_2,
         }
         self.categories = {
             'root': root_categ,
@@ -141,19 +151,19 @@ class TestConcepts(APITestCase):
             'meta': ''
         })
         concept = CategoryConcept.objects.create(**{
-                'name': 'category',
-                'author': self.users['normal'],
-                'description': f.text(),
-                'category': self.categories['root'],
-                'experience_level': 0,
-                'meta': ''
-            })
+            'name': 'category',
+            'author': self.users['normal'],
+            'description': f.text(),
+            'category': self.categories['root'],
+            'experience_level': 0,
+            'meta': ''
+        })
         self.client.force_login(user_edit)
         edit_submit_response = self.client.put(
             reverse('concept-category-viewset-detail', kwargs={'pk': concept.pk}),
             {
                 'name': 'category edit',
-                'description': f.text()+' edited',
+                'description': f.text() + ' edited',
                 'category': self.categories['sub'].pk,
                 'parent': parent_concept.pk,
                 'experience_level': 1,
@@ -174,4 +184,58 @@ class TestConcepts(APITestCase):
         self.assertEqual(concept.name, 'category edit')
         self.assertEqual(concept.experience_level, 1)
         self.assertEqual(concept.category, self.categories['sub'])
+        self.assertEqual(concept.parent, parent_concept)
+
+    def test_edit_suggest_technology_concept(self):
+        '''
+        create a technology concept
+        user submits edit suggestion for each field
+        check edit suggestion data
+        admin publishes the edit suggestion
+        check technology concept is updated
+        check parent concept is updated
+        '''
+        user_edit = create_user_single()
+        parent_concept = CategoryConcept.objects.create(**{
+            'name': 'parent',
+            'author': self.users['normal'],
+            'description': f.text(),
+            'category': self.categories['root'],
+            'experience_level': 0,
+            'meta': ''
+        })
+        concept = TechnologyConcept.objects.create(**{
+            'name': 'technology',
+            'author': self.users['normal'],
+            'description': f.text(),
+            'technology': self.technologies['root'],
+            'experience_level': 0,
+            'meta': ''
+        })
+        self.client.force_login(user_edit)
+        edit_submit_response = self.client.put(
+            reverse('concept-technology-viewset-detail', kwargs={'pk': concept.pk}),
+            {
+                'name': 'technology edit',
+                'description': f.text() + ' edited',
+                'technology': self.technologies['sub'].pk,
+                'parent': parent_concept.pk,
+                'experience_level': 1,
+                'meta': '',
+                'edit_suggestion_reason': 'testing out'
+            }
+        )
+        self.assertEqual(209, edit_submit_response.status_code)
+        # test publishing the change
+        self.client.force_login(self.users['admin'])
+        publish_response = self.client.post(
+            reverse('concept-technology-viewset-edit-suggestion-publish', kwargs={'pk': concept.pk}),
+            {'edit_suggestion_id': edit_submit_response.data['pk']},
+            format='json'
+        )
+        self.assertEqual(200, publish_response.status_code)
+        concept.refresh_from_db()
+        self.assertEqual(concept.name, 'technology edit')
+        self.assertEqual(concept.experience_level, 1)
+        self.assertEqual(concept.technology, self.technologies['sub'])
         self.assertEqual(concept.parent, parent_concept)
