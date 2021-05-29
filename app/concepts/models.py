@@ -33,10 +33,6 @@ class AbstractConcept(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
         return self.name
 
     @property
-    def absolute_url(self):
-        return reverse_lazy('concept-category-detail', kwargs={'id': self.id, 'slug': self.slug})
-
-    @property
     def experience_level_label(self):
         return self.ExperienceLevel(self.experience_level).label
 
@@ -78,6 +74,10 @@ class CategoryConcept(MPTTModel, AbstractConcept):
         tree_list.append(self.name)
         return ' > '.join(tree_list)
 
+    @property
+    def absolute_url(self):
+        return reverse_lazy('concept-category-detail', kwargs={'id': self.id, 'slug': self.slug})
+
 
 class TechnologyConcept(AbstractConcept):
     parent = models.ForeignKey(
@@ -99,3 +99,7 @@ class TechnologyConcept(AbstractConcept):
         post_reject=post_reject_edit,
         bases=(VotableMixin,)
     )
+
+    @property
+    def absolute_url(self):
+        return reverse_lazy('concept-technology-detail', kwargs={'id': self.id, 'slug': self.slug})

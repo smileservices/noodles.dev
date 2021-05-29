@@ -40,6 +40,13 @@ main .detail-page {
           color: var(--color-text-white);
         }
       }
+
+      a.parent-technology {
+        display: flex;
+        gap: $padding-unit;
+        align-items: center;
+        max-height: $fontsize-md*2;
+      }
     }
 
     .highlighted {

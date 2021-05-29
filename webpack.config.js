@@ -33,6 +33,7 @@ module.exports = {
         '/static/concepts/category/edit': './app/concepts/src/category/EditApp.js',
         '/static/concepts/category/create': './app/concepts/src/category/CreateApp.js',
         '/static/concepts/technology/edit': './app/concepts/src/technology/EditApp.js',
+        '/static/concepts/technology/create': './app/concepts/src/technology/CreateApp.js',
 
         //vote app
         '/static/votes': './app/src/core/VotesApp.js',

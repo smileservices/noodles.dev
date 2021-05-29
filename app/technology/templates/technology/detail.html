@@ -49,6 +49,7 @@
             <a class="concept" href="{% url 'concept-technology-detail' concept.pk concept.slug %}">{{ concept.name }}</a>
         {% endfor %}
     </div>
+    <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}">Add a new concept</a>
 {% endif %}
 
 <span class="published">Added By <a

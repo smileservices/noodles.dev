@@ -68,6 +68,7 @@ function ConceptTechnologyForm({formData, setFormData, extraData, submitCallback
     function validate(normalizedData, callback) {
         let vErr = {};
         if (normalizedData.description.length < 30) vErr.description = 'Description is too short. It has to be at least 30 characters';
+        if (!normalizedData.technology) vErr.technology = 'The technology concept is tied up to a certain technology. Please choose a technology.';
         if (extraData.formElements) {
             extraData.formElements.validate(normalizedData, vErr);
         }

@@ -60,7 +60,10 @@ def category_detail(request, id, slug):
     detail = queryset.select_related().get(pk=id)
     data = {
         'result': detail,
+        'vote_url': reverse_lazy('concept-category-viewset-vote', kwargs={'pk': id})
     }
+    if request.user.is_authenticated:
+        return render(request, 'concepts/category/detail_page.html', data)
     return render(request, 'concepts/category/detail_page_seo.html', data)
 
 
@@ -103,7 +106,10 @@ def technology_detail(request, id, slug):
     detail = queryset.select_related().get(pk=id)
     data = {
         'result': detail,
+        'vote_url': reverse_lazy('concept-technology-viewset-vote', kwargs={'pk': id})
     }
+    if request.user.is_authenticated:
+        return render(request, 'concepts/technology/detail_page.html', data)
     return render(request, 'concepts/technology/detail_page_seo.html', data)
 
 
@@ -123,3 +129,19 @@ def technology_edit(request, id):
         }
     }
     return render(request, 'concepts/technology/edit_page.html', data)
+
+@login_required
+def technology_create(request):
+    data = {
+        'data': {
+            'reward': rewards.RESOURCE_CREATE,
+        },
+        'urls': {
+            'concept_category_api': reverse_lazy('concept-technology-viewset-list'),
+            'categories_options_api': reverse_lazy('categories-options-list'),
+        }
+    }
+    if request.GET['technology']:
+        tech = Technology.objects.get(pk=request.GET['technology'])
+        data['data']['preselected_technology'] = json.dumps(TechnologySerializerOption(tech).data)
+    return render(request, 'concepts/technology/create_page.html', data)

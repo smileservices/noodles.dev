@@ -17,47 +17,29 @@
 {% block content %}
     <script>
         const USER_ID = {% if user.is_staff %}0{% else %}{{ user.id }}{% endif %};
-        const MAX_RATING = {{ MAX_RATING }};
-        const RESOURCE_ID = {{ result.id }};
-        const RESOURCE_AUTHOR_ID = {{ result.author.id }};
-        const RESOURCE_EDIT_URL = "{% url 'study-resource-edit' result.id %}";
         const RESOURCE_API_DELETE = "{% url 'study-resource-viewset-detail' result.id %}";
-
-        const TAGS_OPTIONS_API = "{{ urls.tag_options_api }}";
-        const TECH_OPTIONS_API = "{{ urls.tech_options_api }}";
-
-        const STUDY_RESOURCE_OPTIONS_URL = "{{ urls.study_resource_options }}";
-        const REVIEW_API = "{{ urls.review_api }}";
-        const REVIEWS_LIST = "{{ urls.reviews_list }}";
-
-        const MANAGE_COLLECTIONS_URL = "{% url 'my-collections' %}"
-        const COLLECTIONS_API = "{{ urls.collections_api }}";
-        const USER_COLLECTIONS_LIST = "{{ urls.user_collections_list }}";
-        const USER_COLLECTIONS_WITH_RESOURCE = "{{ urls.user_collections_with_resource }}";
-        const USER_COLLECTIONS_SET_API = "{{ urls.user_collections_set_resource_to_collections }}";
+        const RESULT = {
+            thumbs_up_array: JSON.parse("{{ result.thumbs_up_array }}"),
+            thumbs_down_array: JSON.parse("{{ result.thumbs_down_array }}"),
+            vote_url: "{{ vote_url }}",
+        }
     </script>
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / Resources /
-        {% for cat in result.category.get_ancestors %}
-            <a href="{% url 'search_page' %}?tab=resources&category={{ cat }}">{{ cat }}</a> >
-        {% endfor %}
-         <a href="{% url 'search_page' %}?tab=resources&category={{ result.category.name }}">{{ result.category.name }}</a> / {{ result.name }}
+        <a href="/">Homepage</a> / Technologies / <a href="{{ result.absolute_url }}">{{ result.name }}</a>
     </div>
     <div class="detail-page resource">
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
             <section id="detail" class="card" itemprop="itemReviewed" itemscope
                      itemtype="https://schema.org/CreativeWork">
-                {% include 'study_resource/detail.html' %}
+                {% include 'concepts/technology/detail.html' %}
+                <div id="votes-app" class="thumbs"></div>
             </section>
-            <section id="reviews" class="column-container card reviews"></section>
         </div>
-        {% include 'study_resource/right_side.html' %}
+        {% include 'concepts/technology/right_side.html' %}
     </div>
 
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'study_resource/study-resource-detail-reviews.js' %}"></script>
-    <script src="{% static 'study_resource/detail-toolbar.js' %}"></script>
-    <script src="{% static 'related-app.js' %}"></script>
+        <script src="{% static 'votes.js' %}"></script>
 {% endblock %}
