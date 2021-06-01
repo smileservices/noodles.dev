@@ -17,5 +17,24 @@
 <div class="description">
     {{ result.description | linebreaks }}
 </div>
+
+{% if children_concepts %}
+<h4>Children Concepts</h4>
+<div class="tags">
+    {% for concept in children_concepts %}
+    <a href="{% url 'concept-category-detail' concept.pk concept.slug %}" class="concept">{{ concept.name }}</a>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if technology_concepts %}
+<h4>Technology Related Concepts</h4>
+<div class="tags">
+    {% for concept in technology_concepts %}
+    <a href="{% url 'concept-technology-detail' concept.pk concept.slug %}" class="concept">{{ concept.name }}</a>
+    {% endfor %}
+</div>
+{% endif %}
+
 <span class="published">Added By <a
         href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>

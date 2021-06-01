@@ -60,6 +60,8 @@ def category_detail(request, id, slug):
     detail = queryset.select_related().get(pk=id)
     data = {
         'result': detail,
+        'technology_concepts': detail.technology_concepts.all(),
+        'children_concepts': detail.children.all(),
         'vote_url': reverse_lazy('concept-category-viewset-vote', kwargs={'pk': id})
     }
     if request.user.is_authenticated:
