@@ -42,7 +42,7 @@ function ConceptCategoryForm({formData, setFormData, extraData, submitCallback, 
             if (data) {
                 if (formData.pk) {
                     //we filter out current concept (if editing)
-                    data = data.filter(opt => opt['value'] !== formData.pk)
+                    data.concepts = data.concepts.filter(opt => opt['value'] !== formData.pk)
                 }
                 setOptions(data);
             }
