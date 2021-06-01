@@ -20,5 +20,11 @@ main .detail-page.technology {
           justify-content: start;
         }
       }
+      .tech-concepts-container {
+        margin-top: $padding-unit-big*2;
+        .alert.alert-contribute {
+          background-color: var(--color-background-1);
+        }
+      }
     }
 }
