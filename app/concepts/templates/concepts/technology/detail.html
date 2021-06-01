@@ -11,7 +11,7 @@
     <h2 class="title" itemProp="name">{{ result.name }}</h2>
     <div class="tags">
         {% if result.parent %}
-            <a href="{% url 'concept-category-detail' result.parent.pk result.parent.slug %}">{{ result.parent.name_tree }}</a>
+            <a href="{% url 'concept-category-detail' result.parent.pk result.parent.slug %}" class="concept">{{ result.parent.name_tree }}</a>
         {% endif %}
         <a href="{% url 'search_page' %}?tab=resources&experience_level={{ result.experience_level_label }}"
            itemprop="educationalLevel">Experience Level {{ result.experience_level_label }}</a>
