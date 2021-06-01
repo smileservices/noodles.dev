@@ -5,7 +5,7 @@
                 <a href="{% url 'search_page' %}?tab=resources&category={{ cat }}">{{ cat }}</a>
             {% endfor %}
             <a href="{% url 'search_page' %}?tab=resources&category={{ result.category }}">{{ result.category }}</a>
-            <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
+            <a href="{% url 'search_page' %}?tab=resources&experience_level={{ result.experience_level_label }}"
                itemprop="educationalLevel">Experience Level {{ result.experience_level_label }}</a>
         </div>
         <div id="detail-toolbar" class="toolbar">
