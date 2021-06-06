@@ -7,9 +7,9 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
-	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
-	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
-	<link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
     {% block meta_tags %}
         <title>Noodles.com</title>
         <meta name="description"
@@ -23,6 +23,16 @@
 
     {% block extra_css %}{% endblock %}
     {% block extra_top_js %}{% endblock %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M0SSQCF73S"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-M0SSQCF73S');
+    </script>
 </head>
 <body>
 
@@ -81,8 +91,8 @@
         })
     })
 </script>
-    <script src="{% static 'js/react-bundle.js' %}"></script>
-    <script src="{% static 'frontend/sidebar-app.js' %}"></script>
+<script src="{% static 'js/react-bundle.js' %}"></script>
+<script src="{% static 'frontend/sidebar-app.js' %}"></script>
 {#    {% if not hide_navbar_search %}#}
 {#        <script src="{% static 'navbar-search-bar-app.js' %}"></script>#}
 {#    {% endif %}#}
