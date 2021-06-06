@@ -24,7 +24,7 @@ django-countries==6.1.2
 django-crispy-forms==1.9.1
 django-debug-toolbar==2.2
 django-easy-audit==1.3.0
-django-edit-suggestion==1.38
+django-edit-suggestion==1.39
 django-environ==0.4.5
 django-extensions==2.2.9
 django-filter==2.3.0

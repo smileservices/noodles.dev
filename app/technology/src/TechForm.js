@@ -5,7 +5,6 @@ import {
     Textarea,
     Checkbox,
     SelectReact,
-    SelectReactCreatable,
     ImageInputComponent
 } from "../../src/components/form";
 import apiPost from "../../src/api_interface/apiPost";
@@ -64,6 +63,21 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
         }).then(data => {
             if (data) {
                 setLicenseOptions(data);
+            }
+        })
+        //todo get category concepts options
+        fetch(
+            CATEGORIES_OPTIONS_API, {method: 'GET'}
+        ).then(result => {
+            if (result.ok) {
+                return result.json();
+            } else {
+                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve categories" type="danger"/>);
+                return false;
+            }
+        }).then(data => {
+            if (data) {
+                setCategories(data);
             }
         })
     }, []);

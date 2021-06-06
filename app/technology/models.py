@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 from users.models import CustomUser
 from django.conf import settings
 from versatileimagefield.fields import VersatileImageField
@@ -71,9 +72,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
 
     image_file = VersatileImageField(upload_to='technologies', blank=True, null=True)
     featured = models.BooleanField(default=False)
-    pros = models.TextField()
-    cons = models.TextField()
-    limitations = models.TextField()
+    meta = JSONField()
 
     category = models.ManyToManyField(Category, related_name='related_technologies')
     ecosystem = models.ManyToManyField('Technology', related_name='related_technologies')
@@ -81,7 +80,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
 
     edit_suggestions = EditSuggestion(
         excluded_fields=('author', 'thumbs_up_array', 'thumbs_down_array'),
-        m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category}],
+        m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category}, {'name': 'category_concepts', 'model': 'concepts.CategoryConcept'}],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
