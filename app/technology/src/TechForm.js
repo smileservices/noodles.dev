@@ -65,21 +65,6 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                 setLicenseOptions(data);
             }
         })
-        //todo get category concepts options
-        fetch(
-            CATEGORIES_OPTIONS_API, {method: 'GET'}
-        ).then(result => {
-            if (result.ok) {
-                return result.json();
-            } else {
-                setAlert(<Alert close={e => setAlert(null)} text="Could not retrieve categories" type="danger"/>);
-                return false;
-            }
-        }).then(data => {
-            if (data) {
-                setCategories(data);
-            }
-        })
     }, []);
 
     function makeStateProps(name) {
@@ -100,9 +85,6 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
     function validate(normalizedData, callback) {
         let vErr = {};
         if (normalizedData.description.length < 30) vErr.description = 'Description is too short. It has to be at least 30 characters';
-        if (normalizedData.pros.length < 5) vErr.pros = 'Good points cannot be empty. Add at least 5 characters';
-        if (normalizedData.cons.length < 5) vErr.cons = 'Bad points cannot be empty. Add at least 5 characters';
-        if (normalizedData.limitations.length < 30) vErr.limitations = 'Limitations cannot be empty. Add at least 30 characters';
         if (normalizedData.owner.length < 5) vErr.owner = 'Owner/Maintainer name is too short, has to be at least 5 characters';
         if (extraData.formElements) {
             extraData.formElements.validate(normalizedData, vErr);
@@ -246,36 +228,6 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
             }}
                    smallText="Who is owning or developing the tech"
                    error={errors.owner}
-            />
-            <Textarea name="pros" label={"Pros for using it"}
-                      inputProps={{
-                          ...makeStateProps('pros'),
-                          placeholder: "Good points",
-                          required: true,
-                          disabled: Boolean(waiting)
-                      }}
-                      smallText="What are the good parts of this tech?"
-                      error={errors.pros}
-            />
-            <Textarea name="cons" label={"Cons against using it"}
-                      inputProps={{
-                          ...makeStateProps('cons'),
-                          placeholder: "Bad points",
-                          required: true,
-                          disabled: Boolean(waiting)
-                      }}
-                      smallText="What are the bad parts of this tech?"
-                      error={errors.cons}
-            />
-            <Textarea name="limitations" label={"Limitations"}
-                      inputProps={{
-                          ...makeStateProps('limitations'),
-                          placeholder: "Limitations",
-                          required: true,
-                          disabled: Boolean(waiting)
-                      }}
-                      smallText="What are the limitations of this tech?"
-                      error={errors.limitations}
             />
             <SelectReact name="select-category" label="Choose Category"
                          smallText="Can have one or multiple categories"

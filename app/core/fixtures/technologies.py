@@ -99,11 +99,7 @@ def make_technologies_and_categories():
         "url": 'https://en.wikipedia.org/wiki/JavaScript',
         "license": PUBLIC_DOMAIN[0],
         "owner": 'European Computer Manufacturers Association',
-        "pros": 'speed, simplicity, wide support on all browsers, asynchronous support',
-        "cons": 'interpreted language, has its share of quirks',
-        "limitations": 'Client-side JavaScript does not allow the reading or writing of files. It has been kept for the security reason.\n'
-                       'No support for networking\n'
-                       'No support for multithreading or multiprocessor capabilities',
+        "meta": "",
         "featured": True,
         "ecosystem": False,
     }
@@ -123,9 +119,7 @@ def make_technologies_and_categories():
         "url": 'https://www.python.org/',
         "license": PUBLIC_DOMAIN[0],
         "owner": 'Python Software Foundation',
-        "pros": 'speed of development, huge ecosystem of libraries, versatility, has multiprocessor capabilities',
-        "cons": 'interpreted language',
-        "limitations": 'multithreading: only one thread can access Python internals at a time',
+        "meta": "",
         "ecosystem": False,
     }
     php = {
@@ -141,9 +135,7 @@ def make_technologies_and_categories():
         "url": 'https://www.php.net/',
         "license": PUBLIC_DOMAIN[0],
         "owner": 'Zend',
-        "pros": 'established, huge ecosystem of libraries, versatility, has multiprocessor capabilities',
-        "cons": 'interpreted language, scope limited to web applications',
-        "limitations": 'fully synchronous language',
+        "meta": "",
         "ecosystem": False,
     }
     django = {
@@ -158,9 +150,7 @@ def make_technologies_and_categories():
         "url": 'https://www.djangoproject.com/',
         "license": PUBLIC_DOMAIN[0],
         "owner": 'Django Software Foundation',
-        "pros": 'batteries included, powerful ORM, established, huge ecosystem of libraries',
-        "cons": 'very oppinionated framework',
-        "limitations": 'ORM supports only SQL databases',
+        "meta": "",
         "ecosystem": False,
     }
     react = {
@@ -178,9 +168,7 @@ def make_technologies_and_categories():
         "url": 'https://reactjs.org//',
         "license": PUBLIC_DOMAIN[0],
         "owner": 'Facebook',
-        "pros": 'modular, unoppinionated, reusable components, virtual DOM',
-        "cons": 'state sharing between components',
-        "limitations": 'complex state management requires external library',
+        "meta": "",
         "ecosystem": False,
     }
     docker = {
@@ -197,9 +185,7 @@ def make_technologies_and_categories():
         "url": 'https://docker.com',
         "license": PROPRIETARY[0],
         "owner": 'Docker, Inc',
-        "pros": 'Make deployments more efficient\n',
-        "cons": 'state sharing between components',
-        "limitations": 'adding another layer of complexity',
+        "meta": "",
         "ecosystem": False,
     }
 

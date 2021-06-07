@@ -57,11 +57,15 @@ class Command(BaseCommand):
     def create_superuser(self, credentials):
         user, created = CustomUser.objects.get_or_create(
             email=credentials["email"],
+            username=credentials["username"],
             defaults={"is_active": True, "is_staff": True, "is_superuser": True},
         )
         if created:
             user.set_password(credentials["password"])
             user.save()
+            email = user.emailaddress_set.first()
+            email.verified = True
+            email.save()
             msg = "Superuser - %(email)s/%(password)s" % credentials
         else:
             msg = "Superuser already exists - %(email)s" % credentials
@@ -83,7 +87,7 @@ class Command(BaseCommand):
             clean_categories()
             CustomUser.objects.all().delete()
             self.stdout.write("Removed all p/s/sr/t/techs and users!")
-            credentials = {"email": "vlad@admin.com", "password": "123"}
+            credentials = {"email": "vlad@admin.com", "password": "123", "username":"vlad"}
             msg = self.create_superuser(credentials)
             self.stdout.write(msg)
             self.stdout.write(f'Created super user with creds {credentials}')

@@ -59,9 +59,7 @@ def create_technologies():
             license=choice(Technology.LicenseType.choices)[0],
             url=f.url(),
             owner=f.company(),
-            pros=f.text(),
-            cons=f.text(),
-            limitations=f.text(),
+            meta='',
             image_file='',
         )
         tobj.save()
@@ -82,9 +80,7 @@ def create_technology_edit_suggestions():
             'license': tech.license,
             'url': tech.url,
             'owner': tech.owner,
-            'pros': tech.pros,
-            'cons': tech.cons,
-            'limitations': tech.limitations,
+            'meta': tech.meta,
             'edit_suggestion_author': choice(users),
             'image_file': tech.image_file,
         })
