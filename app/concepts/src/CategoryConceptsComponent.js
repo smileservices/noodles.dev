@@ -60,11 +60,7 @@ export default function CategoryConceptsComponent({category}) {
         })
     }, [category])
 
-    if (state.waiting) return SkeletonLoadingSidebarDetail;
+    if (state.waiting) return (<div className="tags">SkeletonLoadingSidebarDetail</div>);
     if (state.concepts.length === 0) return NoConcepts;
-    return (
-        <div className="tags">
-            {state.concepts.map(c => (<ConceptListingElement data={c}/>))}
-        </div>
-    )
+    return (<div className="tags">{state.concepts.map(c => (<ConceptListingElement data={c}/>))}</div>);
 }

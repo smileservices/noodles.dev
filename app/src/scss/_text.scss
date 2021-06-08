@@ -72,6 +72,9 @@ small, .small {
 }
 
 .tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 
   > *, > a:visited {
     display: inline-block;
