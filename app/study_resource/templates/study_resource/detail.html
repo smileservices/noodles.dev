@@ -51,6 +51,15 @@
 </div>
 
 <div class="tags" itemprop="keywords">
+    {% for concept in result.category_concepts.all %}
+        <a class="concept" href="{{ concept.absolute_url }}">{{ concept.name_tree }}</a>
+    {% endfor %}
+    {% for concept in result.technology_concepts.all %}
+        <a class="concept" href="{{ concept.absolute_url }}">{{ concept.name }}</a>
+    {% endfor %}
+</div>
+
+<div class="tags" itemprop="keywords">
     {% for tag in result.tags.all %}
         <a class="tag" href="{% url 'search_page' %}?tab=resources&tags={{ tag.id }}"># {{ tag }}</a>
     {% endfor %}

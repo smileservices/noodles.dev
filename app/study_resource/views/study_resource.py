@@ -16,6 +16,10 @@ from study_resource.scrape.main import scrape_tutorial
 from study_resource import filters
 from study_resource.models import StudyResource
 from study_resource import serializers
+from concepts.serializers_category import CategoryConceptSerializerOption
+from concepts.serializers_technology import TechnologyConceptSerializerOption
+
+from concepts.models import CategoryConcept,TechnologyConcept
 
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
 from app.settings import rewards
@@ -178,7 +182,9 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
         return Response({
             'price': [{'value': c[0], 'label': c[1]} for c in StudyResource.Price.choices],
             'media': [{'value': c[0], 'label': c[1]} for c in StudyResource.Media.choices],
-            'experience_level': [{'value': c[0], 'label': c[1]} for c in StudyResource.ExperienceLevel.choices]
+            'experience_level': [{'value': c[0], 'label': c[1]} for c in StudyResource.ExperienceLevel.choices],
+            'category_concepts': [CategoryConceptSerializerOption(c).data for c in CategoryConcept.objects.all()],
+            'technology_concepts': [TechnologyConceptSerializerOption(c).data for c in TechnologyConcept.objects.all()]
         })
     #
     # def get_success_headers(self, data):

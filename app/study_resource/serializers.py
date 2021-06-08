@@ -13,7 +13,10 @@ from tag.models import Tag
 from category.serializers import CategorySerializerOption
 from category.models import Category
 from technology.models import Technology
+from concepts.serializers_category import CategoryConceptSerializerOption
+from concepts.serializers_technology import TechnologyConceptSerializerOption
 import json
+
 
 class ImageSerializer(serializers.ModelSerializer):
     queryset = StudyResourceImage.objects
@@ -82,6 +85,24 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
                                    instance.technologies.through.objects.filter(study_resource=instance.pk).all()
                                ])
                                })
+            elif change.field == 'category_concepts':
+                result.append({'field': change.field.capitalize(),
+                               'old': ', '.join([f'{c.name_tree}' for c in
+                                                 delta.old_record.category_concepts.all()]),
+                               'new': ', '.join([
+                                   f'{c.name_tree}' for c in
+                                   instance.category_concepts.all()
+                               ])
+                               })
+            elif change.field == 'technology_concepts':
+                result.append({'field': change.field.capitalize(),
+                               'old': ', '.join([f'{c.name}' for c in
+                                                 delta.old_record.technology_concepts.all()]),
+                               'new': ', '.join([
+                                   f'{c.name}' for c in
+                                   instance.technology_concepts.all()
+                               ])
+                               })
             elif change.field == 'media':
                 result.append({'field': change.field.capitalize(),
                                'old': delta.old_record.media_label,
@@ -120,6 +141,8 @@ class StudyResourceSerializer(EditSuggestionSerializer):
     author = UserSerializerMinimal(many=False, read_only=True)
     tags = TagSerializerOption(many=True, read_only=True)
     technologies = StudyResourceTechnologySerializer(source='studyresourcetechnology_set', many=True, read_only=True)
+    category_concepts = CategoryConceptSerializerOption(many=True, read_only=True)
+    technology_concepts = TechnologyConceptSerializerOption(many=True, read_only=True)
     rating = FloatField(read_only=True)
     reviews_count = IntegerField(read_only=True)
     image_file = VersatileImageFieldSerializer(
@@ -131,7 +154,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
     class Meta:
         model = StudyResource
         fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'price', 'media',
-                  'experience_level', 'author', 'tags', 'category',
+                  'experience_level', 'author', 'tags', 'category', 'category_concepts', 'technology_concepts',
                   'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by', 'image_file']
 
     @staticmethod
@@ -167,6 +190,8 @@ class StudyResourceSerializer(EditSuggestionSerializer):
                 raise AttributeError('Cannot add same technology multiple times')
             techs.append(tech['technology_id'])
         validated_data['technologies'] = cleaned_technologies
+        validated_data['category_concepts'] = json.loads(data['category_concepts'])
+        validated_data['technology_concepts'] = json.loads(data['technology_concepts'])
         return validated_data
 
     def create(self, validated_data):

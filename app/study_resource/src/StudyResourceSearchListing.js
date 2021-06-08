@@ -13,6 +13,10 @@ export default function StudyResourceSearchListing({data, addFilter}) {
     const MAX_RATING = 5
 
     const technologies = data.technologies.map(t => <a key={t.url} href={t.url} className="tech">{flagIcon} {t.name}{t.version ? ' '+t.version : ''}</a>);
+    const concepts = {
+        category: data.category_concepts.map(c=> <a href={c.url} className="concept">{c.name}</a>),
+        technology: data.technology_concepts.map(c=> <a href={c.url} className="concept">{c.name}</a>),
+    }
     const category = addFilter
         ? (<span onClick={e => {addFilter('category', data.category)}}>{data.category}</span>)
         : (<a key={'cat' + data.media} href={'/search?tab=resources&category='+data.category}>{data.category}</a>)
@@ -32,7 +36,7 @@ export default function StudyResourceSearchListing({data, addFilter}) {
                 <div className="result resource">
                     <div className="left">
                         <div className="tags">
-                            {technologies}{category}{experience_level}
+                            {technologies}{concepts.technology}{category}{concepts.category}{experience_level}
                         </div>
                         <div className="listing-title">
                             <h4 className="title" itemProp="name"><a href={data.url}>{data.name}</a></h4>

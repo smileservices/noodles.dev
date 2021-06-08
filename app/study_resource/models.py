@@ -8,9 +8,7 @@ import requests
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from versatileimagefield.utils import build_versatileimagefield_url_set
 from django.conf import settings
-from tag.models import Tag
-from technology.models import Technology
-from category.models import Category
+
 from core.abstract_models import DateTimeModelMixin, SluggableModelMixin
 from votable.models import VotableMixin
 from django_edit_suggestion.models import EditSuggestion
@@ -18,6 +16,11 @@ from core.edit_suggestions import edit_suggestion_change_status_condition, post_
 from core.abstract_models import ElasticSearchIndexableMixin
 from core.tasks import sync_to_elastic
 from core import utils
+
+from tag.models import Tag
+from technology.models import Technology
+from category.models import Category
+from concepts.models import CategoryConcept, TechnologyConcept
 
 
 def delete_study_resource_primary_images(sender, instance, **kwargs):
@@ -135,6 +138,9 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
     technologies = models.ManyToManyField(Technology, related_name='resources', through='StudyResourceTechnology')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # concepts
+    category_concepts = models.ManyToManyField(CategoryConcept, related_name='related_resources')
+    technology_concepts = models.ManyToManyField(TechnologyConcept, related_name='related_resources')
     # choices fields
     price = models.IntegerField(default=0, choices=Price.choices, db_index=True)
     media = models.IntegerField(default=0, choices=Media.choices, db_index=True)
@@ -144,6 +150,8 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
             'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
         m2m_fields=[
             {'name': 'tags', 'model': Tag},
+            {'name': 'category_concepts', 'model': CategoryConcept},
+            {'name': 'technology_concepts', 'model': TechnologyConcept},
             {
                 'name': 'technologies',
                 'model': Technology,
@@ -229,6 +237,22 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
                         "url": {"type": "keyword"},
                     }
                 },
+                "category_concepts": {
+                    "type": "nested",
+                    "include_in_parent": True,
+                    "properties": {
+                        "name": {"type": "keyword"},
+                        "url": {"type": "keyword"},
+                    }
+                },
+                "technology_concepts": {
+                    "type": "nested",
+                    "include_in_parent": True,
+                    "properties": {
+                        "name": {"type": "keyword"},
+                        "url": {"type": "keyword"},
+                    }
+                },
 
                 "author": {"type": "nested"},
                 "price": {"type": "keyword"},
@@ -265,7 +289,12 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
 
             "category": self.category.name,
             "tags": [t.name for t in self.tags.all()],
-            "technologies": [{"name": t.name, "version": t.version, "url": t.technology.absolute_url} for t in self.get_technologies()],
+            "technologies": [{"name": t.name, "version": t.version, "url": t.technology.absolute_url} for t in
+                             self.get_technologies()],
+            "category_concepts": [{"name": c.name, "url": c.absolute_url} for c in
+                             self.category_concepts.all()],
+            "technology_concepts": [{"name": c.name, "url": c.absolute_url} for c in
+                                  self.technology_concepts.all()],
 
             "author": {
                 "pk": self.author.pk,
@@ -342,7 +371,7 @@ class Review(DateTimeModelMixin, VotableMixin):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         super(Review, self).save()
-        self.study_resource.save() # this to trigger syncing to elasticsearch
+        self.study_resource.save()  # this to trigger syncing to elasticsearch
 
 
 models.signals.pre_save.connect(remove_old_image, sender=StudyResource, weak=False)

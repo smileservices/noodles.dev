@@ -7,7 +7,7 @@ from mptt.fields import TreeForeignKey
 from core.abstract_models import SluggableModelMixin
 from votable.models import VotableMixin
 from core.abstract_models import DateTimeModelMixin
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.contrib.postgres.fields import JSONField
 from django_edit_suggestion.models import EditSuggestion
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_publish_edit, post_reject_edit
@@ -69,14 +69,8 @@ class CategoryConcept(MPTTModel, AbstractConcept):
         return ' > '.join(tree_list)
 
     @property
-    def name_tree(self):
-        tree_list = [c.name for c in self.get_ancestors()]
-        tree_list.append(self.name)
-        return ' > '.join(tree_list)
-
-    @property
     def absolute_url(self):
-        return reverse_lazy('concept-category-detail', kwargs={'id': self.id, 'slug': self.slug})
+        return reverse('concept-category-detail', kwargs={'id': self.id, 'slug': self.slug})
 
 
 class TechnologyConcept(AbstractConcept):
@@ -102,4 +96,4 @@ class TechnologyConcept(AbstractConcept):
 
     @property
     def absolute_url(self):
-        return reverse_lazy('concept-technology-detail', kwargs={'id': self.id, 'slug': self.slug})
+        return reverse('concept-technology-detail', kwargs={'id': self.id, 'slug': self.slug})

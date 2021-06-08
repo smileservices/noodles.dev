@@ -9,6 +9,7 @@ import apiCreate from "../../../src/api_interface/apiCreate";
 import FormatDate from "../../../src/vanilla/date";
 import confettiFactory from "../../../src/vanilla/confetti";
 import Waiting from "../../../src/components/Waiting";
+
 const startConfetti = confettiFactory(100, 1);
 
 function StudyResourceCreateApp() {
@@ -18,6 +19,8 @@ function StudyResourceCreateApp() {
     const emptyDataStep2 = {
         tags: [],
         technologies: [],
+        category_concepts: [],
+        technology_concepts: [],
     }
     const emptyDataStep3 = {
         name: '',
@@ -57,7 +60,7 @@ function StudyResourceCreateApp() {
 
     useEffect(() => {
         if (created) startConfetti('confetti-canvas');
-    }, [created, ]);
+    }, [created,]);
 
     useEffect(() => {
         //get categories options
@@ -144,6 +147,8 @@ function StudyResourceCreateApp() {
             if (!tech.version) tech.version = 0;
             return tech;
         });
+        data.category_concepts = dataStep2.category_concepts.map(c => c.value);
+        data.technology_concepts = dataStep2.technology_concepts.map(c => c.value);
         data.type = dataStep3.type.value;
         data.media = dataStep3.media.value;
         data.experience_level = dataStep3.experience_level.value;
@@ -167,6 +172,8 @@ function StudyResourceCreateApp() {
         let packagedData = new FormData();
         data['technologies'] = JSON.stringify(data['technologies']);
         data['tags'] = JSON.stringify(data['tags']);
+        data['category_concepts'] = JSON.stringify(data['category_concepts']);
+        data['technology_concepts'] = JSON.stringify(data['technology_concepts']);
         Object.keys(data).map(value => packagedData.append(value, data[value]));
         return packagedData;
     }
@@ -208,7 +215,7 @@ function StudyResourceCreateApp() {
                     return {name: tech.name, technology_id: tech.pk, version: tech.version}
                 })
             : dataObjStep2['technologies'] = [{name: '', technology_id: '', version: ''},];
-        setDataStep2(dataObjStep2);
+        setDataStep2({...dataStep2, ...dataObjStep2});
 
         setDataStep3({
             name: scraped_data['name'],
@@ -248,7 +255,7 @@ function StudyResourceCreateApp() {
                     <CreateFormStep1 data={dataStep1} submit={handleStepOne}/>
                 );
             case 1:
-                return (<CreateFormStep2 data={dataStep2} tags={tags} techs={techs}
+                return (<CreateFormStep2 data={dataStep2} tags={tags} techs={techs} options={options}
                                          addTechToOptions={addTechToOptions}
                                          submit={formData => submitStep(step, setDataStep2, formData)}
                 />);

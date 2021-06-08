@@ -116,6 +116,8 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
         let packagedData = new FormData();
         data['technologies'] = JSON.stringify(data['technologies']);
         data['tags'] = JSON.stringify(data['tags']);
+        data['category_concepts'] = JSON.stringify(data['category_concepts']);
+        data['technology_concepts'] = JSON.stringify(data['technology_concepts']);
         Object.keys(data).map(value => packagedData.append(value, data[value]));
         return packagedData;
     }
@@ -128,6 +130,8 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
         cpd.technologies = data.technologies.map(t => {
             return {technology_id: t.technology_id, version: t.version ? t.version : 0};
         });
+        cpd.category_concepts = data.category_concepts.map(c=>c.value);
+        cpd.technology_concepts = data.technology_concepts.map(c=>c.value);
         cpd.category = data.category.value;
         cpd.publication_date = formatDate(data.publication_date);
         //image validation part
@@ -233,7 +237,24 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
                                   error={errors.tags}
                                   isDisabled={Boolean(waiting)}
             />
-
+            <SelectReact name="select-technology-concepts" label="Technology Concepts"
+                         smallText="Does this resource uses technology concepts? Can have none or multiple choices concepts."
+                         onChange={selectedOption => setFormData({...formData, technology_concepts: selectedOption})}
+                         options={options.technology_concepts}
+                         value={formData.technology_concepts}
+                         props={{isMulti: true}}
+                         error={errors.technology_concepts}
+                         isDisabled={Boolean(waiting)}
+            />
+            <SelectReact name="select-category-concepts" label="Category Concepts"
+                         smallText="Does this resource uses category concepts? Can have none or multiple choices concepts."
+                         onChange={selectedOption => setFormData({...formData, category_concepts: selectedOption})}
+                         options={options.category_concepts}
+                         value={formData.category_concepts}
+                         props={{isMulti: true}}
+                         error={errors.category_concepts}
+                         isDisabled={Boolean(waiting)}
+            />
             <TechnologySelect techs={techs}
                               values={formData.technologies}
                               setValues={techs => setFormData({...formData, technologies: techs})}
