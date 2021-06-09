@@ -22,15 +22,6 @@
     <p class="summary" itemProp="abstract">{{ result.description | linebreaks }}</p>
     <p>Technology maintained by <span class="highlighted">{{ result.owner }}</span></p>
     <p class="source_url"><a href="{{ result.url }}">{{ result.url }}</a></p>
-    {% if result.pros %}
-        <p class="pros"><span class="highlighted">Pros</span> {{ result.pros | linebreaks }}</p>
-    {% endif %}
-    {% if result.cons %}
-        <p class="cons"><span class="highlighted">Cons</span> {{ result.cons | linebreaks }}</p>
-    {% endif %}
-    {% if result.limitations %}
-        <p class="limitations"><span class="highlighted">Limitations</span> {{ result.limitations | linebreaks }}</p>
-    {% endif %}
 </div>
 
 <div class="tech-concepts-container">

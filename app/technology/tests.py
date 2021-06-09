@@ -52,9 +52,7 @@ class TechnologyIntegrationTesting(APITestCase):
             'license': 0,
             'url': 'wwww.google.com',
             'owner': 'some owner',
-            'pros': 'some pros',
-            'cons': 'some cons',
-            'limitations': 'some limitations',
+            'meta': ''
         }
 
     def test_create(self):

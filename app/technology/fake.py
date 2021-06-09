@@ -33,9 +33,7 @@ def create_technologies():
             license=choice(Technology.LicenseType.choices)[0],
             url=f.url(),
             owner=f.company(),
-            pros=f.text(),
-            cons=f.text(),
-            limitations=f.text(),
+            meta='',
             image_file='',
             featured=True
         )
