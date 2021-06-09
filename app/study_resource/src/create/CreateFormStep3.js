@@ -2,12 +2,14 @@ import React, {useState, useEffect, Fragment} from "react"
 import Alert from "../../../src/components/Alert";
 import {
     Input,
+    Checkbox,
     Textarea,
     SelectReact,
     FormElement,
     SelectReactCreatable,
     ImageInputComponent
 } from "../../../src/components/form";
+import {makeId} from "../../../src/components/utils";
 
 export default function CreateFormStep3({data, options, categories, submit, waiting}) {
     const [formData, setFormData] = useState(data);
@@ -115,18 +117,30 @@ export default function CreateFormStep3({data, options, categories, submit, wait
                                  smallText="Experience level required"
                     />
                 </div>
-                <ImageInputComponent
-                    data={formData.image_file}
-                    setValue={valueObj => setFormData({...formData, image_file: valueObj})}
-                    inputProps={{
-                        'name': 'image_file',
-                        'label': 'Primary Image',
-                        'error': errors.image_file,
-                        'smallText': 'Primary image of the resource',
-                        'originalImage': false
-                    }}
-                    disabled={Boolean(waiting)}
-                />
+                <div className="primary-image-container">
+                    <Checkbox label="Use Screenshot as Primary Image" name="image_screenshot"
+                              smallText="If checked, we will use as Primary Image a screenshot of the resource url.
+                              Otherwise please either upload an image or choose an image url"
+                              inputProps={{
+                                  checked: formData.image_screenshot,
+                                  onChange: e => setFormData({...formData, image_screenshot: e.target.checked})
+                              }}
+                    />
+                    {formData.image_screenshot ? '' :
+                        <ImageInputComponent
+                            data={formData.image_file}
+                            setValue={valueObj => setFormData({...formData, image_file: valueObj})}
+                            inputProps={{
+                                'name': 'image_file',
+                                'label': 'Primary Image',
+                                'error': errors.image_file,
+                                'smallText': 'Primary image of the resource',
+                                'originalImage': false
+                            }}
+                            disabled={Boolean(waiting)}
+                        />
+                    }
+                </div>
                 <Textarea
                     id={'summary'}
                     label="Summary"
@@ -141,5 +155,5 @@ export default function CreateFormStep3({data, options, categories, submit, wait
                 />
             </FormElement>
         </div>
-    )
+)
 }

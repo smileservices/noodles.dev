@@ -16,6 +16,7 @@ from technology.models import Technology
 from concepts.serializers_category import CategoryConceptSerializerOption
 from concepts.serializers_technology import TechnologyConceptSerializerOption
 import json
+from .scrape.main import get_website_screenshot
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -174,7 +175,11 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         cleaned_technologies = json.loads(data['technologies'])
         validated_data['category_id'] = int(data['category'])
         validated_data['tags'] = Tag.objects.validate_tags(json.loads(data['tags']))
-        if 'pk' in data and 'image_file' not in data:
+        # take screenshot (only for create)
+        take_screenshot = 'image_screenshot' in data and json.loads(data['image_screenshot'])
+        if take_screenshot:
+            validated_data['image_file'] = get_website_screenshot(data['url'])
+        if 'pk' in data and 'image_file' not in data and not take_screenshot:
             # populate with parent image file otherwise the edit will set the image_file blank
             validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']
         if 'image_url' in data:

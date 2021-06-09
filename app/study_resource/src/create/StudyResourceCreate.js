@@ -31,6 +31,7 @@ function StudyResourceCreateApp() {
         media: false,
         experience_level: false,
         summary: '',
+        image_screenshot: true,
         image_url: '',
     }
     const [step, setStep] = useState(0);
@@ -152,17 +153,24 @@ function StudyResourceCreateApp() {
         data.type = dataStep3.type.value;
         data.media = dataStep3.media.value;
         data.experience_level = dataStep3.experience_level.value;
-        if (data.image_file && !data.image_file.url && !data.image_file.file) {
+        //handle images
+        if (data.image_screenshot) {
             delete data.image_file;
             delete data.image_url;
         } else {
-            if (data.image_file.file) {
-                data.image_file = data.image_file.file;
-                delete data.image_url;
-            }
-            if (data.image_file.url) {
-                data.image_url = data.image_file.url;
+            //todo this is confusing. need to refactor sometime
+            if (data.image_file && !data.image_file.url && !data.image_file.file) {
                 delete data.image_file;
+                delete data.image_url;
+            } else {
+                if (data.image_file.file) {
+                    data.image_file = data.image_file.file;
+                    delete data.image_url;
+                }
+                if (data.image_file.url) {
+                    data.image_url = data.image_file.url;
+                    delete data.image_file;
+                }
             }
         }
         return data;
@@ -226,6 +234,7 @@ function StudyResourceCreateApp() {
             media: {label: 'Article', value: 0},
             experience_level: {label: 'Absolute Beginner', value: 0},
             summary: scraped_data['summary'],
+            image_screenshot: true,
             image_file: {url: scraped_data['top_img']},
         })
         setStep(1);

@@ -1,6 +1,9 @@
 from newspaper import Article, fulltext
 from gensim.summarization import summarize, keywords
 from requests import request
+from core import utils
+from django.conf import settings
+
 
 def scrape_tutorial(url):
     '''
@@ -37,3 +40,20 @@ def scrape_tutorial(url):
     combined_summary_arr = [article.summary, article.meta_description, auto_summarized]
     result['summary'] = '\n\n----\n\n'.join(filter(lambda e: e, combined_summary_arr))
     return result
+
+
+def get_website_screenshot(url):
+    '''
+    Use an API to get screenshot from url
+    return temp image file
+    '''
+    api_url = f'https://shot.screenshotapi.net/screenshot' \
+              f'?token={settings.WEBSITE_SCREENSHOT_TOKEN}' \
+              f'&url={url}' \
+              f'&width=1044' \
+              f'&height=744' \
+              f'&output=image' \
+              f'&file_type=png' \
+              f'&wait_for_event=load'
+    temp_file = utils.get_temp_image_file_from_url(api_url)
+    return temp_file
