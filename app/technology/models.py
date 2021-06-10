@@ -72,7 +72,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
 
     image_file = VersatileImageField(upload_to='technologies', blank=True, null=True)
     featured = models.BooleanField(default=False)
-    meta = JSONField()
+    meta = JSONField(blank=True, null=True)
 
     category = models.ManyToManyField(Category, related_name='related_technologies')
     ecosystem = models.ManyToManyField('Technology', related_name='related_technologies')
