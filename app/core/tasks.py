@@ -122,3 +122,30 @@ def sync_technology_resources_to_elastic(sender, **kwargs):
     if update_fields and 'name' in update_fields:
         instance = kwargs.get('instance')
         task_sync_technologies_related(instance.pk, sender)
+
+
+@periodic_task(crontab(hour='*/1'))
+def send_admin_crud_report():
+    '''
+    Send report to admins with CRUD events on resources and new users
+    that happened in the last 3 hours
+    '''
+    from easyaudit.models import CRUDEvent
+    from datetime import datetime, timedelta
+    from django.core.mail import mail_admins
+    since_datetime = datetime.now() - timedelta(hours=1)
+    records = CRUDEvent.objects.filter(
+        datetime__gte=since_datetime
+    ).all()
+    if records.count() > 0:
+        message = f'This is the CRUD Activity Report for all CRUD operations during {since_datetime} - {datetime.now()}:\n\n'
+        for record in records:
+            message += f'{record.get_event_type_display()} == {record.content_type}|{record.object_repr} ==by== {record.user.username}|{record.user.email}'
+            message += f'{record.changed_fields}'
+            message += '='*30
+            message += '\n'
+            # send mail
+        mail_admins(
+            subject='CRUD Activity Report',
+            message=message
+        )

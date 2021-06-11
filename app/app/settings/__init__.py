@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'easyaudit',
     'huey.contrib.djhuey',
     'mailer',
+    'django_user_agents',
     # our app
     'core',
     'rest_framework',
@@ -89,6 +90,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'easyaudit.middleware.easyaudit.EasyAuditMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
 ]
 
 REST_FRAMEWORK = {
