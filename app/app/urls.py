@@ -5,12 +5,23 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import handler404, handler500
 from frontend.views import error_404, error_500
+from django.contrib.sitemaps.views import sitemap
+from .sitemap import TechnologiesSiteMap, CategoryConceptsSiteMap, TechnologyConceptsSiteMap, ResourcesSiteMap, CollectionsSiteMap
 
 router = routers.DefaultRouter()
+
+sitemaps = {
+    'technologies': TechnologiesSiteMap,
+    'category_concepts': CategoryConceptsSiteMap,
+    'technology_concepts': TechnologyConceptsSiteMap,
+    'resources': ResourcesSiteMap,
+    'collections': CollectionsSiteMap,
+}
 
 # Registration & Login
 urlpatterns = [
     path('', include('frontend.urls')),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('accounts/', include('allauth.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('tutorials/', include('study_resource.urls')),
@@ -35,22 +46,3 @@ urlpatterns += router.urls
 
 handler404 = error_404
 handler500 = error_500
-
-# from django.contrib.staticfiles.views import serve as serve_static
-# need this for testing the error pages because Debug=False
-# stops runserver server serving static files ffs
-#
-# def _static_butler(request, path, **kwargs):
-#     """
-#     Serve static files using the django static files configuration
-#     WITHOUT collectstatic. This is slower, but very useful for API
-#     only servers where the static files are really just for /admin
-#
-#     Passing insecure=True allows serve_static to process, and ignores
-#     the DEBUG=False setting
-#     """
-#     return serve_static(request, path, insecure=True, **kwargs)
-#
-# urlpatterns += [
-#     re_path(r'static/(.+)', _static_butler)
-# ]

@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'huey.contrib.djhuey',
     'mailer',
     'django_user_agents',
+    'django.contrib.sitemaps',
     # our app
     'core',
     'rest_framework',
