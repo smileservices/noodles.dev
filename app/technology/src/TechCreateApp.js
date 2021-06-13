@@ -14,6 +14,7 @@ function TechCreateApp() {
         'image_file': {content: '', name: ''},
         'url': '',
         'description': '',
+        'description_long': '',
         'pros': '',
         'cons': '',
         'limitations': '',

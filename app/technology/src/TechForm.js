@@ -125,6 +125,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
 
     function makeFormData(data) {
         let packagedData = new FormData();
+        data['meta'] = JSON.stringify(data['meta']);
         Object.keys(data).map(value => packagedData.append(value, data[value]));
         return packagedData;
     }
@@ -135,9 +136,13 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
             return t.value
         });
         cpd.license = data.license_option.value;
+        delete data.license_option;
         cpd.category = data.category.map(t => {
             return t.value
         });
+        if (cpd.meta === '') {
+            cpd.meta = {};
+        }
         if (cpd.image_file && !cpd.image_file.url && !cpd.image_file.file) {
             delete cpd.image_file;
             delete cpd.image_url;
@@ -200,8 +205,18 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                           required: true,
                           disabled: Boolean(waiting)
                       }}
-                      smallText="Write about release date, what problem it solves, how it does it"
+                      smallText="Write a short description about it (max 256 chars)"
                       error={errors.description}
+            />
+            <Textarea name="description-long" label={false}
+                      inputProps={{
+                          ...makeStateProps('description_long'),
+                          placeholder: "Long Description (use markdown)",
+                          required: true,
+                          disabled: Boolean(waiting)
+                      }}
+                      smallText="Write a long description using markdown."
+                      error={errors.description_long}
             />
             <Input name="url" label="Url" inputProps={{
                 ...makeStateProps('url'),

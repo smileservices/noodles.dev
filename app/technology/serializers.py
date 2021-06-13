@@ -126,8 +126,8 @@ class TechnologySerializer(EditSuggestionSerializer):
     class Meta:
         model = Technology
         depth = 1
-        fields = ['pk', 'name', 'image_file', 'description', 'url', 'license_option', 'owner', 'license',
-                  'meta',
+        fields = ['pk', 'name', 'image_file', 'description', 'description_long',
+                  'url', 'license_option', 'owner', 'license', 'meta',
                   'absolute_url', 'category',
                   'ecosystem', 'thumbs_up', 'thumbs_down',
                   'image_url', 'featured'
@@ -185,4 +185,4 @@ class TechnologyMinimal(serializers.ModelSerializer):
 
     class Meta:
         model = Technology
-        fields = ['pk', 'name', 'absolute_url','thumbs_up', 'thumbs_down']
+        fields = ['pk', 'name', 'absolute_url', 'thumbs_up', 'thumbs_down']

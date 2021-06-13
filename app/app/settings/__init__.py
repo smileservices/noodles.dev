@@ -14,7 +14,6 @@ import os
 import environ
 from django.urls import reverse_lazy
 
-
 env = environ.Env(
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, ["*"])
@@ -63,6 +62,7 @@ INSTALLED_APPS = [
     'mailer',
     'django_user_agents',
     'django.contrib.sitemaps',
+    'markdownify.apps.MarkdownifyConfig',
     # our app
     'core',
     'rest_framework',
@@ -273,6 +273,34 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('small', 'thumbnail__45x45'),
         ('medium', 'thumbnail__75x75'),
     ],
+}
+
+MARKDOWNIFY = {
+    "default": {
+        "WHITELIST_TAGS": [
+            'h1',
+            'h2',
+            'p',
+            'hr',
+            'blockquote',
+            'ul', 'ol', 'li',
+            'strong', 'b', 'i', 'em'
+            'a',
+            # for code highlighting
+            'code',
+            'pre',
+            'span',
+            'div',
+        ],
+        "WHITELIST_ATTRS": [
+            'class',
+        ],
+        "MARKDOWN_EXTENSIONS": [
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+            'markdown.extensions.sane_lists',
+        ]
+    }
 }
 
 MODERATOR_USER_SCORE = 300

@@ -29,7 +29,7 @@ urlpatterns = [
     path('concepts/', include('concepts.urls')),
     path('categories/', include('category.urls')),
     path('tags/', include('tag.urls')),
-    path('technologies/', include('technology.urls')),
+    path('learn/', include('technology.urls')),
     path('users/', include('users.urls')),
     path('search/', include('search.urls')),
     path('admin/', admin.site.urls),

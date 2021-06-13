@@ -21,7 +21,7 @@ class RequireAdminAprovalModelMixin(models.Model):
 
 class SluggableModelMixin(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True)
 
     class Meta:
         abstract = True

@@ -1,4 +1,5 @@
 {% load mptt_tags %}
+{% load markdownify %}
 
 <header>
     <div class="left-side">
@@ -23,23 +24,28 @@
     <p>Technology maintained by <span class="highlighted">{{ result.owner }}</span></p>
     <p class="source_url"><a href="{{ result.url }}">{{ result.url }}</a></p>
 </div>
+<div class="description-long">
+    {{ result.description_long|markdownify }}
+</div>
 
 <div class="tech-concepts-container">
-<h4>Concepts:</h4>
-{% if result.concepts.count > 0 %}
-    <div class="tags">
-        {% for concept in result.concepts.all %}
-            <a class="concept"
-               href="{% url 'concept-technology-detail' concept.pk concept.slug %}">{{ concept.name }}</a>
-        {% endfor %}
-    </div>
-    <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}">Add a new concept</a>
-{% else %}
-    <div class="alert alert-contribute">
-        <p>There are no concepts specific to {{ result.name }}.</p>
-        <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}">Be the first to add one</a>
-    </div>
-{% endif %}
+    <h4>Concepts:</h4>
+    {% if result.concepts.count > 0 %}
+        <div class="tags">
+            {% for concept in result.concepts.all %}
+                <a class="concept"
+                   href="{% url 'concept-technology-detail' concept.pk concept.slug %}">{{ concept.name }}</a>
+            {% endfor %}
+        </div>
+        <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}">Add a new
+            concept</a>
+    {% else %}
+        <div class="alert alert-contribute">
+            <p>There are no concepts specific to {{ result.name }}.</p>
+            <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}">Be the first
+                to add one</a>
+        </div>
+    {% endif %}
 </div>
 
 {% if result.ecosystem.count > 0 %}

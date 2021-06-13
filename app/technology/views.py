@@ -20,9 +20,9 @@ from .models import Technology
 from django.views.decorators.cache import cache_page
 from app.settings import rewards
 
-def detail(request, id, slug):
+def detail(request, slug):
     queryset = Technology.objects
-    detail = queryset.select_related().get(pk=id)
+    detail = queryset.select_related().get(slug=slug)
     resources_ids = [tech['study_resource_id'] for tech in
                      detail.studyresourcetechnology_set.values('study_resource_id').all()]
     collections_paginator = Paginator(Collection.objects.filter(technologies=detail).select_related().order_by('created_at'), 4)

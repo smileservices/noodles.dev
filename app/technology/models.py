@@ -65,7 +65,8 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     objects = TechnologyManager()
     name = models.CharField(max_length=128, db_index=True)
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
-    description = models.TextField()
+    description = models.TextField(max_length=256)
+    description_long = models.TextField(blank=True, null=True)
     license = models.IntegerField(default=0, choices=LicenseType.choices, db_index=True)
     url = models.TextField(max_length=1024)
     owner = models.CharField(max_length=128, db_index=True)
@@ -101,7 +102,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
 
     @property
     def absolute_url(self):
-        return reverse('tech-detail', kwargs={'id': self.pk, 'slug': self.slug})
+        return reverse('tech-detail', kwargs={'slug': self.slug})
 
     @property
     def logo(self):
