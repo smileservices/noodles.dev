@@ -1,0 +1,10 @@
+<span class="card">
+<div class="result concept-listing">
+        <div class="listing-title">
+            <h4 class="title" itemprop="name">
+            <a class="concept" href="{% url 'concept-technology-detail' result.pk result.slug %}">{{ result.name }}</a>
+            </h4>
+        </div>
+    <p class="description">{{ result.description }}</p>
+</div>
+</span>

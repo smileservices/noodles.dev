@@ -1,6 +1,6 @@
 <header>
     <div class="top">
-        <a class="parent-technology" href="{% url 'tech-detail' result.technology.pk result.technology.slug %}">
+        <a class="parent-technology" href="{% url 'tech-detail' result.technology.slug %}">
             <img src="{{ result.technology.logo.small }}" alt="">
             {{ result.technology.name }}
         </a>

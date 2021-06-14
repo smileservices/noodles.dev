@@ -8,9 +8,11 @@
     </div>
     <a class="btn contribute" href="{% url 'tech-edit' id=result.pk %}">Contribute</a>
 </header>
+
 <p class="tags">
     <a href="{% url 'search_page' %}?tab=technologies&license={{ result.license_label }}">{{ result.license_label }}</a>
 </p>
+
 {% for category in result.category.all %}
     <p class="tags">
         {% for cat in category.get_ancestors %}
@@ -28,35 +30,14 @@
     {{ result.description_long|markdownify }}
 </div>
 
-<div class="tech-concepts-container">
-    <h4>Concepts:</h4>
-    {% if result.concepts.count > 0 %}
-        <div class="tags">
-            {% for concept in result.concepts.all %}
-                <a class="concept"
-                   href="{% url 'concept-technology-detail' concept.pk concept.slug %}">{{ concept.name }}</a>
-            {% endfor %}
-        </div>
-        <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}">Add a new
-            concept</a>
-    {% else %}
-        <div class="alert alert-contribute">
-            <p>There are no concepts specific to {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}">Be the first
-                to add one</a>
-        </div>
-    {% endif %}
-</div>
-
 {% if result.ecosystem.count > 0 %}
     <p>Ecosystem:</p>
     <div class="tags">
         {% for tech in result.ecosystem.all %}
-            <a class="tech" href="{% url 'tech-detail' tech.pk tech.slug %}">{{ tech }}</a>
+            <a class="tech" href="{% url 'tech-detail' tech.slug %}">{{ tech }}</a>
         {% endfor %}
     </div>
 {% endif %}
-
 
 <span class="published">Added By <a
         href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>

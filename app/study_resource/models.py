@@ -102,7 +102,7 @@ class StudyResourceTechnology(models.Model):
 
     @property
     def absolute_url(self):
-        return reverse('tech-detail', kwargs={'id': self.technology_id, 'slug': self.slug})
+        return reverse('tech-detail', kwargs={'slug': self.slug})
 
 
 class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):

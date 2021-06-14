@@ -20,39 +20,22 @@ from .models import Technology
 from django.views.decorators.cache import cache_page
 from app.settings import rewards
 
+
 def detail(request, slug):
     queryset = Technology.objects
     detail = queryset.select_related().get(slug=slug)
     resources_ids = [tech['study_resource_id'] for tech in
                      detail.studyresourcetechnology_set.values('study_resource_id').all()]
-    collections_paginator = Paginator(Collection.objects.filter(technologies=detail).select_related().order_by('created_at'), 4)
-    resources_paginator = Paginator(StudyResource.objects.filter(pk__in=resources_ids).select_related().order_by('created_at'), 4)
-    try:
-        collections = collections_paginator.page(request.GET.get('page', 1))
-    except PageNotAnInteger:
-        collections = collections_paginator.page(1)
-    except EmptyPage:
-        collections = collections_paginator.page(collections_paginator.num_pages)
-    try:
-        resources = resources_paginator.page(request.GET.get('page', 1))
-    except PageNotAnInteger:
-        resources = resources_paginator.page(1)
-    except EmptyPage:
-        resources = resources_paginator.page(resources_paginator.num_pages)
     data = {
         'result': detail,
-        'concepts': detail.concepts.values('name', 'pk', 'slug').order_by('experience_level').all(),
-        'collections': collections,
-        'collections_paginator': collections_paginator,
-        'resources': resources,
-        'resources_paginator': resources_paginator,
+        'concepts': detail.concepts.values('name', 'pk', 'slug', 'description').order_by('experience_level').all(),
+        'collections': detail.collections.order_by('created_at').select_related().all(),
+        'resources': StudyResource.objects.filter(pk__in=resources_ids).order_by_rating_then_publishing_date().select_related(),
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
         'thumbs_down_array': json.dumps(detail.thumbs_down_array),
         'vote_url': reverse_lazy('techs-viewset-vote', kwargs={'pk': detail.pk}),
     }
-    if request.user.is_authenticated:
-        return render(request, 'technology/detail_page.html', data)
-    return render(request, 'technology/detail_page_seo.html', data)
+    return render(request, 'technology/detail_page.html', data)
 
 
 def list_all(request):

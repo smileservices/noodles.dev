@@ -32,7 +32,7 @@
         }
     </script>
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / Technologies / <a href="{{ result.absolute_url }}">{{ result.name }}</a>
+        <a href="/">Homepage</a> / Learn / <a href="{{ result.absolute_url }}">{{ result.name }}</a>
     </div>
     <div class="detail-page technology">
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
@@ -41,45 +41,11 @@
                 {% include 'technology/detail.html' %}
                 <div id="votes-app" class="thumbs"></div>
             </section>
-            {% include 'technology/tab_navigation.html' %}
         </div>
         {% include 'technology/right_side.html' %}
     </div>
 {% endblock %}
 
 {% block extra_js %}
-    <script>
-        window.onload = e => {
-            const tab_holders = document.getElementsByClassName('tab-navigation');
-
-            function showTab(headers, tabs, selectedIdx) {
-                for (let idx = 0; idx < headers.length; idx++) {
-                    //handle active class on headers
-                    if (idx === selectedIdx) {
-                        headers[idx].classList.add('active');
-                    } else {
-                        headers[idx].classList.remove('active');
-                    }
-                }
-                const targetId = headers[selectedIdx].getAttribute('data-target');
-                for (let idx = 0; idx < tabs.length; idx++) {
-                    if (tabs[idx].getAttribute('id') === targetId) {
-                        tabs[idx].classList.add('active');
-                    } else {
-                        tabs[idx].classList.remove('active');
-                    }
-                }
-            }
-
-            for (const tab_elem of tab_holders) {
-                const headers = tab_elem.getElementsByClassName('tab-headers')[0].children;
-                const tabs = tab_elem.getElementsByClassName('tab-content')[0].children;
-                for (let idx = 0; idx < headers.length; idx++) {
-                    headers[idx].addEventListener('click', e => showTab(headers, tabs, idx));
-                }
-            }
-        }
-    </script>
-    <script src="{% static 'related-app.js' %}"></script>
     <script src="{% static 'votes.js' %}"></script>
 {% endblock %}
