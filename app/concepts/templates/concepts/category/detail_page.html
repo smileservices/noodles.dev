@@ -26,7 +26,7 @@
         }
     </script>
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / Concepts / {{ result.name_tree }}
+        <a href="/">Homepage</a> / <a href="{{ result.category.absolute_url }}">{{ result.category.name_tree }}</a> / {{ result.name_tree }}
     </div>
     <div class="detail-page resource">
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
@@ -43,5 +43,4 @@
 
 {% block extra_js %}
     <script src="{% static 'votes.js' %}"></script>
-    <script src="{% static 'related-app.js' %}"></script>
 {% endblock %}

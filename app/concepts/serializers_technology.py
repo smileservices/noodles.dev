@@ -86,7 +86,7 @@ class TechnologyConceptSerializer(EditSuggestionSerializer):
 
     class Meta:
         model = TechnologyConcept
-        fields = ['pk', 'name', 'description', 'absolute_url', 'slug',
+        fields = ['pk', 'name', 'description','description_long', 'absolute_url', 'slug',
                   'parent', 'technology', 'experience_level',
                   'author', 'created_at', 'updated_at']
 

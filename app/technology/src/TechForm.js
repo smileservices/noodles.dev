@@ -198,7 +198,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                          error={errors.license_option}
                          isDisabled={Boolean(waiting)}
             />
-            <Textarea name="description" label={false}
+            <Textarea name="description" label="Short Description"
                       inputProps={{
                           ...makeStateProps('description'),
                           placeholder: "Description",
@@ -208,12 +208,13 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
                       smallText="Write a short description about it (max 256 chars)"
                       error={errors.description}
             />
-            <Textarea name="description-long" label={false}
+            <Textarea name="description-long" label="Long Description"
                       inputProps={{
                           ...makeStateProps('description_long'),
                           placeholder: "Long Description (use markdown)",
                           required: true,
-                          disabled: Boolean(waiting)
+                          disabled: Boolean(waiting),
+                          rows: 25
                       }}
                       smallText="Write a long description using markdown."
                       error={errors.description_long}

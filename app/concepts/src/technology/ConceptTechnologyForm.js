@@ -127,7 +127,7 @@ function ConceptTechnologyForm({formData, setFormData, extraData, submitCallback
                          error={errors.technology}
                          isDisabled={Boolean(waiting)}
             />
-            <Textarea name="description" label={false}
+            <Textarea name="description" label="Short Description"
                       inputProps={{
                           ...makeStateProps('description'),
                           placeholder: "Description",
@@ -136,6 +136,17 @@ function ConceptTechnologyForm({formData, setFormData, extraData, submitCallback
                       }}
                       smallText="Write a simple description of the concept"
                       error={errors.description}
+            />
+            <Textarea name="description-long" label="Long Description"
+                      inputProps={{
+                          ...makeStateProps('description_long'),
+                          placeholder: "Long Description (use markdown)",
+                          required: true,
+                          disabled: Boolean(waiting),
+                          rows: 25
+                      }}
+                      smallText="Write a long description using markdown."
+                      error={errors.description_long}
             />
             <SelectReact name="select-parent" label="Parent Concept (optional)"
                          smallText="A parent concept is a higher level category concept."

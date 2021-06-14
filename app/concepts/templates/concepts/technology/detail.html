@@ -1,3 +1,5 @@
+{% load markdownify %}
+
 <header>
     <div class="top">
         <a class="parent-technology" href="{% url 'tech-detail' result.technology.slug %}">
@@ -19,4 +21,7 @@
 </header>
 <div class="description">
     {{ result.description | linebreaks }}
+</div>
+<div class="description-long">
+    {{ result.description_long|markdownify }}
 </div>

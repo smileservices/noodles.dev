@@ -1,18 +1,23 @@
 <div class="related column-container" id="related-app">
-    <div class="skeleton header sm"></div>
-    <div class="tags">
-        <span class="skeleton tag"></span>
-        <span class="skeleton tag"></span>
-        <span class="skeleton tag"></span>
-    </div>
-    <div class="skeleton header sm"></div>
-    <div class="tags">
-        <span class="skeleton tag"></span>
-        <span class="skeleton tag"></span>
-        <span class="skeleton tag"></span>
-    </div>
-    <div class="skeleton header sm"></div>
-    <div class="skeleton result"></div>
-    <div class="skeleton result"></div>
-    <div class="skeleton result"></div>
+    <h4>Concepts of {{ result.technology.name }}</h4>
+    {% if result.technology.concepts.count > 0 %}
+        {% for result in result.technology.concepts.all %}
+            {% include 'concepts/technology/result.html' %}
+        {% endfor %}
+        <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.technology.pk }}">
+            Add another concept
+        </a>
+    {% endif %}
+    <h4>Resources about {{ result.name }}</h4>
+    {% if result.resources.count > 0 %}
+        {% for result in result.resources.all %}
+            {% include 'study_resource/result.html' %}
+        {% endfor %}
+        <a class="contribute" href="{% url 'create-resource' %}">Add a new learning resource</a>
+    {% else %}
+        <div class="alert alert-contribute">
+            <p>There are no resources added for {{ result.name }}.</p>
+            <a class="contribute" href="{% url 'create-resource' %}">Be the first to add a learning resource</a>
+        </div>
+    {% endif %}
 </div>

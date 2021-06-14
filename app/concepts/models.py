@@ -21,7 +21,8 @@ class AbstractConcept(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
         SENIOR = (3, 'Experienced')
 
     name = models.CharField(max_length=128, db_index=True)
-    description = models.TextField(max_length=1024, blank=True, null=True)
+    description = models.TextField(max_length=256, blank=True, null=True)
+    description_long = models.TextField(blank=True, null=True)
     experience_level = models.IntegerField(default=0, choices=ExperienceLevel.choices, db_index=True)
     author = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
     meta = JSONField(null=True, blank=True)

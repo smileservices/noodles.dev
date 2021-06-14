@@ -91,7 +91,7 @@ class CategoryConceptSerializer(EditSuggestionSerializer):
 
     class Meta:
         model = CategoryConcept
-        fields = ['pk', 'name', 'description', 'absolute_url', 'slug', 'parent',
+        fields = ['pk', 'name', 'description','description_long', 'absolute_url', 'slug', 'parent',
                   'experience_level', 'name_tree',
                   'author', 'category', 'created_at', 'updated_at']
 

@@ -64,9 +64,7 @@ def category_detail(request, id, slug):
         'children_concepts': detail.children.all(),
         'vote_url': reverse_lazy('concept-category-viewset-vote', kwargs={'pk': id})
     }
-    if request.user.is_authenticated:
-        return render(request, 'concepts/category/detail_page.html', data)
-    return render(request, 'concepts/category/detail_page_seo.html', data)
+    return render(request, 'concepts/category/detail_page.html', data)
 
 
 @login_required
@@ -110,9 +108,7 @@ def technology_detail(request, id, slug):
         'result': detail,
         'vote_url': reverse_lazy('concept-technology-viewset-vote', kwargs={'pk': id})
     }
-    if request.user.is_authenticated:
-        return render(request, 'concepts/technology/detail_page.html', data)
-    return render(request, 'concepts/technology/detail_page_seo.html', data)
+    return render(request, 'concepts/technology/detail_page.html', data)
 
 
 @login_required
