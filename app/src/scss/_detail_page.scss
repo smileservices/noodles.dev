@@ -76,6 +76,9 @@ main .detail-page {
       h2 {
         font-size: $fontsize-big*1.2;
       }
+      p {
+        margin: $padding-unit-sm 0;
+      }
       ol,ul {
         margin: $padding-unit $padding-unit-big;
         list-style-position: inside;
