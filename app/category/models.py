@@ -1,6 +1,7 @@
 from django.db import models
 from core.abstract_models import SluggableModelMixin
 from mptt.models import MPTTModel, TreeForeignKey
+from django.shortcuts import reverse
 
 class CategoryModelManager(models.Manager):
 
@@ -43,7 +44,8 @@ class CategoryModelManager(models.Manager):
 class Category(MPTTModel, SluggableModelMixin):
     name = models.CharField(max_length=128, db_index=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    description = models.TextField(max_length=1024, blank=True, null=True)
+    description = models.TextField(max_length=256, blank=True, null=True)
+    description_long = models.TextField(blank=True, null=True)
 
     class MPTTMeta:
         order_insertion_by = ['name']
@@ -55,4 +57,18 @@ class Category(MPTTModel, SluggableModelMixin):
     def name_tree(self):
         tree_list = [c.name for c in self.get_ancestors()]
         tree_list.append(self.name)
-        return ' > '.join(tree_list)
+        return ' / '.join(tree_list)
+
+    @property
+    def name_tree_urls(self):
+        tree_list = [c.get_ahref for c in self.get_ancestors()]
+        tree_list.append(self.get_ahref)
+        return ' / '.join(tree_list)
+
+    @property
+    def absolute_url(self):
+        return reverse('category-detail', kwargs={'slug': self.slug})
+
+    @property
+    def get_ahref(self):
+        return f"<a href='{reverse('category-detail', kwargs={'slug': self.slug})}'>{self.name}</a>"

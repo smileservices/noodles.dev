@@ -19,11 +19,11 @@
                 </a>
             {% endfor %}
             {% for cat in result.category.get_ancestors %}
-                <a href="{% url 'search_page' %}?tab=resources&category={{ cat }}">{{ cat }}</a>
+                {{ cat.get_ahref | safe }}
             {% endfor %}
-            <a href="{% url 'search_page' %}?tab=resources&category={{ result.category }}">{{ result.category }}</a>
+                {{ result.category.get_ahref | safe }}
             <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
-               itemprop="educationalLevel">Experience Level {{ result.experience_level_label }}</a>
+               itemprop="educationalLevel">{{ result.experience_level_label }} Level</a>
             <a href="{% url 'search_page' %}?tab=resources&price={{ result.price_label }}">{{ result.price_label }}</a>
             <a href="{% url 'search_page' %}?tab=resources&media={{ result.media_label }}"
                itemProp="learningResourceType">{{ result.media_label }}</a>

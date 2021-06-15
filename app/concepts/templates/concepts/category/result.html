@@ -1,0 +1,13 @@
+<span class="card">
+<div class="result concept-listing">
+        <div class="listing-title">
+            <h4 class="title" itemprop="name">
+            <a class="concept" href="{% url 'concept-category-detail' result.pk result.slug %}">{{ result.name }}</a>
+            </h4>
+            <div class="tags">
+                <span>{{ result.experience_level_label }} Level</span>
+            </div>
+        </div>
+    <p class="description">{{ result.description }}</p>
+</div>
+</span>

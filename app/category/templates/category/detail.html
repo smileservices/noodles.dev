@@ -1,0 +1,26 @@
+{% load markdownify %}
+
+<header>
+    <div class="top">
+        <div class="tags">
+            {% for cat in detail.get_ancestors %}
+                <a href="{% url 'category-detail' cat.slug %}">{{ cat }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <h1 class="title" itemProp="name">{{ detail.name }}</h1>
+</header>
+<div class="description">
+    {{ detail.description | linebreaks }}
+</div>
+
+{% if detail.children.count %}
+<h4>Sub-categories</h4>
+{% for result in detail.get_children %}
+    {% include 'category/result.html' %}
+{% endfor %}
+{% endif %}
+
+<div class="description-long">
+    {{ detail.description_long|markdownify }}
+</div>

@@ -1,5 +1,6 @@
 import time
 from django.http.response import JsonResponse
+from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -7,6 +8,22 @@ from rest_framework.decorators import action
 from technology.models import Technology
 from .serializers import CategorySerializer, CategorySerializerOption
 from concepts.serializers_category import CategoryConceptSerializerListing, CategoryConceptSerializerOption
+from . import models
+
+
+def detail(request, slug):
+    queryset = models.Category.objects
+    detail = queryset.select_related().get(slug=slug)
+    instance_descendants = detail.get_descendants(include_self=True)
+    techs = []
+    for cat in instance_descendants.select_related():
+        techs += cat.related_technologies.all()
+    data = {
+        'detail': detail,
+        'concepts': detail.concepts.all(),
+        'technologies': techs,
+    }
+    return render(request, 'category/detail_page.html', data)
 
 
 class CategoryViewset(ModelViewSet):

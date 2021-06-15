@@ -1,13 +1,17 @@
 <div class="result card technology">
     <header>
+        {% if result.logo.medium %}
         <div class="logo">
             <img src={{ result.logo.medium }} alt=""/>
         </div>
+        {% endif %}
         <div class="right">
             <h4 class="title"><a href={{ result.absolute_url }}>{{ result.name }}</a></h4>
             <div class="tags">
                 <span>{{ result.license_label }}</span>
-                <span>{{ result.category }}</span>
+                {% for category in result.category.all %}
+                    <span>{{ category.name_tree }}</span>
+                {% endfor %}
             </div>
         </div>
     </header>

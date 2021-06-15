@@ -4,9 +4,9 @@
     <div class="top">
         <div class="tags">
             {% for cat in result.category.get_ancestors %}
-                <a href="{% url 'search_page' %}?tab=resources&category={{ cat }}">{{ cat }}</a>
+                {{ cat.get_ahref | safe }}
             {% endfor %}
-            <a href="{% url 'search_page' %}?tab=resources&category={{ result.category }}">{{ result.category }}</a>
+            {{ result.category.get_ahref | safe }}
             <a href="{% url 'search_page' %}?tab=resources&experience_level={{ result.experience_level_label }}"
                itemprop="educationalLevel">Experience Level {{ result.experience_level_label }}</a>
         </div>

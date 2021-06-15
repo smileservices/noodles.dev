@@ -16,9 +16,9 @@
 {% for category in result.category.all %}
     <p class="tags">
         {% for cat in category.get_ancestors %}
-            <a href="{% url 'search_page' %}?tab=technologies&category={{ cat }}">{{ cat }}</a>
+            <a href="{% url 'category-detail' cat.slug%}">{{ cat }}</a>
         {% endfor %}
-        <a href="{% url 'search_page' %}?tab=technologies&category={{ category }}">{{ category }}</a>
+            <a href="{% url 'category-detail' category.slug %}">{{ category }}</a>
     </p>
 {% endfor %}
 <div class="description">

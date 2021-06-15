@@ -67,11 +67,21 @@ class CategoryConcept(MPTTModel, AbstractConcept):
     def name_tree(self):
         tree_list = [c.name for c in self.get_ancestors()]
         tree_list.append(self.name)
-        return ' > '.join(tree_list)
+        return ' / '.join(tree_list)
+
+    @property
+    def name_tree_urls(self):
+        tree_list = [c.get_ahref for c in self.get_ancestors()]
+        tree_list.append(self.get_ahref)
+        return ' / '.join(tree_list)
 
     @property
     def absolute_url(self):
         return reverse('concept-category-detail', kwargs={'id': self.id, 'slug': self.slug})
+
+    @property
+    def get_ahref(self):
+        return f"<a href='{self.absolute_url}'>{self.name}</a>"
 
 
 class TechnologyConcept(AbstractConcept):

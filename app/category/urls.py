@@ -1,11 +1,12 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from .views import CategoryViewset, CategoryViewsetSelect
+from . import views
 
 router = DefaultRouter()
-router.register('as-options', CategoryViewsetSelect, basename='categories-options')
-router.register('', CategoryViewset, basename='categories-viewset')
+router.register('as-options', views.CategoryViewsetSelect, basename='categories-options')
+router.register('', views.CategoryViewset, basename='categories-viewset')
 
 urlpatterns = [
+    path('<slug:slug>', views.detail, name="category-detail"),
     path('api/', include(router.urls)),
 ]

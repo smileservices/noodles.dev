@@ -111,7 +111,10 @@ export default function CategoryDetailComponent({category}) {
     return (
         <div className="category-detail">
             <h4 className="name">{category.name}</h4>
-            <div className="description">{category.description}</div>
+            <div className="description">
+                <p>{category.description}</p>
+                <a className="link detail" href={category.url}>view detail</a>
+            </div>
             <h5>Concepts</h5>
             <div className="concepts-container">
                 {<CategoryConceptsComponent category={category} />}

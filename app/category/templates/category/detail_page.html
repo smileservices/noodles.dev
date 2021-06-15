@@ -1,0 +1,31 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block meta_tags %}
+    <title>{{ detail.name }}</title>
+    <meta name="description"
+          content="{{ detail.description }}"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
+{% block content %}
+    <script>
+        const USER_ID = {% if user.is_staff %}0{% else %}{{ user.id }}{% endif %};
+    </script>
+    <div class="breadcrumbs">
+        <a href="/">Homepage</a> / {{ detail.name_tree_urls | safe }}
+    </div>
+    <div class="detail-page resource">
+        <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
+            <section id="detail" class="card" itemprop="itemReviewed" itemscope
+                     itemtype="https://schema.org/CreativeWork">
+                {% include 'category/detail.html' %}
+            </section>
+        </div>
+        {% include 'category/right_side.html' %}
+    </div>
+
+{% endblock %}

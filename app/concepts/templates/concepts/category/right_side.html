@@ -1,16 +1,13 @@
 <div class="related column-container" id="related-app">
     {% if children_concepts %}
         <h4>Children Concepts</h4>
-        <div class="tags">
-            {% for concept in children_concepts %}
-                <a href="{% url 'concept-category-detail' concept.pk concept.slug %}"
-                   class="concept">{{ concept.name }}</a>
-            {% endfor %}
-        </div>
+        {% for result in children_concepts %}
+            {% include 'concepts/category/result.html' %}
+        {% endfor %}
     {% endif %}
     {% if technology_concepts %}
         <h4>Technology Related Concepts</h4>
-        {% for concept in technology_concepts %}
+        {% for result in technology_concepts %}
             {% include 'concepts/technology/result.html' %}
         {% endfor %}
     {% endif %}

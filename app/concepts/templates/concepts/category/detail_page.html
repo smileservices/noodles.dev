@@ -18,7 +18,7 @@
 {% block content %}
     <script>
         const USER_ID = {% if user.is_staff %}0{% else %}{{ user.id }}{% endif %};
-        const RESOURCE_API_DELETE = "{% url 'study-resource-viewset-detail' result.id %}";
+        const RESOURCE_API_DELETE = "{% url 'concept-category-viewset-detail' result.id %}";
         const RESULT = {
             thumbs_up_array: JSON.parse("{{ result.thumbs_up_array }}"),
             thumbs_down_array: JSON.parse("{{ result.thumbs_down_array }}"),
@@ -26,7 +26,7 @@
         }
     </script>
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / <a href="{{ result.category.absolute_url }}">{{ result.category.name_tree }}</a> / {{ result.name_tree }}
+        <a href="/">Homepage</a> / Category <a href="{{ result.category.absolute_url }}">{{ result.category.name_tree }}</a> / Concepts {{ result.name_tree_urls | safe}}
     </div>
     <div class="detail-page resource">
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">

@@ -9,7 +9,7 @@ from collections import defaultdict
 from django.views.decorators.cache import cache_page
 from category.models import Category
 import time
-
+from django.shortcuts import reverse
 
 def homepage(request):
     return render(request, 'frontend/homepage.html')
@@ -109,6 +109,7 @@ def sidebar_categories(request):
             'pk': node.pk,
             'slug': node.slug,
             'name': node.name,
+            'url': reverse('category-detail', kwargs={'slug': node.slug}),
             'description': node.description,
             'descendants_count': node.get_descendant_count(),
             'children': [__get_descendants(d) for d in node.get_children()] if node.get_descendant_count() > 0 else [],
