@@ -20,7 +20,7 @@ from .models import Technology
 from django.views.decorators.cache import cache_page
 from app.settings import rewards
 
-
+@cache_page(60 * 60 * 2)
 def detail(request, slug):
     queryset = Technology.objects
     detail = queryset.select_related().get(slug=slug)

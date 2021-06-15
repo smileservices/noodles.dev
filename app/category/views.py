@@ -1,6 +1,7 @@
 import time
 from django.http.response import JsonResponse
 from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -10,7 +11,7 @@ from .serializers import CategorySerializer, CategorySerializerOption
 from concepts.serializers_category import CategoryConceptSerializerListing, CategoryConceptSerializerOption
 from . import models
 
-
+@cache_page(60 * 60 * 2)
 def detail(request, slug):
     queryset = models.Category.objects
     detail = queryset.select_related().get(slug=slug)

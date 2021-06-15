@@ -37,6 +37,14 @@ class AbstractConcept(SluggableModelMixin, DateTimeModelMixin, VotableMixin):
     def experience_level_label(self):
         return self.ExperienceLevel(self.experience_level).label
 
+    @property
+    def get_ahref(self):
+        return f"<a class='concept' href='{self.absolute_url}'>{self.name}</a>"
+
+    @property
+    def absolute_url(self):
+        raise NotImplementedError('Must implement absolute_url method')
+
 
 class CategoryConcept(MPTTModel, AbstractConcept):
     parent = TreeForeignKey(
@@ -78,10 +86,6 @@ class CategoryConcept(MPTTModel, AbstractConcept):
     @property
     def absolute_url(self):
         return reverse('concept-category-detail', kwargs={'id': self.id, 'slug': self.slug})
-
-    @property
-    def get_ahref(self):
-        return f"<a href='{self.absolute_url}'>{self.name}</a>"
 
 
 class TechnologyConcept(AbstractConcept):

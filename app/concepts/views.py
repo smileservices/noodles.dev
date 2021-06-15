@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
+from django.views.decorators.cache import cache_page
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -54,7 +55,7 @@ class TechnologyConceptEditSuggestionViewset(EditSuggestionViewset):
     queryset = serializers_technology.TechnologyConceptEditSuggestionSerializer.queryset
     permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
 
-
+@cache_page(60 * 60 * 2)
 def category_detail(request, id, slug):
     queryset = models.CategoryConcept.objects
     detail = queryset.select_related().get(pk=id)
@@ -100,7 +101,7 @@ def category_create(request):
         data['data']['preselected_category'] = json.dumps(CategoryConceptSerializerOption(category).data)
     return render(request, 'concepts/category/create_page.html', data)
 
-
+@cache_page(60 * 60 * 2)
 def technology_detail(request, id, slug):
     queryset = models.TechnologyConcept.objects
     detail = queryset.select_related().get(pk=id)

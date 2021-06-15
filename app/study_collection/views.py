@@ -17,7 +17,7 @@ from . import serializers, filters
 from .models import CollectionResources, Collection
 from django.views.decorators.cache import cache_page
 
-
+@cache_page(60 * 60 * 2)
 def detail(request, id, slug):
     queryset = Collection.objects
     resource = queryset.get(pk=id)
@@ -36,9 +36,7 @@ def detail(request, id, slug):
             'vote_url': reverse_lazy('collection-viewset-vote', kwargs={'pk': resource.pk}),
         }
     }
-    if request.user.is_authenticated:
-        return render(request, 'study_collection/detail_page.html', data)
-    return render(request, 'study_collection/detail_page.seo.html', data)
+    return render(request, 'study_collection/detail_page.html', data)
 
 
 def list_all(request):

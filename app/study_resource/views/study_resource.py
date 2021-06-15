@@ -3,7 +3,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
-
+from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework.filters import OrderingFilter
@@ -19,10 +19,11 @@ from study_resource import serializers
 from concepts.serializers_category import CategoryConceptSerializerOption
 from concepts.serializers_technology import TechnologyConceptSerializerOption
 
-from concepts.models import CategoryConcept,TechnologyConcept
+from concepts.models import CategoryConcept, TechnologyConcept
 
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
 from app.settings import rewards
+
 
 def list_all(request):
     queryset = StudyResource.objects.all()
@@ -39,7 +40,7 @@ def list_all(request):
     }
     return render(request, 'study_resource/list_page_seo.html', data)
 
-
+@cache_page(60 * 60 * 2)
 def detail(request, id, slug):
     queryset = StudyResource.objects
     resource = queryset.select_related().get(pk=id)
@@ -61,11 +62,9 @@ def detail(request, id, slug):
                 'collection-viewset-set-resource-to-collections'),
         }
     }
-    if request.user.is_authenticated:
-        return render(request, 'study_resource/detail_page.html', data)
-    # data['reviews'] = resource.reviews.order_by('-created_at').select_related(),
-    # this shit is driving me nuts
-    return render(request, 'study_resource/detail_page_seo.html', data)
+    if request.user_agent.is_bot:
+        return render(request, 'study_resource/detail_page_seo.html', data)
+    return render(request, 'study_resource/detail_page.html', data)
 
 
 @login_required

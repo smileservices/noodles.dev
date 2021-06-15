@@ -6,13 +6,14 @@ from django.conf.urls.static import static
 from django.conf.urls import handler404, handler500
 from frontend.views import error_404, error_500
 from django.contrib.sitemaps.views import sitemap
-from .sitemap import TechnologiesSiteMap, CategoryConceptsSiteMap, TechnologyConceptsSiteMap, ResourcesSiteMap, CollectionsSiteMap
+from .sitemap import TechnologiesSiteMap, CategoryConceptsSiteMap, TechnologyConceptsSiteMap, ResourcesSiteMap, CollectionsSiteMap, CategoriesSiteMap
 
 router = routers.DefaultRouter()
 
 sitemaps = {
-    'technologies': TechnologiesSiteMap,
+    'categories': CategoriesSiteMap,
     'category_concepts': CategoryConceptsSiteMap,
+    'technologies': TechnologiesSiteMap,
     'technology_concepts': TechnologyConceptsSiteMap,
     'resources': ResourcesSiteMap,
     'collections': CollectionsSiteMap,

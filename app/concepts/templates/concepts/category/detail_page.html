@@ -4,12 +4,8 @@
 
 {% block meta_tags %}
     <title>{{ result.name }}</title>
-    <meta name="description"
-          content="{{ result.summary }}"/>
-    <meta name="keywords" content="
-
-
-            {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies_set.all %}{{ tech }}, {% endfor %}"/>
+    <meta name="description" content="{{ result.description }}"/>
+    <meta name="keywords" content="{% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>

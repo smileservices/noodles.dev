@@ -4,8 +4,7 @@
 
 {% block meta_tags %}
     <title>{{ detail.name }}</title>
-    <meta name="description"
-          content="{{ detail.description }}"/>
+    <meta name="description" content="{{ detail.description }}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -16,7 +15,7 @@
         const USER_ID = {% if user.is_staff %}0{% else %}{{ user.id }}{% endif %};
     </script>
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / {{ detail.name_tree_urls | safe }}
+        <a href="/">Homepage</a> / Category {{ detail.name_tree_urls | safe }}
     </div>
     <div class="detail-page resource">
         <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">

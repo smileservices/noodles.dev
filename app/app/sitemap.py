@@ -3,6 +3,18 @@ from technology.models import Technology
 from concepts.models import CategoryConcept, TechnologyConcept
 from study_resource.models import StudyResource
 from study_collection.models import Collection
+from category.models import Category
+
+
+class CategoriesSiteMap(Sitemap):
+    changefreq = "weekly"
+    priority = 0.5
+
+    def items(self):
+        return Category.objects.filter().order_by('pk')
+
+    def location(self, obj):
+        return obj.absolute_url
 
 
 class TechnologiesSiteMap(Sitemap):

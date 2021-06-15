@@ -4,6 +4,9 @@
 <div class="result resource" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
     <div class="left">
         <div class="tags">
+        <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
+           itemprop="educationalLevel">{{ result.experience_level_label }}</a>
+        {{ result.category.get_ahref | safe }}
             {% for tech in result.studyresourcetechnology_set.all %}
                 <a class="tech" href="{{ tech.absolute_url }}">
                     <span>
@@ -15,9 +18,12 @@
                     </span>
                 </a>
             {% endfor %}
-            <a href="{% url 'search_page' %}?tab=resources&category={{ result.category }}">{{ result.category }}</a>
-            <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
-               itemprop="educationalLevel">{{ result.experience_level_label }}</a>
+            {% for con in result.category_concepts.all %}
+                {{ con.get_ahref | safe }}
+            {% endfor %}
+            {% for con in result.technology_concepts.all %}
+                {{ con.get_ahref | safe }}
+            {% endfor %}
         </div>
 
         <div class="listing-title">

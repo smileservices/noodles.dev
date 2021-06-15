@@ -9,8 +9,8 @@
         </a>
     {% endif %}
     <h4>Resources about {{ result.name }}</h4>
-    {% if result.resources.count > 0 %}
-        {% for result in result.resources.all %}
+    {% if result.related_resources.count > 0 %}
+        {% for result in result.related_resources.all %}
             {% include 'study_resource/result.html' %}
         {% endfor %}
         <a class="contribute" href="{% url 'create-resource' %}">Add a new learning resource</a>
