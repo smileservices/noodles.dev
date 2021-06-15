@@ -21,6 +21,10 @@
       color: var(--color-text-white);
     }
 
+    a.concept {
+      color: var(--color-blue-dark);
+    }
+
     a:hover {
       text-decoration: underline;
     }

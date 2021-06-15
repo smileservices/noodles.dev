@@ -28,7 +28,7 @@ def detail(request, slug):
                      detail.studyresourcetechnology_set.values('study_resource_id').all()]
     data = {
         'result': detail,
-        'concepts': detail.concepts.values('name', 'pk', 'slug', 'description').order_by('experience_level').all(),
+        'concepts': detail.concepts.order_by('experience_level').all(),
         'collections': detail.collections.order_by('created_at').select_related().all(),
         'resources': StudyResource.objects.filter(pk__in=resources_ids).order_by_rating_then_publishing_date().select_related(),
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
