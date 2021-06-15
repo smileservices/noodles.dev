@@ -40,7 +40,7 @@ def list_all(request):
     }
     return render(request, 'study_resource/list_page_seo.html', data)
 
-@cache_page(60 * 60 * 2)
+
 def detail(request, id, slug):
     queryset = StudyResource.objects
     resource = queryset.select_related().get(pk=id)

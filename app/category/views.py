@@ -11,7 +11,7 @@ from .serializers import CategorySerializer, CategorySerializerOption
 from concepts.serializers_category import CategoryConceptSerializerListing, CategoryConceptSerializerOption
 from . import models
 
-@cache_page(60 * 60 * 2)
+
 def detail(request, slug):
     queryset = models.Category.objects
     detail = queryset.select_related().get(slug=slug)

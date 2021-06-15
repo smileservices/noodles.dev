@@ -26,7 +26,8 @@ class ConceptCategoryViewset(ResourceWithEditSuggestionVieset):
     @action(methods=['GET'], detail=False)
     def options(self, request, *args, **kwargs):
         return Response({
-            'experience_level': [{'value': c[0], 'label': c[1]} for c in models.CategoryConcept.ExperienceLevel.choices],
+            'experience_level': [{'value': c[0], 'label': c[1]} for c in
+                                 models.CategoryConcept.ExperienceLevel.choices],
             'concepts': [CategoryConceptSerializerOption(c).data for c in models.CategoryConcept.objects.all()]
         })
 
@@ -45,7 +46,8 @@ class ConceptTechnologyViewset(ResourceWithEditSuggestionVieset):
     @action(methods=['GET'], detail=False)
     def options(self, request, *args, **kwargs):
         return Response({
-            'experience_level': [{'value': c[0], 'label': c[1]} for c in models.TechnologyConcept.ExperienceLevel.choices],
+            'experience_level': [{'value': c[0], 'label': c[1]} for c in
+                                 models.TechnologyConcept.ExperienceLevel.choices],
             'technologies': [TechnologySerializerOption(t).data for t in Technology.objects.all()]
         })
 
@@ -55,7 +57,7 @@ class TechnologyConceptEditSuggestionViewset(EditSuggestionViewset):
     queryset = serializers_technology.TechnologyConceptEditSuggestionSerializer.queryset
     permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
 
-@cache_page(60 * 60 * 2)
+
 def category_detail(request, id, slug):
     queryset = models.CategoryConcept.objects
     detail = queryset.select_related().get(pk=id)
@@ -85,6 +87,7 @@ def category_edit(request, id):
     }
     return render(request, 'concepts/category/edit_page.html', data)
 
+
 @login_required
 def category_create(request):
     data = {
@@ -101,7 +104,7 @@ def category_create(request):
         data['data']['preselected_category'] = json.dumps(CategoryConceptSerializerOption(category).data)
     return render(request, 'concepts/category/create_page.html', data)
 
-@cache_page(60 * 60 * 2)
+
 def technology_detail(request, id, slug):
     queryset = models.TechnologyConcept.objects
     detail = queryset.select_related().get(pk=id)
@@ -128,6 +131,7 @@ def technology_edit(request, id):
         }
     }
     return render(request, 'concepts/technology/edit_page.html', data)
+
 
 @login_required
 def technology_create(request):
