@@ -22,15 +22,15 @@
                 {{ cat.get_ahref | safe }}
             {% endfor %}
                 {{ result.category.get_ahref | safe }}
-            <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
+            <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}" rel="nofollow noopener"
                itemprop="educationalLevel">{{ result.experience_level_label }} Level</a>
-            <a href="{% url 'search_page' %}?tab=resources&price={{ result.price_label }}">{{ result.price_label }}</a>
-            <a href="{% url 'search_page' %}?tab=resources&media={{ result.media_label }}"
+            <a href="{% url 'search_page' %}?tab=resources&price={{ result.price_label }}" rel="nofollow noopener">{{ result.price_label }}</a>
+            <a href="{% url 'search_page' %}?tab=resources&media={{ result.media_label }}" rel="nofollow noopener"
                itemProp="learningResourceType">{{ result.media_label }}</a>
         </div>
         <div id="detail-toolbar" class="toolbar">
-            <a href="{% url 'study-resource-edit' result.pk %}">Suggest Edit</a>
-            <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" class="icon-bookmark" id=""></a>
+            <a href="{% url 'study-resource-edit' result.pk %}" rel="nofollow noopener">Suggest Edit</a>
+            <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" rel="nofollow noopener" class="icon-bookmark" id=""></a>
         </div>
     </div>
     <h1 class="title" itemProp="name">{{ result.name }}</h1>
@@ -42,7 +42,7 @@
         <span class="stars">{% star_rating result.rating %}</span>
         <span itemprop="ratingCount">{{ result.reviews_count }}</span> Reviews
     {% else %}
-        <span itemprop="ratingCount">No reviews yet. <a href="{{ result.absolute_url }}">Contribute</a></span>
+        <span itemprop="ratingCount">Be the first to write a review</span>
     {% endif %}
 </div>
 
@@ -61,11 +61,10 @@
 
 <div class="tags" itemprop="keywords">
     {% for tag in result.tags.all %}
-        <a class="tag" href="{% url 'search_page' %}?tab=resources&tags={{ tag.id }}"># {{ tag }}</a>
+        <a class="tag" href="{% url 'search_page' %}?tab=resources&tags={{ tag.id }}" rel="nofollow noopener"># {{ tag }}</a>
     {% endfor %}
 </div>
 
 
-<a href="{{ result.url }}" target="_blank" class="btn resource-url">Go To Resource</a>
-<span class="published">Added here on {{ result.created_at }} By <a
-        href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
+<a href="{{ result.url }}" target="_blank" class="btn resource-url" rel="nofollow noopener">Go To Resource</a>
+<span class="published">Added here on {{ result.created_at }} By <a href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>

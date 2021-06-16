@@ -26,6 +26,6 @@
 
 <div class="tags" itemProp="keywords">
     {% for tag in result.tags.all %}
-        <a class="tag" href="{% url 'search_page' %}?tab=collections&tags={{ tag }}"># {{ tag }}</a>
+        <a class="tag" href="{% url 'search_page' %}?tab=collections&tags={{ tag }}" rel="nofollow noopener"># {{ tag }}</a>
     {% endfor %}
 </div>

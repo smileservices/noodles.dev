@@ -8,10 +8,10 @@
             {% endfor %}
             {{ result.category.get_ahref | safe }}
             <a href="{% url 'search_page' %}?tab=resources&experience_level={{ result.experience_level_label }}"
-               itemprop="educationalLevel">Experience Level {{ result.experience_level_label }}</a>
+               itemprop="educationalLevel" rel="nofollow noopener">Experience Level {{ result.experience_level_label }}</a>
         </div>
         <div id="detail-toolbar" class="toolbar">
-            <a href="{% url 'category-concept-edit' result.pk %}">Suggest Edit</a>
+            <a href="{% url 'category-concept-edit' result.pk %}" rel="nofollow noopener">Suggest Edit</a>
         </div>
     </div>
     <h1 class="title" itemProp="name">{{ result.name }}</h1>

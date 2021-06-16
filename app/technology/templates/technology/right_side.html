@@ -4,12 +4,12 @@
         {% for result in concepts %}
             {% include 'concepts/technology/result.html' %}
         {% endfor %}
-        <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}">Add a new
+        <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}" rel="nofollow noopener">Add a new
             concept</a>
     {% else %}
         <div class="alert alert-contribute">
             <p>There are no concepts specific to {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}">
+            <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}" rel="nofollow noopener">
                 Be the first to add a concept
             </a>
         </div>
@@ -19,11 +19,11 @@
         {% for result in collections %}
             {% include 'study_collection/result.html' %}
         {% endfor %}
-        <a class="contribute" href="{% url 'my-collections' %}">Create a new one</a>
+        <a class="contribute" href="{% url 'my-collections' %}" rel="nofollow noopener">Create a new one</a>
     {% else %}
         <div class="alert alert-contribute">
             <p>There are no collections for {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'my-collections' %}">Be the first to create a collection</a>
+            <a class="contribute" href="{% url 'my-collections' %}" rel="nofollow noopener">Be the first to create a collection</a>
         </div>
     {% endif %}
     <h4>Resources</h4>
@@ -31,11 +31,11 @@
         {% for result in resources %}
             {% include 'study_resource/result.html' %}
         {% endfor %}
-        <a class="contribute" href="{% url 'create-resource' %}">Add a new learning resource</a>
+        <a class="contribute" href="{% url 'create-resource' %}" rel="nofollow noopener">Add a new learning resource</a>
     {% else %}
         <div class="alert alert-contribute">
             <p>There are no resources added for {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'create-resource' %}">Be the first to add a learning resource</a>
+            <a class="contribute" href="{% url 'create-resource' %}" rel="nofollow noopener">Be the first to add a learning resource</a>
         </div>
     {% endif %}
 </section>

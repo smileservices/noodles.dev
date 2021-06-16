@@ -16,11 +16,11 @@
         {% for result in result.related_resources.all %}
             {% include 'study_resource/result.html' %}
         {% endfor %}
-        <a class="contribute" href="{% url 'create-resource' %}">Add a new learning resource</a>
+        <a class="contribute" href="{% url 'create-resource' %}" rel="nofollow noopener">Add a new learning resource</a>
     {% else %}
         <div class="alert alert-contribute">
             <p>There are no resources added for {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'create-resource' %}">Be the first to add a learning resource</a>
+            <a class="contribute" href="{% url 'create-resource' %}" rel="nofollow noopener">Be the first to add a learning resource</a>
         </div>
     {% endif %}
 </div>
