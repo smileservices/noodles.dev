@@ -284,8 +284,8 @@ MARKDOWNIFY = {
             'hr',
             'blockquote',
             'ul', 'ol', 'li',
-            'strong', 'b', 'i', 'em'
-            'a',
+            'strong', 'b', 'i', 'em',
+            'img', 'a',
             # for code highlighting
             'code',
             'pre',
@@ -293,12 +293,16 @@ MARKDOWNIFY = {
             'div',
         ],
         "WHITELIST_ATTRS": [
-            'class',
+            'class', 'src', 'alt', 'href'
         ],
         "MARKDOWN_EXTENSIONS": [
             'markdown.extensions.extra',
             'markdown.extensions.codehilite',
             'markdown.extensions.sane_lists',
+        ],
+        "MARKDOWNIFY_WHITELIST_PROTOCOLS": [
+            'http',
+            'https',
         ]
     }
 }
