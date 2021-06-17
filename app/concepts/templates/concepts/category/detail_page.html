@@ -25,9 +25,8 @@
         <a href="/">Homepage</a> / Category <a href="{{ result.category.absolute_url }}">{{ result.category.name_tree }}</a> / Concepts {{ result.name_tree_urls | safe}}
     </div>
     <div class="detail-page resource">
-        <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
-            <section id="detail" class="card" itemprop="itemReviewed" itemscope
-                     itemtype="https://schema.org/CreativeWork">
+        <div class="column-container">
+            <section id="detail" class="card" itemscope itemtype="https://schema.org/CreativeWork">
                 {% include 'concepts/category/detail.html' %}
                 <div id="votes-app" class="thumbs"></div>
             </section>

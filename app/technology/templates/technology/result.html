@@ -1,9 +1,9 @@
 <div class="result card technology">
     <header>
         {% if result.logo.medium %}
-        <div class="logo">
-            <img src={{ result.logo.medium }} alt=""/>
-        </div>
+            <div class="logo">
+                <img src={{ result.logo.medium }} alt=""/>
+            </div>
         {% endif %}
         <div class="right">
             <h4 class="title"><a href={{ result.absolute_url }}>{{ result.name }}</a></h4>
@@ -30,4 +30,7 @@
         <div class="down"><span class="icon-thumbs-o-down"> </span><span>{{ result.thumbs_down }}</span></div>
         <div class="up"><span class="icon-thumbs-o-up"> </span><span>{{ result.thumbs_up }}</span></div>
     </div>
+
+    <meta itemprop="name" content="{{ result.name }}"/>
+    <meta itemprop="summary" content="{{ result.description }}"/>
 </div>

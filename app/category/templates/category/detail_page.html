@@ -18,8 +18,8 @@
         <a href="/">Homepage</a> / Category {{ detail.name_tree_urls | safe }}
     </div>
     <div class="detail-page resource">
-        <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
-            <section id="detail" class="card" itemprop="itemReviewed" itemscope
+        <div class="column-container">
+            <section id="detail" class="card" itemscope
                      itemtype="https://schema.org/CreativeWork">
                 {% include 'category/detail.html' %}
             </section>

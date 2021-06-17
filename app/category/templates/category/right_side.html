@@ -4,11 +4,11 @@
         {% for result in concepts %}
             {% include 'concepts/category/result.html' %}
         {% endfor %}
-        <a class="contribute" href="{% url 'category-concept-create' %}?category={{ detail.pk }}">
+        <a class="contribute" href="{% url 'category-concept-create' %}?category={{ detail.pk }}" rel="nofollow noopener">
             Add a new concept
         </a>
     {% else %}
-        <a class="contribute" href="{% url 'category-concept-create' %}?category={{ detail.pk }}">
+        <a class="contribute" href="{% url 'category-concept-create' %}?category={{ detail.pk }}" rel="nofollow noopener">
             Be the first to add a concept
         </a>
     {% endif %}
@@ -17,11 +17,11 @@
         {% for result in technologies %}
             {% include 'technology/result.html' %}
         {% endfor %}
-        <a class="contribute" href="{% url 'tech-create' %}">
+        <a class="contribute" href="{% url 'tech-create' %}" rel="nofollow noopener">
             Add a new technology
         </a>
     {% else %}
-        <a class="contribute" href="{% url 'tech-create' %}">
+        <a class="contribute" href="{% url 'tech-create' %}" rel="nofollow noopener">
             Be the first to add a technology
         </a>
     {% endif %}

@@ -1,6 +1,8 @@
-<div class="result card category">
-    <h4 class="title" itemprop="name">
+<div class="result card category" itemscope itemtype="https://schema.org/CreativeWork">
+    <h4 class="title">
         <a class="concept" href="{% url 'category-detail' result.slug %}">{{ result.name_tree_urls | safe }}</a>
     </h4>
     <p>{{ result.description }}</p>
+    <meta itemprop="name" content="{{ result.name }}"/>
+    <meta itemprop="summary" content="{{ result.description }}"/>
 </div>

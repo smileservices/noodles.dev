@@ -10,13 +10,12 @@
             <a href="{% url 'technology-concept-edit' result.pk %}" rel="nofollow noopener">Suggest Edit</a>
         </div>
     </div>
-    <h2 class="title" itemProp="name">{{ result.name }}</h2>
+    <h2 class="title">{{ result.name }}</h2>
     <div class="tags">
         {% if result.parent %}
             <a href="{% url 'concept-category-detail' result.parent.pk result.parent.slug %}" class="concept">{{ result.parent.name_tree }}</a>
         {% endif %}
-        <a href="{% url 'search_page' %}?tab=resources&experience_level={{ result.experience_level_label }}"
-           itemprop="educationalLevel" rel="nofollow noopener">Experience Level {{ result.experience_level_label }}</a>
+        <a href="{% url 'search_page' %}?tab=resources&experience_level={{ result.experience_level_label }}" rel="nofollow noopener">Experience Level {{ result.experience_level_label }}</a>
     </div>
 </header>
 <div class="description">
@@ -25,3 +24,9 @@
 <div class="description-long">
     {{ result.description_long|markdownify }}
 </div>
+
+
+<meta itemprop="name" content="{{ result.name }}" />
+<meta itemprop="summary" content="{{ result.description }}" />
+<meta itemprop="educationalLevel" content="{{ result.experience_level_label }}" />
+<meta itemprop="keywords" content="{{ result.technology.name }}" />

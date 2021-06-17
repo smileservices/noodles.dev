@@ -35,9 +35,8 @@
         <a href="/">Homepage</a> / Technology <a href="{{ result.absolute_url }}">{{ result.name }}</a>
     </div>
     <div class="detail-page technology">
-        <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
-            <section id="detail" class="technology-detail" itemprop="itemReviewed" itemscope
-                     itemtype="https://schema.org/CreativeWork">
+        <div class="column-container">
+            <section id="detail" class="technology-detail" itemscope itemtype="https://schema.org/CreativeWork">
                 {% include 'technology/detail.html' %}
                 <div id="votes-app" class="thumbs"></div>
             </section>

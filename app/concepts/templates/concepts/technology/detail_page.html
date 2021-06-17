@@ -24,16 +24,14 @@
         <a href="/">Homepage</a> / <a href="{{ result.technology.absolute_url }}">{{ result.technology.name }}</a> / <a href="{{ result.absolute_url }}">{{ result.name }}</a>
     </div>
     <div class="detail-page resource">
-        <div class="column-container" itemscope itemtype="https://schema.org/AggregateRating">
-            <section id="detail" class="card" itemprop="itemReviewed" itemscope
-                     itemtype="https://schema.org/CreativeWork">
+        <div class="column-container">
+            <section id="detail" class="card" itemscope itemtype="https://schema.org/CreativeWork">
                 {% include 'concepts/technology/detail.html' %}
                 <div id="votes-app" class="thumbs"></div>
             </section>
         </div>
         {% include 'concepts/technology/right_side.html' %}
     </div>
-
 {% endblock %}
 
 {% block extra_js %}

@@ -1,11 +1,10 @@
 {% load star_rating %}
 
-<span class="card" itemscope itemtype="https://schema.org/AggregateRating">
+<span class="card">
 <div class="result resource" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
     <div class="left">
         <div class="tags">
-        <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
-           itemprop="educationalLevel">{{ result.experience_level_label }}</a>
+        <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}">{{ result.experience_level_label }}</a>
         {{ result.category.get_ahref | safe }}
             {% for tech in result.studyresourcetechnology_set.all %}
                 <a class="tech" href="{{ tech.absolute_url }}">
@@ -27,8 +26,8 @@
         </div>
 
         <div class="listing-title">
-            <h4 class="title" itemprop="name">
-                <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">{{ result.name }}</a>
+            <h4 class="title">
+                <a href="{% url 'study-resource-detail' result.id result.slug %}">{{ result.name }}</a>
             </h4>
             <span class="published">{{ result.publication_date }} By {{ result.published_by }}</span>
         </div>
@@ -36,7 +35,7 @@
             {{ result.summary }}
         </div>
 
-        <div class="tags" itemprop="keywords">
+        <div class="tags">
         {% for tag in result.tags.all %}
             <a class="tag" href="{% url 'search_page' %}?tab=resources&tags={{ tag.name }}"># {{ tag }}</a>
         {% endfor %}
@@ -45,20 +44,30 @@
         <div class="rating">
             {% if result.rating %}
                 <span class="stars">{% star_rating result.rating %}</span>
-                <span itemprop="ratingCount">{{ result.reviews_count }}</span> Reviews
+                <span>{{ result.reviews_count }}</span> Reviews
             {% else %}
-                <span itemprop="ratingCount">No reviews yet. <a href="{{ result.absolute_url }}">Contribute</a></span>
+                <span>No reviews yet. <a href="{{ result.absolute_url }}">Contribute</a></span>
             {% endif %}
         </div>
     </div>
     {% if result.image %}
         <div class="right">
         <div class="image">
-            <a itemprop="name" href="{% url 'study-resource-detail' result.id result.slug %}">
+            <a href="{% url 'study-resource-detail' result.id result.slug %}">
                 <img class="primary-image" src="{{ result.image.small }}" alt="">
             </a>
         </div>
         </div>
     {% endif %}
+
+    <meta itemprop="name" content="{{ result.name }}"/>
+    <meta itemprop="educationLevel" content="{{ result.experience_level_label }}"/>
+    <meta itemprop="summary" content="{{ result.summary }}"/>
+    <meta itemprop="keywords" content="{% for tag in result.tags.all %}{{ tag }},{% endfor %}{{ result.category.name }}"/>
+    {% if result.rating %}
+        <meta itemprop="ratingCount" content="{{ result.reviews.count }}"/>
+        <meta itemprop="ratingValue" content="{{ result.rating }}"/>
+    {% endif %}
+
 </div>
 </span>

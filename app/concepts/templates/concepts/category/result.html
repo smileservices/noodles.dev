@@ -1,7 +1,7 @@
 <span class="card">
-<div class="result concept-listing">
+<div class="result concept-listing" itemscope itemtype="https://schema.org/AggregateRating">
         <div class="listing-title">
-            <h4 class="title" itemprop="name">
+            <h4 class="title">
             <a class="concept" href="{% url 'concept-category-detail' result.pk result.slug %}">{{ result.name }}</a>
             </h4>
             <div class="tags">
@@ -9,5 +9,9 @@
             </div>
         </div>
     <p class="description">{{ result.description }}</p>
+
+    <meta itemprop="name" content="{{ result.name }}"/>
+    <meta itemprop="summary" content="{{ result.description }}"/>
+    <meta itemprop="educationalLevel" content="{{ result.experience_level_label }}"/>
 </div>
 </span>

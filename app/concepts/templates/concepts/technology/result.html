@@ -1,14 +1,28 @@
 <span class="card">
-<div class="result concept-listing">
+<div class="result concept-listing" itemscope itemtype="">
         <div class="listing-title">
-            <h4 class="title" itemprop="name">
+            <h4 class="title">
             <a class="concept" href="{% url 'concept-technology-detail' result.pk result.slug %}">{{ result.name }}</a>
             </h4>
             <div class="tags">
+                <a class="tech" href="{{ tech.absolute_url }}">
+                    <span>
+                    <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.50198 4.5L11.002 1H2.00198V0.5C2.00198 0.224 1.77798 0 1.50198 0C1.22598 0 1.00198 0.224 1.00198 0.5V11.5C1.00198 11.776 1.22598 12 1.50198 12C1.77798 12 2.00198 11.776 2.00198 11.5V8H11.002L9.50198 4.5Z"
+                          fill="black"/>
+                    </svg>
+                     {{ result.technology.name }}
+                    </span>
+                </a>
                 <span>{{ result.experience_level_label }}</span>
-                {{ result.parent.get_ahref | safe}}
+                {{ result.parent.get_ahref | safe }}
             </div>
         </div>
     <p class="description">{{ result.description }}</p>
+
+    <meta itemprop="name" content="{{ result.name }}"/>
+    <meta itemprop="summary" content="{{ result.description }}"/>
+    <meta itemprop="educationalLevel" content="{{ result.experience_level_label }}"/>
+    <meta itemprop="keywords" content="{{ result.technology.name }},concept"/>
 </div>
 </span>

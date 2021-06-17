@@ -21,28 +21,31 @@
             {% for cat in result.category.get_ancestors %}
                 {{ cat.get_ahref | safe }}
             {% endfor %}
-                {{ result.category.get_ahref | safe }}
-            <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}" rel="nofollow noopener"
-               itemprop="educationalLevel">{{ result.experience_level_label }} Level</a>
-            <a href="{% url 'search_page' %}?tab=resources&price={{ result.price_label }}" rel="nofollow noopener">{{ result.price_label }}</a>
-            <a href="{% url 'search_page' %}?tab=resources&media={{ result.media_label }}" rel="nofollow noopener"
-               itemProp="learningResourceType">{{ result.media_label }}</a>
+            {{ result.category.get_ahref | safe }}
+            <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}"
+               rel="nofollow noopener"
+            >{{ result.experience_level_label }} Level</a>
+            <a href="{% url 'search_page' %}?tab=resources&price={{ result.price_label }}"
+               rel="nofollow noopener">{{ result.price_label }}</a>
+            <a href="{% url 'search_page' %}?tab=resources&media={{ result.media_label }}"
+               rel="nofollow noopener">{{ result.media_label }}</a>
         </div>
         <div id="detail-toolbar" class="toolbar">
             <a href="{% url 'study-resource-edit' result.pk %}" rel="nofollow noopener">Suggest Edit</a>
-            <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" rel="nofollow noopener" class="icon-bookmark" id=""></a>
+            <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" rel="nofollow noopener"
+               class="icon-bookmark" id=""></a>
         </div>
     </div>
-    <h1 class="title" itemProp="name">{{ result.name }}</h1>
+    <h1 class="title">{{ result.name }}</h1>
 </header>
 
 <div class="published">Published on {{ result.publication_date }} by {{ result.published_by }}</div>
 <div class="rating">
     {% if result.rating %}
         <span class="stars">{% star_rating result.rating %}</span>
-        <span itemprop="ratingCount">{{ result.reviews_count }}</span> Reviews
+        <span>{{ result.reviews_count }}</span> Reviews
     {% else %}
-        <span itemprop="ratingCount">Be the first to write a review</span>
+        <span>Be the first to write a review</span>
     {% endif %}
 </div>
 
@@ -50,7 +53,7 @@
     {{ result.summary | linebreaks }}
 </div>
 
-<div class="tags" itemprop="keywords">
+<div class="tags">
     {% for concept in result.category_concepts.all %}
         <a class="concept" href="{{ concept.absolute_url }}">{{ concept.name_tree }}</a>
     {% endfor %}
@@ -59,12 +62,23 @@
     {% endfor %}
 </div>
 
-<div class="tags" itemprop="keywords">
+<div class="tags">
     {% for tag in result.tags.all %}
-        <a class="tag" href="{% url 'search_page' %}?tab=resources&tags={{ tag.id }}" rel="nofollow noopener"># {{ tag }}</a>
+        <a class="tag" href="{% url 'search_page' %}?tab=resources&tags={{ tag.id }}"
+           rel="nofollow noopener"># {{ tag }}</a>
     {% endfor %}
 </div>
 
-
 <a href="{{ result.url }}" target="_blank" class="btn resource-url" rel="nofollow noopener">Go To Resource</a>
-<span class="published">Added here on {{ result.created_at }} By <a href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
+<span class="published">Added here on {{ result.created_at }} By <a
+        href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
+
+<meta itemprop="name" content="{{ result.name }}"/>
+<meta itemprop="datePublished" content="{{ result.publication_date }}"/>
+<meta itemprop="educationLevel" content="{{ result.experience_level_label }}"/>
+<meta itemprop="summary" content="{{ result.summary }}"/>
+<meta itemprop="keywords" content="{% for tag in result.tags.all %}{{ tag }},{% endfor %}{{ result.category.name }},{{ result.media_label }},{{ result.price_label }}"/>
+{% if result.rating %}
+    <meta itemprop="ratingCount" content="{{ result.reviews.count }}"/>
+    <meta itemprop="ratingValue" content="{{ result.rating }}"/>
+{% endif %}

@@ -1,5 +1,5 @@
-<span class="card" itemscope itemtype="https://schema.org/AggregateRating">
-<div class="result" itemprop="itemReviewed" itemscope itemtype="https://schema.org/CreativeWork">
+<span class="card">
+<div class="result" itemscope itemtype="https://schema.org/CreativeWork">
 
     <div class="tags">
         {% for tech in result.technologies.all %}
@@ -16,8 +16,8 @@
     </div>
 
     <div class="listing-title">
-        <h4 class="title" itemprop="name">
-        <a itemprop="name" href="{% url 'collection-detail' result.pk result.slug %}">{{ result.name }}</a>
+        <h4 class="title">
+        <a href="{% url 'collection-detail' result.pk result.slug %}">{{ result.name }}</a>
         </h4>
         <span class="published">{{ result.created_at }} By {{ result.author }}</span>
         <span class="published">{{ result.items_count }} Resources</span>
@@ -25,11 +25,15 @@
 
     <p class="description">{{ result.description }}</p>
 
-    <div class="tags" itemprop="keywords">
+    <div class="tags">
     {% for tag in result.tags.all %}
         <a class="tag" href="{% url 'search_page' %}?tab=collections&tags={{ tag.name }}"># {{ tag }}</a>
     {% endfor %}
     </div>
+
+    <meta itemprop="name" content="{{ result.name }}"/>
+    <meta itemprop="summary" content="{{ result.description }}"/>
+    <meta itemprop="keywords" content="{% for tag in result.tags.all %}{{ tag }},{% endfor %}"/>
 
     {% include 'vote_display.html' with resource=result %}
 </div>
