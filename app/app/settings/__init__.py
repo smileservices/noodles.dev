@@ -291,6 +291,8 @@ MARKDOWNIFY = {
             'pre',
             'span',
             'div',
+            # for tables
+            'table', 'thead', 'tbody', 'th', 'tr', 'td',
         ],
         "WHITELIST_ATTRS": [
             'class', 'src', 'alt', 'href'

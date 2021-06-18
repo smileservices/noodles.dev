@@ -70,33 +70,60 @@ main .detail-page {
         font-weight: bold;
         margin: $padding-unit-big 0 $padding-unit;
       }
+
       h1 {
         font-size: $fontsize-big*1.5;
       }
+
       h2 {
         font-size: $fontsize-big*1.2;
       }
+
       p {
         margin: $padding-unit-sm 0;
       }
-      ol,ul {
+
+      ol, ul {
         margin: $padding-unit $padding-unit-big;
         list-style-position: inside;
       }
+
       ol {
         list-style-type: decimal;
       }
+
       ul {
         list-style-type: disc;
       }
+
       strong {
         font-weight: bold;
       }
+
       hr {
         margin: $padding-unit 0;
         height: $fontsize-md/15;
         background-color: var(--color-background-3);
       }
+
+      table {
+        margin: $padding-unit-big;
+        color: var(--color-text-white);
+
+        thead {
+          th {
+            padding: $padding-unit-sm;
+            text-align: left;
+            border: 1px solid var(--color-text-white);
+            background-color: var(--color-background-3);
+          }
+        }
+        tbody td {
+          padding: $padding-unit-sm;
+          border: 1px solid var(--color-text-white);
+        }
+      }
+
     }
 
     .waiting-container {
