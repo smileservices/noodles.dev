@@ -13,7 +13,7 @@ function ConceptCategoryCreateApp() {
         'name': '',
         'description': '',
         'category': PRESELECTED_CATEGORY ? PRESELECTED_CATEGORY : '',
-        'parent': '',
+        'parent': PRESELECTED_PARENT ? PRESELECTED_PARENT : '',
         'experience_level': ''
     }
 

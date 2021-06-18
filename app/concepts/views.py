@@ -5,6 +5,7 @@ from django.views.decorators.cache import cache_page
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from category.serializers import CategorySerializerOption
 from technology.models import Technology
 from technology.serializers import TechnologySerializerOption
 from . import serializers_category
@@ -101,7 +102,10 @@ def category_create(request):
     }
     if request.GET['category']:
         category = models.Category.objects.get(pk=request.GET['category'])
-        data['data']['preselected_category'] = json.dumps(CategoryConceptSerializerOption(category).data)
+        data['data']['preselected_category'] = json.dumps(CategorySerializerOption(category).data)
+    if request.GET['parent']:
+        concept = models.CategoryConcept.objects.get(pk=request.GET['parent'])
+        data['data']['preselected_parent'] = json.dumps(CategoryConceptSerializerOption(concept).data)
     return render(request, 'concepts/category/create_page.html', data)
 
 
