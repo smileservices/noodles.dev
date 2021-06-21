@@ -91,21 +91,26 @@ def category_edit(request, id):
 
 @login_required
 def category_create(request):
+    preselected_category = 'false'
+    preselected_parent = 'false'
+    if 'category' in request.GET:
+        category = models.Category.objects.get(pk=request.GET['category'])
+        preselected_category = json.dumps(CategorySerializerOption(category).data)
+    if 'parent' in request.GET:
+        concept = models.CategoryConcept.objects.get(pk=request.GET['parent'])
+        preselected_parent = json.dumps(CategoryConceptSerializerOption(concept).data)
     data = {
         'data': {
             'reward': rewards.RESOURCE_CREATE,
+            'preselected_category': preselected_category,
+            'preselected_parent': preselected_parent
         },
         'urls': {
             'concept_category_api': reverse_lazy('concept-category-viewset-list'),
             'categories_options_api': reverse_lazy('categories-options-list'),
         }
     }
-    if 'category' in request.GET:
-        category = models.Category.objects.get(pk=request.GET['category'])
-        data['data']['preselected_category'] = json.dumps(CategorySerializerOption(category).data)
-    if 'parent' in request.GET:
-        concept = models.CategoryConcept.objects.get(pk=request.GET['parent'])
-        data['data']['preselected_parent'] = json.dumps(CategoryConceptSerializerOption(concept).data)
+
     return render(request, 'concepts/category/create_page.html', data)
 
 
@@ -139,16 +144,19 @@ def technology_edit(request, id):
 
 @login_required
 def technology_create(request):
+    preselected_technology = 'false'
+    if 'technology' in request.GET:
+        tech = Technology.objects.get(pk=request.GET['technology'])
+        preselected_technology = json.dumps(TechnologySerializerOption(tech).data)
     data = {
         'data': {
             'reward': rewards.RESOURCE_CREATE,
+            'preselected_technology': preselected_technology
         },
         'urls': {
             'concept_category_api': reverse_lazy('concept-technology-viewset-list'),
             'categories_options_api': reverse_lazy('categories-options-list'),
         }
     }
-    if 'technology' in request.GET:
-        tech = Technology.objects.get(pk=request.GET['technology'])
-        data['data']['preselected_technology'] = json.dumps(TechnologySerializerOption(tech).data)
+
     return render(request, 'concepts/technology/create_page.html', data)
