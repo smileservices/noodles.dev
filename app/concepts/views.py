@@ -100,10 +100,10 @@ def category_create(request):
             'categories_options_api': reverse_lazy('categories-options-list'),
         }
     }
-    if request.GET['category']:
+    if 'category' in request.GET:
         category = models.Category.objects.get(pk=request.GET['category'])
         data['data']['preselected_category'] = json.dumps(CategorySerializerOption(category).data)
-    if request.GET['parent']:
+    if 'parent' in request.GET:
         concept = models.CategoryConcept.objects.get(pk=request.GET['parent'])
         data['data']['preselected_parent'] = json.dumps(CategoryConceptSerializerOption(concept).data)
     return render(request, 'concepts/category/create_page.html', data)
@@ -148,7 +148,7 @@ def technology_create(request):
             'categories_options_api': reverse_lazy('categories-options-list'),
         }
     }
-    if request.GET['technology']:
+    if 'technology' in request.GET:
         tech = Technology.objects.get(pk=request.GET['technology'])
         data['data']['preselected_technology'] = json.dumps(TechnologySerializerOption(tech).data)
     return render(request, 'concepts/technology/create_page.html', data)
