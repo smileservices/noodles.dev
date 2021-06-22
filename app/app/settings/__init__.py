@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'django_user_agents',
     'django.contrib.sitemaps',
     'markdownify.apps.MarkdownifyConfig',
+    'cachalot',
     # our app
     'core',
     'rest_framework',
