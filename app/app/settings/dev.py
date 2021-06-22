@@ -4,12 +4,14 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
-INSTALLED_APPS.append('debug_toolbar')
-INSTALLED_APPS.append('django_extensions')
+# INSTALLED_APPS.append('debug_toolbar')
+# INSTALLED_APPS.append('django_extensions')
 # INSTALLED_APPS.append('silk')
 
 # MIDDLEWARE.insert(9, 'debug_toolbar.middleware.DebugToolbarMiddleware')
 # MIDDLEWARE.insert(0, 'silk.middleware.SilkyMiddleware')
+
+# DEBUG_TOOLBAR_PANELS = ['cachalot.panels.CachalotPanel',]
 
 LOGGING = {
     'version': 1,

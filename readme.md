@@ -63,8 +63,10 @@ SEO first strategy:
         - use serverside caching for speed
         - js used for actions and forms processing
     - pages destined only for users use reactJs mini apps
-
-========================== 
+Caching:
+    - we'are using [django-cachalot](https://django-cachalot.readthedocs.io/en/latest/limits.html)
+    
+==========================
 
 ## Management Scripts:
 python manage.py clean_migrations - deletes all migrations files; 

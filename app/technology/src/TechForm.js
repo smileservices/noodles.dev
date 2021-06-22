@@ -140,7 +140,7 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
         cpd.category = data.category.map(t => {
             return t.value
         });
-        if (cpd.meta === '') {
+        if (cpd.meta === '' || cpd.meta === undefined) {
             cpd.meta = {};
         }
         if (cpd.image_file && !cpd.image_file.url && !cpd.image_file.file) {

@@ -121,6 +121,7 @@ class TechnologySerializer(EditSuggestionSerializer):
         required=False,
     )
     image_url = fields.CharField(required=False)  # for handling image from url
+    meta = fields.JSONField(required=False)
     license_option = SerializerMethodField()
 
     class Meta:
