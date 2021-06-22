@@ -62,8 +62,6 @@ SEO first strategy:
         - render serverside html with all data
         - use serverside caching for speed
         - js used for actions and forms processing
-        !!! robots can't see data from fetch requests
-    - logged in users can access pages where content is loaded using multiple fetch requests to reduce first time rendering to a minimum
     - pages destined only for users use reactJs mini apps
 
 ========================== 
@@ -116,26 +114,29 @@ track history
 
 frontend
 --------
+User Info and Notifications
+- if sessionStorage doesn't have "user_data" key then it hits the server api/account.
+If the user is logged in, return the data and populate user_data (user_id, name). Else, mark user_data as "unauthenticated"
+- users can have notifications
+- navbar app manages user login/logout and notifications
+- how it works:
+    - new app notifications with db model that saves the messages to db
+    - has task `create_notification(user, message)` that sends emails also
+    - when user logins, we get the notifications and save all highlitghted ones into redis
+    - when user removes notification, it's not highlighted anymore, but still persists in db
+    
+    |field  |type           |
+    |---    |----           |
+    |user_pk|int            |
+    |message|small text     |
+    |created|datetime       |
+    |read   |bool           |
+
 - add login popup triggered on actions (vote/post review/create edit suggestion, etc)
-- edit suggestions and history page
-
-- homepage
-- browse page
-- search page
-
-users
------
-- user profile
-- user activity                             use easyaudit on backend
-
-admin/staff dashboard
------------
-- latest p/s/t/lr additions                 use easyaudit on backend
-- latest edit suggestions for moderation    use easyaudit on backend
+- history page
 
 
 ## To Do:
-
 
 resources
 ---------
@@ -160,7 +161,7 @@ report bug
 # NICE TO HAVE
 
 - link technologies together. make a sort of wiki tree for each of them
-- bring into moderation p/s/t/lr with many thumbs down
+- bring into moderation c/ct/t/lr with many thumbs down
 - resource views stats - use redis then have a task to update views table
 
 ## Browser Extension

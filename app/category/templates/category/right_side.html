@@ -17,11 +17,11 @@
         {% for result in technologies %}
             {% include 'technology/result.html' %}
         {% endfor %}
-        <a class="contribute" href="{% url 'tech-create' %}" rel="nofollow noopener">
+        <a class="contribute" href="{% url 'create-technology' %}" rel="nofollow noopener">
             Add a new technology
         </a>
     {% else %}
-        <a class="contribute" href="{% url 'tech-create' %}" rel="nofollow noopener">
+        <a class="contribute" href="{% url 'create-technology' %}" rel="nofollow noopener">
             Be the first to add a technology
         </a>
     {% endif %}

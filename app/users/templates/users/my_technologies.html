@@ -6,7 +6,7 @@
         {% if not results %}
             <div class="no-results">
                 <h2>No Technologies Yet</h2>
-                <p>Add a new technology by clicking <a href="{% url 'tech-create' %}">here</a></p>
+                <p>Add a new technology by clicking <a href="{% url 'create-technology' %}">here</a></p>
             </div>
         {% else %}
             {% for result in results %}
