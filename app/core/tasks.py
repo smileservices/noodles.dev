@@ -45,11 +45,31 @@ def sync_collections_to_elastic():
 def sync_categories_to_elastic():
     from category.models import Category
     logger = logging.getLogger('huey')
-    for categories in Category.objects.all():
-        mapping = categories.get_elastic_mapping()
-        index, data = categories.get_elastic_data()
+    for category in Category.objects.all():
+        mapping = category.get_elastic_mapping()
+        index, data = category.get_elastic_data()
         save_to_elastic(index, mapping, data)
     logger.info(f'synced {Category.objects.count()} categories - ok')
+
+
+def sync_category_concepts_to_elastic():
+    from concepts.models import CategoryConcept
+    logger = logging.getLogger('huey')
+    for concept in CategoryConcept.objects.all():
+        mapping = concept.get_elastic_mapping()
+        index, data = concept.get_elastic_data()
+        save_to_elastic(index, mapping, data)
+    logger.info(f'synced {CategoryConcept.objects.count()} category concepts - ok')
+
+
+def sync_technology_concepts_to_elastic():
+    from concepts.models import TechnologyConcept
+    logger = logging.getLogger('huey')
+    for concept in TechnologyConcept.objects.all():
+        mapping = concept.get_elastic_mapping()
+        index, data = concept.get_elastic_data()
+        save_to_elastic(index, mapping, data)
+    logger.info(f'synced {TechnologyConcept.objects.count()} technology concepts - ok')
 
 
 @task()
@@ -98,6 +118,8 @@ def task_sync_all_to_elastic():
     sync_tutorials_to_elastic()
     sync_collections_to_elastic()
     sync_categories_to_elastic()
+    sync_category_concepts_to_elastic()
+    sync_technology_concepts_to_elastic()
 
 
 @periodic_task(crontab(minute='*/1'))

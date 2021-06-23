@@ -117,7 +117,7 @@ class Category(MPTTModel, SluggableModelMixin, ElasticSearchIndexableMixin):
             "description": self.description,
             "description_long": self.description_long,
             "url": self.absolute_url,
-            "parent": self.parent.name,
+            "parent": self.name_tree,
         }
         return self.elastic_index, data
 

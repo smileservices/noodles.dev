@@ -50,8 +50,14 @@ class ElasticSearchInterface:
         if index:
             connection.indices.delete([get_index_name(index), ], ignore_unavailable=True)
         else:
-            connection.indices.delete([get_index_name(i) for i in ('study_resources', 'collections', 'technologies', 'categories')],
-                                      ignore_unavailable=True)
+            connection.indices.delete([get_index_name(i) for i in (
+                'study_resources',
+                'collections',
+                'technologies',
+                'categories',
+                'category_concepts',
+                'technology_concepts'
+            )], ignore_unavailable=True)
 
     def search(self, fields, term, filter, sort={}, aggregates=None, page=0, page_size=10):
         page_offset = page * page_size
