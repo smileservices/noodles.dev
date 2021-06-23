@@ -2,6 +2,9 @@ from django.db import models
 from core.abstract_models import SluggableModelMixin
 from mptt.models import MPTTModel, TreeForeignKey
 from django.shortcuts import reverse
+from core.abstract_models import ElasticSearchIndexableMixin
+from core.tasks import sync_to_elastic
+
 
 class CategoryModelManager(models.Manager):
 
@@ -41,7 +44,8 @@ class CategoryModelManager(models.Manager):
         return validated_categories
 
 
-class Category(MPTTModel, SluggableModelMixin):
+class Category(MPTTModel, SluggableModelMixin, ElasticSearchIndexableMixin):
+    elastic_index = 'categories'
     name = models.CharField(max_length=128, db_index=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     description = models.TextField(max_length=256, blank=True, null=True)
@@ -72,3 +76,50 @@ class Category(MPTTModel, SluggableModelMixin):
     @property
     def get_ahref(self):
         return f"<a href='{reverse('category-detail', kwargs={'slug': self.slug})}'>{self.name}</a>"
+
+    @staticmethod
+    def get_elastic_mapping() -> {}:
+        return {
+            "properties": {
+                "pk": {"type": "integer"},
+
+                # model fields
+                "name": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
+                },
+                "description": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
+                },
+                "description_long": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
+                },
+                "parent": {"type": "keyword"},
+                "url": {"type": "text"},
+                "suggest": {
+                    "type": "search_as_you_type",
+                }
+            }
+        }
+
+    def get_elastic_data(self) -> (str, list):
+        data = {
+            "pk": self.pk,
+            "name": self.name,
+            "description": self.description,
+            "description_long": self.description_long,
+            "url": self.absolute_url,
+            "parent": self.parent.name,
+        }
+        return self.elastic_index, data
+
+
+models.signals.post_save.connect(sync_to_elastic, sender=Category, weak=False)

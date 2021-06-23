@@ -42,6 +42,16 @@ def sync_collections_to_elastic():
     logger.info(f'synced {Collection.objects.count()} collections - ok')
 
 
+def sync_categories_to_elastic():
+    from category.models import Category
+    logger = logging.getLogger('huey')
+    for categories in Category.objects.all():
+        mapping = categories.get_elastic_mapping()
+        index, data = categories.get_elastic_data()
+        save_to_elastic(index, mapping, data)
+    logger.info(f'synced {Category.objects.count()} categories - ok')
+
+
 @task()
 def task_sync_data(index, mapping, data):
     save_to_elastic(index, mapping, data)
@@ -87,6 +97,7 @@ def task_sync_all_to_elastic():
     sync_technologies_to_elastic()
     sync_tutorials_to_elastic()
     sync_collections_to_elastic()
+    sync_categories_to_elastic()
 
 
 @periodic_task(crontab(minute='*/1'))
@@ -142,7 +153,7 @@ def send_admin_crud_report():
         for record in records:
             message += f'{record.get_event_type_display()} == {record.content_type}|{record.object_repr} ==by== {record.user.username}|{record.user.email}'
             message += f'{record.changed_fields}'
-            message += '='*30
+            message += '=' * 30
             message += '\n'
             # send mail
         mail_admins(
