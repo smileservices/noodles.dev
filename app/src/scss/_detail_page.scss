@@ -96,6 +96,10 @@ main .detail-page {
         list-style-type: disc;
       }
 
+      ol li, ul li {
+        margin: $padding-unit 0;
+      }
+
       strong {
         font-weight: bold;
       }
