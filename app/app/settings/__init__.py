@@ -93,6 +93,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'easyaudit.middleware.easyaudit.EasyAuditMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
+    'core.middlewares.IsAuthenticatedCookieMiddleware'
 ]
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'

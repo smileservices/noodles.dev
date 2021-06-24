@@ -8,7 +8,7 @@ from .helpers import _search_aggr_collections, _search_aggr_study_resources, _se
 
 
 def autocomplete(request, prefix):
-    es = ElasticSearchInterface(['collections', 'study_resources', 'technologies'])
+    es = ElasticSearchInterface(['collections', 'study_resources', 'technologies', 'categories', 'category_concepts', 'technology_concepts'])
     records = es.suggest(prefix)
     return JsonResponse(records, safe=False)
 

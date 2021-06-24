@@ -27,9 +27,11 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-M0SSQCF73S"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
+
         function gtag() {
             dataLayer.push(arguments);
         }
+
         gtag('js', new Date());
         gtag('config', 'G-M0SSQCF73S');
     </script>
@@ -47,11 +49,33 @@
 {% include 'frontend/footer.html' %}
 
 <script>
+    let IS_AUTHENTICATED = false;
+    const URL_USER_DATA = "{% url 'user-data' %}";
+
     function toggle_sidebar() {
         document.querySelector('body').classList.toggle('sidebar-visible');
     }
 
     window.addEventListener('load', e => {
+        {#  handle user data; see if user is logged or not based on sessionid cookie; if user is logged, populate user_data key in sessionStorage #}
+        const idx = document.cookie.search('authenticated');
+        if (idx !== -1) {
+            IS_AUTHENTICATED = Boolean(parseInt(document.cookie.substr(idx, 'authenticated=x'.length).split('=')[1]));
+        }
+        if (!IS_AUTHENTICATED) {
+            window.sessionStorage.removeItem('user_data');
+        }
+        if (IS_AUTHENTICATED && window.sessionStorage.getItem('user_data') === null) {
+            //hit /account/user/api and populate user_data
+            fetch(URL_USER_DATA, {method: 'GET'}).then(response => {
+                if (response.ok) return response.json();
+                alert('There was a problem retrieving User Data');
+            }).then(data => {
+                window.sessionStorage.setItem('user_data', JSON.stringify(data));
+            })
+        }
+
+
         document.querySelectorAll('.collapsible .collapse-toggle').forEach(el => el.onclick = evt => {
             evt.preventDefault();
             evt.target.closest('.collapsible').classList.toggle('show');

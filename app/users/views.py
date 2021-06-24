@@ -13,13 +13,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ProfileForm
 from django.urls import reverse_lazy
-import json
-from django.http.response import JsonResponse
 from users.models import CustomUser
 from users.serializers import UserSerializerMinimal
 from technology.models import Technology
-from django.views.decorators.cache import cache_page
 from search.helpers import _search_study_resources, _search_technologies, _search_collections
+from django.http.response import JsonResponse
+from django.http.response import HttpResponseForbidden, HttpResponseBadRequest
+import json
 
 
 class UsersViewset(ModelViewSet):
@@ -30,7 +30,13 @@ class UsersViewset(ModelViewSet):
     search_fields = ['first_name', 'last_name', 'email', 'date_joined']
     ordering_fields = ['first_name', 'last_name', 'email', 'is_active', 'date_joined']
 
-    # todo show latest users
+
+def user_data(request, *args, **kwargs):
+    if not request.method == 'GET':
+        return HttpResponseBadRequest('Can only make GET requests to this endpoint')
+    if not request.user.is_authenticated:
+        return HttpResponseForbidden()
+    return JsonResponse(UserSerializer(request.user).data, safe=False)
 
 
 def user_profile(request, username):
@@ -176,7 +182,7 @@ def user_content(request, pk, index):
                        }
                    }
                    }
-    },]
+    }, ]
     if index == 'resources':
         results = _search_study_resources(term, filter, page, page_size)
     elif index == 'collections':
