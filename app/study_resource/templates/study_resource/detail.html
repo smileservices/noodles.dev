@@ -72,13 +72,3 @@
 <a href="{{ result.url }}" target="_blank" class="btn resource-url" rel="nofollow noopener">Go To Resource</a>
 <span class="published">Added here on {{ result.created_at }} By <a
         href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
-
-<meta itemprop="name" content="{{ result.name }}"/>
-<meta itemprop="datePublished" content="{{ result.publication_date }}"/>
-<meta itemprop="educationLevel" content="{{ result.experience_level_label }}"/>
-<meta itemprop="summary" content="{{ result.summary }}"/>
-<meta itemprop="keywords" content="{% for tag in result.tags.all %}{{ tag }},{% endfor %}{{ result.category.name }},{{ result.media_label }},{{ result.price_label }}"/>
-{% if result.rating %}
-    <meta itemprop="ratingCount" content="{{ result.reviews.count }}"/>
-    <meta itemprop="ratingValue" content="{{ result.rating }}"/>
-{% endif %}

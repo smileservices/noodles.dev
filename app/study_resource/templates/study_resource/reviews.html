@@ -3,18 +3,23 @@
 <section id="reviews" class="column-container card">
     <header>
         <h3>Reviews</h3>
-        <a class="btn" href="{% url 'account_login' %}?next={{ request.get_full_path }}" rel="nofollow noopener">Write a Review</a>
+        <a class="btn" href="{% url 'account_login' %}?next={{ request.get_full_path }}" rel="nofollow noopener">Write a
+            Review</a>
     </header>
     {% for review in reviews %}
-        <div class="card review">
-            <div class="rating"><span itemProp="ratingValue" class="stars">{% star_rating review.rating %}</span></div>
+        <div class="card review" itemprop="review" itemscope itemtype="https://schema.org/Review">
+            <div class="rating"><span class="stars">{% star_rating review.rating %}</span></div>
             <p class="published">
-                <span itemProp="datePublished">{{ review.created_at }}</span>
+                <span>{{ review.created_at }}</span>
                 by
-                <span itemProp="author">{{ review.author }}</span>
+                <span>{{ review.author }}</span>
             </p>
-            <p class="text" itemProp="ratingExplanation">{{ review.text | linebreaks }}</p>
+            <p class="text">{{ review.text | linebreaks }}</p>
             {% include 'vote_not_logged.html' with resource=review %}
+            <meta itemprop="author" content="{{ review.author.username }}"/>
+            <meta itemprop="datePublished" content="{{ review.created_at }}"/>
+            <meta itemprop="reviewBody" content="{{ review.text }}"/>
+            <meta itemprop="ratingValue" content="{{ review.rating }}"/>
         </div>
     {% endfor %}
 </section>
