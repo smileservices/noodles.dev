@@ -104,6 +104,9 @@ class TechnologyConceptSerializer(EditSuggestionSerializer):
             data_copy['slug'] = slugify(data['name'])
         validated_data = super(TechnologyConceptSerializer, self).run_validation(data_copy)
         validated_data['technology_id'] = int(data_copy['technology'])
-        if 'parent' in data_copy and data_copy['parent']:
-            validated_data['parent_id'] = int(data_copy['parent'])
+        if 'parent' in data_copy:
+            if data_copy['parent']:
+                validated_data['parent_id'] = int(data_copy['parent'])
+            else:
+                validated_data['parent_id'] = None
         return validated_data
