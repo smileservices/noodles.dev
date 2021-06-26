@@ -4,11 +4,12 @@ from django.shortcuts import render
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 from elasticsearch import exceptions as es_ex
 from django.views.decorators.cache import cache_page
-from .helpers import _search_aggr_collections, _search_aggr_study_resources, _search_aggr_technologies, extract_filters, extract_sorting
+from . import helpers
 
 
 def autocomplete(request, prefix):
-    es = ElasticSearchInterface(['collections', 'study_resources', 'technologies', 'categories', 'category_concepts', 'technology_concepts'])
+    es = ElasticSearchInterface(
+        ['collections', 'study_resources', 'technologies', 'categories', 'category_concepts', 'technology_concepts'])
     records = es.suggest(prefix)
     return JsonResponse(records, safe=False)
 
@@ -17,15 +18,21 @@ def search_specific(request, index):
     term = request.GET.get('search', '')
     page_size = int(request.GET.get('resultsPerPage', 10))
     offset_results = int(request.GET.get('offset', 0))
-    page = 0 if not offset_results else offset_results / page_size;
-    filter = extract_filters(request)
-    sort = extract_sorting(request)
-    if index == 'resources':
-        results = _search_aggr_study_resources(term, sort, filter, page, page_size)
+    page = 0 if not offset_results else offset_results / page_size
+    filter = helpers.extract_filters(request)
+    sort = helpers.extract_sorting(request)
+    if index == 'categories':
+        results = helpers._search_aggr_categories(term, sort, filter, page, page_size)
+    elif index == 'category_concepts':
+        results = helpers._search_aggr_concepts_category(term, sort, filter, page, page_size)
+    elif index == 'technology_concepts':
+        results = helpers._search_aggr_concepts_technology(term, sort, filter, page, page_size)
+    elif index == 'resources':
+        results = helpers._search_aggr_study_resources(term, sort, filter, page, page_size)
     elif index == 'collections':
-        results = _search_aggr_collections(term, sort, filter, page, page_size)
+        results = helpers._search_aggr_collections(term, sort, filter, page, page_size)
     elif index == 'technologies':
-        results = _search_aggr_technologies(term, sort, filter, page, page_size)
+        results = helpers._search_aggr_technologies(term, sort, filter, page, page_size)
     else:
         results = f'{index} does not exist'
     return JsonResponse(results, safe=False)

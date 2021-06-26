@@ -1,6 +1,72 @@
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 
 
+def _search_aggr_categories(term, sort, filter, page, page_size):
+    es_res = ElasticSearchInterface(['categories'])
+    fields = ['name^4', 'description', 'parent']
+    aggregates = {
+        "parent": {"terms": {"field": "parent", "size": 10}},
+    }
+    results = es_res.search(
+        fields=fields,
+        term=term,
+        filter=filter,
+        sort=sort,
+        aggregates=aggregates,
+        page=page,
+        page_size=page_size
+    )
+    results['sort'] = [
+        {"value": "default", "label": "Relevance"},
+    ]
+    return results
+
+
+def _search_aggr_concepts_category(term, sort, filter, page, page_size):
+    es_res = ElasticSearchInterface(['category_concepts'])
+    fields = ['name^4', 'description', 'parent', 'experience_level']
+    aggregates = {
+        "parent": {"terms": {"field": "parent", "size": 10}},
+    }
+    results = es_res.search(
+        fields=fields,
+        term=term,
+        filter=filter,
+        sort=sort,
+        aggregates=aggregates,
+        page=page,
+        page_size=page_size
+    )
+    results['sort'] = [
+        {"value": "default", "label": "Relevance"},
+        {"value": "experience_level", "label": "Experience Level"},
+    ]
+    return results
+
+
+def _search_aggr_concepts_technology(term, sort, filter, page, page_size):
+    es_res = ElasticSearchInterface(['technology_concepts'])
+    fields = ['name^4', 'description', 'parent', 'experience_level', 'technology']
+    aggregates = {
+        "parent": {"terms": {"field": "parent", "size": 10}},
+    }
+    results = es_res.search(
+        fields=fields,
+        term=term,
+        filter=filter,
+        sort=sort,
+        aggregates=aggregates,
+        page=page,
+        page_size=page_size
+    )
+    results['sort'] = [
+        {"value": "default", "label": "Relevance"},
+        {"value": "experience_level", "label": "Experience Level"},
+        {"value": "technology", "label": "Technology"},
+    ]
+    return results
+
+
 def _search_aggr_study_resources(term, sort, filter, page, page_size):
     es_res = ElasticSearchInterface(['study_resources'])
     resources_fields = ['name^4', 'summary', 'category', 'technologies', 'tags']
