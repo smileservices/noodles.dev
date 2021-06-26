@@ -49,33 +49,44 @@
 {% include 'frontend/footer.html' %}
 
 <script>
-    let IS_AUTHENTICATED = false;
+    const authenticated_cookie_idx = document.cookie.search('authenticated'); // 1 for authenticated or 0 for not
+    const IS_AUTHENTICATED = (()=>{
+        if (authenticated_cookie_idx === -1) {
+            //this case means that there's an error on the server
+            console.error('Missing "authenticated" cookie! Check the middleware that should create it!');
+            return false;
+        }
+        return Boolean(parseInt(document.cookie.substr(authenticated_cookie_idx, 'authenticated=x'.length).split('=')[1]))
+    })();
     const URL_USER_DATA = "{% url 'user-data' %}";
+    {#  handle user data; see if user is logged or not based on sessionid cookie; if user is logged, populate user_data key in sessionStorage #}
+    if (!IS_AUTHENTICATED) {
+        window.sessionStorage.removeItem('user_data');
+    }
+    if (IS_AUTHENTICATED && window.sessionStorage.getItem('user_data') === null) {
+        //hit /account/user/api and populate user_data
+        fetch(URL_USER_DATA, {method: 'GET'}).then(response => {
+            if (response.ok) return response.json();
+            alert('There was a problem retrieving User Data');
+        }).then(data => {
+            window.sessionStorage.setItem('user_data', JSON.stringify(data));
+        })
+    }
+
+    const get_user_data = () => {
+        const user_data_str = window.sessionStorage['user_data'];
+        if (user_data_str === undefined) {
+            console.error('Don\'t use "get_user_data()" before checking "IS_AUTHENTICATED".');
+            return false
+        }
+        return JSON.parse(user_data_str);
+    }
 
     function toggle_sidebar() {
         document.querySelector('body').classList.toggle('sidebar-visible');
     }
 
     window.addEventListener('load', e => {
-        {#  handle user data; see if user is logged or not based on sessionid cookie; if user is logged, populate user_data key in sessionStorage #}
-        const idx = document.cookie.search('authenticated');
-        if (idx !== -1) {
-            IS_AUTHENTICATED = Boolean(parseInt(document.cookie.substr(idx, 'authenticated=x'.length).split('=')[1]));
-        }
-        if (!IS_AUTHENTICATED) {
-            window.sessionStorage.removeItem('user_data');
-        }
-        if (IS_AUTHENTICATED && window.sessionStorage.getItem('user_data') === null) {
-            //hit /account/user/api and populate user_data
-            fetch(URL_USER_DATA, {method: 'GET'}).then(response => {
-                if (response.ok) return response.json();
-                alert('There was a problem retrieving User Data');
-            }).then(data => {
-                window.sessionStorage.setItem('user_data', JSON.stringify(data));
-            })
-        }
-
-
         document.querySelectorAll('.collapsible .collapse-toggle').forEach(el => el.onclick = evt => {
             evt.preventDefault();
             evt.target.closest('.collapsible').classList.toggle('show');

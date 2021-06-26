@@ -85,7 +85,6 @@ def edit(request, id):
             'categories_options_api': reverse_lazy('categories-options-list'),
         }
     }
-
     return render(request, 'study_resource/edit_page.html', data)
 
 

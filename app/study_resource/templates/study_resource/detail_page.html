@@ -13,7 +13,6 @@
 
 {% block content %}
     <script>
-        const USER_ID = {% if user.is_staff %}0{% else %}{{ user.id }}{% endif %};
         const MAX_RATING = {{ MAX_RATING }};
         const RESOURCE_ID = {{ result.id }};
         const RESOURCE_AUTHOR_ID = {{ result.author.id }};
@@ -32,6 +31,7 @@
         const USER_COLLECTIONS_LIST = "{{ urls.user_collections_list }}";
         const USER_COLLECTIONS_WITH_RESOURCE = "{{ urls.user_collections_with_resource }}";
         const USER_COLLECTIONS_SET_API = "{{ urls.user_collections_set_resource_to_collections }}";
+        const LOGIN_URL = "{% url 'account_login' %}";
     </script>
     <div class="breadcrumbs">
         <a href="/">Homepage</a> / {{ result.category.name_tree_urls | safe }}

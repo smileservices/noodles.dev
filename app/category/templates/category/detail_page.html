@@ -11,9 +11,6 @@
 {% endblock %}
 
 {% block content %}
-    <script>
-        const USER_ID = {% if user.is_staff %}0{% else %}{{ user.id }}{% endif %};
-    </script>
     <div class="breadcrumbs">
         <a href="/">Homepage</a> / Category {{ detail.name_tree_urls | safe }}
     </div>

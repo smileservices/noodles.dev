@@ -2,7 +2,7 @@ import React, {Fragment, useState} from "react";
 import apiPost from "../../src/api_interface/apiPost";
 import Alert from "../../src/components/Alert";
 import {WaitingInline} from "../../src/components/Waiting";
-export default function Thumbs({thumbs_obj, url_endpoint, user_id}) {
+export default function Thumbs({thumbs_obj, url_endpoint}) {
 
     /*
     *
@@ -48,8 +48,13 @@ export default function Thumbs({thumbs_obj, url_endpoint, user_id}) {
             })
     }
 
-    function getThumbsClass(initialClassList, votes) {
-        if (votes.includes(user_id)) return initialClassList + ' ' + 'voted';
+    function voted_by_user(votesList) {
+        if (!IS_AUTHENTICATED) return false;
+        return votesList.includes(get_user_data().pk)
+    }
+
+    function getThumbsClass(initialClassList, votesList) {
+        if (voted_by_user(votesList)) return initialClassList + ' ' + 'voted';
         return initialClassList;
     }
 

@@ -10,9 +10,14 @@ function ToolbarApp() {
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [waiting, setWaiting] = useState(false);
     const [alert, setAlert] = useState(false);
-
-    const isOwner = RESOURCE_AUTHOR_ID === USER_ID;
-    const isAdmin = USER_ID === 0;
+    const isOwner = () => {
+        if (!IS_AUTHENTICATED) return false;
+        return RESOURCE_AUTHOR_ID === get_user_data().pk;
+    }
+    const isAdmin = () => {
+        if (!IS_AUTHENTICATED) return false;
+        return get_user_data().is_admin;
+    };
 
     function deleteResource() {
         apiDelete(
@@ -28,6 +33,13 @@ function ToolbarApp() {
 
     if (waiting) return waiting;
     if (alert) return alert;
+
+    if (!IS_AUTHENTICATED) return (
+        <Fragment>
+            <a href={RESOURCE_EDIT_URL}>Suggest Edit</a>
+            <a className="icon-bookmark" href={LOGIN_URL}/>
+        </Fragment>
+    )
 
     if (confirmDelete) return (
         <div className="confirm">

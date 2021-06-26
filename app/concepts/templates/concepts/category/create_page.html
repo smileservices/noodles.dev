@@ -11,7 +11,6 @@
 
 {% block content %}
     <script>
-        const USER_ID = {{ user.id }};
         const RESOURCE_API = "{{ urls.concept_category_api }}";
         const CATEGORIES_OPTIONS_API = "{{ urls.categories_options_api }}";
         const PRESELECTED_CATEGORY = {{ data.preselected_category|safe }};

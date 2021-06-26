@@ -28,6 +28,11 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
     const [rejectReason, setRejectReason] = useState('');
     const [isOwner, setIsOwner] = useState(false);
 
+    function is_owner(data) {
+        if (!IS_AUTHENTICATED) return false;
+        return data.edit_suggestion_author.id === get_user_data().pk;
+    }
+
     // get data from ed sug endpoint and populate the body
     useEffect(e => {
         // get data from ed sug endpoint and populate the body
@@ -35,7 +40,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
             api_urls['edit_suggestions_api'], pk,
             data => {
                 setData(data);
-                setIsOwner(data.edit_suggestion_author.id === USER_ID);
+                setIsOwner(is_owner(data));
             },
             setWaiting,
             result => setAlertDisplay(<Alert text="Could not retrieve edit suggestion detail :(" stick={true}
@@ -210,7 +215,6 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
                     <div className="thumbs">
                         <Thumbs
                             thumbs_obj={{up: data.thumbs_up_array, down: data.thumbs_down_array}}
-                            user_id={USER_ID}
                             url_endpoint={api_urls['edit_suggestions_api'] + pk + '/vote/'}
                         />
                     </div>

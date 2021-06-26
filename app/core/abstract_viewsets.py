@@ -7,6 +7,7 @@ from core.status import HTTP_209_EDIT_SUGGESTION_CREATED
 from django.core.mail import mail_admins
 from core.serializers import serializeValidationError
 
+
 class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset):
     m2m_fields = None
 
@@ -62,11 +63,11 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                 return Response(status=502)
         else:
             try:
-                serialized_data = self.get_serializer(data=request.data)
-                validated_data = serialized_data.run_validation(request.data)
+                serialized_instance = self.get_serializer(instance=instance, data=request.data)
+                validated_data = serialized_instance.run_validation(request.data)
                 edsug = self.edit_suggestion_perform_create(instance, validated_data)
-                serializer = self.serializer_class.get_edit_suggestion_serializer()
-                return Response(serializer(edsug).data, status=HTTP_209_EDIT_SUGGESTION_CREATED)
+                edsug_serializer = self.serializer_class.get_edit_suggestion_serializer()
+                return Response(edsug_serializer(edsug).data, status=HTTP_209_EDIT_SUGGESTION_CREATED)
             except ValidationError as e:
                 raise e
             except Exception as e:

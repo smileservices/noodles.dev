@@ -7,6 +7,7 @@ from category.models import Category
 from django.template.defaultfilters import slugify
 from category.serializers import CategorySerializerOption
 
+
 class CategoryConceptSerializerListing(serializers.ModelSerializer):
     queryset = CategoryConcept.objects
 
@@ -91,7 +92,7 @@ class CategoryConceptSerializer(EditSuggestionSerializer):
 
     class Meta:
         model = CategoryConcept
-        fields = ['pk', 'name', 'description','description_long', 'absolute_url', 'slug', 'parent',
+        fields = ['pk', 'name', 'description', 'description_long', 'absolute_url', 'slug', 'parent',
                   'experience_level', 'name_tree',
                   'author', 'category', 'created_at', 'updated_at']
 
@@ -108,6 +109,9 @@ class CategoryConceptSerializer(EditSuggestionSerializer):
         data_copy['slug'] = slugify(data['name'])
         validated_data = super(CategoryConceptSerializer, self).run_validation(data_copy)
         validated_data['category_id'] = int(data_copy['category'])
-        if 'parent' in data_copy and data_copy['parent']:
-            validated_data['parent_id'] = int(data_copy['parent'])
+        if 'parent' in data_copy:
+            if data_copy['parent']:
+                validated_data['parent_id'] = int(data_copy['parent'])
+            else:
+                validated_data['parent_id'] = None
         return validated_data

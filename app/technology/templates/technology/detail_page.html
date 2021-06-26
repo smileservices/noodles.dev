@@ -19,9 +19,7 @@
 {% block content %}
     <script>
         const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
-        const USER_ID = {% if user.is_authenticated %}{{ user.id }}{% else %}false{% endif %};
         const HOMEPAGE = "{% url 'homepage' %}";
-
         const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
         const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
 

@@ -13,12 +13,16 @@ export default function ReviewCreateController({data, successCallback}) {
     const [errors, setErrors] = useState({});
     const [waiting, setWaiting] = useState('');
     const [alert, setAlert] = useState('');
+    const errorLogin = (<span>To submit review you need to <a href={LOGIN_URL}>Login or Register</a></span>);
+
+    if (!IS_AUTHENTICATED) return errorLogin;
 
     function handleError(result) {
+        if (result.status === 403) {
+            setAlert(<Alert close={e=>setAlert(null)} text={errorLogin} type={'danger'}/>);
+        }
         result.json().then(data => {
-            if (data.detail) {
-                setAlert(<Alert close={e=>setAlert(null)} text={data.detail} type={'danger'}/>);
-            }
+            setAlert(<Alert close={e=>setAlert(null)} text={data.detail ? data.detail : "Could not submit review because we encountered an error"} type={'danger'}/>);
         })
     }
 
