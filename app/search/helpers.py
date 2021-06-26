@@ -24,9 +24,11 @@ def _search_aggr_categories(term, sort, filter, page, page_size):
 
 def _search_aggr_concepts_category(term, sort, filter, page, page_size):
     es_res = ElasticSearchInterface(['category_concepts'])
-    fields = ['name^4', 'description', 'parent', 'experience_level']
+    fields = ['name^4', 'description', 'parent', 'experience_level', 'category']
     aggregates = {
-        "parent": {"terms": {"field": "parent", "size": 10}},
+        "parent": {"terms": {"field": "parent"}},
+        "category": {"terms": {"field": "category"}},
+        "experience_level": {"terms": {"field": "experience_level"}},
     }
     results = es_res.search(
         fields=fields,
@@ -39,6 +41,7 @@ def _search_aggr_concepts_category(term, sort, filter, page, page_size):
     )
     results['sort'] = [
         {"value": "default", "label": "Relevance"},
+        {"value": "category", "label": "Category"},
         {"value": "experience_level", "label": "Experience Level"},
     ]
     return results
@@ -48,7 +51,9 @@ def _search_aggr_concepts_technology(term, sort, filter, page, page_size):
     es_res = ElasticSearchInterface(['technology_concepts'])
     fields = ['name^4', 'description', 'parent', 'experience_level', 'technology']
     aggregates = {
-        "parent": {"terms": {"field": "parent", "size": 10}},
+        "parent": {"terms": {"field": "parent"}},
+        "technology": {"terms": {"field": "technology"}},
+        "experience_level": {"terms": {"field": "experience_level"}},
     }
     results = es_res.search(
         fields=fields,

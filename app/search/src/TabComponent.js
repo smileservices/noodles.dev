@@ -130,6 +130,22 @@ function getTabFilters(tabname, resultsFilters) {
     if (resultsFilters === undefined) return {};
 
     switch (tabname) {
+        case 'categories':
+            return {
+                'parent': getAvailableFilters(resultsFilters['parent'], 'Parent', 'simple-select'),
+            }
+        case 'category_concepts':
+            return {
+                'category': getAvailableFilters(resultsFilters['parent'], 'Category', 'simple-select'),
+                'parent': getAvailableFilters(resultsFilters['parent'], 'Parent', 'simple-select'),
+                'experience_level': getAvailableFilters(resultsFilters['experience_level'], 'Experience Level', 'simple-select'),
+            }
+        case 'technology_concepts':
+            return {
+                'parent': getAvailableFilters(resultsFilters['parent'], 'Parent', 'simple-select'),
+                'experience_level': getAvailableFilters(resultsFilters['experience_level'], 'Experience Level', 'simple-select'),
+                'technology': getAvailableFilters(resultsFilters['technology'], 'Technology', 'simple-select'),
+            }
         case 'resources':
             return {
                 'tech_v': getAvailableFilters(resultsFilters['technologies'], 'Technologies', 'simple-select'),

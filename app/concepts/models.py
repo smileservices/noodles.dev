@@ -117,6 +117,7 @@ class CategoryConcept(MPTTModel, AbstractConcept):
                     "search_analyzer": "standard"
                 },
                 "parent": {"type": "keyword"},
+                "category": {"type": "keyword"},
                 "experience_level": {"type": "keyword"},
                 "url": {"type": "text"},
                 "suggest": {
@@ -131,6 +132,7 @@ class CategoryConcept(MPTTModel, AbstractConcept):
             "name": self.name,
             "description": self.description,
             "description_long": self.description_long,
+            "category": self.category.name_tree,
             "experience_level": self.experience_level_label,
             "url": self.absolute_url,
             "parent": self.parent.name_tree if self.parent else '',

@@ -2,6 +2,9 @@ import React, {useState, useEffect, useReducer, useCallback, Fragment} from "rea
 import ReactDOM from "react-dom";
 
 import SearchBarComponent from "./SearchBarComponent";
+import CategorySearchListing from "../../category/src/CategorySearchListing";
+import CategoryConceptSearchListing from "../../concepts/src/category/CategoryConceptSearchListing";
+import TechnologyConceptSearchListing from "../../concepts/src/technology/TechnologyConceptSearchListing";
 import StudyResourceSearchListing from "../../study_resource/src/StudyResourceSearchListing";
 import CollectionSearchListing from "../../study_collection/src/CollectionSearchListing";
 import TechnologySearchListing from "../../technology/src/TechnologySearchListing";
@@ -35,6 +38,18 @@ function SearchApp() {
     })
     const getTabContent = tabName => {
         switch (tabName) {
+            case 'categories':
+                return (<TabComponent
+                    tabname="categories" searchTerm={state.q} title={'Categories Results'}
+                    containerClass={'categories'} ListingComponent={CategorySearchListing}/>)
+            case 'category_concepts':
+                return (<TabComponent
+                    tabname="category_concepts" searchTerm={state.q} title={'Theoretical Concepts Results'}
+                    containerClass={'category_concepts'} ListingComponent={CategoryConceptSearchListing}/>)
+            case 'technology_concepts':
+                return (<TabComponent
+                    tabname="technology_concepts" searchTerm={state.q} title={'Implementation Concepts Results'}
+                    containerClass={'technology_concepts'} ListingComponent={TechnologyConceptSearchListing}/>)
             case 'resources':
                 return (<TabComponent
                     tabname="resources" searchTerm={state.q} title={'Resources Results'}
@@ -68,10 +83,12 @@ function SearchApp() {
         <Fragment>
             <section className="tab-navigation search">
                 <div className="tab-headers">
+                    <h4 onClick={e => changeTab('categories')} className={headerClass('categories')}>Categories</h4>
+                    <h4 onClick={e => changeTab('category_concepts')} className={headerClass('category_concepts')}>Theory Concepts</h4>
+                    <h4 onClick={e => changeTab('technology_concepts')} className={headerClass('technology_concepts')}>Implementation Concepts</h4>
+                    <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies</h4>
                     <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources</h4>
                     <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections</h4>
-                    <h4 onClick={e => changeTab('technologies')}
-                        className={headerClass('technologies')}>Technologies</h4>
                 </div>
                 <SearchBarComponent searchTerm={state.q} setSearchTerm={term => setState({...state, q: term})}
                                     placeholder="Search for something specific"/>
