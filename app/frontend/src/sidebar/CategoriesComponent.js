@@ -21,7 +21,7 @@ function TreeComponent({content, children, isExpanded, clickAction}) {
     const [expanded, setExpanded] = useState(isExpanded && children.length > 0);
     const expander = () => {
         if (!children) return '';
-        return (<span className="expander" onClick={e=>{
+        return (<span className="expander" key={makeId(4)} onClick={e=>{
             e.stopPropagation();
             setExpanded(!expanded)
         }}>{expanded ? '-' : '+'}</span>);
@@ -41,6 +41,7 @@ function renderCategoryTree(category, clickAction) {
     if (category.children.length > 0) content += ' (' + category.descendants_count + ')';
     return (
         <TreeComponent
+            key={makeId(4)}
             content={content}
             children={
                 category.children.length > 0
@@ -103,7 +104,7 @@ export default function CategoriesComponent({clickAction}) {
     if (state.waiting) return SkeletonLoadingSidebar;
     if (state.errors) return (
         <ul className="errors">
-            {state.errors.map(err => <li>{err}</li>)}
+            {state.errors.map(err => <li key={makeId(4)}>{err}</li>)}
         </ul>
     )
 
