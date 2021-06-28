@@ -12,6 +12,7 @@ main {
     display: flex;
     flex-wrap: nowrap;
     gap: $padding-unit*2;
+    overflow: auto;
   }
   .tab-headers > * {
     display: inline-block;

@@ -26,6 +26,8 @@
   --color-blue: #24A0ED;
   --color-blue-dark: #0C5C8D;
   --color-text-red: #FF0D0D;
+
+  --color-navsearch-app-bkg: #0d0d0d;
 }
 
 body {
@@ -64,6 +66,7 @@ body {
 @import "detail_page_my_profile";
 @import "review";
 @import "search";
+@import "navbar-search";
 @import "homepage";
 @import "profile_page";
 @import "edit_suggestions";

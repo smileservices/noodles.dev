@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from "react";
+import React, {useState, useEffect, useRef} from "react";
 
 export default function SearchBarComponent({setSearchTerm, searchTerm, placeholder}) {
     /*
@@ -11,8 +11,12 @@ export default function SearchBarComponent({setSearchTerm, searchTerm, placehold
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [waiting, setWaiting] = useState('');
-
+    const searchInputRef = useRef(null);
     const controller = new AbortController();
+
+    useEffect(e=>{
+        searchInputRef.current.focus();
+    })
 
     useEffect(e => {
         if (formData.length > 1 && searchTerm !== formData) {
@@ -77,6 +81,7 @@ export default function SearchBarComponent({setSearchTerm, searchTerm, placehold
                        onChange={e => {
                            setFormData(e.target.value)
                        }}
+                       ref={searchInputRef}
                 />
                 <span className="search-overlay">{searchOverlayContent(formData, waiting)}</span>
                 {showSuggestions ? <SuggestionsList suggestions={suggestions}/> : ''}
