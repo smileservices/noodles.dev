@@ -4,14 +4,28 @@
         {% for result in concepts %}
             {% include 'concepts/technology/result.html' %}
         {% endfor %}
-        <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}" rel="nofollow noopener">Add a new
+        <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}"
+           rel="nofollow noopener">Add a new
             concept</a>
     {% else %}
         <div class="alert alert-contribute">
             <p>There are no concepts specific to {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}" rel="nofollow noopener">
+            <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.pk }}"
+               rel="nofollow noopener">
                 Be the first to add a concept
             </a>
+        </div>
+    {% endif %}
+    <h4>Related Technologies</h4>
+    {% if related_technologies.count > 0 %}
+        {% for result in related_technologies %}
+            {% include 'technology/result.html' %}
+        {% endfor %}
+        <a class="contribute" href="{% url 'technology-create' %}" rel="nofollow noopener">Add a new one</a>
+    {% else %}
+        <div class="alert alert-contribute">
+            <p>There are no technologies {{ result.name }}.</p>
+            <a class="contribute" href="{% url 'technology-create' %}" rel="nofollow noopener">Be the first to add a related 1technology</a>
         </div>
     {% endif %}
     <h4>Resources Collections</h4>
@@ -23,7 +37,8 @@
     {% else %}
         <div class="alert alert-contribute">
             <p>There are no collections for {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'my-collections' %}" rel="nofollow noopener">Be the first to create a collection</a>
+            <a class="contribute" href="{% url 'my-collections' %}" rel="nofollow noopener">Be the first to create a
+                collection</a>
         </div>
     {% endif %}
     <h4>Resources</h4>
@@ -35,7 +50,8 @@
     {% else %}
         <div class="alert alert-contribute">
             <p>There are no resources added for {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'create-resource' %}" rel="nofollow noopener">Be the first to add a learning resource</a>
+            <a class="contribute" href="{% url 'create-resource' %}" rel="nofollow noopener">Be the first to add a
+                learning resource</a>
         </div>
     {% endif %}
 </section>

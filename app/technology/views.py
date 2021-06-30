@@ -30,6 +30,7 @@ def detail(request, slug):
         'result': detail,
         'concepts': detail.concepts.order_by('experience_level').all(),
         'collections': detail.collections.order_by('created_at').select_related().all(),
+        'related_technologies': detail.related_technologies.all(),
         'resources': StudyResource.objects.filter(pk__in=resources_ids).order_by_rating_then_publishing_date().select_related(),
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
         'thumbs_down_array': json.dumps(detail.thumbs_down_array),
