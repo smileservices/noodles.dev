@@ -27,7 +27,7 @@ class SluggableModelMixin(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):  # new
-        if not self.slug:
+        if not self.pk and not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 

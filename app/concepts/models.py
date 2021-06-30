@@ -89,7 +89,7 @@ class CategoryConcept(MPTTModel, AbstractConcept):
 
     @property
     def absolute_url(self):
-        return reverse('concept-category-detail', kwargs={'id': self.id, 'slug': self.slug})
+        return reverse('concept-category-detail', kwargs={'slug': self.slug})
 
     @staticmethod
     def get_elastic_mapping() -> {}:
@@ -165,7 +165,7 @@ class TechnologyConcept(AbstractConcept):
 
     @property
     def absolute_url(self):
-        return reverse('concept-technology-detail', kwargs={'id': self.id, 'slug': self.slug})
+        return reverse('concept-technology-detail', kwargs={'slug': self.slug})
 
     @staticmethod
     def get_elastic_mapping() -> {}:

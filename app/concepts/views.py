@@ -58,9 +58,9 @@ class TechnologyConceptEditSuggestionViewset(EditSuggestionViewset):
     permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
 
 
-def category_detail(request, id, slug):
+def category_detail(request, slug):
     queryset = models.CategoryConcept.objects
-    detail = queryset.select_related().get(pk=id)
+    detail = queryset.select_related().get(slug=slug)
     data = {
         'result': detail,
         'technology_concepts': detail.technology_concepts.all(),
@@ -113,9 +113,9 @@ def category_create(request):
     return render(request, 'concepts/category/create_page.html', data)
 
 
-def technology_detail(request, id, slug):
+def technology_detail(request, slug):
     queryset = models.TechnologyConcept.objects
-    detail = queryset.select_related().get(pk=id)
+    detail = queryset.select_related().get(slug=slug)
     data = {
         'result': detail,
         'vote_url': reverse_lazy('concept-technology-viewset-vote', kwargs={'pk': id})

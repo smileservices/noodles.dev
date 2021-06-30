@@ -13,6 +13,7 @@ from django.urls import reverse
 from category.models import Category
 
 from core import tasks
+from django.template.defaultfilters import slugify
 
 
 def delete_technology_images(sender, instance, **kwargs):
@@ -183,6 +184,9 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
                 except Exception as ex:  # Catch field does not exist exception
                     pass
             kwargs['update_fields'] = changed_fields
+        else:
+            if not self.slug:
+                self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
 

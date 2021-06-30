@@ -2,7 +2,7 @@
 <div class="result concept-listing" itemscope itemtype="https://schema.org/AggregateRating">
         <div class="listing-title">
             <h4 class="title">
-            <a class="concept" href="{% url 'concept-category-detail' result.pk result.slug %}">{{ result.name }}</a>
+            <a class="concept" href="{% url 'concept-category-detail' result.slug %}">{{ result.name }}</a>
             </h4>
             <div class="tags">
                 <span>{{ result.experience_level_label }} Level</span>

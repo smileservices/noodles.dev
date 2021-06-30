@@ -2,7 +2,7 @@
 <div class="result concept-listing" itemscope itemtype="">
         <div class="listing-title">
             <h4 class="title">
-            <a class="concept" href="{% url 'concept-technology-detail' result.pk result.slug %}">{{ result.name }}</a>
+            <a class="concept" href="{% url 'concept-technology-detail' result.slug %}">{{ result.name }}</a>
             </h4>
             <div class="tags">
                 <a class="tech" href="{{ tech.absolute_url }}">
