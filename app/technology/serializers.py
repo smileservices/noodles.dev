@@ -164,6 +164,8 @@ class TechnologySerializer(EditSuggestionSerializer):
                 del validated_data['image_url']
             except Exception as e:
                 raise exceptions.ValidationError('Error getting the image from specified url')
+        if 'category_concepts' in data:
+            validated_data['category_concepts'] = json.loads(data['category_concepts'])
         validated_data['category'] = [int(t) for t in data['category'].split(',')] if data['category'] else []
         validated_data['ecosystem'] = [int(t) for t in data['ecosystem'].split(',')] if data['ecosystem'] else []
         return validated_data

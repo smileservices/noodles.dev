@@ -12,6 +12,8 @@
 </header>
 <div class="description">
     {{ detail.description | linebreaks }}
+    <p>created on {{ detail.created_at|date:"d M, Y G:i" }}</p>
+    <p>updated on {{ detail.updated_at|date:"d M, Y G:i" }}</p>
 </div>
 
 {% if detail.children.count %}

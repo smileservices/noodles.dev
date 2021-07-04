@@ -49,10 +49,11 @@ class TechnologyIntegrationTesting(APITestCase):
             'description': 'some description',
             'category': ','.join([str(id) for id in [self.categories[0].pk, self.categories[1].pk]]),
             'ecosystem': '',
+            'category_concepts': '{}',
             'license': 0,
             'url': 'wwww.google.com',
             'owner': 'some owner',
-            'meta': ''
+            'meta': '{}'
         }
 
     def test_create(self):

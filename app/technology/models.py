@@ -6,7 +6,7 @@ from versatileimagefield.fields import VersatileImageField
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from versatileimagefield.utils import build_versatileimagefield_url_set
 from votable.models import VotableMixin
-from core.abstract_models import SluggableModelMixin, ElasticSearchIndexableMixin
+from core.abstract_models import SluggableModelMixin, ElasticSearchIndexableMixin, ResourceMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 from django_edit_suggestion.models import EditSuggestion
 from django.urls import reverse
@@ -52,7 +52,7 @@ class TechnologyManager(models.Manager):
         )
 
 
-class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+class Technology(ResourceMixin, VotableMixin):
     elastic_index = 'technologies'
 
     class LicenseType(models.IntegerChoices):
@@ -81,7 +81,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     category_concepts = models.ManyToManyField('concepts.CategoryConcept', related_name='related_technologies')
 
     edit_suggestions = EditSuggestion(
-        excluded_fields=('author', 'thumbs_up_array', 'thumbs_down_array'),
+        excluded_fields=('slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at'),
         m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category}, {'name': 'category_concepts', 'model': 'concepts.CategoryConcept'}],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,

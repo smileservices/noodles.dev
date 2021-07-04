@@ -12,10 +12,10 @@ from django.contrib.postgres.fields import JSONField
 from django_edit_suggestion.models import EditSuggestion
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_publish_edit, post_reject_edit
 from core.tasks import sync_to_elastic
-from core.abstract_models import ElasticSearchIndexableMixin
+from core.abstract_models import ResourceMixin
 
 
-class AbstractConcept(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+class AbstractConcept(ResourceMixin, VotableMixin):
     class ExperienceLevel(models.IntegerChoices):
         ABEGINNER = (0, 'Absolute Beginner')
         JUNIOR = (1, 'Junior')
@@ -64,7 +64,7 @@ class CategoryConcept(MPTTModel, AbstractConcept):
     )
     edit_suggestions = EditSuggestion(
         excluded_fields=(
-            'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
         special_foreign_fields=['parent', ],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
@@ -156,7 +156,7 @@ class TechnologyConcept(AbstractConcept):
     )
     edit_suggestions = EditSuggestion(
         excluded_fields=(
-            'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,

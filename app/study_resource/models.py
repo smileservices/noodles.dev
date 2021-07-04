@@ -9,7 +9,7 @@ from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from versatileimagefield.utils import build_versatileimagefield_url_set
 from django.conf import settings
 
-from core.abstract_models import DateTimeModelMixin, SluggableModelMixin
+from core.abstract_models import ResourceMixin, DateTimeModelMixin
 from votable.models import VotableMixin
 from django_edit_suggestion.models import EditSuggestion
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
@@ -105,7 +105,7 @@ class StudyResourceTechnology(models.Model):
         return reverse('tech-detail', kwargs={'slug': self.slug})
 
 
-class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+class StudyResource(ResourceMixin, VotableMixin):
     elastic_index = 'study_resources'
 
     class Price(models.IntegerChoices):
@@ -147,7 +147,8 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
     experience_level = models.IntegerField(default=0, choices=ExperienceLevel.choices, db_index=True)
     edit_suggestions = EditSuggestion(
         excluded_fields=(
-            'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'
+        ),
         m2m_fields=[
             {'name': 'tags', 'model': Tag},
             {'name': 'category_concepts', 'model': CategoryConcept},

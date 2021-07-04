@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from core.abstract_models import DateTimeModelMixin, SluggableModelMixin, \
-    ElasticSearchIndexableMixin
+from core.abstract_models import ResourceMixin
 from votable.models import VotableMixin
 from users.models import CustomUser
 from tag.models import Tag
@@ -19,7 +18,7 @@ class CollectionManager(models.Manager):
         return CollectionQueryset(self.model, using=self.db).annotate_with_items_count()
 
 
-class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+class Collection(ResourceMixin, VotableMixin):
     elastic_index = 'collections'
 
     objects = CollectionManager()

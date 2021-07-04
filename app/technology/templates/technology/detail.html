@@ -25,6 +25,8 @@
     <p class="summary">{{ result.description | linebreaks }}</p>
     <p>Technology maintained by <span class="highlighted">{{ result.owner }}</span></p>
     <p class="source_url"><a href="{{ result.url }}">{{ result.url }}</a></p>
+    <p>created on {{ result.created_at|date:"d M, Y G:i" }}</p>
+    <p>updated on {{ result.updated_at|date:"d M, Y G:i" }}</p>
 </div>
 <div class="description-long">
     {{ result.description_long|markdownify }}

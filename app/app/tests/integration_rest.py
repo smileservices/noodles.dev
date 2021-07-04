@@ -8,6 +8,7 @@ from technology.models import Technology
 from tag.models import Tag
 from tag.fake import create_tags
 from category.fake import create_categories
+from concepts.fake import clean_concepts, create_category_concept, create_technology_concept
 from category.models import Category
 from study_collection.models import Collection
 from technology.fake import create_technologies
@@ -22,8 +23,6 @@ from study_resource.models import StudyResource
 COLLECTION_VIEWSET_URL = reverse('collection-viewset-list')
 STUDY_RESOURCE_VIEWSET_URL = reverse('study-resource-viewset-list')
 
-
-# todo rewrite replacing problem/solution with something else
 
 
 class RestIntegrationTest(APITestCase):
@@ -48,6 +47,10 @@ class RestIntegrationTest(APITestCase):
         create_categories()
         create_tags()
         create_technologies()
+        self.category_concept = create_category_concept('cat concept', Category.objects.first(),
+                                                        CustomUser.objects.first())
+        self.technology_concept = create_technology_concept('tech concept', Technology.objects.first(),
+                                                            CustomUser.objects.first())
         self.tags = Tag.objects.all()
         self.categories = Category.objects.all()
         self.technologies = Technology.objects.all()
@@ -95,6 +98,8 @@ class RestIntegrationTest(APITestCase):
                 'publication_date': '2020-09-20',
                 'published_by': 'google',
                 'url': fake.url(),
+                'category_concepts': '{}',
+                'technology_concepts': '{}',
                 'price': 0,
                 'media': 0,
                 'experience': 0,
@@ -140,6 +145,8 @@ class RestIntegrationTest(APITestCase):
             'summary': 'bla bla bla',
             'publication_date': '2020-09-20',
             'published_by': 'google',
+            'category_concepts': '{}',
+            'technology_concepts': '{}',
             'url': fake.url(),
             'price': 0,
             'media': 0,

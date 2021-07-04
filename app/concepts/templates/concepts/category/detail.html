@@ -18,6 +18,8 @@
 </header>
 <div class="description">
     {{ result.description | linebreaks }}
+    <p>created on {{ result.created_at|date:"d M, Y G:i" }}</p>
+    <p>updated on {{ result.updated_at|date:"d M, Y G:i" }}</p>
 </div>
 <div class="description-long">
     {{ result.description_long|markdownify }}

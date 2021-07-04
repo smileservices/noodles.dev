@@ -1,5 +1,5 @@
 from django.db import models
-from core.abstract_models import SluggableModelMixin
+from core.abstract_models import ResourceMixin
 from mptt.models import MPTTModel, TreeForeignKey
 from django.shortcuts import reverse
 from core.abstract_models import ElasticSearchIndexableMixin
@@ -44,7 +44,7 @@ class CategoryModelManager(models.Manager):
         return validated_categories
 
 
-class Category(MPTTModel, SluggableModelMixin, ElasticSearchIndexableMixin):
+class Category(MPTTModel, ResourceMixin):
     elastic_index = 'categories'
     name = models.CharField(max_length=128, db_index=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
