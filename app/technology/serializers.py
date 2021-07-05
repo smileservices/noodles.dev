@@ -104,6 +104,8 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
                                'old': instance.edit_suggestion_parent.logo,
                                'new': instance.logo
                                })
+            elif change.field == 'meta':
+                continue
             elif change.field == 'slug':
                 continue
             else:

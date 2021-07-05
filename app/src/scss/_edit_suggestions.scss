@@ -53,6 +53,9 @@
           font-size: $fontsize-md;
           color: var(--color-text-white);
           font-weight: 400;
+          del,ins {
+            color: var(--color-background-1)
+          }
         }
 
         .changed.empty {
