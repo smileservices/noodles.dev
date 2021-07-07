@@ -90,7 +90,7 @@ class CategoryConceptSerializer(EditSuggestionSerializer):
     queryset = CategoryConcept.objects.all()
     author = UserSerializerMinimal(many=False, read_only=True)
     category = CategorySerializerOption(many=False, read_only=True)
-    parent = CategoryConceptSerializerListing(many=False, read_only=True)
+    parent = CategoryConceptSerializerOption(many=False, read_only=True)
 
     class Meta:
         model = CategoryConcept
