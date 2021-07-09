@@ -4,6 +4,8 @@ from .elasticsearch.elasticsearch_interface import save_to_elastic, delete_from_
 from .elasticsearch.elasticsearch_interface import ElasticSearchInterface
 import logging
 from django.core.management import call_command
+from history.models import ResourceHistoryModel
+import json
 
 
 def set_to_sync(syncable_instance):
@@ -157,28 +159,48 @@ def sync_technology_resources_to_elastic(sender, **kwargs):
         task_sync_technologies_related(instance.pk, sender)
 
 
-@periodic_task(crontab(hour='*/1'))
-def send_admin_crud_report():
-    '''
-    Send report to admins with CRUD events on resources and new users
-    that happened in the last 3 hours
-    '''
-    from easyaudit.models import CRUDEvent
-    from datetime import datetime, timedelta
-    from django.core.mail import mail_admins
-    since_datetime = datetime.now() - timedelta(hours=1)
-    records = CRUDEvent.objects.filter(
-        datetime__gte=since_datetime
-    ).all()
-    if records.count() > 0:
-        message = f'This is the CRUD Activity Report for all CRUD operations during {since_datetime} - {datetime.now()}:\n\n'
-        for record in records:
-            message += f'{record.get_event_type_display()} == {record.content_type}|{record.object_repr} ==by== {record.user.username}|{record.user.email}'
-            message += f'{record.changed_fields}'
-            message += '=' * 30
-            message += '\n'
-            # send mail
-        mail_admins(
-            subject='CRUD Activity Report',
-            message=message
-        )
+# @periodic_task(crontab(hour='*/1'))
+# def send_admin_crud_report():
+#     '''
+# todo modify to send activity report of resource history and specific edit suggestions
+#
+#     Send report to admins with CRUD events on resources and new users
+#     that happened in the last 3 hours
+#     '''
+#     from easyaudit.models import CRUDEvent
+#     from datetime import datetime, timedelta
+#     from django.core.mail import mail_admins
+#     since_datetime = datetime.now() - timedelta(hours=1)
+#     records = CRUDEvent.objects.filter(
+#         datetime__gte=since_datetime
+#     ).all()
+#     if records.count() > 0:
+#         message = f'This is the CRUD Activity Report for all CRUD operations during {since_datetime} - {datetime.now()}:\n\n'
+#         for record in records:
+#             message += f'{record.get_event_type_display()} == {record.content_type}|{record.object_repr} ==by== {record.user.username}|{record.user.email}'
+#             message += f'{record.changed_fields}'
+#             message += '=' * 30
+#             message += '\n'
+#             # send mail
+#         mail_admins(
+#             subject='CRUD Activity Report',
+#             message=message
+#         )
+
+
+# todo 2 tasks - one for update directly, another through publishing edits
+# tasks should take serialized data and compare; for different values, make the diff
+
+@task()
+def add_history_record_update(model, pk, changes_text, author_id, operation_source, operation_type, edit_reason='', edit_published_by_id=None):
+    # use python diff_match_patch library
+    # cycle through each field and compute changes
+    instance = model.objects.get(pk=pk)
+    instance.history.create(
+        changes=changes_text,
+        author_id=author_id,
+        edit_published_by_id=edit_published_by_id,
+        edit_reason=edit_reason,
+        operation_source=operation_source,
+        operation_type=operation_type,
+    )

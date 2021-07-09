@@ -3,6 +3,8 @@ from django.template.defaultfilters import slugify
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from core.tasks import sync_to_elastic, sync_delete_to_elastic
 from users.models import CustomUser
+from django.contrib.contenttypes.fields import GenericRelation
+from history.models import ResourceHistoryModel
 
 
 class DateTimeModelMixin(models.Model):
@@ -74,6 +76,7 @@ class ResourceMixin(DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexa
 
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
     status = models.IntegerField(default=0, choices=StatusOptions.choices, db_index=True)
+    history = GenericRelation(ResourceHistoryModel)
 
     class Meta:
         abstract = True
@@ -81,3 +84,9 @@ class ResourceMixin(DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexa
     @property
     def status_label(self):
         return self.StatusOptions(self.status).label
+
+    def delete(self, using=None, keep_parents=False):
+        # enable soft delete
+        # todo need to restrict querysets to active only
+        self.status = self.StatusOptions.INACTIVE
+        self.save()

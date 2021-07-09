@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
-
+from django.shortcuts import get_object_or_404
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -65,6 +65,21 @@ def detail(request, id, slug):
     if request.user_agent.is_bot:
         return render(request, 'study_resource/detail_page_seo.html', data)
     return render(request, 'study_resource/detail_page.html', data)
+
+
+def history(request, slug):
+    instance = get_object_or_404(StudyResource, slug=slug)
+    data = {
+        'instance': instance,
+        'data': {
+            'title': f'History of {instance.name} Resource',
+            'breadcrumbs': f'<a href="/">Homepage</a> / Resource <a href="{instance.absolute_url}">{instance.name}</a>',
+        },
+        'urls': {
+            'history_get': reverse_lazy('study-resource-viewset-history', kwargs={'pk': instance.pk}),
+        }
+    }
+    return render(request, 'history/history_page.html', data)
 
 
 @login_required

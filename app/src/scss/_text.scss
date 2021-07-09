@@ -133,3 +133,9 @@ small, .small {
 .blue-text {
   color: var(--color-blue);
 }
+
+.diff {
+  ins,del {
+    color: #211f1f;
+  }
+}

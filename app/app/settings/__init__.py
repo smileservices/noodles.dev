@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'cachalot',
     # our app
     'core',
+    'history',
     'rest_framework',
     'django_filters',
     'dashboard',

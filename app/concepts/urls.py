@@ -11,9 +11,9 @@ router.register('technology-edit-suggestions', views.TechnologyConceptEditSugges
 urlpatterns = [
     path('api/', include(router.urls)),
     path('category/<slug:slug>', views.category_detail, name="concept-category-detail"),
-    path('category/<int:id>', views.category_edit, name="category-concept-edit"),
+    path('category/edit/<int:id>', views.category_edit, name="category-concept-edit"),
     path('category/create', views.category_create, name="category-concept-create"),
     path('technology/create', views.technology_create, name="technology-concept-create"),
     path('technology/<slug:slug>', views.technology_detail, name="concept-technology-detail"),
-    path('technology/<int:id>', views.technology_edit, name="technology-concept-edit"),
+    path('technology/edit/<int:id>', views.technology_edit, name="technology-concept-edit"),
 ]

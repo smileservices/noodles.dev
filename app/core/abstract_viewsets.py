@@ -3,9 +3,17 @@ from django_edit_suggestion.rest_views import ModelViewsetWithEditSuggestion
 from app.settings import rewards
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, ValidationError
+from rest_framework.decorators import action
+from django.core.paginator import Paginator
 from core.status import HTTP_209_EDIT_SUGGESTION_CREATED
 from django.core.mail import mail_admins
 from core.serializers import serializeValidationError
+from core.tasks import add_history_record_update
+from core.utils import get_serialized_models_diff
+import json
+
+from history.models import ResourceHistoryModel
+from history.serializers import ResourceHistorySerializer
 
 
 class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset):
@@ -49,7 +57,22 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
         instance = self.get_object()
         if self.request.user.is_staff or instance.author == self.request.user:
             try:
-                return super(ResourceWithEditSuggestionVieset, self).update(request, *args, **kwargs)
+                old_record = self.serializer_class(instance).data
+                response = super(ResourceWithEditSuggestionVieset, self).update(request, *args, **kwargs)
+                if response.status_code == 200:
+                    # we run the task creating the history object
+                    new_record = response.data
+                    diff_text = json.dumps(get_serialized_models_diff(old_record, new_record, old_record.keys()))
+                    add_history_record_update(
+                        model=self.serializer_class.Meta.model,
+                        pk=instance.pk,
+                        changes_text=diff_text,
+                        edit_reason=request.data['edit_suggestion_reason'],
+                        author_id=request.user.pk,
+                        operation_source=ResourceHistoryModel.OperationSource.DIRECT,
+                        operation_type=ResourceHistoryModel.OperationType.UPDATE
+                    )
+                return response
             except ValidationError as e:
                 raise e
             except Exception as e:
@@ -79,6 +102,58 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                             f'{self.request.data}'
                 )
                 return Response(status=502)
+
+    @action(methods=['POST'], detail=True)
+    def edit_suggestion_publish(self, request, *args, **kwargs):
+        try:
+            parent = self.get_object()
+            edit_instance = parent.edit_suggestions.get(
+                pk=request.data['edit_suggestion_id'],
+                edit_suggestion_parent=parent
+            )
+            edit_instance.edit_suggestion_publish(request.user)
+            # we run the create history update task
+            old_record = self.serializer_class(parent).data
+            parent.refresh_from_db()  # retrieve new data from db
+            new_record = self.serializer_class(parent).data
+            diff_text = json.dumps(get_serialized_models_diff(old_record, new_record, old_record.keys()))
+            add_history_record_update(
+                model=self.serializer_class.Meta.model,
+                pk=parent.pk,
+                changes_text=diff_text,
+                author_id=request.user.pk,
+                edit_published_by_id=edit_instance.edit_suggestion_author.pk,
+                edit_reason=edit_instance.edit_suggestion_reason,
+                operation_source=ResourceHistoryModel.OperationSource.EDIT_SUGGESTION,
+                operation_type=ResourceHistoryModel.OperationType.UPDATE
+            )
+        except PermissionDenied as e:
+            return Response(status=403, data={
+                'error': True,
+                'message': str(e)
+            })
+        except Exception as e:
+            return Response(status=401, data={
+                'error': True,
+                'message': str(e)
+            })
+        return Response(status=200, data={
+            'error': False,
+            'message': 'Edit suggestion has been published! Resource has been updated.'
+        })
+
+    @action(methods=['GET'], detail=True)
+    def history(self, request, *args, **kwargs):
+        page_size = int(request.GET.get('resultsPerPage', 10))
+        page = int(request.GET.get('currentPage', 1))
+        instance = self.get_object()
+        paginated_results = Paginator(instance.history.order_by('-created').all(), page_size)
+        page = paginated_results.page(page)
+        serialized_history = ResourceHistorySerializer(page, many=True)
+        return Response({
+            'items': serialized_history.data,
+            'stats': {'total': paginated_results.count}
+        })
 
     def perform_destroy(self, instance):
         if self.request.user.is_staff or instance.author == self.request.user:

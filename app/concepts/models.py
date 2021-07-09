@@ -75,6 +75,9 @@ class CategoryConcept(MPTTModel, AbstractConcept):
     class MPTTMeta:
         order_insertion_by = ['name']
 
+    def __str__(self):
+        return f'Concept Category::{self.name}'
+
     @property
     def name_tree(self):
         tree_list = [c.name for c in self.get_ancestors()]
@@ -162,6 +165,9 @@ class TechnologyConcept(AbstractConcept):
         post_reject=post_reject_edit,
         bases=(VotableMixin,)
     )
+
+    def __str__(self):
+        return f'Concept Technology::{self.name}'
 
     @property
     def absolute_url(self):

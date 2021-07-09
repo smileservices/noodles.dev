@@ -35,6 +35,7 @@
             <a href="{% url 'account_login' %}?next={{ request.get_full_path }}" rel="nofollow noopener"
                class="icon-bookmark" id=""></a>
         </div>
+        <a class="btn contribute" href="{% url 'study-resource-history' slug=result.slug %}" rel="nofollow noopener">History</a>
     </div>
     <h1 class="title">{{ result.name }}</h1>
 </header>

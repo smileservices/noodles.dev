@@ -34,7 +34,7 @@ class Collection(ResourceMixin, VotableMixin):
     technologies = models.ManyToManyField(Technology, related_name='collections')
 
     def __str__(self):
-        return f'{self.name} by {self.author}'
+        return f'Collection::{self.name} by {self.author}'
 
     def get_study_resources(self):
         # return study resources of the collection ordered

@@ -19,6 +19,7 @@ from .serializers import TechnologySerializer, TechnologySerializerOption, Techn
 from .models import Technology
 from django.views.decorators.cache import cache_page
 from app.settings import rewards
+from django.shortcuts import get_object_or_404
 
 
 def detail(request, slug):
@@ -31,7 +32,8 @@ def detail(request, slug):
         'concepts': detail.concepts.order_by('experience_level').all(),
         'collections': detail.collections.order_by('created_at').select_related().all(),
         'related_technologies': detail.related_technologies.all(),
-        'resources': StudyResource.objects.filter(pk__in=resources_ids).order_by_rating_then_publishing_date().select_related(),
+        'resources': StudyResource.objects.filter(
+            pk__in=resources_ids).order_by_rating_then_publishing_date().select_related(),
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
         'thumbs_down_array': json.dumps(detail.thumbs_down_array),
         'vote_url': reverse_lazy('techs-viewset-vote', kwargs={'pk': detail.pk}),
@@ -53,6 +55,21 @@ def list_all(request):
         'results': results,
     }
     return render(request, 'technology/list_page_seo.html', data)
+
+
+def history(request, slug):
+    instance = get_object_or_404(Technology, slug=slug)
+    data = {
+        'instance': instance,
+        'data': {
+            'title': f'History of {instance.name} Technology',
+            'breadcrumbs': f'<a href="/">Homepage</a> / Technology <a href="{instance.absolute_url}">{instance.name}</a>',
+        },
+        'urls': {
+            'history_get': reverse_lazy('techs-viewset-history', kwargs={'pk': instance.pk}),
+        }
+    }
+    return render(request, 'history/history_page.html', data)
 
 
 @login_required

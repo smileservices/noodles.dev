@@ -11,7 +11,6 @@ from core.edit_suggestions import edit_suggestion_change_status_condition, post_
 from django_edit_suggestion.models import EditSuggestion
 from django.urls import reverse
 from category.models import Category
-
 from core import tasks
 from django.template.defaultfilters import slugify
 
@@ -82,7 +81,8 @@ class Technology(ResourceMixin, VotableMixin):
 
     edit_suggestions = EditSuggestion(
         excluded_fields=('slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at'),
-        m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category}, {'name': 'category_concepts', 'model': 'concepts.CategoryConcept'}],
+        m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category},
+                    {'name': 'category_concepts', 'model': 'concepts.CategoryConcept'}],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
@@ -95,7 +95,7 @@ class Technology(ResourceMixin, VotableMixin):
     )
 
     def __str__(self):
-        return f'{self.name}'
+        return f'Technology::{self.name}'
 
     @property
     def license_label(self):
@@ -117,7 +117,6 @@ class Technology(ResourceMixin, VotableMixin):
         return {
             "properties": {
                 "pk": {"type": "integer"},
-
                 # model fields
                 "name": {
                     "type": "text",
@@ -169,6 +168,7 @@ class Technology(ResourceMixin, VotableMixin):
         }
         return self.elastic_index, data
 
+
     def save(self, *args, **kwargs):
         # override the save method to add the updated fields
         if self.pk:
@@ -190,7 +190,8 @@ class Technology(ResourceMixin, VotableMixin):
         super().save(*args, **kwargs)
 
 
-models.signals.pre_save.connect(remove_old_image, sender=Technology, weak=False)
 models.signals.post_save.connect(tasks.sync_technology_resources_to_elastic, sender=Technology, weak=False)
 models.signals.post_save.connect(warm_technology_logos, sender=Technology, weak=False)
-models.signals.post_delete.connect(delete_technology_images, sender=Technology, weak=False)
+# we need to keep the images for the history
+# models.signals.post_delete.connect(delete_technology_images, sender=Technology, weak=False)
+# models.signals.pre_save.connect(remove_old_image, sender=Technology, weak=False)

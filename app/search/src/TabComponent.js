@@ -176,7 +176,8 @@ export default function TabComponent({tabname, searchTerm, title, containerClass
     useEffect(() => {
         dispatch({type: FETCH_INIT, payload: {tab: tabname}});
         if (tabname !== state.tab) {
-            return ()=>{};
+            return () => {
+            };
         }
         const url = '/search/api/' + tabname + '?';
         let params = new URLSearchParams();

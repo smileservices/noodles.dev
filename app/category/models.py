@@ -55,7 +55,7 @@ class Category(MPTTModel, ResourceMixin):
         order_insertion_by = ['name']
 
     def __str__(self):
-        return self.name
+        return f'Category::{self.name}'
 
     @property
     def name_tree(self):
