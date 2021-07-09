@@ -68,6 +68,21 @@ Caching:
     
 ==========================
 
+Edit Suggestions
+------------------
+We are using the [django-edit-suggestions](https://django-edit-suggestion.readthedocs.io/en/latest/)
+library to handle edit suggestions. 
+
+Resources History
+-----------------
+The app history handles keeping the changes on resources. The core.abstract_viewsets.ResourceWithEditSuggestionVieset has history endpoint:
+```python
+    @action(methods=['GET'], detail=True)
+    def history(self, request, *args, **kwargs):
+        ...
+```
+It retrieves the history list of the resource in a paginated way. The resource model must inherit from core.abstract_models.ResourceMixin
+
 ## Management Scripts:
 python manage.py clean_migrations - deletes all migrations files; 
 python manage.py clean_db - recreates the DB
