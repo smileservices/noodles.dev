@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'captcha',
     'django_edit_suggestion',
     'versatileimagefield',
-    'easyaudit',
+    # 'easyaudit',
     'huey.contrib.djhuey',
     'mailer',
     'django_user_agents',

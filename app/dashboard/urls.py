@@ -4,7 +4,7 @@ from django.views.i18n import JavaScriptCatalog, JSONCatalog
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('latest-history', views.LatestActivityViewset, basename='dashboard-latest-activity')
+# router.register('latest-history', views.LatestActivityViewset, basename='dashboard-latest-activity')
 
 urlpatterns = [
     path('api/', include(router.urls)),

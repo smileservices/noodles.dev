@@ -5,7 +5,7 @@ import {SkeletonLoadingSidebarDetail} from "../../../src/components/skeleton/Ske
 import CategoryConceptsComponent from "../../../concepts/src/CategoryConceptsComponent";
 
 const URL_TECHNOLOGIES = '/categories/api/';
-const URL_CREATE_TECHNOLOGY = '/technologies/create/';
+const URL_CREATE_TECHNOLOGY = '/learn/create/';
 
 const FETCH_INIT_TECHNOLOGIES = 'FETCH_INIT_TECHNOLOGIES';
 const FETCH_SUCCESS_TECHNOLOGIES = 'FETCH_SUCCESS_TECHNOLOGIES';
