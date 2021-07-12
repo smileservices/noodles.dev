@@ -83,7 +83,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                             f'REQUEST DATA:\n'
                             f'{self.request.data}'
                 )
-                return Response(status=502)
+                return Response(status=502, data=str(e))
         else:
             try:
                 serialized_instance = self.get_serializer(instance=instance, data=request.data)
@@ -121,8 +121,8 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                 model=self.serializer_class.Meta.model,
                 pk=parent.pk,
                 changes_text=diff_text,
-                author_id=request.user.pk,
-                edit_published_by_id=edit_instance.edit_suggestion_author.pk,
+                author_id=edit_instance.edit_suggestion_author.pk,
+                edit_published_by_id=request.user.pk,
                 edit_reason=edit_instance.edit_suggestion_reason,
                 operation_source=ResourceHistoryModel.OperationSource.EDIT_SUGGESTION,
                 operation_type=ResourceHistoryModel.OperationType.UPDATE

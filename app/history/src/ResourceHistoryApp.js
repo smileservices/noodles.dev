@@ -12,7 +12,7 @@ const ERROR = 'ERROR';
 
 const initialTabState = {
     pagination: {
-        resultsPerPage: 3,
+        resultsPerPage: 10,
         current: 1,
         offset: 0 //this can be left 0 as we don't need it on the backend
     },

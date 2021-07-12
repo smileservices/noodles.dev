@@ -34,13 +34,17 @@ class ImageSerializer(serializers.ModelSerializer):
 class StudyResourceTechnologySerializer(serializers.ModelSerializer):
     queryset = StudyResourceTechnology.objects.all()
     url = serializers.SerializerMethodField()
+    label = serializers.SerializerMethodField()
 
     class Meta:
         model = StudyResourceTechnology
-        fields = ['pk', 'technology_id', 'name', 'version', 'url']
+        fields = ['pk', 'technology_id', 'name', 'version', 'url', 'label']
 
     def get_url(self, obj):
         return obj.absolute_url
+
+    def get_label(self, obj):
+        return f'{obj.name} {obj.version}'
 
 
 class StudyResourceEditSuggestionListingSerializer(serializers.ModelSerializer):
