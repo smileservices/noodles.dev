@@ -5,6 +5,7 @@ such as PostgreSQL, Redis and Elasticsearch
 
 ## Clone the app (dev branch)
 `git clone git@github.com:smileservices/noodles.dev.git`
+- checkout development branch: `git checkout development`
 
 ## Set up local python enviroment
 - install python 3.8.5 from https://www.python.org/downloads/release/python-385/ 
