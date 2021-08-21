@@ -51,6 +51,7 @@ function SidebarApp() {
     return (
         <Fragment>
             <div className="categories">
+                <h3 className="sidebar-title">Categories</h3>
                 <CategoriesComponent clickAction={clickCategoryAction}/>
             </div>
             {state.expanded

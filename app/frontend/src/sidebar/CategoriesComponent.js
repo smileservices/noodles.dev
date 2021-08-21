@@ -29,7 +29,7 @@ function TreeComponent({content, children, isExpanded, clickAction}) {
     return (
         <ul className="tree">
             <li className={expanded ? 'parent expanded' : 'parent'} key={makeId(4)} onClick={clickAction}>
-                {expander()}{content}
+                {content}
             </li>
             {expanded && children.length > 0 ? <li className="children">{children}</li> : ''}
         </ul>
