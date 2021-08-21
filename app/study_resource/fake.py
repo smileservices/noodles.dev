@@ -83,7 +83,6 @@ def study_resource_edit_suggestions(resource: models.StudyResource, author=None)
             edsug.technologies.through.objects.create(
                 technology_id=tech.technology_id,
                 name=tech.name,
-                slug=tech.slug,
                 study_resource=edsug,
                 version=tech.version
             )

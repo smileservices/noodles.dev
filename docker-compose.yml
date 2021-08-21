@@ -8,11 +8,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    volumes:
-      - "./sqldump:/dump"
-      - "./sqlinit:/docker-entrypoint-initdb.d"
-      - "/var/run/postgres.sock:/var/run/postgres/postgres.sock"
-      - "/home/vldmr/docker-apps/volumes/postgres-data:/var/lib/postgresql/data"
     networks:
       - noodles_network
   noodles-pg_admin:

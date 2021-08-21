@@ -63,9 +63,9 @@ class Command(BaseCommand):
         if created:
             user.set_password(credentials["password"])
             user.save()
-            email = user.emailaddress_set.first()
-            email.verified = True
-            email.save()
+            # email = user.emailaddress_set.first()
+            # email.verified = True
+            # email.save()
             msg = "Superuser - %(email)s/%(password)s" % credentials
         else:
             msg = "Superuser already exists - %(email)s" % credentials
