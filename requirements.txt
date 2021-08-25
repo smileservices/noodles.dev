@@ -37,7 +37,7 @@ django-markdownify==0.9.0
 django-mptt==0.12.0
 django-recaptcha==2.0.6
 django-redis==4.12.1
-django-url-alias @ file:///home/vldmr/dev/noodles/ext/django_url_alias
+django-url-alias
 django-user-agents==0.4.0
 django-versatileimagefield==2.0
 djangorestframework==3.11.0
