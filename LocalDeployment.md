@@ -14,6 +14,7 @@ such as PostgreSQL, Redis and Elasticsearch
 - enable the virtualenviroment (different on windows/linux):
     windows: execute `venv/Scripts/activate.bat`
     linux: execute `source venv/bin/activate`
+- install `libmagic` library: `pip install python_magic_bin-0.4.14-py2.py3-none-win32.whl`
 - once the virtualenv has been activated, go to project root and install all python dependencies:
 `pip install -r requirements.txt`
 
@@ -21,7 +22,7 @@ such as PostgreSQL, Redis and Elasticsearch
 - run `docker-compose up -d`
 
 ## Setup the database
-- we go to `noodles/scripts` and run `python init.db postgres postgres postgres` to create the noodles db and user
+- we go to `noodles/scripts` and run `python init_db.py postgres postgres postgres` to create the noodles db and user
 - we go to `noodles/app` and apply the database migrations (set up the table structure and all):
 `python manage.py migrate`
 - run a python script for populating the database with dummy data:
