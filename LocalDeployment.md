@@ -40,3 +40,13 @@ since we are starting fresh, we need to index all data in bulk manually:
 `python manage.py runserver runserver 127.0.0.1:8000`
 
 The web application will be available at url http://127.0.0.1:8000/
+
+## Frontend Scrips
+We are using webpack to pack .js files and .scss files into bundles. The setting for webpack is in `/webpack.config.js`
+
+To build .js bundles:
+- for development `npm run dev`
+- for production `npm run prod`
+
+To build main.css bundle: 
+- both dev/production `npm run css`
