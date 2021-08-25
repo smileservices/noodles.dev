@@ -37,7 +37,7 @@ since we are starting fresh, we need to index all data in bulk manually:
 `python manage.py run_huey`
 
 ## Run the app
-`python manage.py runserver runserver 127.0.0.1:8000`
+`python manage.py runserver 127.0.0.1:8000`
 
 The web application will be available at url http://127.0.0.1:8000/
 
