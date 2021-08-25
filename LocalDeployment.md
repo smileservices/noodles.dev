@@ -10,7 +10,7 @@ such as PostgreSQL, Redis and Elasticsearch
 ## Set up local python enviroment
 - install python 3.8.5 from https://www.python.org/downloads/release/python-385/ 
 - install virtualenv: `pip install virtualenv`
-- create new virtualenviroment: `virtualenv -p {path to python} -m venv`
+- create new virtualenviroment: `virtualenv -p {path to python} venv`
 - enable the virtualenviroment (different on windows/linux):
     windows: execute `venv/Scripts/activate.bat`
     linux: execute `source venv/bin/activate`
