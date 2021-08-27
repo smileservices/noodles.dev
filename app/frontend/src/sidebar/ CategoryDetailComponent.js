@@ -75,7 +75,7 @@ const NoTechs = (
            hideable={false} type="warning"/>
 );
 
-export default function CategoryDetailComponent({category}) {
+export default function CategoryDetailComponent({category, onClickClose}) {
     const [state, dispatch] = useReducer(reducer, {...initialState});
 
     useEffect(() => {
@@ -110,17 +110,25 @@ export default function CategoryDetailComponent({category}) {
 
     return (
         <div className="category-detail">
-            <h4 className="name">{category.name}</h4>
-            <div className="description">
-                <p>{category.description}</p>
-                <a className="link detail" href={category.url}>view detail</a>
+            <div className="name-container">
+                <h4>{category.name}</h4>
+                <span onClick={onClickClose} className="icon-close close-btn" />
             </div>
-            <h5>Concepts</h5>
-            <div className="concepts-container">
-                {<CategoryConceptsComponent category={category} />}
-                <a className="contribute" href={'/concepts/category/create?category='+category.pk}>Add New Concept</a>
+            <div className="description-container">
+                <p className="description">{category.description}</p>
+                <a className="view-more" href={category.url}>View more</a>
             </div>
-            <h5>Associated Technologies:</h5>
+            
+            <div className="section">
+                <h4 className="section-title">Concepts</h4>
+                <p className="section-description">
+                    This is a theoretical concept specific to a category. It proposes to solve a particular issue theoretically.
+                </p>
+                <div className="concepts-container">
+                    {<CategoryConceptsComponent category={category} />}
+                </div>
+            </div>
+            <h4>Associated Technologies:</h4>
             <div className="technologies-container">
                 {technologiesList()}
             </div>

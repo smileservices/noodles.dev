@@ -10,6 +10,13 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
     <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
     {% block meta_tags %}
         <title>Noodles.com</title>
         <meta name="description"
@@ -20,6 +27,7 @@
     {% endblock %}
     <link rel="stylesheet" href="{% static 'frontend/css/main.css' %}">
     <link rel="stylesheet" href="{% static 'icomoon_fonts/style.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'icomoon_fonts/icomoon/style.css' %}"> -->
 
     {% block extra_css %}{% endblock %}
     {% block extra_top_js %}{% endblock %}
@@ -59,7 +67,7 @@
         return Boolean(parseInt(document.cookie.substr(authenticated_cookie_idx, 'authenticated=x'.length).split('=')[1]))
     })();
     const URL_USER_DATA = "{% url 'user-data' %}";
-    {#  handle user data; see if user is logged or not based on sessionid cookie; if user is logged, populate user_data key in sessionStorage #}
+    // {#  handle user data; see if user is logged or not based on sessionid cookie; if user is logged, populate user_data key in sessionStorage #}
     if (!IS_AUTHENTICATED) {
         window.sessionStorage.removeItem('user_data');
     }
@@ -126,8 +134,8 @@
         })
     })
 </script>
-<script src="{% static 'js/react-bundle.js' %}"></script>
-<script src="{% static 'frontend/sidebar-app.js' %}"></script>
+<script src="{% static 'js/react-bundle.js' %}" defer></script>
+<script src="{% static 'frontend/sidebar-app.js' %}" defer></script>
 {% if not hide_navbar_search %}
     <script src="{% static 'navbar-search-bar-app.js' %}"></script>
 {% endif %}

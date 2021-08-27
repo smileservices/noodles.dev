@@ -22,6 +22,16 @@
   }
 }
 
+@media only screen and (min-width: 1200px) {
+  main {
+    padding: 2rem 1rem 2rem 5rem !important;
+  }
+
+  footer {
+    padding: 3.75rem 3.75rem 3.75rem 6rem !important;
+  }
+}
+
 @media only screen and (min-width: 769px) {
   nav .collapsible .collapse-toggle {
     display: none;
@@ -199,9 +209,6 @@
     .show-container {
       display: flex;
     }
-  }
-  aside.sidebar #sidebar-app {
-    width: $sidebar-width;
   }
   aside.sidebar.expanded #sidebar-app {
     width: 100vw;

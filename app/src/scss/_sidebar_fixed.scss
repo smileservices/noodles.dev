@@ -34,44 +34,31 @@ aside.sidebar {
   //transform-origin: top left;
 
   .top-section {
-    position: absolute;
-    top: 0;
-    left: 0;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     line-height: $fontsize-big*2;
-    width: $sidebar-width;
+    // width: $sidebar-width;
+    min-width: 17rem;
     font-size: $fontsize-big;
     font-weight: 700;
-    background-color: var(--color-background-1);
-    color: var(--color-sidebar-txt);
+    background-color: $sidebar-background;;
     box-shadow: inset 0px -1px 0px #2F2F2F;
 
     a {
       //padding: $padding-unit*2;
       text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 22px;
+      line-height: 22px;
       color: var(--color-text-white);
-    }
 
-    a.collapse-button {
-      padding: $padding-unit*2 0;
-    }
-
-    a > svg {
-      fill: var(--color-text-white);
-    }
-
-    a:last-child {
-      flex-grow: 1;
-    }
-
-    a:hover {
-      background-color: var(--color-sidebar-hover-bg);
-      color: var(--color-sidebar-hover-txt);
-    }
-
-    a:hover svg {
-      fill: var(--color-text-grey);
+      .close-icon {
+        font-size: 20px;
+      }
     }
   }
 
@@ -146,52 +133,77 @@ aside.sidebar {
   #sidebar-app {
     position: absolute;
     top: $nav-height;
-    background-color: var(--color-background-2);
+    background-color: $sidebar-background;
+
+    position: absolute;
+    top: 0;
+    left: 0;
 
     .categories {
       margin-top: $padding-unit-big*2;
       padding-bottom: $padding-unit-sm;
+      padding: 0px 16px $padding-unit-sm 16px;
       overflow-y: auto;
       height: 100vh;
       font-size: $fontsize-sm;
       min-width: $sidebar-width;
 
+      .sidebar-title {
+        font-family: 'Montserrat', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 22px;
+        margin-bottom: 12px;
+        margin-top: 24px;
+        color: #FFFFFF;
+      }
+
       .tree {
-
-        li.parent {
-          color: var(--color-text-grey-2);
-          padding-left: $padding-unit-sm;
-        }
-
-        li.parent.expanded {
-          color: var(--color-blue);
-          font-weight: 700;
-        }
-
-        li.children {
-          margin-left: $padding-unit-sm;
-          border-left: 1px dashed var(--color-background-4);
-        }
-
         li {
-          padding: $padding-unit-sm/2;
+          display: flex;
+          align-items: center;
+          padding: $padding-unit-sm/2 0px;
 
           span.expander {
-            color: var(--color-text-white);
-            margin-right: $padding-unit;
-            padding: 0 $padding-unit-sm/2;
-            background-color: var(--color-background-4);
+            cursor: pointer;
+            font-size: 24px;
           }
 
-          span.expander:hover {
-            background-color: var(--color-blue-dark);
+          div.parent {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Montserrat', sans-serif;
+            font-style: normal;
+            font-size: 12px;
+            line-height: 22px;
+            color: #FFFFFF;
+            // padding-left: $padding-unit-sm;
+            padding: 4px 8px;
+          }
+
+          div.parent.expanded {
+            font-weight: bold;
+          }
+
+          div.parent.expanded.open-details {
+            background-color: #576EFF;
+            border-radius: 1px;
+          }
+
+          div.parent.open-details {
+            background-color: #576EFF;
+            border-radius: 1px;
+          }
+
+          div.parent:hover {
+            cursor: pointer;
           }
         }
-
-        li.parent:hover {
-          cursor: pointer;
-          background-color: var(--color-background-1);
-          color: var(--color-blue-dark);
+        li.children {
+          display: list-item;
+          margin-left: $padding-unit-sm;
         }
       }
     }
@@ -209,33 +221,106 @@ body.sidebar-visible {
 
 aside.sidebar.expanded {
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.8);
+  // background-color: rgba(0, 0, 0, 0.8);
+  // background-color: $sidebar-background;
 
   #sidebar-app {
     display: flex;
 
     .category-detail {
-      padding: $padding-unit-big;
+      padding: 7rem 2rem 2rem 36px;
+      // padding-top: 3rem;
       overflow: auto;
       height: 100vh;
       width: 40vw;
+      max-width: 502px;
       font-size: $fontsize-md;
-      border-left: 1px dashed var(--color-background-4);
+      border-left: 1px solid var(--color-sidebar-border);
       display: flex;
       flex-direction: column;
-      gap: $padding-unit-big;
+      // gap: $padding-unit-big;
       background-color: var(--color-sidebar-bg-2);
 
-      h4, h5 {
-        color: var(--color-text-grey-2);
-        text-align: center;
+      h4 {
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 22px;
+        color: #FFFFFF;
+        text-align: left;
       }
 
-      .concepts-container {
+      .name-container {
         display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        gap: 1rem;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.2rem;
+
+        .close-btn {
+          font-size: 16px;
+          cursor: pointer;
+        }
+      }
+
+      .description-container {
+        font-family: 'Noto Sans', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 21px;
+        margin-bottom: 2rem;
+
+        .description {
+          margin-bottom: 12px;
+        }
+
+        .view-more {
+          color: #96A4FF;
+          font-weight: 600;
+        }
+      }
+
+      .section {
+        margin-bottom: 3rem; // remove this later
+        .section-title {
+          margin-bottom: 8px;
+        }
+  
+        p.section-description {
+          margin-bottom: 22px;
+        }
+
+        .concepts-container {
+          display: flex;
+          flex-direction: column;
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+      }
+
+      .concept-link {
+        background: #5C6FF6;
+        border-radius: 64px;
+        color: white;
+        padding: 4px 16px;
+        font-family: Noto Sans;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 22px;
+      }
+
+      .add-concept-btn {
+        background: #363845;
+        border-radius: 64px;
+        color: #96A4FF;
+        padding: 4px 16px;
+        font-family: Noto Sans;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 22px;
       }
 
       .technologies-container {
