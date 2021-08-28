@@ -71,8 +71,17 @@ const reducer = (state, {type, payload}) => {
 }
 
 const NoTechs = (
-    <Alert text="There are no technologies yet. Help the community by adding one yourself!" stick={true}
-           hideable={false} type="warning"/>
+    <div className="empty-container">
+        <div className="empty-div">
+            <img src="/static/imgs/add_file.png" />
+            <p className="empty-text">
+                There are no technologies yet. Help the community by adding one yourself!
+            </p>
+            <a className="add-text" href={URL_CREATE_TECHNOLOGY}>
+                + Add Technology
+            </a>
+        </div>
+    </div>
 );
 
 export default function CategoryDetailComponent({category, onClickClose}) {
@@ -105,7 +114,14 @@ export default function CategoryDetailComponent({category, onClickClose}) {
             <Alert text={err} type="danger" hideable={false} stick={true}/>
         ));
         if (state.technologies.length === 0) return (NoTechs);
-        return state.technologies.map(t => <TechnologyMinimalListing key={'tech-' + t.pk} data={t}/>);
+        const technologiesElements = state.technologies.map(t => <TechnologyMinimalListing key={'tech-' + t.pk} data={t}/>);
+        technologiesElements.push(
+            <div className="contribute-container">
+                <a className="contribute" href={URL_CREATE_TECHNOLOGY}>+ Add Technologies</a>
+            </div>
+        );
+
+        return technologiesElements;
     }
 
     return (
@@ -128,12 +144,13 @@ export default function CategoryDetailComponent({category, onClickClose}) {
                     {<CategoryConceptsComponent category={category} />}
                 </div>
             </div>
-            <h4>Associated Technologies:</h4>
-            <div className="technologies-container">
-                {technologiesList()}
-            </div>
-            <div className="contribute-container">
-                <a className="contribute" href={URL_CREATE_TECHNOLOGY}>Add New Technology</a>
+
+            <div className="section">
+                <h4 className="section-title">Associated Technologies</h4>
+                <p className="section-description" />
+                <div className="technologies-container">
+                    {technologiesList()}
+                </div>
             </div>
         </div>
     )

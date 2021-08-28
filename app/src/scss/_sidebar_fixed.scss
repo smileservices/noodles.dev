@@ -135,6 +135,12 @@ aside.sidebar {
     top: $nav-height;
     background-color: $sidebar-background;
 
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 22px;
+    color: #FFFFFF;
+
     position: absolute;
     top: 0;
     left: 0;
@@ -146,14 +152,14 @@ aside.sidebar {
       overflow-y: auto;
       height: 100vh;
       font-size: $fontsize-sm;
-      min-width: $sidebar-width;
+      max-width: $sidebar-width;
 
       .sidebar-title {
-        font-family: 'Montserrat', sans-serif;
-        font-style: normal;
+        // font-family: 'Montserrat', sans-serif;
+        // font-style: normal;
         font-weight: 600;
         font-size: 18px;
-        line-height: 22px;
+        // line-height: 22px;
         margin-bottom: 12px;
         margin-top: 24px;
         color: #FFFFFF;
@@ -174,11 +180,6 @@ aside.sidebar {
             width: 100%;
             display: flex;
             justify-content: space-between;
-            font-family: 'Montserrat', sans-serif;
-            font-style: normal;
-            font-size: 12px;
-            line-height: 22px;
-            color: #FFFFFF;
             // padding-left: $padding-unit-sm;
             padding: 4px 8px;
           }
@@ -231,7 +232,7 @@ aside.sidebar.expanded {
       padding: 7rem 2rem 2rem 36px;
       // padding-top: 3rem;
       overflow: auto;
-      height: 100vh;
+      height: 86vh;
       width: 40vw;
       max-width: 502px;
       font-size: $fontsize-md;
@@ -257,6 +258,10 @@ aside.sidebar.expanded {
         justify-content: space-between;
         margin-bottom: 1.2rem;
 
+        .name {
+          font-weight: bold;
+        }
+
         .close-btn {
           font-size: 16px;
           cursor: pointer;
@@ -264,11 +269,11 @@ aside.sidebar.expanded {
       }
 
       .description-container {
-        font-family: 'Noto Sans', sans-serif;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 21px;
+        font-family: 'Noto Sans', sans-serif !important;
+        font-style: normal !important;
+        font-weight: normal !important;
+        font-size: 14px !important;
+        line-height: 21px !important;
         margin-bottom: 2rem;
 
         .description {
@@ -281,10 +286,67 @@ aside.sidebar.expanded {
         }
       }
 
+      .empty-container {
+        display: flex;
+        justify-content: center;
+
+        .empty-div {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          background: #1E1E2B;
+          border-radius: 4px;
+          min-height: 184px;
+          padding-right: 96px;
+          padding-left: 96px;
+        }
+
+        .empty-text {
+          color: #7D829E;
+          font-size: 14px;
+          line-height: 22px;
+          font-weight: 400;
+          margin-bottom: 4px;
+        }
+
+        a.add-text {
+          color: #96A4FF;
+          font-style: normal;
+          font-weight: 600;
+          font-size: 14px;
+          line-height: 22px;
+        }
+
+        img {
+          max-height: 60px;
+          margin-bottom: 8px;
+        }
+      }
+
+      .technology {
+        padding-left: 20px;
+        align-items: center;
+        min-width: 212px;
+        min-height: 72px;
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        border-radius: 8px;
+        background: #212227;
+        border-radius: 8px;
+      }
+
       .section {
+        font-family: 'Noto Sans', sans-serif !important;
+        font-style: normal !important;
+        font-weight: normal;
+        font-size: 14px !important;
+        line-height: 21px !important;
         margin-bottom: 3rem; // remove this later
         .section-title {
           margin-bottom: 8px;
+          font-weight: bold;
         }
   
         p.section-description {
@@ -296,6 +358,30 @@ aside.sidebar.expanded {
           flex-direction: column;
           flex-wrap: wrap;
           gap: 1rem;
+        }
+
+        .technologies-container {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: $padding-unit-big;
+  
+          .technology {
+            .text {
+              .name {
+                color: var(--color-text-white);
+              }
+  
+              .category {
+                color: var(--color-text-grey-2);
+                font-size: $fontsize-sm;
+              }
+            }
+          }
+  
+          .technology:hover {
+            background-color: var(--color-background);
+          }
         }
       }
 
@@ -323,35 +409,19 @@ aside.sidebar.expanded {
         line-height: 22px;
       }
 
-      .technologies-container {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: $padding-unit-big;
-
-        .technology {
-          background-color: var(--color-background-1);
-          max-height: $fontsize-big*2;
-
-          .text {
-            .name {
-              color: var(--color-text-white);
-            }
-
-            .category {
-              color: var(--color-text-grey-2);
-              font-size: $fontsize-sm;
-            }
-          }
-        }
-
-        .technology:hover {
-          background-color: var(--color-background);
-        }
-      }
-
       .contribute-container {
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 212px;
+        min-height: 72px;
+        background: #363845;
+        border-radius: 8px;
+        cursor: pointer;
+
+        .contribute {
+          color: #96A4FF;
+        }
       }
     }
 

@@ -37,11 +37,6 @@ const conceptsReducer = (state, {type, payload}) => {
     }
 }
 
-const NoConcepts = (
-    <Alert text="There are no concepts yet. Help the community by adding one yourself!" stick={true}
-           hideable={false} type="warning"/>
-);
-
 export default function CategoryConceptsComponent({category}) {
     const [state, dispatch] = useReducer(conceptsReducer, {...initialConceptsState});
 
@@ -59,6 +54,20 @@ export default function CategoryConceptsComponent({category}) {
             dispatch({type: FETCH_SUCCESS_CONCEPTS, payload: data});
         })
     }, [category])
+
+    const NoConcepts = (
+        <div className="empty-container">
+            <div className="empty-div">
+                <img src="/static/imgs/add_file.png" />
+                <p className="empty-text">
+                    There are no concepts yet. Help the community by adding one yourself!
+                </p>
+                <a className="add-text" href={'/concepts/category/create?category='+category.pk}>
+                    + Add Concept
+                </a>
+            </div>
+        </div>
+    );
 
     if (state.waiting) return (<div className="tags">{SkeletonLoadingSidebarDetail}</div>);
     if (state.concepts.length === 0) return NoConcepts;
