@@ -57,8 +57,11 @@ function SidebarApp() {
     }
 
     const onClickToggleSidebar = () => {
-        document.querySelector('body').classList.toggle('sidebar-visible');
-        document.querySelector('body').classList.toggle('sidebar-visible-mobile');
+        if (screen.width > 600) {
+            document.querySelector('body').classList.toggle('sidebar-visible');
+        } else {
+            document.querySelector('body').classList.toggle('sidebar-visible-mobile');
+        }
     };
 
     return (
