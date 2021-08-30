@@ -521,7 +521,7 @@ aside.sidebar.expanded {
       .technology {
         padding-left: 20px;
         align-items: center;
-        min-width: 212px;
+        min-width: 260px;
         min-height: 72px;
         display: flex;
         flex-direction: row;
@@ -558,6 +558,7 @@ aside.sidebar.expanded {
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
+          justify-content: center;
           gap: $padding-unit-big;
   
           .technology {
