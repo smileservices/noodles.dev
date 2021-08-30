@@ -58,6 +58,7 @@ function SidebarApp() {
 
     const onClickToggleSidebar = () => {
         document.querySelector('body').classList.toggle('sidebar-visible');
+        document.querySelector('body').classList.toggle('sidebar-visible-mobile');
     };
 
     return (

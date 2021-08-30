@@ -68,16 +68,6 @@
       display: none;
     }
   }
-
-  body.sidebar-visible {
-    aside.sidebar {
-      display: block;
-
-      #sidebar-app .category-detail {
-        width: 60vw;
-      }
-    }
-  }
 }
 
 
@@ -212,9 +202,45 @@
   }
   aside.sidebar.expanded #sidebar-app {
     width: 100vw;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  body.sidebar-visible-mobile {
+    aside.sidebar {
+      display: block;
+
+      // #sidebar-app .category-detail {
+      //   width: 60vw;
+      // }
+    }
+  }
+
+  aside.sidebar.expanded #sidebar-app {
+    .categories {
+      display: none;
+    }
 
     .category-detail {
-      width: 50%
+      display: none;
+    }
+  }
+}
+
+@media only screen and (min-width: 601px) {
+  body.sidebar-visible {
+    aside.sidebar {
+      display: block;
+
+      #sidebar-app .category-detail {
+        width: 60vw;
+      }
+    }
+  }
+
+  aside.sidebar.expanded #sidebar-app {
+    .category-detail-mobile {
+      display: none;
     }
   }
 }

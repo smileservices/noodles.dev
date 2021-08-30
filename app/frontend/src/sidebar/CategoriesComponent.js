@@ -30,8 +30,17 @@ function TreeComponent({
   clickAction,
   descendantCount,
   selectedCategory,
+  category,
 }) {
   const [expanded, setExpanded] = useState(isExpanded && children.length > 0);
+  const sidebarElement = document.getElementById('sidebar-app');
+
+  const onClickCategory = e => {
+    if (screen.width <= 600) {
+      sidebarElement.classList.toggle('categories');
+    }
+    clickAction(category);
+  }
 
   const expander = () => {
     if (!children) return "";
@@ -55,7 +64,7 @@ function TreeComponent({
 
   return (
     <ul className="tree">
-      <li key={id} onClick={clickAction} id={id}>
+      <li key={id} onClick={onClickCategory} id={id}>
         {expander()}
         <div className={className}>
           <span>{content}</span>
@@ -88,9 +97,10 @@ function renderCategoryTree(category, clickAction, selectedCategory) {
           : false
       }
       isExpanded={true}
-      clickAction={(e) => clickAction(category)}
+      clickAction={clickAction}
       descendantCount={descendantCount}
       selectedCategory={selectedCategory}
+      category={category}
     />
   );
 }

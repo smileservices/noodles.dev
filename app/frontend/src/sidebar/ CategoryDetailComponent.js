@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from "react";
+import React, {useEffect, useReducer, Fragment} from "react";
 import TechnologyMinimalListing from "../../../technology/src/TechnologyMinimalListing";
 import Alert from "../../../src/components/Alert";
 import {SkeletonLoadingSidebarDetail} from "../../../src/components/skeleton/SkeletonLoadingSidebarDetail";
@@ -125,33 +125,63 @@ export default function CategoryDetailComponent({category, onClickClose}) {
     }
 
     return (
-        <div className="category-detail">
-            <div className="name-container">
-                <h4>{category.name}</h4>
-                <span onClick={onClickClose} className="icon-close close-btn" />
-            </div>
-            <div className="description-container">
-                <p className="description">{category.description}</p>
-                <a className="view-more" href={category.url}>View more</a>
-            </div>
-            
-            <div className="section">
-                <h4 className="section-title">Concepts</h4>
-                <p className="section-description">
-                    This is a theoretical concept specific to a category. It proposes to solve a particular issue theoretically.
-                </p>
-                <div className="concepts-container">
-                    {<CategoryConceptsComponent category={category} />}
+        <Fragment>
+            <div className="category-detail">
+                <div className="name-container">
+                    <h4>{category.name}</h4>
+                    <span onClick={onClickClose} className="icon-close close-btn" />
                 </div>
-            </div>
+                <div className="description-container">
+                    <p className="description">{category.description}</p>
+                    <a className="view-more" href={category.url}>View more</a>
+                </div>
+                
+                <div className="section">
+                    <h4 className="section-title">Concepts</h4>
+                    <p className="section-description">
+                        This is a theoretical concept specific to a category. It proposes to solve a particular issue theoretically.
+                    </p>
+                    <div className="concepts-container">
+                        {<CategoryConceptsComponent category={category} />}
+                    </div>
+                </div>
 
-            <div className="section">
-                <h4 className="section-title">Associated Technologies</h4>
-                <p className="section-description" />
-                <div className="technologies-container">
-                    {technologiesList()}
+                <div className="section">
+                    <h4 className="section-title">Associated Technologies</h4>
+                    <p className="section-description" />
+                    <div className="technologies-container">
+                        {technologiesList()}
+                    </div>
                 </div>
             </div>
-        </div>
+            <div className="category-detail-mobile">
+                <div className="name-container">
+                    <h4>{category.name}</h4>
+                    <span onClick={onClickClose} className="icon-close close-btn" />
+                </div>
+                <div className="description-container">
+                    <p className="description">{category.description}</p>
+                    <a className="view-more" href={category.url}>View more</a>
+                </div>
+                
+                <div className="section">
+                    <h4 className="section-title">Concepts</h4>
+                    <p className="section-description">
+                        This is a theoretical concept specific to a category. It proposes to solve a particular issue theoretically.
+                    </p>
+                    <div className="concepts-container">
+                        {<CategoryConceptsComponent category={category} />}
+                    </div>
+                </div>
+
+                <div className="section">
+                    <h4 className="section-title">Associated Technologies</h4>
+                    <p className="section-description" />
+                    <div className="technologies-container">
+                        {technologiesList()}
+                    </div>
+                </div>
+            </div>
+        </Fragment>
     )
 }
