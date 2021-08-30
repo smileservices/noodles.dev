@@ -25,13 +25,10 @@ aside.sidebar {
   position: absolute;
   top: 0;
   left: 0;
-  //width: $sidebar-width;
   font-size: $fontsize-md;
   font-weight: 400;
   height: 100vh;
   z-index: $sidebar-zindex;
-  //animation: growRight 300ms ease-in-out forwards;
-  //transform-origin: top left;
 
   .top-section {
     display: flex;
@@ -222,15 +219,12 @@ body.sidebar-visible {
 
 aside.sidebar.expanded {
   width: 100vw;
-  // background-color: rgba(0, 0, 0, 0.8);
-  // background-color: $sidebar-background;
 
   #sidebar-app {
     display: flex;
 
     .category-detail {
       padding: 7rem 2rem 2rem 36px;
-      // padding-top: 3rem;
       overflow: auto;
       height: 86vh;
       width: 40vw;
@@ -239,11 +233,10 @@ aside.sidebar.expanded {
       border-left: 1px solid var(--color-sidebar-border);
       display: flex;
       flex-direction: column;
-      // gap: $padding-unit-big;
       background-color: var(--color-sidebar-bg-2);
 
       h4 {
-        font-family: Montserrat;
+        font-family: 'Montserrat', sans-serif !important;
         font-style: normal;
         font-weight: 600;
         font-size: 18px;
