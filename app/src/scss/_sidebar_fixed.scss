@@ -49,7 +49,7 @@ aside.sidebar {
       font-family: 'Montserrat', sans-serif;
       font-style: normal;
       font-weight: bold;
-      font-size: 22px;
+      font-size: 1.4rem;
       line-height: 22px;
       color: var(--color-text-white);
 
@@ -145,7 +145,7 @@ aside.sidebar {
     .categories {
       margin-top: $padding-unit-big*2;
       padding-bottom: $padding-unit-sm;
-      padding: 0px 16px $padding-unit-sm 16px;
+      padding: 0px 1rem $padding-unit-sm 1rem;
       overflow-y: auto;
       height: 100vh;
       font-size: $fontsize-sm;
@@ -153,14 +153,15 @@ aside.sidebar {
       // max-width: 21rem;
 
       .sidebar-title {
-        // font-family: 'Montserrat', sans-serif;
-        // font-style: normal;
         font-weight: 600;
-        font-size: 18px;
-        // line-height: 22px;
-        margin-bottom: 12px;
-        margin-top: 24px;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        margin-top: 1.5rem;
         color: #FFFFFF;
+      }
+
+      .has-parent-margin {
+        margin-left: 1rem;
       }
 
       .tree {
@@ -171,14 +172,13 @@ aside.sidebar {
 
           span.expander {
             cursor: pointer;
-            font-size: 24px;
+            font-size: 1.5rem;
           }
 
           div.parent {
             width: 100%;
             display: flex;
             justify-content: space-between;
-            // padding-left: $padding-unit-sm;
             padding: 4px 8px;
           }
 
@@ -234,7 +234,7 @@ aside.sidebar.expanded {
     display: flex;
 
     .category-detail {
-      padding: 7rem 2rem 2rem 36px;
+      padding: 7rem 2rem 2rem 2rem;
       overflow: auto;
       height: 86vh;
       width: 40vw;
@@ -266,7 +266,7 @@ aside.sidebar.expanded {
         }
 
         .close-btn {
-          font-size: 16px;
+          font-size: 1rem;
           cursor: pointer;
         }
       }
@@ -301,8 +301,8 @@ aside.sidebar.expanded {
           background: #1E1E2B;
           border-radius: 4px;
           min-height: 184px;
-          padding-right: 96px;
-          padding-left: 96px;
+          padding-right: 5rem;
+          padding-left: 5rem;
         }
 
         .empty-text {
@@ -328,7 +328,7 @@ aside.sidebar.expanded {
       }
 
       .technology {
-        padding-left: 20px;
+        padding-left: 1rem;
         align-items: center;
         min-width: 212px;
         min-height: 72px;
@@ -353,7 +353,7 @@ aside.sidebar.expanded {
         }
   
         p.section-description {
-          margin-bottom: 22px;
+          margin-bottom: 1.4rem;
         }
 
         .concepts-container {
@@ -392,7 +392,7 @@ aside.sidebar.expanded {
         background: #5C6FF6;
         border-radius: 64px;
         color: white;
-        padding: 4px 16px;
+        padding: 4px 1rem;
         font-family: Noto Sans;
         font-style: normal;
         font-weight: 600;
@@ -404,7 +404,7 @@ aside.sidebar.expanded {
         background: #363845;
         border-radius: 64px;
         color: #96A4FF;
-        padding: 4px 16px;
+        padding: 4px 1rem;
         font-family: Noto Sans;
         font-style: normal;
         font-weight: 600;
@@ -459,7 +459,7 @@ aside.sidebar.expanded {
         }
 
         .close-btn {
-          font-size: 16px;
+          font-size: 1rem;
           cursor: pointer;
         }
       }
@@ -494,6 +494,8 @@ aside.sidebar.expanded {
           background: #1E1E2B;
           border-radius: 4px;
           min-height: 184px;
+          padding-left: 1rem;
+          padding-right: 1rem;
         }
 
         .empty-text {
@@ -519,7 +521,7 @@ aside.sidebar.expanded {
       }
 
       .technology {
-        padding-left: 20px;
+        padding-left: 1rem;
         align-items: center;
         min-width: 260px;
         min-height: 72px;
@@ -544,7 +546,7 @@ aside.sidebar.expanded {
         }
   
         p.section-description {
-          margin-bottom: 22px;
+          margin-bottom: 1.4rem;
         }
 
         .concepts-container {
@@ -584,7 +586,7 @@ aside.sidebar.expanded {
         background: #5C6FF6;
         border-radius: 64px;
         color: white;
-        padding: 4px 16px;
+        padding: 4px 1rem;
         font-family: Noto Sans;
         font-style: normal;
         font-weight: 600;
@@ -596,7 +598,7 @@ aside.sidebar.expanded {
         background: #363845;
         border-radius: 64px;
         color: #96A4FF;
-        padding: 4px 16px;
+        padding: 4px 1rem;
         font-family: Noto Sans;
         font-style: normal;
         font-weight: 600;
