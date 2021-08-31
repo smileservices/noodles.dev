@@ -91,7 +91,8 @@
     }
 
     function toggle_sidebar() {
-        if (screen.width > 600) {
+        console.log(screen.width);
+        if (innerWidth > 600) {
             document.querySelector('body').classList.toggle('sidebar-visible');
         } else {
             document.querySelector('body').classList.toggle('sidebar-visible-mobile');
