@@ -31,6 +31,7 @@ function TreeComponent({
   descendantCount,
   selectedCategory,
   category,
+  hasParent,
 }) {
   const [expanded, setExpanded] = useState(isExpanded && children.length > 0);
   const sidebarElement = document.getElementById('sidebar-app');
@@ -58,7 +59,7 @@ function TreeComponent({
     );
   };
   const id = makeId(4);
-  const className = `parent ${expanded ? "expanded" : ""} ${
+  const className = `${hasParent && !children ? "has-parent-margin" : ""} parent ${expanded ? "expanded" : ""} ${
     selectedCategory === content ? "open-details" : ""
   }`;
 
@@ -80,7 +81,7 @@ function TreeComponent({
   );
 }
 
-function renderCategoryTree(category, clickAction, selectedCategory) {
+function renderCategoryTree(category, clickAction, selectedCategory, hasParent = false) {
   let content = category.name;
   let descendantCount = null;
   if (category.children.length > 0)
@@ -92,7 +93,7 @@ function renderCategoryTree(category, clickAction, selectedCategory) {
       children={
         category.children.length > 0
           ? category.children.map((cat) =>
-              renderCategoryTree(cat, clickAction, selectedCategory)
+              renderCategoryTree(cat, clickAction, selectedCategory, true)
             )
           : false
       }
@@ -101,6 +102,7 @@ function renderCategoryTree(category, clickAction, selectedCategory) {
       descendantCount={descendantCount}
       selectedCategory={selectedCategory}
       category={category}
+      hasParent={hasParent}
     />
   );
 }
