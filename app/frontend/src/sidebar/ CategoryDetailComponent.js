@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from "react";
+import React, {useEffect, useReducer, Fragment} from "react";
 import TechnologyMinimalListing from "../../../technology/src/TechnologyMinimalListing";
 import Alert from "../../../src/components/Alert";
 import {SkeletonLoadingSidebarDetail} from "../../../src/components/skeleton/SkeletonLoadingSidebarDetail";
@@ -71,11 +71,20 @@ const reducer = (state, {type, payload}) => {
 }
 
 const NoTechs = (
-    <Alert text="There are no technologies yet. Help the community by adding one yourself!" stick={true}
-           hideable={false} type="warning"/>
+    <div className="empty-container">
+        <div className="empty-div">
+            <img src="/static/imgs/add_file.png" />
+            <p className="empty-text">
+                There are no technologies yet. Help the community by adding one yourself!
+            </p>
+            <a className="add-text" href={URL_CREATE_TECHNOLOGY}>
+                + Add Technology
+            </a>
+        </div>
+    </div>
 );
 
-export default function CategoryDetailComponent({category}) {
+export default function CategoryDetailComponent({category, onClickClose}) {
     const [state, dispatch] = useReducer(reducer, {...initialState});
 
     useEffect(() => {
@@ -105,28 +114,74 @@ export default function CategoryDetailComponent({category}) {
             <Alert text={err} type="danger" hideable={false} stick={true}/>
         ));
         if (state.technologies.length === 0) return (NoTechs);
-        return state.technologies.map(t => <TechnologyMinimalListing key={'tech-' + t.pk} data={t}/>);
+        const technologiesElements = state.technologies.map(t => <TechnologyMinimalListing key={'tech-' + t.pk} data={t}/>);
+        technologiesElements.push(
+            <div className="contribute-container">
+                <a className="contribute" href={URL_CREATE_TECHNOLOGY}>+ Add Technologies</a>
+            </div>
+        );
+
+        return technologiesElements;
     }
 
     return (
-        <div className="category-detail">
-            <h4 className="name">{category.name}</h4>
-            <div className="description">
-                <p>{category.description}</p>
-                <a className="link detail" href={category.url}>view detail</a>
+        <Fragment>
+            <div className="category-detail">
+                <div className="name-container">
+                    <h4>{category.name}</h4>
+                    <span onClick={onClickClose} className="icon-close close-btn" />
+                </div>
+                <div className="description-container">
+                    <p className="description">{category.description}</p>
+                    <a className="view-more" href={category.url}>View more</a>
+                </div>
+                
+                <div className="section">
+                    <h4 className="section-title">Concepts</h4>
+                    <p className="section-description">
+                        This is a theoretical concept specific to a category. It proposes to solve a particular issue theoretically.
+                    </p>
+                    <div className="concepts-container">
+                        {<CategoryConceptsComponent category={category} />}
+                    </div>
+                </div>
+
+                <div className="section">
+                    <h4 className="section-title">Associated Technologies</h4>
+                    <p className="section-description" />
+                    <div className="technologies-container">
+                        {technologiesList()}
+                    </div>
+                </div>
             </div>
-            <h5>Concepts</h5>
-            <div className="concepts-container">
-                {<CategoryConceptsComponent category={category} />}
-                <a className="contribute" href={'/concepts/category/create?category='+category.pk}>Add New Concept</a>
+            <div className="category-detail-mobile">
+                <div className="name-container">
+                    <h4>{category.name}</h4>
+                    <span onClick={onClickClose} className="icon-close close-btn" />
+                </div>
+                <div className="description-container">
+                    <p className="description">{category.description}</p>
+                    <a className="view-more" href={category.url}>View more</a>
+                </div>
+                
+                <div className="section">
+                    <h4 className="section-title">Concepts</h4>
+                    <p className="section-description">
+                        This is a theoretical concept specific to a category. It proposes to solve a particular issue theoretically.
+                    </p>
+                    <div className="concepts-container">
+                        {<CategoryConceptsComponent category={category} />}
+                    </div>
+                </div>
+
+                <div className="section">
+                    <h4 className="section-title">Associated Technologies</h4>
+                    <p className="section-description" />
+                    <div className="technologies-container">
+                        {technologiesList()}
+                    </div>
+                </div>
             </div>
-            <h5>Associated Technologies:</h5>
-            <div className="technologies-container">
-                {technologiesList()}
-            </div>
-            <div className="contribute-container">
-                <a className="contribute" href={URL_CREATE_TECHNOLOGY}>Add New Technology</a>
-            </div>
-        </div>
+        </Fragment>
     )
 }

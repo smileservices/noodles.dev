@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useReducer, Fragment} from "react";
+import React, {useEffect, useState, useReducer, Fragment} from "react";
 import ReactDOM from "react-dom";
 import CategoriesComponent from "./CategoriesComponent";
 import CategoryDetailComponent from "./ CategoryDetailComponent";
@@ -35,8 +35,10 @@ function SidebarApp() {
     *
     * */
     const [state, dispatch] = useReducer(reducer, {...initialState});
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     useEffect(() => {
+        console.log(state.expanded);
         if (state.expanded) {
             document.getElementById('sidebar').classList.add('expanded');
         } else {
@@ -45,21 +47,39 @@ function SidebarApp() {
     }, [state.expanded]);
 
     const clickCategoryAction = (category) => {
+        setSelectedCategory(category.name);
         dispatch({type: SELECT_CATEGORY, payload: category});
     }
+
+    const onClickClose = () => {
+        setSelectedCategory(null);
+        dispatch({type: MINIMIZE});
+    }
+
+    const onClickToggleSidebar = () => {
+        if (innerWidth > 600) {
+            document.querySelector('body').classList.toggle('sidebar-visible');
+        } else {
+            document.querySelector('body').classList.toggle('sidebar-visible-mobile');
+        }
+    };
 
     return (
         <Fragment>
             <div className="categories">
+                <div className="top-section">
+                    <a href="/" className="navbar-logo">Noodles.<span className="blue-text">dev</span></a>
+                    <a href="#" rel="nofollow noopener" onClick={onClickToggleSidebar} className="collapse-button">
+                        <span className="icon-close close-icon" />
+                    </a>
+                </div>
                 <h3 className="sidebar-title">Categories</h3>
-                <CategoriesComponent clickAction={clickCategoryAction}/>
+                <CategoriesComponent selectedCategory={selectedCategory} clickAction={clickCategoryAction}/>
             </div>
             {state.expanded
                 ? (
                     <Fragment>
-                        <CategoryDetailComponent category={state.selectedCategory}/>
-                        <div className="minimize" onClick={e => dispatch({type: MINIMIZE})}><span
-                            className="icon-close"/></div>
+                        <CategoryDetailComponent onClickClose={onClickClose} category={state.selectedCategory}/>
                     </Fragment>
                 )
                 : ''}
