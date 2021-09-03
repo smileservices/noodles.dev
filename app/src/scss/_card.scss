@@ -1,0 +1,40 @@
+.card {
+    height: 232px;
+    max-width: 482px;
+    display: flex;
+    flex-direction: column;
+    background-color: #27293B;
+    border-radius: 8px;
+    padding: 24px;
+    justify-content: space-between;
+
+    .card-content {
+        display: flex;
+        flex-direction: column;
+
+        .card-header {
+            margin-bottom: 12px;
+            .header-text {
+                font-size: 18px;
+                line-height: 22px;
+                font-weight: bold;
+            }
+
+            .subheader-text {
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 22px;
+                color: #C5C9E1;
+            }
+        }
+    
+        .card-description {
+            p {
+                font-size: 14px;
+                line-height: 22px;
+                color: #C5C9E1;
+                font-weight: 500;
+            }
+        }
+    }
+}

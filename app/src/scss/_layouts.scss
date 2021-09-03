@@ -89,14 +89,6 @@ main {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
-.card {
-  position: relative;
-  padding: $card-padding;
-  background-color: var(--color-background-1);
-  border-radius: $radius-big;
-  overflow: initial;
-}
-
 .success-card {
   padding: $fontsize-sm*4 $padding-unit-big;
   justify-content: center;
