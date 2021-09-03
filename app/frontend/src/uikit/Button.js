@@ -1,11 +1,14 @@
 import React from 'react';
 
 const Button = props => {
-    const { variant = 'filled', content } = props;
+    const { variant = 'filled', color = 'default', content, children, ...rest } = props;
 
     return (
-        <button className="uikit-button filled">
-            {content}
+        <button
+            {...rest}
+            className={`uikit-button ${variant} ${color}`}
+        >
+            {content || children}
         </button>
     );
 };
