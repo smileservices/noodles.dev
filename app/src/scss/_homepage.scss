@@ -12,6 +12,7 @@
 
   .banner-section {
     width: 100%;
+    margin-bottom: 4rem;
 
     .banner {
       width: 100%;
@@ -26,6 +27,97 @@
 
       h2 {
         margin-bottom: 1.3rem;
+      }
+    }
+  }
+
+  .featured-categories-section {
+    display: flex;
+    flex-direction: column;
+
+    .featured-categories-section-title {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.2rem;
+      h3 {
+        font-weight: bold;
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+    }
+
+    .featured-categories-container {
+      .call-to-action-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        .call-to-action {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          color: #1E1E2B;
+          border-radius: 10px;
+          text-align: center;
+
+          img {
+            max-height: 60px;
+            margin-bottom: 1.5rem;
+          }
+
+          h2 {
+            font-weight: bold;
+            font-size: 21px;
+            line-height: 26px;
+            margin-bottom: 2rem;
+          }
+        }
+
+        .container.contribute-container {
+          background: #CBDDFF;
+          border: 2px solid #77A3F4;
+        }
+
+        .container.add-tutorial-container {
+          background: #D2CBFF;
+          border: 2px solid #77A3F4;
+        }
+      }
+    }
+  }
+}
+
+// separating responsiveness for this so we can keep
+// better track of it
+@media only screen and (min-width: 601px) {
+  main {
+    .featured-categories-section {
+      .featured-categories-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-gap: 3rem;
+
+        .featured-categories-cards-container {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          grid-gap: 1.5rem;
+        }
+
+        .call-to-action-container {
+          .container.contribute-container {
+            height: 496px;
+            width: 352px;
+          }
+          .container.add-tutorial-container {
+            height: 236px;
+            width: 352px;
+          }
+        }
       }
     }
   }

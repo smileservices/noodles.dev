@@ -9,7 +9,8 @@ import { FilterComponent } from "../../src/components/FilterComponent";
 import SearchBarComponent from "../../search/src/SearchBarComponent";
 import RelatedComponent from "../../search/src/RelatedComponent";
 
-import Button from './uikit/Button';
+import FeaturedCategories from "./sections/FeaturedCategories";
+import Button from "./uikit/Button";
 
 import {
   codeParamsToUrl,
@@ -21,6 +22,8 @@ import { SkeletonLoadingResults } from "../../src/components/skeleton/SkeletonLo
 const url_aggr_filters_resources = "api/aggregations/study-resources";
 const url_aggr_filters_collections = "/api/aggregations/collections";
 const url_aggr_filters_technologies = "/api/aggregations/technologies";
+
+const GET_FEATURED_CATEGORIES_API = "/categories/api/";
 // TODO: divide into smaller components, this file is getting too big
 function HomepageApp() {
   /*
@@ -54,6 +57,10 @@ function HomepageApp() {
   const [resources, setResources] = useState(defaultTabState);
   const [collections, setCollections] = useState(defaultTabState);
   const [technologies, setTechnologies] = useState(defaultTabState);
+
+  const [featuredCategories, setFeaturedCategories] = useState([]);
+  const [loadingFeaturedCategories, setLoadingFeaturedCategories] =
+    useState(false);
 
   const [waitingResources, setWaitingResources] = useState(true);
   const [waitingCollections, setWaitingCollections] = useState(true);
@@ -135,6 +142,22 @@ function HomepageApp() {
         });
       }
     });
+
+    fetch(GET_FEATURED_CATEGORIES_API)
+      .then((result) => {
+        setLoadingFeaturedCategories(true);
+        if (result.ok) {
+          return result.json();
+        }
+      })
+      .then((data) => {
+        setFeaturedCategories(data);
+        setLoadingFeaturedCategories(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoadingFeaturedCategories(false);
+      });
   }, []);
 
   const getTabFilters = (tabname, resultsFilters) => {
@@ -420,15 +443,20 @@ function HomepageApp() {
 
   return (
     <Fragment>
-     {/*  <section id="related" className="column-container"></section> */}
-     <section class="banner-section">
+      {/*  <section id="related" className="column-container"></section> */}
+      <section class="banner-section">
         <div class="banner">
-            <h2>
-                Community Curated Resources <br />for Software Developers
-            </h2>
-            <Button content="Join the community" />
+          <h2>
+            Community Curated Resources <br />
+            for Software Developers
+          </h2>
+          <Button content="Join the community" />
         </div>
-     </section>
+      </section>
+      <FeaturedCategories
+        loadingFeatured={loadingFeaturedCategories}
+        featuredCategories={featuredCategories}
+      />
     </Fragment>
   );
 }

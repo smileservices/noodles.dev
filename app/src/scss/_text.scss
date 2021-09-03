@@ -40,16 +40,16 @@ h5 {
 
 a {
   text-decoration: none;
-  color: var(--color-blue);
+  color: #96A4FF;
 }
 
 a:visited {
-  color: var(--color-blue-dark);
+  color: #576EFF;
 }
 
 a:hover {
-  color: var(--color-blue-dark);
   cursor: pointer;
+  color: #576EFF;
 }
 
 small, .small {
