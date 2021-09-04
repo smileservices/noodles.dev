@@ -2,9 +2,10 @@ import React from "react";
 import Card from "../uikit/Card";
 import Button from '../uikit/Button';
 
-const FeaturedCategories = (props) => {
-  const { featuredCategories, loadingFeatured } = props;
-
+const FeaturedCategories = ({
+  featuredCategories,
+  loadingFeatured,
+}) => {
   const renderContent = () => {
     if (loadingFeatured) {
       return <h3>Loading...</h3>;

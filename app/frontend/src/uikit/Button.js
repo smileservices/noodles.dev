@@ -1,8 +1,12 @@
 import React from 'react';
 
-const Button = props => {
-    const { variant = 'filled', color = 'default', content, children, ...rest } = props;
-
+const Button = ({
+    variant = 'filled',
+    color = 'default',
+    content,
+    children,
+    ...rest,
+}) => {
     return (
         <button
             {...rest}

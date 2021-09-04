@@ -1,12 +1,11 @@
 import React from 'react';
 
-const Card = props => {
-    const {
-        title,
-        subtitle,
-        description,
-        actions,
-    } = props;
+const Card = ({
+    title,
+    subtitle,
+    description,
+    actions,
+}) => {
     return (
         <div className="card">
             <div className="card-content">
