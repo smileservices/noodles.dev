@@ -37,14 +37,14 @@ const FeaturedCategories = ({
       <div className="featured-categories-container">
         {renderContent()}
         <div class="call-to-action-container">
-            <div className="call-to-action container contribute-container">
+            <div className="call-to-action contribute-container">
                 <img src="/static/imgs/help.png" />
                 <h2>
                     Explore, learn from<br/> resources, and give back<br /> to the community.
                 </h2>
                 <Button color="black">Contribute</Button>
             </div>
-            <div className="call-to-action container add-tutorial-container">
+            <div className="call-to-action add-tutorial-container">
                 <img src="/static/imgs/teach-something.png" />
                 <h2>
                     Want to teach something?
