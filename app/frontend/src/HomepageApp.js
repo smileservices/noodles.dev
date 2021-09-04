@@ -10,6 +10,7 @@ import SearchBarComponent from "../../search/src/SearchBarComponent";
 import RelatedComponent from "../../search/src/RelatedComponent";
 
 import FeaturedCategories from "./sections/FeaturedCategories";
+import TechnologiesAndConcepts from "./sections/TechnologiesAndConcepts";
 import Button from "./uikit/Button";
 
 import {
@@ -24,6 +25,7 @@ const url_aggr_filters_collections = "/api/aggregations/collections";
 const url_aggr_filters_technologies = "/api/aggregations/technologies";
 
 const GET_FEATURED_CATEGORIES_API = "/categories/api/";
+const GET_FEATURED_TECHNOLOGIES_API = "/learn/api/";
 // TODO: divide into smaller components, this file is getting too big
 function HomepageApp() {
   /*
@@ -61,6 +63,9 @@ function HomepageApp() {
   const [featuredCategories, setFeaturedCategories] = useState([]);
   const [loadingFeaturedCategories, setLoadingFeaturedCategories] =
     useState(false);
+  
+  const [featuredTechnologies, setFeaturedTechnologies] = useState([]);
+  const [loadingFeaturedTechnologies, setLoadingFeaturedTechnologies] = useState([]);
 
   const [waitingResources, setWaitingResources] = useState(true);
   const [waitingCollections, setWaitingCollections] = useState(true);
@@ -158,6 +163,23 @@ function HomepageApp() {
         console.log(error);
         setLoadingFeaturedCategories(false);
       });
+
+      fetch(GET_FEATURED_TECHNOLOGIES_API)
+        .then(result => {
+          setLoadingFeaturedTechnologies(true);
+          if (result.ok) {
+            return result.json();
+          }
+        })
+        .then(data => {
+          const { results } = data;
+          setFeaturedTechnologies(results);
+          setLoadingFeaturedTechnologies(false);
+        })
+        .catch(error => {
+          console.log(error);
+          setLoadingFeaturedTechnologies(false);
+        })
   }, []);
 
   const getTabFilters = (tabname, resultsFilters) => {
@@ -456,6 +478,10 @@ function HomepageApp() {
       <FeaturedCategories
         loadingFeatured={loadingFeaturedCategories}
         featuredCategories={featuredCategories}
+      />
+      <TechnologiesAndConcepts
+        featuredTechnologies={featuredTechnologies}
+        loadingFeaturedTechnologies={loadingFeaturedTechnologies}
       />
     </Fragment>
   );
