@@ -5,7 +5,7 @@ const Button = ({
     color = 'default',
     content,
     children,
-    ...rest,
+    ...rest
 }) => {
     return (
         <button
