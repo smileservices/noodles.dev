@@ -13,9 +13,9 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset
+from core.utils import rest_paginate_queryset
 from . import serializers, filters
 from .models import CollectionResources, Collection
-from django.views.decorators.cache import cache_page
 
 
 def detail(request, id, slug):
@@ -76,12 +76,7 @@ class CollectionViewset(ResourceWithEditSuggestionVieset):
     def owned(self, *args, **kwargs):
         # get all user collections
         queryset = self.queryset.filter(author=self.request.user.id).all().order_by('created_at')
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.serializer_class(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
+        return rest_paginate_queryset(self, queryset)
 
     @action(methods=['GET'], detail=False)
     def owned_with_resource(self, *args, **kwargs):
@@ -135,6 +130,11 @@ class CollectionViewset(ResourceWithEditSuggestionVieset):
             .order_by('order')
         serializer = serializers.CollectionResourceListingSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    @action(methods=['GET'], detail=False)
+    def featured(self, request, *args, **kwargs):
+        queryset = self.queryset
+        return rest_paginate_queryset(self, queryset)
 
 
 # todo

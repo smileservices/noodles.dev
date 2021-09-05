@@ -12,6 +12,7 @@ from . import serializers_technology
 from . import models
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
+from core.utils import rest_paginate_queryset
 from app.settings import rewards
 from .serializers_category import CategoryConceptSerializerOption
 import json
@@ -30,6 +31,11 @@ class ConceptCategoryViewset(ResourceWithEditSuggestionVieset):
                                  models.CategoryConcept.ExperienceLevel.choices],
             'concepts': [CategoryConceptSerializerOption(c).data for c in models.CategoryConcept.objects.all()]
         })
+
+    @action(methods=['GET'], detail=False)
+    def featured(self, request, *args, **kwargs):
+        queryset = self.queryset
+        return rest_paginate_queryset(self, queryset)
 
 
 class CategoryConceptEditSuggestionViewset(EditSuggestionViewset):

@@ -22,6 +22,7 @@ from concepts.serializers_technology import TechnologyConceptSerializerOption
 from concepts.models import CategoryConcept, TechnologyConcept
 
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
+from core.utils import rest_paginate_queryset
 from app.settings import rewards
 
 
@@ -159,13 +160,7 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
         queryset = serializers.ReviewSerializer.queryset.filter(
             study_resource=self.kwargs['pk']
         ).order_by('-created_at')
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = serializers.ReviewSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = serializers.ReviewSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return rest_paginate_queryset(self, queryset)
 
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):
@@ -199,9 +194,11 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
             'category_concepts': [CategoryConceptSerializerOption(c).data for c in CategoryConcept.objects.all()],
             'technology_concepts': [TechnologyConceptSerializerOption(c).data for c in TechnologyConcept.objects.all()]
         })
-    #
-    # def get_success_headers(self, data):
-    #     return {'Location': reverse_lazy('study-resource-detail', kwargs={'id': data['pk'], 'slug': data['slug']})}
+
+    @action(methods=['GET'], detail=False)
+    def no_reviews(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(reviews_count=0)
+        return rest_paginate_queryset(self, queryset)
 
 
 class StudyResourceEditSuggestionViewset(EditSuggestionViewset):

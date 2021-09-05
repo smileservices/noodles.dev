@@ -20,6 +20,7 @@ from .models import Technology
 from django.views.decorators.cache import cache_page
 from app.settings import rewards
 from django.shortcuts import get_object_or_404
+from core.utils import rest_paginate_queryset
 
 
 def detail(request, slug):
@@ -138,8 +139,12 @@ class TechViewset(ResourceWithEditSuggestionVieset):
     @action(methods=['GET'], detail=False)
     def featured(self, request, *args, **kwargs):
         queryset = self.queryset.filter(featured=True)
-        serialized = self.serializer_class(queryset, many=True)
-        return JsonResponse(serialized.data, safe=False)
+        return rest_paginate_queryset(self, queryset)
+
+    @action(methods=['GET'], detail=False)
+    def no_technology_concept(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(concepts__isnull=True)
+        return rest_paginate_queryset(self, queryset)
 
 
 @cache_page(60 * 5)

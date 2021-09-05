@@ -196,3 +196,17 @@ User badges
 - badge for reviews
    - junior reviewer
    - stars for thumbs up
+   
+   
+   
+# API Endpoints
+
+** Homepage Frontend **
+
+featured categories                 GET /categories/api/featured/
+category concepts                   GET /concepts/api/category/featured/
+featured technologies               GET /learn/api/featured/
+technologies with no concepts       GET /learn/api/no_technology_concept/
+resources with no reviews           GET /tutorials/api/resources/no_reviews/
+featured collections                GET /collections/api/featured/
+

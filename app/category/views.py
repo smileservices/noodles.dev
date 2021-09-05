@@ -1,11 +1,11 @@
 import time
 from django.http.response import JsonResponse
 from django.shortcuts import render
-from django.views.decorators.cache import cache_page
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
+from core.utils import rest_paginate_queryset
 from technology.models import Technology
 from .serializers import CategorySerializer, CategorySerializerOption
 from concepts.serializers_category import CategoryConceptSerializerListing, CategoryConceptSerializerOption
@@ -31,7 +31,6 @@ class CategoryViewset(ModelViewSet):
     serializer_class = CategorySerializer
     queryset = CategorySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
-    pagination_class = None
 
     @action(methods=['GET'], detail=True)
     def get_technologies(self, request, *args, **kwargs):
@@ -87,6 +86,11 @@ class CategoryViewset(ModelViewSet):
                 concepts += [CategoryConceptSerializerOption(c).data for c in
                              subcat.concepts.order_by('experience_level').all()]
         return Response(concepts)
+
+    @action(methods=['GET'], detail=False)
+    def featured(self, request, *args, **kwargs):
+        queryset = self.queryset.filter()
+        return rest_paginate_queryset(self, queryset)
 
 
 class CategoryViewsetSelect(ModelViewSet):

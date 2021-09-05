@@ -7,6 +7,7 @@ import mimetypes
 import os
 import diff_match_patch as dmp_module
 from collections import OrderedDict
+from rest_framework.response import Response
 
 
 def save_file_to_field(field, file_name, raw_content):
@@ -86,3 +87,12 @@ def get_serialized_models_diff(old, new, fields):
                 dmp.diff_cleanupSemantic(diff)
                 changes[field] = dmp.diff_prettyHtml(diff)
     return changes
+
+
+def rest_paginate_queryset(viewset_instance, queryset):
+    page = viewset_instance.paginate_queryset(queryset)
+    if page is not None:
+        serialized = viewset_instance.serializer_class(page, many=True)
+        return viewset_instance.get_paginated_response(serialized.data)
+    serialized = viewset_instance.serializer_class(queryset, many=True)
+    return Response(serialized.data)
