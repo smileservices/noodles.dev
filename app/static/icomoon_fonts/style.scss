@@ -186,7 +186,19 @@
 
 .icon-arrow_drop_down {
   &:before {
-    content: $icon-arrow_right; 
+    content: $icon-arrow_drop_down; 
+  }
+}
+
+.icon-caret-back-sharp {
+  &:before {
+    content: $icon-caret-back-sharp; 
+  }
+}
+
+.icon-caret-forward-sharp {
+  &:before {
+    content: $icon-caret-forward-sharp; 
   }
 }
 
