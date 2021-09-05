@@ -1,6 +1,7 @@
 // @import url(//fonts.googleapis.com/css?family=Inter);
-// @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Noto+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Noto+Sans&display=swap');
 
 @import "node_modules/bootstrap/scss/functions";
 @import "node_modules/bootstrap/scss/variables";
@@ -34,7 +35,7 @@
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   background-color: var(--color-background);
   color: var(--color-text-white);
 }
@@ -82,3 +83,4 @@ body {
 @import "responsive";
 @import "button";
 @import "card";
+@import "homepage_responsiveness";
