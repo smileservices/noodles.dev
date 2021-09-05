@@ -6,6 +6,15 @@ const TechnologiesSection = ({
     technologies,
     loading,
 }) => {
+    const getMaxTextLength = () => {
+        if (innerWidth >= 1600 && innerWidth < 1700) {
+            return 12;
+        } else if (innerWidth >= 1700) {
+            return 15;
+        }else {
+            return 10;
+        }
+    }
     const renderTechnologyCard = (tech) => {
         if (tech.button) {
             // TODO: add href pointing to technologies page
@@ -22,7 +31,7 @@ const TechnologiesSection = ({
                 <div className="tech-summary">
                     <h3>{tech.name}</h3>
                     <p>
-                        {shortenText(tech.category[0].label, 0, 10)}...
+                        {shortenText(tech.category[0].label, 0, getMaxTextLength())}...
                     </p>
                 </div>
             </a>
