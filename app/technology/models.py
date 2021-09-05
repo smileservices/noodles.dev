@@ -72,7 +72,7 @@ class Technology(ResourceMixin, VotableMixin):
     owner = models.CharField(max_length=128, db_index=True)
 
     image_file = VersatileImageField(upload_to='technologies', blank=True, null=True)
-    featured = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False, db_index=True)
     meta = JSONField(blank=True, null=True)
 
     category = models.ManyToManyField(Category, related_name='related_technologies')
