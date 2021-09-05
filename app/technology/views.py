@@ -135,6 +135,12 @@ class TechViewset(ResourceWithEditSuggestionVieset):
             'error': False
         })
 
+    @action(methods=['GET'], detail=False)
+    def featured(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(featured=True)
+        serialized = self.serializer_class(queryset, many=True)
+        return JsonResponse(serialized.data, safe=False)
+
 
 @cache_page(60 * 5)
 def license_options(request):
