@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Card from '../uikit/Card';
 import TechnologiesSection from './TechnologiesSection';
+import Pagination from '../uikit/Pagination';
 import PaginatedLayout from '../../../src/components/PaginatedLayout';
 
 // addConceptLink: "http://localhost:8000/concepts/category/create?category=5"
@@ -29,12 +30,10 @@ const TechnologiesAndConcepts = ({
                     <h3>BE THE FIRST TO ADD A CONCEPT</h3>
                     <p>A concept proposes a theoretical solution to a specific problem</p>
                 </div>
-                <PaginatedLayout
+                <Pagination
                     data={featuredTechnologies}
-                    resultsCount={featuredTechnologies.length}
-                    pagination={conceptsPagination}
-                    setPagination={setConceptsPagination}
                     resultsContainerClass="concepts-cards-container"
+                    dataLimit={3}
                     mapFunction={
                         (item) => (
                             <Card

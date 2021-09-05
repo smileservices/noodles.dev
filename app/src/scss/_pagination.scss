@@ -29,3 +29,55 @@ ul.pagination {
     padding: 0.3rem 0.5rem;
   }
 }
+
+.pagination-component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.pagination-item {
+  background-color: var(--color-background);
+  border: 2px solid var(--color-background);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+  position: relative;
+  margin: 0 5px;
+  cursor: pointer;
+
+  span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.pagination-item.active {
+  border: 1px solid #D2CBFF;
+  color: #1E1E2B;
+  background-color: #D2CBFF;
+  pointer-events: none;
+}
+
+.prev,
+.next {
+  background: var(--color-background);
+  border: none;
+  padding: 10px;
+  color: white;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.prev.disabled,
+.next.disabled {
+  pointer-events: none;
+  box-shadow: none;
+  color: #999;
+}
