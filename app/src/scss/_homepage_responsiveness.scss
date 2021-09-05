@@ -1,0 +1,102 @@
+// separating responsiveness for this so we can keep
+// better track of it
+@media only screen and (max-width: 1400px) and (min-width: 960px) {
+    main {
+      .technolgies-and-concepts-section {
+        display: grid;
+        grid-template-columns:
+          [col1] 3.2fr 
+          [col2] 0.4fr
+          [col3] 3.3fr
+          [end];
+  
+          .featured-technologies-container {
+            grid-column-start: col1;
+            grid-column-end: col2;
+          }
+  
+          .concepts-container {
+            grid-column-start: col3;
+            grid-column-end: col4;
+          }
+      }
+    }
+  }
+  
+@media only screen and (min-width: 1400px) {
+    main {
+      .technolgies-and-concepts-section {
+        display: grid;
+        grid-template-columns:
+          [col1] 0.3fr [col2] 2.7fr 
+          [col3] 0.5fr
+          [col4] 2.7fr [col5] 0.7fr
+          [end];
+          .featured-technologies-container {
+            grid-column-start: col2;
+            grid-column-end: col3;
+          }
+  
+          .concepts-container {
+            grid-column-start: col4;
+            grid-column-end: col5;
+          }
+      }
+    }
+  }
+  
+@media only screen and (min-width: 960px) {
+    main {
+      .featured-categories-section {
+        margin-bottom: 72px;
+        .featured-categories-container {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          grid-gap: 3rem;
+  
+          .featured-categories-cards-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 1.5rem;
+          }
+  
+          .call-to-action-container {
+            .contribute-container {
+              height: 496px;
+              width: 352px;
+            }
+            .add-tutorial-container {
+              height: 236px;
+              width: 352px;
+            }
+          }
+        }
+      }
+  
+      .technolgies-and-concepts-section {
+        .featured-technologies-container {
+          .add-technology {
+            width: 100%;
+            height: 480px;
+            display: flex;
+          }
+  
+          .featured-tech-cards-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 1rem;
+  
+            .tech-card {
+              min-height: 72px;
+              padding-left: 20px;
+            }
+          }
+        }
+  
+        // .concepts-container {
+        //   grid-column-start: col5;
+        //   grid-column-end: col8;
+        // }
+      }
+    }
+  }
