@@ -11,6 +11,7 @@ import RelatedComponent from "../../search/src/RelatedComponent";
 
 import FeaturedCategories from "./sections/FeaturedCategories";
 import TechnologiesAndConcepts from "./sections/TechnologiesAndConcepts";
+import ResourcesAndReviews from './sections/ResourcesAndReviews';
 import Button from "./uikit/Button";
 
 import {
@@ -24,9 +25,13 @@ const url_aggr_filters_resources = "api/aggregations/study-resources";
 const url_aggr_filters_collections = "/api/aggregations/collections";
 const url_aggr_filters_technologies = "/api/aggregations/technologies";
 
-const GET_FEATURED_CATEGORIES_API = "/categories/api/";
-const GET_FEATURED_TECHNOLOGIES_API = "/learn/api/";
+const GET_FEATURED_CATEGORIES_API = "/concepts/api/category/featured/";
+const GET_FEATURED_TECHNOLOGIES_API = "/learn/api/featured/";
+const GET_TECHNOLOGIES_WITHOUT_CONCEPT_API = "/learn/api/no_technology_concept/";
+const GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API = "/tutorials/api/resources/no_reviews/";
+const GET_TECHNOLOGIES_WITHOUT_RESOURCES_API = "/learn/api/no_technology_concept/";
 // TODO: divide into smaller components, this file is getting too big
+// TODO: change naming of state variables
 function HomepageApp() {
   /*
    *   Homepage App is a gateway to search page
@@ -65,7 +70,16 @@ function HomepageApp() {
     useState(false);
   
   const [featuredTechnologies, setFeaturedTechnologies] = useState([]);
-  const [loadingFeaturedTechnologies, setLoadingFeaturedTechnologies] = useState([]);
+  const [loadingFeaturedTechnologies, setLoadingFeaturedTechnologies] = useState(false);
+
+  const [techWithNoConcept, setTectWithNoConcept] = useState([]);
+  const [loadingTechWithNoConcept, setLoadingTechWithNoConcept] = useState([]);
+
+  const [techWithNoResource, setTechWithNoResource] = useState([]);
+  const [loadingTechWithNoResource, setLoadingTechWithNoResource] = useState(false);
+
+  const [resourcesReviews, setResourcesReviews] = useState([]);
+  const [loadingResourcesReviews, setLoadingResourcesReviews] = useState(false);
 
   const [waitingResources, setWaitingResources] = useState(true);
   const [waitingCollections, setWaitingCollections] = useState(true);
@@ -84,6 +98,11 @@ function HomepageApp() {
   }
 
   useEffect((e) => {
+    setLoadingFeaturedCategories(true);
+    setLoadingFeaturedTechnologies(true);
+    setLoadingResourcesReviews(true);
+    setLoadingTechWithNoResource(true);
+    setLoadingTechWithNoConcept(true);
     //get aggregated results data
     fetch(url_aggr_filters_resources, {
       method: "GET",
@@ -150,13 +169,15 @@ function HomepageApp() {
 
     fetch(GET_FEATURED_CATEGORIES_API)
       .then((result) => {
-        setLoadingFeaturedCategories(true);
         if (result.ok) {
           return result.json();
         }
       })
       .then((data) => {
-        setFeaturedCategories(data);
+        const { results } = data;
+        if (results && results.length) {
+          setFeaturedCategories(results);
+        }
         setLoadingFeaturedCategories(false);
       })
       .catch((error) => {
@@ -164,22 +185,77 @@ function HomepageApp() {
         setLoadingFeaturedCategories(false);
       });
 
-      fetch(GET_FEATURED_TECHNOLOGIES_API)
-        .then(result => {
-          setLoadingFeaturedTechnologies(true);
-          if (result.ok) {
-            return result.json();
-          }
-        })
-        .then(data => {
-          const { results } = data;
+    fetch(GET_FEATURED_TECHNOLOGIES_API)
+      .then(result => {
+        if (result.ok) {
+          return result.json();
+        }
+      })
+      .then(data => {
+        const { results } = data;
+        if (results && results.length) {
           setFeaturedTechnologies(results);
-          setLoadingFeaturedTechnologies(false);
-        })
-        .catch(error => {
-          console.log(error);
-          setLoadingFeaturedTechnologies(false);
-        })
+        }
+        setLoadingFeaturedTechnologies(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setLoadingFeaturedTechnologies(false);
+      });
+    
+    fetch(GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API)
+      .then(result => {
+        if (result.ok) {
+          return result.json();
+        }
+      })
+      .then(data => {
+        const { results } = data;
+        if (results && results.length) {
+          setResourcesReviews(results);
+        }
+        setLoadingResourcesReviews(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setLoadingResourcesReviews(false);
+      });
+
+    fetch(GET_TECHNOLOGIES_WITHOUT_RESOURCES_API)
+      .then(result => {
+        if (result.ok) {
+          return result.json();
+        }
+      })
+      .then(data => {
+        const { results } = data;
+        if (results && results.length) {
+          setTechWithNoResource(results);
+        }
+        setLoadingTechWithNoResource(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setLoadingTechWithNoResource(false);
+      });
+    
+    fetch(GET_TECHNOLOGIES_WITHOUT_CONCEPT_API)
+      .then(result => {
+        if (result.ok) {
+          return result.json();
+        }
+      })
+      .then(data => {
+        const { results } = data;
+        if (results && results.length) {
+          setTectWithNoConcept(results);
+        }
+        setLoadingTechWithNoConcept(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setLoadingTechWithNoConcept(false);
+      });
   }, []);
 
   const getTabFilters = (tabname, resultsFilters) => {
@@ -482,6 +558,14 @@ function HomepageApp() {
       <TechnologiesAndConcepts
         featuredTechnologies={featuredTechnologies}
         loadingFeaturedTechnologies={loadingFeaturedTechnologies}
+        techWithNoConcept={techWithNoConcept}
+        loadingTechWithNoConcept={loadingTechWithNoConcept}
+      />
+      <ResourcesAndReviews
+        techWithNoResource={techWithNoResource}
+        loadingTechWithNoResource={loadingTechWithNoResource}
+        reviews={resourcesReviews}
+        loadingReviews={loadingResourcesReviews}
       />
     </Fragment>
   );
