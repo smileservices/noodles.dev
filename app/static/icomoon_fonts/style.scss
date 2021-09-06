@@ -178,3 +178,15 @@
   }
 }
 
+.icon-arrow_right {
+  &:before {
+    content: $icon-arrow_right; 
+  }
+}
+
+.icon-arrow_drop_down {
+  &:before {
+    content: $icon-arrow_right; 
+  }
+}
+
