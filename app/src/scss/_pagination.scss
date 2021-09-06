@@ -81,3 +81,8 @@ ul.pagination {
   box-shadow: none;
   color: #999;
 }
+
+.pagination-container {
+  display: flex;
+  flex-direction: column;
+}

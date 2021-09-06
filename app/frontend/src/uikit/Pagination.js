@@ -1,19 +1,39 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Pagination = ({
     data,
     mapFunction,
-    // pageLimit,
     dataLimit,
     resultsContainerClass,
+    lastIndex,
 }) => {
     if (!data) return '';
     if (data.length === 0) return '';
 
-    const [pages] = useState(Math.round(data.length / dataLimit));
     const [currentPage, setCurrentPage] = useState(1);
+    const [lastItemInGroup, setLastItemInGroup] = useState(0);
+    const [paginatedData, setPaginatedData] = useState([]);
 
-    const pageLimit = Math.floor(data.length / dataLimit);
+    let pageLimit;
+
+    if (data.length % dataLimit !== 0) {
+        pageLimit = Math.ceil(data.length / dataLimit);
+    } else {
+        pageLimit = Math.floor(data.length / dataLimit);
+    }
+
+    useEffect(() => {
+        const startIndex = currentPage * dataLimit - dataLimit;
+        const endIndex = startIndex + dataLimit;
+        const newData = data.slice(startIndex, endIndex);
+        setPaginatedData(newData);
+    }, [currentPage]);
+
+    useEffect(() => {
+        if (paginatedData.length) {
+            setLastItemInGroup(paginatedData[paginatedData.length - 1].index);
+        }
+    }, [paginatedData]);
 
     const goToNextPage = () => {
         setCurrentPage((page) => page + 1);
@@ -28,21 +48,16 @@ const Pagination = ({
         setCurrentPage(pageNumber);
     }
 
-    const getPaginatedData = () => {
-        const startIndex = currentPage * dataLimit - dataLimit;
-        const endIndex = startIndex + dataLimit;
-        return data.slice(startIndex, endIndex);
-    }
-
     const getPaginationGroup = () => {
         let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
-        return new Array(pageLimit).fill().map((_, idx) => start + idx + 1);
+        const paginationGroup = new Array(pageLimit).fill().map((_, idx) => start + idx + 1);
+        return paginationGroup;
     }
 
     return (
-        <Fragment>
+        <div className="pagination-container">
             <div className={resultsContainerClass}>
-                {getPaginatedData().map((data, id) => mapFunction(data, id))}
+                {paginatedData.map((data, id) => mapFunction(data, id))}
             </div>
             <div className="pagination-component">
                 <button
@@ -65,12 +80,12 @@ const Pagination = ({
 
                 <button
                     onClick={goToNextPage}
-                    className={`next ${currentPage === pages ? 'disabled' : ''}`}
+                    className={`next ${lastItemInGroup === lastIndex ? 'disabled' : ''}`}
                 >
                     <span className="icon-caret-forward-sharp" />
                 </button> 
             </div>
-        </Fragment>
+        </div>
     );
 }
 

@@ -43,6 +43,7 @@
   .featured-categories-section {
     display: flex;
     flex-direction: column;
+    margin-bottom: 4.5rem;
 
     .featured-categories-section-title {
       display: flex;
@@ -92,6 +93,7 @@
   }
 
   .technolgies-and-concepts-section {
+    margin-bottom: 4.5rem;
     .concepts-container {
       display: flex;
       flex-direction: column;
@@ -103,11 +105,13 @@
         margin-bottom: 1.5rem;
       }
 
-      .concepts-cards-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1.3rem;
-        margin-bottom: 1.3rem;
+      .pagination-container {
+        .concepts-cards-container {
+          display: flex;
+          flex-direction: column;
+          gap: 1.3rem;
+          margin-bottom: 1.3rem;
+        }
       }
     }
 
@@ -199,6 +203,45 @@
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+    }
+  }
+
+  .resources-and-reviews-section {
+    margin-bottom: 4.5rem;
+
+    .tech-resources-container {
+      .tech-resources-text {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+      }
+
+      .tech-resources-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.3rem;
+        margin-bottom: 1.3rem;
+      }
+    }
+
+    .reviews-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      .reviews-text {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+      }
+
+      .pagination-container {
+        .reviews-cards-container {
+          display: flex;
+          flex-direction: column;
+          gap: 1.3rem;
+          margin-bottom: 1.3rem;
+        }
       }
     }
   }

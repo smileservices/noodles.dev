@@ -32,15 +32,35 @@
           [col3] 0.5fr
           [col4] 2.7fr [col5] 0.7fr
           [end];
-          .featured-technologies-container {
-            grid-column-start: col2;
-            grid-column-end: col3;
-          }
-  
-          .concepts-container {
-            grid-column-start: col4;
-            grid-column-end: col5;
-          }
+
+        .featured-technologies-container {
+          grid-column-start: col2;
+          grid-column-end: col3;
+        }
+
+        .concepts-container {
+          grid-column-start: col4;
+          grid-column-end: col5;
+        }
+      }
+
+      .resources-and-reviews-section {
+        display: grid;
+        grid-template-columns:
+          [col1] 0.3fr [col2] 2.5fr 
+          [col3] 0.5fr
+          [col4] 2.5fr [col5] 0.7fr
+          [end];
+
+        .tech-resources-container {
+          grid-column-start: col2;
+          grid-column-end: col3;
+        }
+
+        .reviews-container {
+          grid-column-start: col4;
+          grid-column-end: col5;
+        }
       }
     }
   }
@@ -48,7 +68,6 @@
 @media only screen and (min-width: 960px) {
     main {
       .featured-categories-section {
-        margin-bottom: 72px;
         .featured-categories-container {
           display: grid;
           grid-template-columns: 2fr 1fr;
