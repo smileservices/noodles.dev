@@ -109,13 +109,11 @@
         margin-bottom: 1.5rem;
       }
 
-      .pagination-container {
-        .concepts-cards-container {
-          display: flex;
-          flex-direction: column;
-          gap: 1.3rem;
-          margin-bottom: 1.3rem;
-        }
+      .concepts-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.3rem;
+        margin-bottom: 1.3rem;
       }
     }
 
@@ -242,13 +240,102 @@
         margin-bottom: 1.5rem;
       }
 
-      .pagination-container {
-        .reviews-cards-container {
+      .reviews-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.3rem;
+        margin-bottom: 1.3rem;
+      }    
+    }
+  }
+
+  .collections-section {
+    margin-bottom: 4.5rem;
+
+    .collections-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .collections-text {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+      }
+
+      .collections-cards-container {
+        width: 100%;
+        .collections-cards {
           display: flex;
           flex-direction: column;
-          gap: 1.3rem;
+          gap: 1rem;
           margin-bottom: 1.3rem;
+
+          .collection-card {
+            display: flex;
+            align-items: center;
+            background-color: #27293B;
+            border-radius: 8px;
+            height: 72px;
+            padding-left: 1.3rem;
+
+            .card-count {
+              border-radius: 50%;
+              height: 48px;
+              width: 48px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: #FFF1BF;
+              color: #1E1E2B;
+              margin-right: 12px;
+            }
+
+            .collection-details {
+              display: flex;
+              flex-direction: column;
+
+              h2 {
+                font-weight: bold;
+                font-size: 18px;
+                line-height: 22px;
+                margin-bottom: 4px;
+              }
+
+              p {
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 22px;
+                color: #C5C9E1;
+              }
+            }
+          }
         }
+      }
+    }
+
+    .add-collections-call-to-action {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #CBDDFF;
+      border: 2px solid #77A3F4;
+      box-sizing: border-box;
+      border-radius: 10px;
+      color: #1E1E2B;
+      text-align: center;
+      margin-bottom: 1.6rem;
+
+      img {
+        max-height: 60px;
+        margin-bottom: 1.5rem;
+      }
+
+      h2 {
+        font-weight: bold;
+        font-size: 21px;
+        line-height: 26px;
+        margin-bottom: 2rem;
       }
     }
   }

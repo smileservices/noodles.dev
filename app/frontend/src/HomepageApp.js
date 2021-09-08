@@ -12,6 +12,7 @@ import RelatedComponent from "../../search/src/RelatedComponent";
 import FeaturedCategories from "./sections/FeaturedCategories";
 import TechnologiesAndConcepts from "./sections/TechnologiesAndConcepts";
 import ResourcesAndReviews from './sections/ResourcesAndReviews';
+import CollectionsSection from './sections/ColectionsSection';
 import Button from "./uikit/Button";
 
 import {
@@ -29,6 +30,7 @@ const GET_FEATURED_CATEGORIES_API = "/concepts/api/category/featured/";
 const GET_FEATURED_TECHNOLOGIES_API = "/learn/api/featured/";
 const GET_TECHNOLOGIES_WITHOUT_CONCEPT_API = "/learn/api/no_technology_concept/";
 const GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API = "/tutorials/api/resources/no_reviews/";
+const GET_FEATURED_COLLECTIONS_API = "/collections/api/featured/";
 
 const GET_TECHNOLOGIES_WITHOUT_RESOURCES_API = "/learn/api/no_technology_concept/"; // TODO: use proper API
 // TODO: divide into smaller components, this file is getting too big
@@ -82,6 +84,9 @@ function HomepageApp() {
   const [resourcesReviews, setResourcesReviews] = useState([]);
   const [loadingResourcesReviews, setLoadingResourcesReviews] = useState(false);
 
+  const [featuredCollections, setFeaturedCollections] = useState([]);
+  const [loadingFeaturedCollections, setLoadingFeaturedCollections] = useState(false);
+
   const [waitingResources, setWaitingResources] = useState(true);
   const [waitingCollections, setWaitingCollections] = useState(true);
   const [waitingTechnologies, setWaitingTechnologies] = useState(true);
@@ -104,6 +109,7 @@ function HomepageApp() {
     setLoadingResourcesReviews(true);
     setLoadingTechWithNoResource(true);
     setLoadingTechWithNoConcept(true);
+    setLoadingFeaturedCollections(true);
     //get aggregated results data
     fetch(url_aggr_filters_resources, {
       method: "GET",
@@ -256,6 +262,24 @@ function HomepageApp() {
       .catch(error => {
         console.log(error);
         setLoadingTechWithNoConcept(false);
+      });
+    
+    fetch(GET_FEATURED_COLLECTIONS_API)
+      .then(result => {
+        if (result.ok) {
+          return result.json();
+        }
+      })
+      .then(data => {
+        const { results } = data;
+        if (results && results.length) {
+          setFeaturedCollections(results);
+        }
+        setLoadingFeaturedCollections(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setLoadingFeaturedCollections(false);
       });
   }, []);
 
@@ -567,6 +591,10 @@ function HomepageApp() {
         loadingTechWithNoResource={loadingTechWithNoResource}
         reviews={resourcesReviews}
         loadingReviews={loadingResourcesReviews}
+      />
+      <CollectionsSection
+        collections={featuredCollections}
+        loading={loadingFeaturedCollections}
       />
     </Fragment>
   );
