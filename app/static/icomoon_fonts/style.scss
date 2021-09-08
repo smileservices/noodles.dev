@@ -208,3 +208,9 @@
   }
 }
 
+.icon-plus {
+  &:before {
+    content: $icon-plus; 
+  }
+}
+

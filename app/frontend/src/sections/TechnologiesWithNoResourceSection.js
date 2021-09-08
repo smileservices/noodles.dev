@@ -25,7 +25,8 @@ const TechnologiesWithNoResourceSection = ({
                                     className="uikit-button filled default"
                                     href="/"
                                 >
-                                    + Add a Resource
+                                    <span className="button-icon icon-plus" />
+                                    Add a Resource
                                 </a>
                             )}
                             image={item.image_file.small}

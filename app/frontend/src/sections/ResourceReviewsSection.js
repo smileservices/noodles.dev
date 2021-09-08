@@ -27,6 +27,7 @@ const ResourceReviewsSection = ({
                                     className="uikit-button filled default"
                                     href="/"
                                 >
+                                    <span className="button-icon icon-edit" />
                                     Leave a review
                                 </a>
                             )}

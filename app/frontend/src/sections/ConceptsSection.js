@@ -25,7 +25,8 @@ const ConceptsSection = ({
                                     className="uikit-button filled default"
                                     href={`/concepts/category/create?category=${item.pk}`}
                                 >
-                                    + Add Concept
+                                    <span className="button-icon icon-plus" />
+                                    Add Concept
                                 </a>
                             )}
                             image={item.image_file.small}
