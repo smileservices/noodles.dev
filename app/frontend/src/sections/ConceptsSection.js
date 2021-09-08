@@ -11,7 +11,6 @@ const ConceptsSection = ({
 
         return (
             <PaginationComponent
-                lastIndex={concepts.indexOf(concepts[concepts.length - 1])}
                 data={concepts.map((concepts, index) => ({ ...concepts, index }))}
                 resultsContainerClass="concepts-cards-container"
                 dataLimit={3}

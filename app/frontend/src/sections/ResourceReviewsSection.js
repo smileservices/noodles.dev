@@ -14,7 +14,6 @@ const ResourceReviewsSection = ({
         return (
             <PaginationComponent
                 data={reviews.map((reviews, index) => ({ ...reviews, index }))}
-                lastIndex={reviews.indexOf(reviews[reviews.length - 1])}
                 resultsContainerClass="reviews-cards-container"
                 dataLimit={3}
                 mapFunction={

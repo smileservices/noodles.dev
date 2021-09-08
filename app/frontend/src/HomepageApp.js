@@ -29,7 +29,8 @@ const GET_FEATURED_CATEGORIES_API = "/concepts/api/category/featured/";
 const GET_FEATURED_TECHNOLOGIES_API = "/learn/api/featured/";
 const GET_TECHNOLOGIES_WITHOUT_CONCEPT_API = "/learn/api/no_technology_concept/";
 const GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API = "/tutorials/api/resources/no_reviews/";
-const GET_TECHNOLOGIES_WITHOUT_RESOURCES_API = "/learn/api/no_technology_concept/";
+
+const GET_TECHNOLOGIES_WITHOUT_RESOURCES_API = "/learn/api/no_technology_concept/"; // TODO: use proper API
 // TODO: divide into smaller components, this file is getting too big
 // TODO: change naming of state variables
 function HomepageApp() {
@@ -542,8 +543,8 @@ function HomepageApp() {
   return (
     <Fragment>
       {/*  <section id="related" className="column-container"></section> */}
-      <section class="banner-section">
-        <div class="banner">
+      <section className="banner-section">
+        <div className="banner">
           <h2>
             Community Curated Resources <br />
             for Software Developers

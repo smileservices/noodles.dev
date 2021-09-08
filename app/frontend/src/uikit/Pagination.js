@@ -5,7 +5,6 @@ const Pagination = ({
     mapFunction,
     dataLimit,
     resultsContainerClass,
-    lastIndex,
 }) => {
     if (!data) return '';
     if (data.length === 0) return '';
@@ -13,6 +12,8 @@ const Pagination = ({
     const [currentPage, setCurrentPage] = useState(1);
     const [lastItemInGroup, setLastItemInGroup] = useState(0);
     const [paginatedData, setPaginatedData] = useState([]);
+
+    const lastIndex = data.indexOf(data[data.length - 1]);
 
     let pageLimit;
 
