@@ -137,9 +137,9 @@
     content: $icon-github; 
   }
 }
-.icon-linkedin {
+.icon-linkedin1 {
   &:before {
-    content: $icon-linkedin; 
+    content: $icon-linkedin1; 
   }
 }
 .icon-info-circle {
@@ -213,4 +213,35 @@
     content: $icon-plus; 
   }
 }
+
+.icon-linkedin {
+  &:before {
+    content: $icon-linkedin; 
+  }
+}
+
+.icon-facebook {
+  &:before {
+    content: $icon-facebook; 
+  }
+}
+
+.icon-twitter {
+  &:before {
+    content: $icon-twitter; 
+  }
+}
+
+.icon-reddit {
+  &:before {
+    content: $icon-reddit; 
+  }
+}
+
+.icon-telegram {
+  &:before {
+    content: $icon-telegram; 
+  }
+}
+
 
