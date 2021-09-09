@@ -244,4 +244,16 @@
   }
 }
 
+.icon-telegram1 {
+  &:before {
+    content: $icon-telegram1; 
+  }
+}
+
+.icon-reddit-alien {
+  &:before {
+    content: $icon-reddit-alien; 
+  }
+}
+
 
