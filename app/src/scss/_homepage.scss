@@ -129,6 +129,7 @@
       }
 
       .add-technology {
+        display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -170,6 +171,8 @@
           align-items: center;
           background: #27293B;
           border-radius: 8px;
+          min-height: 72px;
+          padding-left: 20px;
 
           img {
             margin-right: 12px;
@@ -315,6 +318,7 @@
     }
 
     .add-collections-call-to-action {
+      display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;

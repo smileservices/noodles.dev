@@ -11,6 +11,14 @@ const Card = ({
     link,
     isDetailedDescription = false,
 }) => {
+    const renderResponsiveText = () => {
+        if (innerWidth < 960 && innerWidth >= 600) {
+            return shortenText(subDescription, 0, 20);
+        }
+
+        return shortenText(subDescription, 0, 60);
+    }
+
     const renderPlainDescription = () => {
         return (
             <div className="card-description">
@@ -24,7 +32,7 @@ const Card = ({
             <div className="detailed-description">
                 <h3>{shortenText(description, 0, 75)}</h3>
                 <p>
-                    {shortenText(subDescription, 0, 60)}...
+                    {renderResponsiveText()}...
                     <a href={link}>View more</a>
                 </p>
             </div>
