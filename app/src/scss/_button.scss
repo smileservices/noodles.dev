@@ -3,6 +3,7 @@
     border-radius: 40px;
     max-width: 212px;
     display: flex;
+    justify-content: center;
 }
 
 .filled.default {
@@ -12,7 +13,13 @@
 }
 
 .filled.black {
-    background: #1E1E2B;
+    background-color: #1E1E2B;
     color: white;
     cursor: pointer;
+}
+
+.outlined.white {
+    border: 1px solid #FFFFFF;
+    color: white;
+    background-color: #2E3146;
 }
