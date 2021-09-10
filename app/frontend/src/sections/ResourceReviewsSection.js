@@ -1,11 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../uikit/Card';
 import PaginationComponent from '../uikit/Pagination';
 
-const ResourceReviewsSection = ({
-    reviews,
-    loading,
-}) => {
+const GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API = "/tutorials/api/resources/no_reviews/";
+
+const ResourceReviewsSection = () => {
+    const [learningResources, setLearningResources] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setLoading(true);
+        fetch(GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API)
+            .then(result => {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then(data => {
+                const { results } = data;
+                if (results && results.length) {
+                    setLearningResources(results);
+                }
+                setLoading(false);
+            })
+            .catch(error => {
+                console.log(error);
+                setLoading(false);
+            });
+    }, []);
+
     const renderContent = () => {
         if (loading) {
             return <h3>Loading...</h3>;
@@ -13,7 +36,7 @@ const ResourceReviewsSection = ({
 
         return (
             <PaginationComponent
-                data={reviews.map((reviews, index) => ({ ...reviews, index }))}
+                data={learningResources.map((resource, index) => ({ ...resource, index }))}
                 resultsContainerClass="reviews-cards-container"
                 dataLimit={3}
                 mapFunction={

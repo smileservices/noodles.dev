@@ -1,17 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PaginationComponent from '../uikit/Pagination';
 import Card from '../uikit/Card';
 
-const TechnologiesWithNoResourceSection = ({
-    technologies,
-    loading,
-}) => {
+const GET_TECHNOLOGIES_WITHOUT_RESOURCES_API = "/learn/api/no_technology_concept/"; // TODO: use proper API
+
+const TechnologiesWithNoResourceSection = () => {
+    const [techWithoutResource, setTechWithoutResource] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setLoading(true);
+        fetch(GET_TECHNOLOGIES_WITHOUT_RESOURCES_API)
+        .then(result => {
+            if (result.ok) {
+                return result.json();
+            }
+        })
+        .then(data => {
+            const { results } = data;
+            if (results && results.length) {
+                setTechWithoutResource(results);
+            }
+            setLoading(false);
+        })
+        .catch(error => {
+            console.log(error);
+            setLoading(false);
+        });
+    }, [])
+
     const renderContent = () => {
         if (loading) return <h3>Loading...</h3>;
 
         return (
             <PaginationComponent
-                data={technologies.map((technology, index) => ({ ...technology, index }))}
+                data={techWithoutResource.map((technology, index) => ({ ...technology, index }))}
                 resultsContainerClass="tech-resources-cards-container"
                 dataLimit={3}
                 mapFunction={

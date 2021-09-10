@@ -1,11 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../uikit/Button';
 import { shortenText } from '../utils/strings';
 
-const TechnologiesSection = ({
-    technologies,
-    loading,
-}) => {
+const GET_FEATURED_TECHNOLOGIES_API = "/learn/api/featured/";
+
+const TechnologiesSection = () => {
+    const [featuredTech, setFeaturedTech] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setLoading(true);
+        fetch(GET_FEATURED_TECHNOLOGIES_API)
+            .then(result => {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then(data => {
+                const { results } = data;
+                if (results && results.length) {
+                    setFeaturedTech(results);
+                }
+                setLoading(false);
+            })
+            .catch(error => {
+                console.log(error);
+                setLoading(false);
+            });
+    }, [])
+
     const getMaxTextLength = () => {
         if (innerWidth >= 1600 && innerWidth < 1700) {
             return 12;
@@ -45,12 +68,12 @@ const TechnologiesSection = ({
             return <h3>Loading...</h3>;
         }
 
-        if (technologies.length % 2 === 0) {
+        if (featuredTech.length % 2 === 0) {
             seeMoreButton = (
                 <a className="see-more-large">See more</a>
             );
         } else {
-            technologies.push({
+            featuredTech.push({
                 button: true,
                 label: 'See More'
             });
@@ -59,7 +82,7 @@ const TechnologiesSection = ({
         return (
             <React.Fragment>
                 <div className="featured-tech-cards-container">
-                    {technologies.map(tech => renderTechnologyCard(tech))}
+                    {featuredTech.map(tech => renderTechnologyCard(tech))}
                 </div>
                 {seeMoreButton}
             </React.Fragment>

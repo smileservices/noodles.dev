@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../uikit/Card";
 import Button from '../uikit/Button';
 
-const FeaturedCategories = ({
-  featuredCategories,
-  loadingFeatured,
-}) => {
+const GET_FEATURED_CATEGORIES_API = "/concepts/api/category/featured/";
+
+const FeaturedCategories = () => {
+  const [featuredCategories, setFeaturedCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(GET_FEATURED_CATEGORIES_API)
+      .then((result) => {
+        if (result.ok) {
+          return result.json();
+        }
+      })
+      .then((data) => {
+        const { results } = data;
+        if (results && results.length) {
+          setFeaturedCategories(results);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  }, []);
+
   const renderContent = () => {
-    if (loadingFeatured) {
+    if (loading) {
       return <h3>Loading...</h3>;
     }
 

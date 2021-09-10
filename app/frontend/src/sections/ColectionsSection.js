@@ -1,19 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../uikit/Button';
 import Pagination from '../uikit/Pagination';
 import { shortenText } from '../utils/strings';
 
-const CollectionsSection = ({
-    collections,
-    loading,
-}) => {
+const GET_FEATURED_COLLECTIONS_API = "/collections/api/featured/";
+
+const CollectionsSection = () => {
+    const [featuredCollections, setFeaturedCollections] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setLoading(true);
+        fetch(GET_FEATURED_COLLECTIONS_API)
+            .then(result => {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then(data => {
+                const { results } = data;
+                if (results && results.length) {
+                    setFeaturedCollections(results);
+                }
+                setLoading(false);
+            })
+            .catch(error => {
+                console.log(error);
+                setLoading(false);
+            });
+    }, []);
+
     const renderContent = () => {
         if (loading) return <h3>Loading...</h3>;
 
         return (
             <div className="collections-cards-container">
                 <Pagination
-                    data={collections.map((collection, index) => ({ ...collection, index }))}
+                    data={featuredCollections.map((collection, index) => ({ ...collection, index }))}
                     resultsContainerClass="collections-cards"
                     dataLimit={3}
                     mapFunction={
