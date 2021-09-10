@@ -12,7 +12,7 @@ import RelatedComponent from "../../search/src/RelatedComponent";
 import FeaturedCategories from "./sections/FeaturedCategories";
 import TechnologiesAndConcepts from "./sections/TechnologiesAndConcepts";
 import ResourcesAndReviews from './sections/ResourcesAndReviews';
-import CollectionsSection from './sections/ColectionsSection';
+import CollectionsSection from './sections/CollectionsSection';
 import Button from "./uikit/Button";
 
 import {

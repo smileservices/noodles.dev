@@ -42,7 +42,7 @@ const FeaturedCategories = () => {
                 title={featured.name}
                 description={featured.description}
                 actions={(
-                    <a>View More</a>
+                    <a href={featured.absolute_url}>View More</a>
                 )}
             />
           );

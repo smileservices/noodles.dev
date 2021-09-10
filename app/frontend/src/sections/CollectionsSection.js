@@ -32,7 +32,6 @@ const CollectionsSection = () => {
 
     const renderContent = () => {
         if (loading) return <h3>Loading...</h3>;
-
         return (
             <div className="collections-cards-container">
                 <Pagination
