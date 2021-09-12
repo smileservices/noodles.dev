@@ -1,32 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../uikit/Button';
 import { shortenText } from '../utils/strings';
-
-const GET_FEATURED_TECHNOLOGIES_API = "/learn/api/featured/";
+import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import { HOMEPAGE_APIS } from '../utils/constants';
 
 const TechnologiesSection = () => {
     const [featuredTech, setFeaturedTech] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        fetch(GET_FEATURED_TECHNOLOGIES_API)
-            .then(result => {
-                if (result.ok) {
-                    return result.json();
-                }
-            })
-            .then(data => {
-                const { results } = data;
-                if (results && results.length) {
-                    setFeaturedTech(results);
-                }
-                setLoading(false);
-            })
-            .catch(error => {
-                console.log(error);
-                setLoading(false);
-            });
+        FetchDataAndSetState(
+            HOMEPAGE_APIS.GET_FEATURED_TECHNOLOGIES_API,
+            setFeaturedTech,
+            setLoading,
+        )
     }, [])
 
     const getMaxTextLength = () => {

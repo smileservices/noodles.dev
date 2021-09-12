@@ -1,32 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import PaginationComponent from '../uikit/Pagination';
 import Card from '../uikit/Card';
-
-const GET_TECHNOLOGIES_WITHOUT_RESOURCES_API = "/learn/api/no_resources";
+import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import { HOMEPAGE_APIS } from '../utils/constants';
 
 const TechnologiesWithNoResourceSection = () => {
     const [techWithoutResource, setTechWithoutResource] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        fetch(GET_TECHNOLOGIES_WITHOUT_RESOURCES_API)
-        .then(result => {
-            if (result.ok) {
-                return result.json();
-            }
-        })
-        .then(data => {
-            const { results } = data;
-            if (results && results.length) {
-                setTechWithoutResource(results);
-            }
-            setLoading(false);
-        })
-        .catch(error => {
-            console.log(error);
-            setLoading(false);
-        });
+        FetchDataAndSetState(
+            HOMEPAGE_APIS.GET_TECHNOLOGIES_WITHOUT_RESOURCES_API,
+            setTechWithoutResource,
+            setLoading,
+        );
     }, [])
 
     const renderContent = () => {

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../uikit/Card';
 import PaginationComponent from '../uikit/Pagination';
+import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import { HOMEPAGE_APIS } from '../utils/constants';
 
 const GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API = "/tutorials/api/resources/no_reviews/";
 
@@ -9,24 +11,11 @@ const ResourceReviewsSection = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        fetch(GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API)
-            .then(result => {
-                if (result.ok) {
-                    return result.json();
-                }
-            })
-            .then(data => {
-                const { results } = data;
-                if (results && results.length) {
-                    setLearningResources(results);
-                }
-                setLoading(false);
-            })
-            .catch(error => {
-                console.log(error);
-                setLoading(false);
-            });
+        FetchDataAndSetState(
+            HOMEPAGE_APIS.GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API,
+            setLearningResources,
+            setLoading,
+        )
     }, []);
 
     const renderContent = () => {
