@@ -14,6 +14,15 @@ nav {
   padding: $nav-padding;
   white-space: nowrap;
 
+  .signed-out-button {
+    width: 132px !important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    width: 132px;
+  }
+
   .left-side {
     margin: -$nav-padding;
     align-items: center;
