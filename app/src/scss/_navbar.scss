@@ -5,7 +5,6 @@
 }
 
 nav {
-  background-color: var(--color-background-1);
   line-height: $fontsize-big;
   font-size: $fontsize-big;
   font-weight: 700;
@@ -13,7 +12,6 @@ nav {
   display: flex;
   justify-content: space-between;
   padding: $nav-padding;
-  box-shadow: inset 0px -1px 0px #2F2F2F;
   white-space: nowrap;
 
   .left-side {
