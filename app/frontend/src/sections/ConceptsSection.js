@@ -33,7 +33,7 @@ const ConceptsSection = () => {
                             actions={(
                                 <a
                                     className="uikit-button filled default"
-                                    href={`/concepts/category/create?category=${item.pk}`}
+                                    href={`/concepts/technology/create?technology=${item.pk}`}
                                 >
                                     <span className="button-icon icon-plus" />
                                     Add Concept
