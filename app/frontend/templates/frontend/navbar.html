@@ -11,9 +11,8 @@
         </a>
         <a class="navbar-logo" href="{% url "homepage" %}">Noodles.<span class="blue-text">dev</span></a>
     </div>
-    <div id="search-bar-app"></div>
     <div class="right-side">
-
+        <div id="search-bar-app"></div>
 {#        {% if user.is_authenticated %}#}
             {# NOTIFICATIONS DROPDOWN #}
 {#            <div class="dropdown hidden">#}
@@ -100,8 +99,8 @@
                 })
             </script>
         {% else %}
-            <a href="{% url 'account_login' %}" rel="nofollow noopener" class="btn secondary login-button">Login</a>
-            <a href="{% url 'account_login' %}" rel="nofollow noopener" class="btn signup-button">Sign Up</a>
+            <a href="{% url 'account_login' %}" rel="nofollow noopener" class="uikit-button outlined white">Login</a>
+            <a href="{% url 'account_login' %}" rel="nofollow noopener" class="uikit-button filled default">Register</a>
         {% endif %}
     </div>
     </div>

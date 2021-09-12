@@ -1,36 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import PaginationComponent from '../uikit/Pagination';
 import Card from '../uikit/Card';
-
-const GET_TECHNOLOGIES_WITHOUT_RESOURCES_API = "/learn/api/no_technology_concept/"; // TODO: use proper API
+import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import { HOMEPAGE_APIS } from '../utils/constants';
 
 const TechnologiesWithNoResourceSection = () => {
     const [techWithoutResource, setTechWithoutResource] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        fetch(GET_TECHNOLOGIES_WITHOUT_RESOURCES_API)
-        .then(result => {
-            if (result.ok) {
-                return result.json();
-            }
-        })
-        .then(data => {
-            const { results } = data;
-            if (results && results.length) {
-                setTechWithoutResource(results);
-            }
-            setLoading(false);
-        })
-        .catch(error => {
-            console.log(error);
-            setLoading(false);
-        });
+        FetchDataAndSetState(
+            HOMEPAGE_APIS.GET_TECHNOLOGIES_WITHOUT_RESOURCES_API,
+            setTechWithoutResource,
+            setLoading,
+        );
     }, [])
 
     const renderContent = () => {
         if (loading) return <h3>Loading...</h3>;
+
+        if (!techWithoutResource.length) {
+            return <h3>No technologies for now...</h3>;
+        }
 
         return (
             <PaginationComponent
@@ -46,7 +37,7 @@ const TechnologiesWithNoResourceSection = () => {
                             actions={(
                                 <a
                                     className="uikit-button filled default"
-                                    href="/"
+                                    href="/tutorials/create/"
                                 >
                                     <span className="button-icon icon-plus" />
                                     Add a Resource

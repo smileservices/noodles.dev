@@ -1,32 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import Card from '../uikit/Card';
 import PaginationComponent from '../uikit/Pagination';
-
-const GET_TECHNOLOGIES_WITHOUT_CONCEPT_API = "/learn/api/no_technology_concept/";
+import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import { HOMEPAGE_APIS } from '../utils/constants';
 
 const ConceptsSection = () => {
     const [techWithNoConcept, setTechWithNoConcept] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        fetch(GET_TECHNOLOGIES_WITHOUT_CONCEPT_API)
-            .then(result => {
-                if (result.ok) {
-                    return result.json();
-                }
-            })
-            .then(data => {
-                const { results } = data;
-                if (results && results.length) {
-                    setTechWithNoConcept(results);
-                }
-                setLoading(false);
-            })
-            .catch(error => {
-                console.log(error);
-                setLoading(false);
-            });
+        FetchDataAndSetState(
+            HOMEPAGE_APIS.GET_TECHNOLOGIES_WITHOUT_CONCEPT_API,
+            setTechWithNoConcept,
+            setLoading,
+        )
     }, []);
 
     const renderContent = () => {

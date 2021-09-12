@@ -1,33 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import Button from '../uikit/Button';
 import Pagination from '../uikit/Pagination';
 import { shortenText } from '../utils/strings';
-
-const GET_FEATURED_COLLECTIONS_API = "/collections/api/featured/";
+import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import { HOMEPAGE_APIS } from '../utils/constants';
 
 const CollectionsSection = () => {
     const [featuredCollections, setFeaturedCollections] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        fetch(GET_FEATURED_COLLECTIONS_API)
-            .then(result => {
-                if (result.ok) {
-                    return result.json();
-                }
-            })
-            .then(data => {
-                const { results } = data;
-                if (results && results.length) {
-                    setFeaturedCollections(results);
-                }
-                setLoading(false);
-            })
-            .catch(error => {
-                console.log(error);
-                setLoading(false);
-            });
+        FetchDataAndSetState(
+            HOMEPAGE_APIS.GET_FEATURED_COLLECTIONS_API,
+            setFeaturedCollections,
+            setLoading,
+        );
     }, []);
 
     const renderContent = () => {
@@ -72,9 +58,12 @@ const CollectionsSection = () => {
                 <h2>
                     Collect any resources<br/>that you like
                 </h2>
-                <Button color="black">
+                <a
+                    className="uikit-button filled black"
+                    href="/users/my-collections"
+                >
                     + Add a Collection
-                </Button>
+                </a>
             </div>
         </div>
     );

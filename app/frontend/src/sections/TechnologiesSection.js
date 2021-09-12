@@ -1,32 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../uikit/Button';
 import { shortenText } from '../utils/strings';
-
-const GET_FEATURED_TECHNOLOGIES_API = "/learn/api/featured/";
+import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import { HOMEPAGE_APIS } from '../utils/constants';
 
 const TechnologiesSection = () => {
     const [featuredTech, setFeaturedTech] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
-        fetch(GET_FEATURED_TECHNOLOGIES_API)
-            .then(result => {
-                if (result.ok) {
-                    return result.json();
-                }
-            })
-            .then(data => {
-                const { results } = data;
-                if (results && results.length) {
-                    setFeaturedTech(results);
-                }
-                setLoading(false);
-            })
-            .catch(error => {
-                console.log(error);
-                setLoading(false);
-            });
+        FetchDataAndSetState(
+            HOMEPAGE_APIS.GET_FEATURED_TECHNOLOGIES_API,
+            setFeaturedTech,
+            setLoading,
+        )
     }, [])
 
     const getMaxTextLength = () => {
@@ -42,7 +28,7 @@ const TechnologiesSection = () => {
         if (tech.button) {
             // TODO: add href pointing to technologies page
             return (
-                <a className="see-more-small" href="/"> 
+                <a className="see-more-small" href="/learn"> 
                     {tech.label}
                 </a>
             )
@@ -70,7 +56,7 @@ const TechnologiesSection = () => {
 
         if (featuredTech.length % 2 === 0) {
             seeMoreButton = (
-                <a className="see-more-large">See more</a>
+                <a className="see-more-large" href="/learn">See more</a>
             );
         } else {
             featuredTech.push({
@@ -100,9 +86,9 @@ const TechnologiesSection = () => {
                 <h2>
                     Be the first to add<br/>the technology<br/>that interests you
                 </h2>
-                <Button color="black">
+                <a className="uikit-button filled black" href="/learn/create/">
                     + Add Technology
-                </Button>
+                </a>
             </div>
             {renderFeaturedTechnologies()}
         </div>

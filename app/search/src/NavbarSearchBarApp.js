@@ -128,11 +128,14 @@ function NavbarSearchApp() {
 
     return (
         <Fragment>
-            <input type="text"
-                   placeholder="Search for anything..."
-                   className="navbar-search-input"
-                   onClick={e => dispatch({type: OPEN})}
-            />
+            <div className="navbar-input-container">
+                <input type="text"
+                    placeholder="Search for anything..."
+                    className="navbar-search-input"
+                    onClick={e => dispatch({type: OPEN})}
+                />
+                <span className="icon-search"></span>
+            </div>
         </Fragment>
     )
 }
