@@ -146,6 +146,11 @@ class TechViewset(ResourceWithEditSuggestionVieset):
         queryset = self.queryset.filter(concepts__isnull=True)
         return rest_paginate_queryset(self, queryset)
 
+    @action(methods=['GET'], detail=False)
+    def no_resources(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(resources__isnull=True)
+        return rest_paginate_queryset(self, queryset)
+
 
 @cache_page(60 * 5)
 def license_options(request):
