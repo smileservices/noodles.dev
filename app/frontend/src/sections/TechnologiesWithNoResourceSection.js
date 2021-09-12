@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PaginationComponent from '../uikit/Pagination';
 import Card from '../uikit/Card';
 
-const GET_TECHNOLOGIES_WITHOUT_RESOURCES_API = "/learn/api/no_technology_concept/"; // TODO: use proper API
+const GET_TECHNOLOGIES_WITHOUT_RESOURCES_API = "/learn/api/no_resources";
 
 const TechnologiesWithNoResourceSection = () => {
     const [techWithoutResource, setTechWithoutResource] = useState([]);
@@ -31,6 +31,10 @@ const TechnologiesWithNoResourceSection = () => {
 
     const renderContent = () => {
         if (loading) return <h3>Loading...</h3>;
+
+        if (!techWithoutResource.length) {
+            return <h3>No technologies for now...</h3>;
+        }
 
         return (
             <PaginationComponent
