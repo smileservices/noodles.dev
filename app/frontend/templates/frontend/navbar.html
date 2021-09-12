@@ -99,8 +99,8 @@
                 })
             </script>
         {% else %}
-            <a href="{% url 'account_login' %}" rel="nofollow noopener" class="uikit-button outlined white">Login</a>
-            <a href="{% url 'account_login' %}" rel="nofollow noopener" class="uikit-button filled default">Register</a>
+            <a href="{% url 'account_login' %}" rel="nofollow noopener" class="signed-out-button uikit-button outlined white">Login</a>
+            <a href="{% url 'account_login' %}" rel="nofollow noopener" class="signed-out-button uikit-button filled default">Register</a>
         {% endif %}
     </div>
     </div>
