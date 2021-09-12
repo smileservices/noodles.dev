@@ -37,7 +37,7 @@ const TechnologiesWithNoResourceSection = () => {
                             actions={(
                                 <a
                                     className="uikit-button filled default"
-                                    href="/"
+                                    href="/tutorials/create/"
                                 >
                                     <span className="button-icon icon-plus" />
                                     Add a Resource

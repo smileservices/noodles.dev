@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../uikit/Button';
 import { shortenText } from '../utils/strings';
 import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
 import { HOMEPAGE_APIS } from '../utils/constants';
@@ -29,7 +28,7 @@ const TechnologiesSection = () => {
         if (tech.button) {
             // TODO: add href pointing to technologies page
             return (
-                <a className="see-more-small" href="/"> 
+                <a className="see-more-small" href="/learn"> 
                     {tech.label}
                 </a>
             )
@@ -57,7 +56,7 @@ const TechnologiesSection = () => {
 
         if (featuredTech.length % 2 === 0) {
             seeMoreButton = (
-                <a className="see-more-large">See more</a>
+                <a className="see-more-large" href="/learn">See more</a>
             );
         } else {
             featuredTech.push({
@@ -87,9 +86,9 @@ const TechnologiesSection = () => {
                 <h2>
                     Be the first to add<br/>the technology<br/>that interests you
                 </h2>
-                <Button color="black">
+                <a className="uikit-button filled black" href="/learn/create/">
                     + Add Technology
-                </Button>
+                </a>
             </div>
             {renderFeaturedTechnologies()}
         </div>

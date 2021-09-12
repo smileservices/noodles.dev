@@ -5,7 +5,6 @@ import FeaturedCategories from "./sections/FeaturedCategories";
 import TechnologiesAndConcepts from "./sections/TechnologiesAndConcepts";
 import ResourcesAndReviews from './sections/ResourcesAndReviews';
 import CollectionsSection from './sections/CollectionsSection';
-import Button from "./uikit/Button";
 
 function HomepageApp() {
   /*
@@ -32,7 +31,9 @@ function HomepageApp() {
             Community Curated Resources <br />
             for Software Developers
           </h2>
-          <Button content="Join the community" />
+          <a className="uikit-button filled default" href="/accounts/login">
+            Join the community
+          </a>
         </div>
       </section>
       <FeaturedCategories />

@@ -4,8 +4,6 @@ import PaginationComponent from '../uikit/Pagination';
 import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
 import { HOMEPAGE_APIS } from '../utils/constants';
 
-const GET_TECHNOLOGIES_WITHOUT_CONCEPT_API = "/learn/api/no_technology_concept/";
-
 const ConceptsSection = () => {
     const [techWithNoConcept, setTechWithNoConcept] = useState([]);
     const [loading, setLoading] = useState(false);

@@ -4,8 +4,6 @@ import PaginationComponent from '../uikit/Pagination';
 import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
 import { HOMEPAGE_APIS } from '../utils/constants';
 
-const GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API = "/tutorials/api/resources/no_reviews/";
-
 const ResourceReviewsSection = () => {
     const [learningResources, setLearningResources] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -37,7 +35,7 @@ const ResourceReviewsSection = () => {
                             actions={(
                                 <a
                                     className="uikit-button filled default"
-                                    href="/"
+                                    href={item.absolute_url}
                                 >
                                     <span className="button-icon icon-edit" />
                                     Leave a review

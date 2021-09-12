@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Card from "../uikit/Card";
-import Button from '../uikit/Button';
 import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
 import { HOMEPAGE_APIS } from '../utils/constants';
 
@@ -52,14 +51,24 @@ const FeaturedCategories = () => {
                 <h2>
                     Explore, learn from<br/> resources, and give back<br /> to the community.
                 </h2>
-                <Button color="black">Contribute</Button>
+                <a
+                  className="uikit-button filled black"
+                  href="/tutorials/create/"
+                >
+                  Contribute
+                </a>
             </div>
             <div className="call-to-action add-tutorial-container">
                 <img src="/static/imgs/teach-something.png" />
                 <h2>
                     Want to teach something?
                 </h2>
-                <Button color="black">Add a tutorial</Button>
+                <a
+                  className="uikit-button filled black"
+                  href="/tutorials/create/"
+                >
+                  Add a tutorial
+                </a>
             </div>
         </div>
       </div>

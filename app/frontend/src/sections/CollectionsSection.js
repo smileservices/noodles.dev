@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Button from '../uikit/Button';
 import Pagination from '../uikit/Pagination';
 import { shortenText } from '../utils/strings';
 import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
@@ -59,9 +58,12 @@ const CollectionsSection = () => {
                 <h2>
                     Collect any resources<br/>that you like
                 </h2>
-                <Button color="black">
+                <a
+                    className="uikit-button filled black"
+                    href="/users/my-collections"
+                >
                     + Add a Collection
-                </Button>
+                </a>
             </div>
         </div>
     );
