@@ -20,7 +20,9 @@ const TechnologiesSection = () => {
             return 12;
         } else if (innerWidth >= 1700) {
             return 15;
-        }else {
+        } else if (innerWidth <= 559) {
+            return 8;
+        } else {
             return 10;
         }
     }

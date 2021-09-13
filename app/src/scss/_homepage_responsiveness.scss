@@ -258,4 +258,120 @@
         }
       }
     }
+}
+
+@media only screen and (min-width: 600px) {
+  #homepage-app {
+    h3 {
+      font-weight: bold;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+  
+    p {
+      font-size: 16px;
+    }
   }
+}
+
+@media only screen and (max-width: 559px) {
+  #homepage-app {
+    h3 {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+  
+    p {
+      font-size: 12px;
+    }
+
+    .featured-categories-section {
+      .featured-categories-section-title {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+      }
+
+      .featured-categories-container {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+
+        .featured-categories-cards-container {
+          margin-bottom: 2.5rem;
+        }
+
+        .call-to-action-container {
+          .contribute-container {
+            height: 310px;
+          }
+
+          .add-tutorial-container {
+            height: 236px;
+          }
+        }
+      }
+    }
+
+    .technolgies-and-concepts-section {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+
+      .featured-technologies-container {
+        .add-technology {
+          width: 100%;
+          height: 312px;
+        }
+
+        .see-more-large {
+          margin-bottom: 2.5rem;
+        }
+
+        .featured-tech-cards-container {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+
+          .tech-card {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+
+            .tech-summary {
+              h3 {
+                font-size: 14px !important;
+                line-height: 22px !important;
+              }
+
+              p {
+                font-size: 12px !important;
+                line-height: 22px !important;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .resources-and-reviews-section {
+      margin-right: 0.5rem;
+      margin-left: 0.5rem;
+
+      .tech-resources-container {
+        margin-bottom: 2.5rem;
+      }
+    }
+
+    .collections-section {
+      margin-right: 0.5rem;
+      margin-left: 0.5rem;
+
+      .collections-container {
+        margin-bottom: 2.5rem;
+      }
+
+      .add-collections-call-to-action {
+        height: 272px;
+      }
+    }
+  }
+}
+
