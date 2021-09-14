@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Card from "../uikit/Card";
+import PaginationComponent from '../uikit/Pagination';
 import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
 import { HOMEPAGE_APIS } from '../utils/constants';
 
@@ -20,11 +21,35 @@ const FeaturedCategories = () => {
       return <h3>Loading...</h3>;
     }
 
+    if (innerWidth <= 599) {
+      return (
+        <PaginationComponent
+        resultsContainerClass="featured-categories-cards-container"
+          data={featuredCategories.map((cat, index) => ({ ...cat, index }))}
+          dataLimit={1}
+          limit={4}
+          mapFunction={
+            (featured, id) => (
+              <Card
+                key={id}
+                title={featured.name}
+                description={featured.description}
+                actions={(
+                    <a href={featured.absolute_url}>View More</a>
+                )}
+              />
+            )
+          }
+        />
+      )
+    }
+
     return (
       <div className="featured-categories-cards-container">
-        {featuredCategories.map((featured) => {
+        {featuredCategories.map((featured, id) => {
           return (
             <Card
+                key={id}
                 title={featured.name}
                 description={featured.description}
                 actions={(
@@ -45,7 +70,7 @@ const FeaturedCategories = () => {
       </div>
       <div className="featured-categories-container">
         {renderContent()}
-        <div class="call-to-action-container">
+        <div className="call-to-action-container">
             <div className="call-to-action contribute-container">
                 <img src="/static/imgs/help.png" />
                 <h2>

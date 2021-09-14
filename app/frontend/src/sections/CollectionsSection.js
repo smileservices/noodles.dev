@@ -24,9 +24,10 @@ const CollectionsSection = () => {
                     data={featuredCollections.map((collection, index) => ({ ...collection, index }))}
                     resultsContainerClass="collections-cards"
                     dataLimit={3}
+                    limit={4}
                     mapFunction={
-                        (item) => (
-                            <div className="collection-card">
+                        (item, id) => (
+                            <div className="collection-card" key={id}>
                                 <div className="card-count">{item.index + 1}</div>
                                 <div className="collection-details">
                                     <h4>

@@ -5,6 +5,7 @@ const Pagination = ({
     mapFunction,
     dataLimit,
     resultsContainerClass,
+    limit,
 }) => {
     if (!data) return '';
     if (data.length === 0) return '';
@@ -17,7 +18,9 @@ const Pagination = ({
 
     let pageLimit;
 
-    if (data.length % dataLimit !== 0) {
+    if (limit) {
+        pageLimit = limit;
+    } else if (data.length % dataLimit !== 0) {
         pageLimit = Math.ceil(data.length / dataLimit);
     } else {
         pageLimit = Math.floor(data.length / dataLimit);
@@ -55,6 +58,13 @@ const Pagination = ({
         return paginationGroup;
     }
 
+    const getPageDataLength = (page) => {
+        const startIndex = page * dataLimit - dataLimit;
+        const endIndex = startIndex + dataLimit;
+        const newData = data.slice(startIndex, endIndex);
+        return newData.length;
+    }
+
     return (
         <div className="pagination-container">
             <div className={resultsContainerClass}>
@@ -69,15 +79,20 @@ const Pagination = ({
                 </button>
 
                 {/* show page numbers */}
-                {getPaginationGroup().map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={changePage}
-                      className={`pagination-item ${currentPage === item ? 'active' : null}`}
-                    >
-                      <span>{item}</span>
-                    </button>
-                ))}
+                {getPaginationGroup().map((item, index) => {
+                    if (getPageDataLength(+item) === 0) {
+                        return null;
+                    }
+                    return(
+                        <button
+                        key={index}
+                        onClick={changePage}
+                        className={`pagination-item ${currentPage === item ? 'active' : null}`}
+                        >
+                        <span>{item}</span>
+                        </button>
+                    )
+                })}
 
                 <button
                     onClick={goToNextPage}

@@ -28,6 +28,7 @@ const TechnologiesWithNoResourceSection = () => {
                 data={techWithoutResource.map((technology, index) => ({ ...technology, index }))}
                 resultsContainerClass="tech-resources-cards-container"
                 dataLimit={3}
+                limit={4}
                 mapFunction={
                     (item) => (
                         <Card
