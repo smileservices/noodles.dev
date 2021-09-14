@@ -296,8 +296,12 @@
         margin-left: 0.5rem;
         margin-right: 0.5rem;
 
-        .featured-categories-cards-container {
+        .pagination-container {
           margin-bottom: 2.5rem;
+
+          .featured-categories-cards-container {
+            margin-bottom: 1rem;
+          }
         }
 
         .call-to-action-container {
@@ -363,6 +367,7 @@
     .collections-section {
       margin-right: 0.5rem;
       margin-left: 0.5rem;
+      margin-bottom: 0px !important;
 
       .collections-container {
         margin-bottom: 2.5rem;

@@ -5,7 +5,7 @@
   }
 }
 
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1201px) {
   .detail-page.resource .right-side {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -22,7 +22,7 @@
   }
 }
 
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1201px) {
   main {
     padding: 2rem 2rem 2rem 5rem !important;
   }
@@ -284,8 +284,6 @@
     width: 100%;
   }
   aside.sidebar #sidebar-app {
-    width: 100vw;
-
     .category-detail {
       width: 50%
     }
