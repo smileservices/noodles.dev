@@ -58,7 +58,18 @@
   }
 }
 
-@media only screen and (min-width: 771px) {
+@media only screen and (min-width: 901px) {
+  nav {
+    .left-side {
+      .mobile-menu {
+        display: none;
+      }
+
+      .mid-screen-buttons {
+        display: none;
+      }
+    }
+  }
   #search-bar-app {
     .navbar-input-container {
       width: 382px;
@@ -75,16 +86,6 @@
   .right-side {
     a.signed-out-button {
       display: none;
-    }
-  }
-}
-
-@media only screen and (max-width: 770px) {
-  #search-bar-app {
-    .navbar-input-container {
-      span {
-        display: none;
-      }
     }
   }
 }

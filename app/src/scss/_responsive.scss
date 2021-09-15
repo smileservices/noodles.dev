@@ -32,7 +32,7 @@
   }
 }
 
-@media only screen and (min-width: 769px) {
+@media only screen and (min-width: 900px) {
   nav .collapsible .collapse-toggle {
     display: none;
   }
@@ -101,8 +101,57 @@
   }
 }
 
+@media only screen and (max-width: 900px) and (min-width: 365px) {
+  nav {
+    .left-side {
+      .mid-screen-buttons {
+        display: flex;
+        gap: 4px;
+        margin-right: 0.5rem;
+        margin-top: 0.5rem;
+        
+        a {
+          width: unset !important;
+        }
+      }
+    }
+  }
+}
 
-@media only screen and (max-width: 769px) {
+@media only screen and (max-width: 364px) {
+  nav {
+    .left-side {
+      .mid-screen-buttons {
+        display: none;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 365px) {
+  nav {
+    .xs-screen-buttons {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 364px) {
+  nav {
+    .xs-screen-buttons {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      a {
+        width: 86% !important;
+        max-width: unset;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
 
   header {
     clip-path: none;
@@ -123,17 +172,50 @@
   }
 
   nav {
-    margin-bottom: $nav-height+$padding-unit;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0px !important;
+    .left-side {
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+
+      .navbar-logo {
+        display: none;
+      }
+
+      .collapse-button {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: flex;
+      }
+    }
     #search-bar-app {
-      .navbar-search-input {
-        position: absolute;
-        top: $nav-height;
-        left: 0;
-        width: 100%;
-        width: -moz-available; /* WebKit-based browsers will ignore this. */
-        width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
-        width: fill-available;
-        margin: $padding-unit;
+      width: 100%;
+      margin-right: 0px;
+      .navbar-input-container {
+        justify-content: center;
+        gap: 12px;
+        align-items: center;
+        .navbar-search-input {
+          // position: absolute;
+          top: $nav-height;
+          left: 0;
+          width: 100%;
+          width: -moz-available; /* WebKit-based browsers will ignore this. */
+          width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
+          width: fill-available;
+          margin: $padding-unit 0px;
+        }
+
+        span {
+          height: 40px;
+          width: 40px;
+          justify-content: center;
+          padding: 0px !important;
+        }
       }
     }
   }
