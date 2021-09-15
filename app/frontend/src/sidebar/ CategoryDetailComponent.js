@@ -1,9 +1,8 @@
-import React, {useEffect, useReducer, Fragment} from "react";
+import React, { useEffect, useReducer, Fragment } from "react";
 import TechnologyMinimalListing from "../../../technology/src/TechnologyMinimalListing";
 import Alert from "../../../src/components/Alert";
 import {SkeletonLoadingSidebarDetail} from "../../../src/components/skeleton/SkeletonLoadingSidebarDetail";
 import CategoryConceptsComponent from "../../../concepts/src/CategoryConceptsComponent";
-
 const URL_TECHNOLOGIES = '/categories/api/';
 const URL_CREATE_TECHNOLOGY = '/learn/create/';
 

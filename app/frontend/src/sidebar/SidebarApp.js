@@ -1,7 +1,8 @@
-import React, {useEffect, useState, useReducer, Fragment} from "react";
+import React, { useEffect, useState, useReducer, Fragment, useRef } from "react";
 import ReactDOM from "react-dom";
 import CategoriesComponent from "./CategoriesComponent";
 import CategoryDetailComponent from "./ CategoryDetailComponent";
+import { toggleSidebarUtil } from '../utils/DOMUtils';
 
 const SELECT_CATEGORY = 'SELECT_CATEGORY';
 const MINIMIZE = 'MINIMIZE';
@@ -23,6 +24,34 @@ const reducer = (state, {type, payload}) => {
     }
 }
 
+function useOutsideAlerter(ref) {
+    useEffect(() => {
+        /**
+         * Alert if clicked on outside of element
+         */
+        function handleClickOutside(event) {
+            if (ref.current && !ref.current.contains(event.target)) {
+                const sidebarOpen = document.querySelector('body.sidebar-visible aside.sidebar');
+                const categoryDetailOpen = document.querySelector('.category-detail');
+
+                const mobileSidebarOpen = document.querySelector('body.sidebar-visible-mobile aside.sidebar');
+                const mobileCategoryDetailOpen = document.querySelector('.category-detail');
+                
+                if (sidebarOpen && !categoryDetailOpen || mobileSidebarOpen && !mobileCategoryDetailOpen) {
+                    toggleSidebarUtil();
+                }
+            }
+        }
+
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [ref]);
+}
+
 function SidebarApp() {
     /*
     * Get the categories tree
@@ -36,9 +65,10 @@ function SidebarApp() {
     * */
     const [state, dispatch] = useReducer(reducer, {...initialState});
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const wrapperRef = useRef(null);
+    useOutsideAlerter(wrapperRef);
 
     useEffect(() => {
-        console.log(state.expanded);
         if (state.expanded) {
             document.getElementById('sidebar').classList.add('expanded');
         } else {
@@ -57,16 +87,12 @@ function SidebarApp() {
     }
 
     const onClickToggleSidebar = () => {
-        if (innerWidth > 600) {
-            document.querySelector('body').classList.toggle('sidebar-visible');
-        } else {
-            document.querySelector('body').classList.toggle('sidebar-visible-mobile');
-        }
+        toggleSidebarUtil();
     };
 
     return (
         <Fragment>
-            <div className="categories">
+            <div className="categories" ref={wrapperRef}>
                 <div className="top-section">
                     <a href="/" className="navbar-logo">Noodles.<span className="blue-text">dev</span></a>
                     <a href="#" rel="nofollow noopener" onClick={onClickToggleSidebar} className="collapse-button">
