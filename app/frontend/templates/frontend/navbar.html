@@ -21,7 +21,7 @@
             <a class="mobile-navbar-logo" href="{% url "homepage" %}">Noodles.<span class="blue-text">dev</span></a>
         </div>
         {% if user.is_authenticated %}
-            <div></div>
+            <span class="icon icon-person-circle"></span>
         {% else %}
             <div class="mid-screen-buttons">
                 <a href="{% url 'account_login' %}" rel="nofollow noopener" class="signed-out-button uikit-button outlined white">Login</a>
@@ -30,7 +30,7 @@
         {% endif %}
     </div>
     {% if user.is_authenticated %}
-        <div></div>
+        <span class="icon icon-person-circle"></span>
     {% else %}
         <div class="xs-screen-buttons">
             <a href="{% url 'account_login' %}" rel="nofollow noopener" class="signed-out-button uikit-button outlined white">Login</a>

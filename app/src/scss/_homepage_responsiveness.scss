@@ -103,6 +103,8 @@
     }
 
     .resources-and-reviews-section {
+      // display: grid;
+      // grid-template-columns: 1fr 1fr;
       .tech-resources-container {
         margin-bottom: 4.5rem;
         align-items: center !important;
@@ -274,7 +276,7 @@
   }
 }
 
-@media only screen and (max-width: 559px) {
+@media only screen and (max-width: 599px) {
   #homepage-app {
     h3 {
       font-weight: bold;
