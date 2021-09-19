@@ -1,5 +1,26 @@
 // separating responsiveness for this so we can keep
 // better track of it
+@media only screen and (min-width: 600px) and (max-width: 1399px) {
+  .collections-section {
+    display: grid;
+    grid-template-columns:
+      [col1] 2.5fr
+      [col2] 0.2fr
+      [col3] 3.8fr
+      [end];
+
+    .collections-container {
+      grid-column-start: col1;
+      grid-column-end: col2;
+    }
+
+    .add-collections-call-to-action {
+      grid-column-start: col3;
+      grid-column-end: end;
+    }
+  }
+}
+
 @media only screen and (max-width: 1399px) and (min-width: 960px) {
   main {
     .technolgies-and-concepts-section {
@@ -35,25 +56,6 @@
       }
 
       .reviews-container {
-        grid-column-start: col3;
-        grid-column-end: end;
-      }
-    }
-
-    .collections-section {
-      display: grid;
-      grid-template-columns:
-        [col1] 2.5fr
-        [col2] 0.2fr
-        [col3] 3.8fr
-        [end];
-
-      .collections-container {
-        grid-column-start: col1;
-        grid-column-end: col2;
-      }
-
-      .add-collections-call-to-action {
         grid-column-start: col3;
         grid-column-end: end;
       }
