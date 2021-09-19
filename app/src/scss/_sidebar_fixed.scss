@@ -1,7 +1,3 @@
-// External changes when sidebar is visible
-// start
-//
-
 body {
   padding-left: $sidebar-width;
 
@@ -16,10 +12,6 @@ body {
     left: 0;
   }
 }
-
-// Styling of aside > sidebar element
-// start
-//
 
 aside.sidebar {
   position: absolute;
@@ -58,74 +50,6 @@ aside.sidebar {
       }
     }
   }
-
-  //.links {
-  //  margin-top: $padding-unit-big*2;
-  //  padding-bottom: $padding-unit-sm;
-  //  overflow-y: auto;
-  //  height: 100vh;
-  //  font-size: $fontsize-sm;
-  //
-  //  .category {
-  //    position: relative;
-  //  }
-  //
-  //  a {
-  //    padding: $padding-unit $padding-unit-sm;
-  //    display: flex;
-  //    gap: $padding-unit-big/2;
-  //    flex-direction: row;
-  //    align-items: center;
-  //    justify-content: start;
-  //    flex-wrap: nowrap;
-  //    text-decoration: none;
-  //    color: var(--color-text-grey);
-  //
-  //    img {
-  //      width: $fontsize-big;
-  //      height: $fontsize-big;
-  //    }
-  //
-  //    span.no-logo {
-  //      display: inline-block;
-  //      width: $fontsize-big;
-  //      height: $fontsize-big;
-  //      padding-right: $padding-unit-sm;
-  //    }
-  //  }
-  //
-  //  a:hover {
-  //    background-color: var(--color-sidebar-hover-bg);
-  //    color: var(--color-sidebar-hover-txt);
-  //  }
-  //
-  //  .other {
-  //    margin-top: $padding-unit-big*2;
-  //    padding: $padding-unit $padding-unit-sm;
-  //
-  //    svg {
-  //      width: $fontsize-big;
-  //      height: $fontsize-big;
-  //      padding-right: $padding-unit-sm;
-  //    }
-  //  }
-  //}
-  //
-  //.dropdown {
-  //  .dropdown-menu {
-  //    position: static;
-  //
-  //    a {
-  //      padding-left: 2rem;
-  //    }
-  //  }
-  //
-  //  .dropdown-button {
-  //    display: flex;
-  //    flex-direction: row;
-  //    justify-content: space-between;
-  //  }
-  //}
 
   #sidebar-app {
     position: absolute;

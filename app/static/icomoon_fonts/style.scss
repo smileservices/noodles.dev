@@ -256,4 +256,10 @@
   }
 }
 
+.icon-person-circle {
+  &:before {
+    content: $icon-person-circle; 
+  }
+}
+
 

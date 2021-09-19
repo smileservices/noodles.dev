@@ -12,7 +12,7 @@ const initialConceptsState = {
     concepts: [],
 }
 
-const ConceptListingElement = ({data}) => (<a href={data.absolute_url} className="concept-link">{data.name}</a>)
+const ConceptListingElement = ({data, index}) => (<a key={index} href={data.absolute_url} className="concept-link">{data.name}</a>)
 
 const conceptsReducer = (state, {type, payload}) => {
     switch (type) {
@@ -72,7 +72,7 @@ export default function CategoryConceptsComponent({category}) {
     if (state.waiting) return (<div className="tags">{SkeletonLoadingSidebarDetail}</div>);
     if (state.concepts.length === 0) return NoConcepts;
 
-    const conceptElements = state.concepts.map(c => (<ConceptListingElement data={c}/>));
+    const conceptElements = state.concepts.map((c, index) => (<ConceptListingElement key={index} index={index} data={c}/>));
     conceptElements.push(
         <a className="add-concept-btn" href={'/concepts/category/create?category='+category.pk}>
             + Add Concept

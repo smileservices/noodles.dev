@@ -3,7 +3,7 @@ footer {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  gap: $padding-unit-md*4;
+  gap: 12px;
   margin-top: 3rem;
   min-height: 15rem;
   padding: $padding-unit*6;
@@ -81,6 +81,10 @@ footer {
     img {
       height: 72px;
     }
+  }
+
+  section.back-to-top:hover {
+    cursor: pointer;
   }
 
   section.social {

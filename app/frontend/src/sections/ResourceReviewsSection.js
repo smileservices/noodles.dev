@@ -26,9 +26,11 @@ const ResourceReviewsSection = () => {
                 data={learningResources.map((resource, index) => ({ ...resource, index }))}
                 resultsContainerClass="reviews-cards-container"
                 dataLimit={3}
+                limit={4}
                 mapFunction={
-                    (item) => (
+                    (item, id) => (
                         <Card
+                            key={id}
                             title={`${item.name}`}
                             subtitle={`${item.publication_date} By ${item.author.username}`}
                             description={item.summary}

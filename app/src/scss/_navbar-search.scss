@@ -2,12 +2,10 @@
   .navbar-input-container {
     display: -ms-flexbox; /* IE10 */
     display: flex;
-    width: 382px;
     .navbar-search-input {
       border-radius: 20px;
       background-color: #000000;
       height: 40px;
-      width: 100%;
       padding: $padding-unit;
       font-style: normal;
       font-weight: normal;
@@ -60,23 +58,34 @@
   }
 }
 
-@media only screen and (min-width: 771px) {
+@media only screen and (min-width: 901px) {
+  nav {
+    .left-side {
+      .mobile-menu {
+        display: none;
+      }
+
+      .mid-screen-buttons {
+        display: none;
+      }
+    }
+  }
   #search-bar-app {
     .navbar-input-container {
+      width: 382px;
       .navbar-search-input {
         position: relative;
         left: 41px;
+        width: 100%;
       }
     }
   }
 }
 
-@media only screen and (max-width: 770px) {
-  #search-bar-app {
-    .navbar-input-container {
-      span {
-        display: none;
-      }
+@media only screen and (max-width: 900px) {
+  .right-side {
+    a.signed-out-button {
+      display: none;
     }
   }
 }

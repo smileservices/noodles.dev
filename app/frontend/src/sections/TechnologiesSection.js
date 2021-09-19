@@ -20,22 +20,24 @@ const TechnologiesSection = () => {
             return 12;
         } else if (innerWidth >= 1700) {
             return 15;
-        }else {
+        } else if (innerWidth <= 559) {
+            return 8;
+        } else {
             return 10;
         }
     }
-    const renderTechnologyCard = (tech) => {
+    const renderTechnologyCard = (tech, id) => {
         if (tech.button) {
             // TODO: add href pointing to technologies page
             return (
-                <a className="see-more-small" href="/learn"> 
+                <a key={id} className="see-more-small" href="/learn"> 
                     {tech.label}
                 </a>
             )
         }
 
         return (
-            <a className="tech-card" href={tech.absolute_url}>
+            <a key={id} className="tech-card" href={tech.absolute_url}>
                 <img src={tech.image_file.small} alt={tech.name} />
                 <div className="tech-summary">
                     <h3>{tech.name}</h3>
@@ -68,7 +70,7 @@ const TechnologiesSection = () => {
         return (
             <React.Fragment>
                 <div className="featured-tech-cards-container">
-                    {featuredTech.map(tech => renderTechnologyCard(tech))}
+                    {featuredTech.map((tech, id) => renderTechnologyCard(tech, id))}
                 </div>
                 {seeMoreButton}
             </React.Fragment>

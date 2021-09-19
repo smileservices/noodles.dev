@@ -10,6 +10,39 @@
             </svg>
         </a>
         <a class="navbar-logo" href="{% url "homepage" %}">Noodles.<span class="blue-text">dev</span></a>
+        <div class="mobile-menu">
+            <a rel="nofollow noopener" href="#" onclick="toggle_sidebar()" class="mobile-collapse-button">
+                <svg viewBox="0 0 100 80" width="40" height="40">
+                    <rect width="100" height="20"></rect>
+                    <rect y="30" width="100" height="20"></rect>
+                    <rect y="60" width="100" height="20"></rect>
+                </svg>
+            </a>
+            <a class="mobile-navbar-logo" href="{% url "homepage" %}">Noodles.<span class="blue-text">dev</span></a>
+        </div>
+        {% if 1 %}
+            <div class="dropdown hidden">
+                <span class="dropdown-button icon icon-person-circle"></span>
+                <div class="dropdown-menu">
+                    <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
+                    <a rel="nofollow noopener" href={% url "my-profile-edit" %}>Account</a>
+                    <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
+                    <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
+                    <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
+                    <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
+                </div>
+            </div>
+            <!-- <span class="icon icon-person-circle"></span> -->
+        {% else %}
+            <div class="mid-screen-buttons">
+                <a href="{% url 'account_login' %}" rel="nofollow noopener" class="signed-out-button uikit-button outlined white">Login</a>
+                <a href="{% url 'account_login' %}" rel="nofollow noopener" class="signed-out-button uikit-button filled default">Register</a>
+            </div>
+            <div class="xs-screen-buttons">
+                <a href="{% url 'account_login' %}" rel="nofollow noopener" class="signed-out-button uikit-button outlined white">Login</a>
+                <a href="{% url 'account_login' %}" rel="nofollow noopener" class="signed-out-button uikit-button filled default">Register</a>
+            </div>
+        {% endif %}
     </div>
     <div class="right-side">
         <div id="search-bar-app"></div>
@@ -37,17 +70,7 @@
                 {# ACCOUNT DROPDOWN #}
                 <div class="dropdown hidden">
                     <span class="dropdown-button">
-                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="36"
-                                  height="36">
-                                <circle cx="18" cy="18" r="18" fill="#F9F8F8"/>
-                            </mask>
-                            <g mask="url(#mask0)">
-                                <circle cx="18" cy="18" r="18" fill="black"/>
-                                <ellipse cx="17.5" cy="35" rx="18.5" ry="9" fill="#0348B0"/>
-                                <circle cx="18" cy="16" r="9" fill="#0348B0"/>
-                            </g>
-                        </svg>
+                        <span class="dropdown-button-icon icon-person-circle"></span>
                     </span>
                     <div class="dropdown-menu">
                         <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>

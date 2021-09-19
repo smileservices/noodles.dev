@@ -24,9 +24,11 @@ const ConceptsSection = () => {
                 data={techWithNoConcept.map((concept, index) => ({ ...concept, index }))}
                 resultsContainerClass="concepts-cards-container"
                 dataLimit={3}
+                limit={4}
                 mapFunction={
-                    (item) => (
+                    (item, id) => (
                         <Card
+                            key={id}
                             title={`There are no concepts specific to ${item.name}`}
                             description={item.name}
                             subDescription={item.description}
