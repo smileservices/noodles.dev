@@ -83,6 +83,10 @@ footer {
     }
   }
 
+  section.back-to-top:hover {
+    cursor: pointer;
+  }
+
   section.social {
     display: flex;
     flex-direction: column;
