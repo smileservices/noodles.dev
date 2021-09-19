@@ -32,6 +32,7 @@ const TechnologiesWithNoResourceSection = () => {
                 mapFunction={
                     (item) => (
                         <Card
+                            key={"techn-no-resource"+item.pk}
                             title={`There are no resources specific to ${item.name}`}
                             description={item.name}
                             subDescription={item.description}
