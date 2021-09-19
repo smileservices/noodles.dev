@@ -4,6 +4,10 @@ import PaginationComponent from '../uikit/Pagination';
 import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
 import { HOMEPAGE_APIS } from '../utils/constants';
 
+function render_name_with_path(name, path) {
+    return path ? path + ' > ' + name : name
+}
+
 const FeaturedCategories = () => {
   const [featuredCategories, setFeaturedCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,7 +36,7 @@ const FeaturedCategories = () => {
             (featured, id) => (
               <Card
                 key={id}
-                title={featured.name}
+                title={render_name_with_path(featured.name, featured.path)}
                 description={featured.description}
                 actions={(
                     <a href={featured.absolute_url}>View More</a>
@@ -50,7 +54,7 @@ const FeaturedCategories = () => {
           return (
             <Card
                 key={id}
-                title={featured.name}
+                title={render_name_with_path(featured.name, featured.path)}
                 description={featured.description}
                 actions={(
                     <a href={featured.absolute_url}>View More</a>
