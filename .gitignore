@@ -11,3 +11,4 @@ ext/
 .env
 venv/
 node_modules/
+docker-compose.yml
