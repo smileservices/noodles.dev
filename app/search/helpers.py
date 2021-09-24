@@ -1,6 +1,23 @@
 from core.elasticsearch.elasticsearch_interface import ElasticSearchInterface
 
 
+def _search_all(term, sort, filter, page, page_size):
+    es_res = ElasticSearchInterface(['study_resources', 'technology_concepts', 'category_concepts', 'categories', 'collections', 'technologies'])
+    fields = ['name^3', 'description^2', 'description_long', 'summary']
+    results = es_res.search(
+        fields=fields,
+        term=term,
+        filter=filter,
+        sort=sort,
+        page=page,
+        page_size=page_size
+    )
+    results['sort'] = [
+        {"value": "default", "label": "Relevance"},
+    ]
+    return results
+
+
 def _search_aggr_categories(term, sort, filter, page, page_size):
     es_res = ElasticSearchInterface(['categories'])
     fields = ['name^4', 'description', 'parent']
