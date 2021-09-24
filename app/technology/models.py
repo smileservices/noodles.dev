@@ -117,6 +117,7 @@ class Technology(ResourceMixin, VotableMixin):
         return {
             "properties": {
                 "pk": {"type": "integer"},
+                "resource_type": {"type": "keyword"},
                 # model fields
                 "name": {
                     "type": "text",
@@ -150,6 +151,7 @@ class Technology(ResourceMixin, VotableMixin):
     def get_elastic_data(self) -> (str, list):
         data = {
             "pk": self.pk,
+            "type": "technology",
             "name": self.name,
             "logo": self.logo if self.image_file else {},
             "url": self.absolute_url,
@@ -167,7 +169,6 @@ class Technology(ResourceMixin, VotableMixin):
             "thumbs_down": self.thumbs_down,
         }
         return self.elastic_index, data
-
 
     def save(self, *args, **kwargs):
         # override the save method to add the updated fields

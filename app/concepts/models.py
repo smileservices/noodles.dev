@@ -99,7 +99,7 @@ class CategoryConcept(MPTTModel, AbstractConcept):
         return {
             "properties": {
                 "pk": {"type": "integer"},
-
+                "resource_type": {"type": "keyword"},
                 # model fields
                 "name": {
                     "type": "text",
@@ -132,6 +132,7 @@ class CategoryConcept(MPTTModel, AbstractConcept):
     def get_elastic_data(self) -> (str, list):
         data = {
             "pk": self.pk,
+            "type": "concept_category",
             "name": self.name,
             "description": self.description,
             "description_long": self.description_long,
@@ -178,7 +179,7 @@ class TechnologyConcept(AbstractConcept):
         return {
             "properties": {
                 "pk": {"type": "integer"},
-
+                "resource_type": {"type": "keyword"},
                 # model fields
                 "name": {
                     "type": "text",
@@ -211,6 +212,7 @@ class TechnologyConcept(AbstractConcept):
     def get_elastic_data(self) -> (str, list):
         data = {
             "pk": self.pk,
+            "type": "concept_technology",
             "name": self.name,
             "description": self.description,
             "description_long": self.description_long,

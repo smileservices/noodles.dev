@@ -82,7 +82,7 @@ class Category(MPTTModel, ResourceMixin):
         return {
             "properties": {
                 "pk": {"type": "integer"},
-
+                "resource_type": {"type": "keyword"},
                 # model fields
                 "name": {
                     "type": "text",
@@ -113,6 +113,7 @@ class Category(MPTTModel, ResourceMixin):
     def get_elastic_data(self) -> (str, list):
         data = {
             "pk": self.pk,
+            "type": "category",
             "name": self.name,
             "description": self.description,
             "description_long": self.description_long,

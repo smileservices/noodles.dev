@@ -208,6 +208,7 @@ class StudyResource(ResourceMixin, VotableMixin):
         return {
             "properties": {
                 "pk": {"type": "integer"},
+                "resource_type": {"type": "keyword"},
 
                 # model fields
                 "name": {
@@ -278,6 +279,7 @@ class StudyResource(ResourceMixin, VotableMixin):
         rating = instance_from_manager['rating'] if instance_from_manager['rating'] else 0
         data = {
             "pk": self.pk,
+            "type": "study_resource",
 
             # model fields
             "name": self.name,
