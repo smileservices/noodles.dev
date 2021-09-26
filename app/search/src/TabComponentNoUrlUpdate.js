@@ -194,14 +194,14 @@ export default function TabComponentNoUrlUpdate({tabname, searchTerm, title, con
         </div>
     )
     return (<div className={containerClass}>
-        <FilterComponent
+        {/*<FilterComponent
             key={"filters" + containerClass}
             fields={getTabFilters(tabname, state.results.filters)}
             queryFilter={state.filters}
             setQueryFilter={filter => {
                 dispatch({type: SET_FILTER, payload: filter});
             }}
-        />
+        />*/}
         {state.results.items?.length > 0 ?
             <Fragment>
                 <div className="has-sort">

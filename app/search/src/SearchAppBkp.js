@@ -252,7 +252,6 @@ function SearchApp() {
 
         return (
             <div className="sorting">
-                <label htmlFor="sort_by">Sort By</label>
                 <select name="sort_by" id="sort_by" onChange={e => {
                     setSortField(e.target.value);
                     triggerSorting()

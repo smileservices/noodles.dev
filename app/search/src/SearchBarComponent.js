@@ -75,7 +75,7 @@ export default function SearchBarComponent({setSearchTerm, searchTerm, placehold
                 setShowSuggestions(false);
             }}>
                 <input type="text"
-                       className="form-control"
+                       className="search-input"
                        placeholder={placeholder}
                        value={formData}
                        onChange={e => {
