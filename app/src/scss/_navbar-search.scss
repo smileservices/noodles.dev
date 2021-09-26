@@ -25,14 +25,34 @@
     }
   }
   .search-app-overlay {
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     position: absolute;
-    top: $nav-height;
+    top: 6.5rem;
     left: 0;
     right: 0;
     min-height: 100vh;
     z-index: $navbarsearch-zindex;
     padding: $padding-unit-big*2;
     background-color: var(--color-navsearch-app-bkg);
+
+    .close-search {
+      width: 944px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      color: #96A4FF;
+
+      p {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 22px;
+      }
+    }
 
     .toolbar {
       right: 1rem;
@@ -49,11 +69,26 @@
       display: flex;
       flex-direction: column;
       gap: $padding-unit-big*2;
+      align-items: center;
     }
 
     .search-bar-big {
       margin: 0 auto;
-      max-width: 40*$fontsize-big;
+      width: 944px;
+
+      .search-input {
+        min-height: 52px;
+        border-radius: 40px;
+        background-color: #000000;
+        height: 40px;
+        padding: $padding-unit;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 22px;
+        color: #FFFFFF;
+        padding: 8px 24px;
+      }
     }
   }
 }

@@ -8,15 +8,37 @@ main {
 //}
 
 .tab-navigation {
+  .search-results {
+    width: 944px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 944px;
+    gap: 3rem;
+  }
+  .categories,
+  .category_concepts,
+  .technology_concepts,
+  .technologies,
+  .resources,
+  .collections {
+    @extend .search-results;
+  }
+
   .tab-headers {
     display: flex;
     flex-wrap: nowrap;
-    gap: $padding-unit*2;
+    gap: 0.325rem;
     overflow: auto;
+    align-items: center;
+    justify-content: center;
+    width: 944px;
+    justify-content: space-between;
   }
   .tab-headers > * {
     display: inline-block;
-    padding-bottom: $padding-unit-md;
+    padding: 12px 18px;
+    border-radius: 20px;
     cursor: pointer;
     color: var(--color-background-5);
     a, a:visited {
@@ -34,8 +56,8 @@ main {
   }
 
   .tab-headers > *.active {
-    color: var(--color-blue);
-    border-bottom: $fontsize-sm/4 solid var(--color-blue);
+    color: #1E1E2B;
+    background-color: #FAE1A1;
 
     a, a:visited {
       color: var(--color-blue);

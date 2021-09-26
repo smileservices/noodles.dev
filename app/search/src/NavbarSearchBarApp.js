@@ -9,14 +9,18 @@ import CollectionSearchListing from "../../study_collection/src/CollectionSearch
 import TechnologySearchListing from "../../technology/src/TechnologySearchListing";
 import TabComponentNoUrlUpdate from "./TabComponentNoUrlUpdate";
 
+import useDebounce from '../../frontend/src/hooks/useDebounce';
+
 const OPEN = 'OPEN';
 const CLOSE = 'CLOSE';
 const WAIT = 'WAIT';
 const SET_QUERY = 'SET_QUERY';
 const CHANGE_TAB = 'CHANGE_TAB';
 
+const FETCH_AUTOCOMPLETE_RESULTS_API = '/search/api/autocomplete';
+
 const initialState = {
-    open: false,
+    open: true,
     wait: false,
     query: {term: ''},
     currentTab: 'categories'
@@ -54,6 +58,43 @@ const reducer = (state, {type, payload}) => {
 
 function NavbarSearchApp() {
     const [state, dispatch] = useReducer(reducer, {...initialState});
+    const [query, setQuery] = useState('');
+    const [results, setResults] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const debouncedQuery = useDebounce(query, 1000);
+    const controller = new AbortController();
+
+    const handleSearch = event => {
+        const { value } = event.target;
+        if (value !== "") {
+            setLoading(true);
+            setQuery(value);
+        }
+    }
+
+    useEffect(() => {
+        const getResults = () => {
+            fetch(`${FETCH_AUTOCOMPLETE_RESULTS_API}/${query}/`, {
+                signal: controller.signal,
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Error in fetching results');
+                }
+            }).then(data => {
+                setLoading(false);
+                console.log(data);
+            }).catch(error => {
+                setLoading(false);
+                console.log(error);
+            })
+        }
+
+        if (debouncedQuery) {
+            getResults(debouncedQuery);
+          }
+    }, [debouncedQuery]);
 
     const getTabContent = tabName => {
         switch (tabName) {
@@ -98,8 +139,9 @@ function NavbarSearchApp() {
     if (state.open) {
         return (
             <div className="search-app-overlay">
-                <div className="toolbar">
-                    <span className="icon-close" onClick={e => dispatch({type: CLOSE})}/>
+                <div className="close-search" onClick={e => dispatch({type: CLOSE})}>
+                        <p>CLOSE SEARCH</p>
+                        <span className="icon-exit"></span>
                 </div>
                 <section className="tab-navigation search">
                     <SearchBarComponent placeholder="Search for anything..."
@@ -132,7 +174,8 @@ function NavbarSearchApp() {
                 <input type="text"
                     placeholder="Search for anything..."
                     className="navbar-search-input"
-                    onClick={e => dispatch({type: OPEN})}
+                    // onClick={e => dispatch({type: OPEN})}
+                    onChange={handleSearch}
                 />
                 <span className="icon-search"></span>
             </div>

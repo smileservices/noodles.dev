@@ -262,4 +262,10 @@
   }
 }
 
+.icon-exit {
+  &:before {
+    content: $icon-exit; 
+  }
+}
+
 

@@ -7,14 +7,19 @@ export default function SortComponent({sort, sortOptions, callback}) {
     return (
         <div className="sort">
             <label htmlFor="sort_by">Sort By:</label>
-            <select name="sort_by" id="sort_by" onChange={e => {
-                setState({...state, field: e.target.value});
-                callback([e.target.value, state.order].join('-'));
-            }} value={state.field}>
-                {sortOptions.map(opt =>
-                    <option key={'sort-' + opt.value} value={opt.value}>{opt.label}</option>
-                )}
-            </select>
+            <div>
+                <select name="sort_by" id="sort_by" onChange={e => {
+                    setState({...state, field: e.target.value});
+                    callback([e.target.value, state.order].join('-'));
+                }} value={state.field}>
+                    {sortOptions.map(opt =>
+                        <React.Fragment>
+                            <option key={'sort-' + opt.value} value={opt.value}>{opt.label}</option>
+                        </React.Fragment>
+                    )}
+                </select>
+                <span className="icon-arrow_drop_down"></span>
+            </div>
             {state.field !== "default" ?
                 <span className="sort-direction" onClick={e => {
                     setState({...state, order: state.order === 'desc' ? 'asc' : 'desc'});
