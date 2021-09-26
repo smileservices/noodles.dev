@@ -9,10 +9,4 @@ class Migration(migrations.Migration):
         ('study_collection', '0004_auto_20210612_1822'),
     ]
 
-    operations = [
-        migrations.AddField(
-            model_name='collection',
-            name='status',
-            field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')], db_index=True, default=0),
-        ),
-    ]
+    operations = []

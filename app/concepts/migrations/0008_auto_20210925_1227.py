@@ -16,13 +16,13 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.AddField(
             model_name='categoryconcept',
             name='status',
             field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')],
                                       db_index=True, default=1),
         ),
-        migrations.AlterField(
+        migrations.AddField(
             model_name='technologyconcept',
             name='status',
             field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')],

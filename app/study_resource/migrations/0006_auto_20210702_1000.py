@@ -9,15 +9,4 @@ class Migration(migrations.Migration):
         ('study_resource', '0005_auto_20210612_1822'),
     ]
 
-    operations = [
-        migrations.AddField(
-            model_name='editsuggestionstudyresource',
-            name='status',
-            field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')], db_index=True, default=0),
-        ),
-        migrations.AddField(
-            model_name='studyresource',
-            name='status',
-            field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')], db_index=True, default=0),
-        ),
-    ]
+    operations = []

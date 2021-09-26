@@ -12,20 +12,10 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name='editsuggestiontechnology',
-            name='status',
-            field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')], db_index=True, default=0),
-        ),
-        migrations.AddField(
             model_name='technology',
             name='created_at',
             field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
             preserve_default=False,
-        ),
-        migrations.AddField(
-            model_name='technology',
-            name='status',
-            field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')], db_index=True, default=0),
         ),
         migrations.AddField(
             model_name='technology',

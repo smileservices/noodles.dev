@@ -27,11 +27,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='category',
-            name='status',
-            field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')], db_index=True, default=0),
-        ),
-        migrations.AddField(
-            model_name='category',
             name='updated_at',
             field=models.DateTimeField(auto_now=True),
         ),

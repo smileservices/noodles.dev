@@ -9,25 +9,4 @@ class Migration(migrations.Migration):
         ('concepts', '0003_auto_20210614_1053'),
     ]
 
-    operations = [
-        migrations.AddField(
-            model_name='categoryconcept',
-            name='status',
-            field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')], db_index=True, default=0),
-        ),
-        migrations.AddField(
-            model_name='editsuggestioncategoryconcept',
-            name='status',
-            field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')], db_index=True, default=0),
-        ),
-        migrations.AddField(
-            model_name='editsuggestiontechnologyconcept',
-            name='status',
-            field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')], db_index=True, default=0),
-        ),
-        migrations.AddField(
-            model_name='technologyconcept',
-            name='status',
-            field=models.IntegerField(choices=[(0, 'Unreviewed'), (1, 'Approved'), (2, 'Rejected'), (4, 'Inactive')], db_index=True, default=0),
-        ),
-    ]
+    operations = []
