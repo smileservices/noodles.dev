@@ -129,10 +129,10 @@ class RestIntegrationTest(APITestCase):
         self.assertEqual(resource_get.status_code, 200)
         # check that the technologies are getting through the pivot table
         self.assertEqual(resource_get.data['category']['label'], self.categories[0].name)
-        self.assertEqual(resource_get.data['technologies'][0]['name'], self.technologies[0].name)
-        self.assertEqual(resource_get.data['technologies'][0]['version'], 123.0)
-        self.assertEqual(resource_get.data['technologies'][1]['name'], self.technologies[1].name)
-        self.assertEqual(resource_get.data['technologies'][1]['version'], 0.0)
+        self.assertEqual(resource_get.data['technologies'][1]['name'], self.technologies[0].name)
+        self.assertEqual(resource_get.data['technologies'][1]['version'], 123.0)
+        self.assertEqual(resource_get.data['technologies'][0]['name'], self.technologies[1].name)
+        self.assertEqual(resource_get.data['technologies'][0]['version'], 0.0)
 
     def test_create_study_resource_edit_suggestion(self):
         resource_pk = self.test_create_study_resource()
