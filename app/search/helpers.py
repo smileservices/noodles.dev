@@ -234,7 +234,7 @@ def extract_sorting(request) -> []:
 def extract_filters(request) -> []:
     # We cycle through each possible parameters
     # http://127.0.0.1:8000/search/api/study_resources?q=create&tech_v=python|gte:2.1&tech_v=laravel&category=dev%20ops&page=1&page_size=5
-    filter = []
+    filter = [{"term": {"status": "Approved"}}]
     for param in request.GET.keys():
         if param in ['category', 'price', 'media', 'experience_level']:
             filter.append({

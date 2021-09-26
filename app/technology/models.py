@@ -80,7 +80,7 @@ class Technology(ResourceMixin, VotableMixin):
     category_concepts = models.ManyToManyField('concepts.CategoryConcept', related_name='related_technologies')
 
     edit_suggestions = EditSuggestion(
-        excluded_fields=('slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at'),
+        excluded_fields=('slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
         m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category},
                     {'name': 'category_concepts', 'model': 'concepts.CategoryConcept'}],
         change_status_condition=edit_suggestion_change_status_condition,
@@ -118,6 +118,8 @@ class Technology(ResourceMixin, VotableMixin):
             "properties": {
                 "pk": {"type": "integer"},
                 "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
+
                 # model fields
                 "name": {
                     "type": "text",
@@ -152,6 +154,7 @@ class Technology(ResourceMixin, VotableMixin):
         data = {
             "pk": self.pk,
             "type": "technology",
+            "status": self.status_label,
             "name": self.name,
             "logo": self.logo if self.image_file else {},
             "url": self.absolute_url,

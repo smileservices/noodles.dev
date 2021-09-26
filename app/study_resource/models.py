@@ -147,7 +147,7 @@ class StudyResource(ResourceMixin, VotableMixin):
     experience_level = models.IntegerField(default=0, choices=ExperienceLevel.choices, db_index=True)
     edit_suggestions = EditSuggestion(
         excluded_fields=(
-            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'
+            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array', 'status'
         ),
         m2m_fields=[
             {'name': 'tags', 'model': Tag},
@@ -209,6 +209,7 @@ class StudyResource(ResourceMixin, VotableMixin):
             "properties": {
                 "pk": {"type": "integer"},
                 "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
 
                 # model fields
                 "name": {
@@ -280,6 +281,7 @@ class StudyResource(ResourceMixin, VotableMixin):
         data = {
             "pk": self.pk,
             "type": "study_resource",
+            "status": self.status_label,
 
             # model fields
             "name": self.name,

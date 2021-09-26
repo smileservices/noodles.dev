@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from django.conf import settings
 from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
+from core.abstract_models import ResourceMixin
 from tag.serializers import TagSerializerOption
 from core import utils
 from tag.models import Tag

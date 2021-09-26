@@ -64,7 +64,7 @@ class CategoryConcept(MPTTModel, AbstractConcept):
     )
     edit_suggestions = EditSuggestion(
         excluded_fields=(
-            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array', 'status'),
         special_foreign_fields=['parent', ],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
@@ -100,6 +100,8 @@ class CategoryConcept(MPTTModel, AbstractConcept):
             "properties": {
                 "pk": {"type": "integer"},
                 "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
+
                 # model fields
                 "name": {
                     "type": "text",
@@ -133,6 +135,7 @@ class CategoryConcept(MPTTModel, AbstractConcept):
         data = {
             "pk": self.pk,
             "type": "concept_category",
+            "status": self.status_label,
             "name": self.name,
             "description": self.description,
             "description_long": self.description_long,
@@ -160,7 +163,7 @@ class TechnologyConcept(AbstractConcept):
     )
     edit_suggestions = EditSuggestion(
         excluded_fields=(
-            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array', 'status'),
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
@@ -180,6 +183,8 @@ class TechnologyConcept(AbstractConcept):
             "properties": {
                 "pk": {"type": "integer"},
                 "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
+
                 # model fields
                 "name": {
                     "type": "text",
@@ -213,6 +218,7 @@ class TechnologyConcept(AbstractConcept):
         data = {
             "pk": self.pk,
             "type": "concept_technology",
+            "status": self.status_label,
             "name": self.name,
             "description": self.description,
             "description_long": self.description_long,

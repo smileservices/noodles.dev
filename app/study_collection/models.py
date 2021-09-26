@@ -77,6 +77,7 @@ class Collection(ResourceMixin, VotableMixin):
             "properties": {
                 "pk": {"type": "integer"},
                 "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
                 "created_at": {"type": "date", "format": "date_optional_time"},
 
                 # model fields
@@ -111,6 +112,7 @@ class Collection(ResourceMixin, VotableMixin):
         data = {
             "pk": self.pk,
             "type": "study_collection",
+            "status": self.status_label,
             "created_at": self.created_at.replace(microsecond=0).isoformat(),
             "name": self.name,
             "url": self.absolute_url,

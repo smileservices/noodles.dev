@@ -83,6 +83,8 @@ class Category(MPTTModel, ResourceMixin):
             "properties": {
                 "pk": {"type": "integer"},
                 "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
+
                 # model fields
                 "name": {
                     "type": "text",
@@ -114,6 +116,7 @@ class Category(MPTTModel, ResourceMixin):
         data = {
             "pk": self.pk,
             "type": "category",
+            "status": self.status_label,
             "name": self.name,
             "description": self.description,
             "description_long": self.description_long,

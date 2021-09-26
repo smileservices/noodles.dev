@@ -75,7 +75,7 @@ class ResourceMixin(DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexa
         INACTIVE = (4, 'Inactive')
 
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
-    status = models.IntegerField(default=0, choices=StatusOptions.choices, db_index=True)
+    status = models.IntegerField(default=1, choices=StatusOptions.choices, db_index=True)
     history = GenericRelation(ResourceHistoryModel)
 
     class Meta:
@@ -87,6 +87,5 @@ class ResourceMixin(DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexa
 
     def delete(self, using=None, keep_parents=False):
         # enable soft delete
-        # todo need to restrict querysets to active only
         self.status = self.StatusOptions.INACTIVE
         self.save()
