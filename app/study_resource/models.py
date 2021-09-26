@@ -33,6 +33,8 @@ def delete_study_resource_primary_images(sender, instance, **kwargs):
 
 def warm_study_resource_primary_image(sender, instance, **kwargs):
     """Ensures Technologies logos are created post-save"""
+    if not instance.image:
+        return None
     sr_images_warmer = VersatileImageFieldWarmer(
         instance_or_queryset=instance,
         rendition_key_set='resource_image',

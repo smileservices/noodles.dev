@@ -58,6 +58,8 @@ def get_serialized_models_diff(old, new, fields):
         if field == 'image_file':
             # we get the first key like "medium" or "small" to check if it's the same
             # the new value has the website root added to the url
+            if len(old_value.keys()) == 0:
+                continue
             first_key = list(old_value.keys())[0]
             if old_value[first_key] not in new_value[first_key]:
                 changes[field] = {
