@@ -197,7 +197,7 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
 
     @action(methods=['GET'], detail=False)
     def no_reviews(self, request, *args, **kwargs):
-        queryset = self.queryset.filter(reviews_count=0)
+        queryset = self.queryset.filter(reviews_count=0, status=self.serializer_class.Meta.model.StatusOptions.APPROVED)
         return rest_paginate_queryset(self, queryset)
 
 

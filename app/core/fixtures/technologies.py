@@ -35,6 +35,7 @@ def make_technologies_and_categories():
     # CREATE CATEGORY CONCEPTS
     CONCEPT_DB_POINTERS = CategoryConcept.objects.create(
         name='Pointers',
+        status=1,
         description=f.text(),
         category=dbs,
         author=choice(users),
@@ -42,6 +43,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_DB_INDICES = CategoryConcept.objects.create(
         name='Indices',
+        status=1,
         description=f.text(),
         category=relational,
         author=choice(users),
@@ -49,6 +51,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_LANG_OOP = CategoryConcept.objects.create(
         name='OOP',
+        status=1,
         description=f.text(),
         category=lang,
         author=choice(users),
@@ -56,6 +59,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_LANG_FACTORY = CategoryConcept.objects.create(
         name='Factory',
+        status=1,
         description=f.text(),
         parent=CONCEPT_LANG_OOP,
         category=lang,
@@ -64,6 +68,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_LANG_FFUNC = CategoryConcept.objects.create(
         name='First Class Functions',
+        status=1,
         description=f.text(),
         category=lang,
         author=choice(users),
@@ -225,6 +230,7 @@ def make_technologies_and_categories():
         created_techs[tech[0]['name']].ecosystem.add(*[created_techs[t['name']] for t in tech[1]])
     CONCEPT_TECH_JS_CLOSURES = TechnologyConcept.objects.create(
         name='Closures',
+        status=1,
         description=f.text(),
         technology=created_techs['Javascript'],
         parent=CONCEPT_LANG_FFUNC,
@@ -233,6 +239,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_TECH_JS_PROMISES = TechnologyConcept.objects.create(
         name='Promises',
+        status=1,
         description=f.text(),
         technology=created_techs['Javascript'],
         author=choice(users),
@@ -240,6 +247,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_TECH_JS_HIGH_FUNC = TechnologyConcept.objects.create(
         name='Higher-Order Functions',
+        status=1,
         description=f.text(),
         technology=created_techs['Javascript'],
         author=choice(users),
