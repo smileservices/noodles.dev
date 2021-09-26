@@ -5,6 +5,7 @@ from django.http.response import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db import models
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -143,12 +144,12 @@ class TechViewset(ResourceWithEditSuggestionVieset):
 
     @action(methods=['GET'], detail=False)
     def no_technology_concept(self, request, *args, **kwargs):
-        queryset = self.queryset.filter(concepts__isnull=True)
+        queryset = self.queryset.annotate(concepts_count=models.Count('concepts')).order_by('concepts_count')
         return rest_paginate_queryset(self, queryset)
 
     @action(methods=['GET'], detail=False)
     def no_resources(self, request, *args, **kwargs):
-        queryset = self.queryset.filter(resources__isnull=True)
+        queryset = self.queryset.annotate(resources_count=models.Count('resources')).order_by('resources_count')
         return rest_paginate_queryset(self, queryset)
 
 
