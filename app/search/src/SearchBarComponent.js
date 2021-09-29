@@ -32,6 +32,7 @@ export default function SearchBarComponent({setSearchTerm, searchTerm, placehold
                 }
             }).then(data => {
                 if (data && data.items.length > 0) {
+                    console.log(data.items);
                     setShowSuggestions(true)
                     setSuggestions(data.items);
                 } else {

@@ -32,22 +32,24 @@ export default function StudyResourceSearchListing({data, addFilter}) {
         : (<a key={'media' + data.media} href={'/search?tab=resources&media='+data.media}>{data.media}</a>)
 
     return (
-            <div className="card">
-                <div className="result resource">
+            <div className="resource-card">
+                <div className="resource-result">
                     <div className="left">
-                        <div className="tags">
+                        <div className="resource-tags">
                             {technologies}{concepts.technology}{category}{concepts.category}{experience_level}
                         </div>
-                        <div className="listing-title">
+                        <div className="resource-listing-title">
                             <h4 className="title" itemProp="name"><a href={data.url}>{data.name}</a></h4>
                             <span className="published">{data.publication_date} By {data.published_by}</span>
-                            <div className="tags">{media}</div>
+                            {/*<div className="tags">{media}</div>*/}
                         </div>
                         <div className="description">
-                            <TruncatedTextComponent fullText={data.summary} charLimit={250}/>
+                            <p>
+                                <TruncatedTextComponent fullText={data.summary} charLimit={250}/>
+                            </p>
                         </div>
-                        <div className="tags">{tags}</div>
-                        <ResourceRating data={data} maxRating={MAX_RATING}/>
+                        <div className="resource-tags bottom">{tags}</div>
+                        {/*<ResourceRating data={data} maxRating={MAX_RATING}/>*/}
                     </div>
                     {data.image ?
                         <div className="right">
