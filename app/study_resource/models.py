@@ -135,7 +135,7 @@ class StudyResource(ResourceMixin, VotableMixin):
     summary = models.TextField(max_length=2048)
     # related fields
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
-    tags = models.ManyToManyField(Tag, related_name='tags')
+    tags = models.ManyToManyField(Tag, related_name='resources')
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.DO_NOTHING, related_name='resources')
     technologies = models.ManyToManyField(Technology, related_name='resources', through='StudyResourceTechnology')
     created_at = models.DateTimeField(auto_now_add=True)
