@@ -8,7 +8,7 @@ from category.fake import clean_categories, create_categories
 from tag.fake import clean_tags, create_tags
 from users.models import CustomUser
 from users import fake as fake_users
-
+from allauth.socialaccount.models import EmailAddress
 from technology import fake as fake_tech
 # from problem_solution import fake as fake_problem_solution
 from study_collection import fake as fake_collections
@@ -63,13 +63,25 @@ class Command(BaseCommand):
         if created:
             user.set_password(credentials["password"])
             user.save()
-            # email = user.emailaddress_set.first()
-            # email.verified = True
-            # email.save()
             msg = "Superuser - %(email)s/%(password)s" % credentials
         else:
             msg = "Superuser already exists - %(email)s" % credentials
         return msg
+
+    def create_verified_user(self):
+        self.stdout.write('Creating test user ... ')
+        email_address = 'test@mail.com'
+        user = CustomUser.objects.create(
+            email=email_address,
+            username='test_user',
+            first_name='Test',
+            last_name='User',
+            is_active=True
+        )
+        user.set_password('123')
+        user.save()
+        EmailAddress.objects.create(user=user, email=email_address, verified=True, primary=True)
+        self.stdout.write('Created test user -- username: test_user, email: test@user.com, password: 123')
 
     def handle(self, *args, **options):
         self.make_database_faster()
@@ -81,7 +93,6 @@ class Command(BaseCommand):
             self.stdout.write('Cleaning all resources ... ')
             fake_collections.clean()
             fake_study_resource.clean()
-            # fake_problem_solution.clean()
             clean_tags()
             fake_tech.clean_technologies()
             clean_categories()
@@ -91,6 +102,7 @@ class Command(BaseCommand):
             msg = self.create_superuser(credentials)
             self.stdout.write(msg)
             self.stdout.write(f'Created super user with creds {credentials}')
+            self.create_verified_user()
 
         # create users
         fake_users.create_bulk_users(options['users'])
