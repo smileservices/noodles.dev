@@ -10,15 +10,16 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
+from rest_framework import exceptions
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from study_resource.scrape.main import scrape_tutorial
 from study_resource import filters
-from study_resource.models import StudyResource
+from study_resource.models import StudyResource, StudyResourceIntermediary
 from study_resource import serializers
 from concepts.serializers_category import CategoryConceptSerializerOption
 from concepts.serializers_technology import TechnologyConceptSerializerOption
-
+from django.utils import timezone
+import datetime
 from concepts.models import CategoryConcept, TechnologyConcept
 
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
@@ -164,25 +165,51 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
 
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):
+        '''
+        This endpoint checks if the resource URL is correct and if it already exists
+        If the url exists as an intermediary, that record is returned, else, it's created
+
+        Returns an intermediary instance or error if resource already exists
+        '''
         queryset = self.queryset
         url = request.data['url'].split('?')[0]
         if 'pk' in request.data:
             queryset = queryset.only('pk').exclude(pk=request.data['pk'])
-        try:
-            queryset.get(url=url)
+        if queryset.filter(url=url).count() > 0:
             return Response({
                 'error': True,
                 'message': 'Resource with the same url already exists.'
             })
-        except StudyResource.DoesNotExist:
-            try:
-                result = scrape_tutorial(url)
-                return Response(result)
-            except Exception as e:
-                return Response({
-                    'error': True,
-                    'message': str(e)
-                })
+        try:
+            # we check for intermediary resource, if exists, we return it
+            intermediary = StudyResourceIntermediary.objects.filter(url=url).get()
+            # if the status is 0 and active is less than 10 minutes, we raise exception
+            if intermediary.author == request.user:
+                pass
+            elif intermediary.status == StudyResourceIntermediary.Status.PENDING\
+                    and timezone.now() - intermediary.active < datetime.timedelta(minutes=5):
+                raise Exception(
+                    '''Someone else is adding this resource.
+                     Please try a new URL or wait for a few
+                     moments before trying again.'''
+                )
+        except StudyResourceIntermediary.DoesNotExist:
+            intermediary = StudyResourceIntermediary.objects.create(
+                url=url,
+                active=timezone.now(),
+                author=request.user,
+                status=StudyResourceIntermediary.Status.PENDING,
+            )
+            intermediary.scraped_data = scrape_tutorial(url)
+            intermediary.save()
+        except Exception as e:
+            return Response({
+                'error': True,
+                'message': str(e)
+            }, status=400)
+        return Response(
+            serializers.StudyResourceIntermediarySerializer(intermediary).data
+        )
 
     @action(methods=['GET'], detail=False)
     def options(self, request, *args, **kwargs):

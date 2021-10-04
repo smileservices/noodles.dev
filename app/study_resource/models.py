@@ -8,6 +8,7 @@ import requests
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from versatileimagefield.utils import build_versatileimagefield_url_set
 from django.conf import settings
+from django.contrib.postgres.fields import JSONField
 
 from core.abstract_models import ResourceMixin, DateTimeModelMixin
 from votable.models import VotableMixin
@@ -130,7 +131,7 @@ class StudyResource(ResourceMixin, VotableMixin):
     objects = StudyResourceManager()
     publication_date = models.DateField()
     published_by = models.CharField(max_length=256)
-    url = models.TextField(max_length=1024)
+    url = models.CharField(max_length=256, db_index=True)
     image_file = VersatileImageField(upload_to='tutorials', blank=True, null=True)
     summary = models.TextField(max_length=2048)
     # related fields
@@ -379,6 +380,25 @@ class Review(DateTimeModelMixin, VotableMixin):
              update_fields=None):
         super(Review, self).save()
         self.study_resource.save()  # this to trigger syncing to elasticsearch
+
+
+class StudyResourceIntermediary(models.Model):
+    '''
+    keeps the study resource data from receiving the scraped data.
+    the user can not submit the entry anymore so we have to remember the data
+    and we use it whenever someone tries to add the same url
+    '''
+    class Status(models.IntegerChoices):
+        PENDING = (0, 'Pending')
+        ERROR = (1, 'Error')
+        SAVED = (2, 'Saved')
+
+    url = models.CharField(db_index=True, max_length=256)
+    active = models.DateTimeField()
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0, choices=Status.choices, db_index=True)
+    scraped_data = JSONField(null=True, blank=True)
+    data = JSONField(null=True, blank=True)
 
 
 models.signals.pre_save.connect(remove_old_image, sender=StudyResource, weak=False)
