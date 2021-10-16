@@ -148,7 +148,7 @@ function getTabFilters(tabname, resultsFilters) {
     }
 }
 
-export default function TabComponentNoUrlUpdate({tabname, searchTerm, title, containerClass, ListingComponent}) {
+export default function TabComponentNoUrlUpdate({tabname, searchTerm, title, containerClass, ListingComponent, listType = 'list'}) {
     const [state, dispatch] = useReducer(tabStateReducer, {...initialTabState, tab: tabname, search: searchTerm});
     useEffect(() => dispatch({type: SET_SEARCH, payload: searchTerm}), [searchTerm]);
 
@@ -218,7 +218,7 @@ export default function TabComponentNoUrlUpdate({tabname, searchTerm, title, con
                     pagination={state.pagination}
                     resultsCount={state.results.stats.total}
                     data={state.results.items}
-                    resultsContainerClass="results"
+                    resultsContainerClass={listType === 'list' ? 'results' : 'grid-results'}
                     setPagination={pagination => {
                         dispatch({type: SET_PAGINATION, payload: pagination});
                     }}

@@ -117,8 +117,13 @@ section.header {
   }
 
   .stars {
-    color: var(--color-blue);
+    color: var(--color-yellow);
     margin-right: $padding-unit-sm;
+  }
+
+  .ratingCount {
+    font-size: 0.75rem;
+    font-style: normal;
   }
 }
 

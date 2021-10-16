@@ -20,7 +20,7 @@ const CHANGE_TAB = 'CHANGE_TAB';
 const FETCH_AUTOCOMPLETE_RESULTS_API = '/search/api/autocomplete';
 
 const initialState = {
-    open: true,
+    open: false,
     wait: false,
     query: {term: ''},
     currentTab: 'categories'
@@ -104,12 +104,12 @@ function NavbarSearchApp() {
                     containerClass={'categories'} ListingComponent={CategorySearchListing}/>)
             case 'category_concepts':
                 return (<TabComponentNoUrlUpdate
-                    tabname="category_concepts" searchTerm={state.query.term} title={'Theoretical Concepts Results'}
+                    tabname="category_concepts" searchTerm={state.query.term} title={'Theoretical Concepts Results'} listType="grid"
                     containerClass={'category_concepts'} ListingComponent={CategoryConceptSearchListing}/>)
             case 'technology_concepts':
                 return (<TabComponentNoUrlUpdate
                     tabname="technology_concepts" searchTerm={state.query.term}
-                    title={'Implementation Concepts Results'}
+                    title={'Implementation Concepts Results'} listType="grid"
                     containerClass={'technology_concepts'} ListingComponent={TechnologyConceptSearchListing}/>)
             case 'resources':
                 return (<TabComponentNoUrlUpdate
@@ -117,11 +117,11 @@ function NavbarSearchApp() {
                     containerClass={'resources'} ListingComponent={StudyResourceSearchListing}/>)
             case 'collections':
                 return (<TabComponentNoUrlUpdate
-                    tabname="collections" searchTerm={state.query.term} title={'Collections Results'}
+                    tabname="collections" searchTerm={state.query.term} title={'Collections Results'} listType="grid"
                     containerClass={'collections'} ListingComponent={CollectionSearchListing}/>)
             case 'technologies':
                 return (<TabComponentNoUrlUpdate
-                    tabname="technologies" searchTerm={state.query.term} title={'Technologies Results'}
+                    tabname="technologies" searchTerm={state.query.term} title={'Technologies Results'} listType="grid"
                     containerClass={'technologies'} ListingComponent={TechnologySearchListing}/>)
             default:
                 alert('current tab value not recognized:' + tabName);
