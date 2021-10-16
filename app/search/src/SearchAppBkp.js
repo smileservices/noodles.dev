@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
 import {FilterComponent} from "../../src/components/FilterComponent";
 
-import SearchBarComponent from "./SearchBarComponent";
+import SearchBarComponentWithInstantResults from "./SearchBarComponent";
 import StudyResourceSearchListing from "../../study_resource/src/StudyResourceSearchListing";
 import CollectionSearchListing from "../../study_collection/src/CollectionSearchListing";
 import TechnologySearchListing from "../../technology/src/TechnologySearchListing";
@@ -403,7 +403,7 @@ function SearchApp() {
                     <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies
                         {getAggregationsCounter(technologies)}</h4>
                 </div>
-                <SearchBarComponent search={setSearch} state={searchbarState}/>
+                <SearchBarComponentWithInstantResults search={setSearch} state={searchbarState}/>
                 {showCurrentTab(currentTab)}
             </section>
             <section id="related" className="column-container">

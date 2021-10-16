@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useReducer, useCallback, Fragment} from "react";
 import ReactDOM from "react-dom";
 
-import SearchBarComponent from "./SearchBarComponent";
+import SearchBarComponentWithInstantResults from "./SearchBarComponent";
 import CategorySearchListing from "../../category/src/CategorySearchListing";
 import CategoryConceptSearchListing from "../../concepts/src/category/CategoryConceptSearchListing";
 import TechnologyConceptSearchListing from "../../concepts/src/technology/TechnologyConceptSearchListing";
@@ -90,8 +90,8 @@ function SearchApp() {
                     <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources</h4>
                     <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections</h4>
                 </div>
-                <SearchBarComponent searchTerm={state.q} setSearchTerm={term => setState({...state, q: term})}
-                                    placeholder="Search for something specific"/>
+                <SearchBarComponentWithInstantResults searchTerm={state.q} setSearchTerm={term => setState({...state, q: term})}
+                                                      placeholder="Search for something specific"/>
                 {getTabContent(state.currentTab)}
             </section>
             <section id="related" className="column-container">

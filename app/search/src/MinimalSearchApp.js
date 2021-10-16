@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import SearchBarComponent from "../../search/src/SearchBarComponent";
+import SearchBarComponentWithInstantResults from "../../search/src/SearchBarComponent";
 import {codeParamsToUrl} from "../../src/components/utils";
 
 
@@ -26,7 +26,7 @@ function MinimalSearchApp() {
         window.location = SEARCH_URL + '?' + params.toString();
     }
 
-    return (<SearchBarComponent search={setSearch} state={{placeholder: 'Search For Something Specific', q: ''}}/>)
+    return (<SearchBarComponentWithInstantResults search={setSearch} state={{placeholder: 'Search For Something Specific', q: ''}}/>)
 }
 
 ReactDOM.render(<MinimalSearchApp/>, document.getElementById('minimal-search-app'));
