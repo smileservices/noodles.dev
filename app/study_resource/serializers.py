@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import FloatField, IntegerField
 from rest_framework import exceptions
-from .models import StudyResource, Review, StudyResourceImage, StudyResourceTechnology
+from .models import StudyResource, Review, StudyResourceImage, StudyResourceTechnology, StudyResourceIntermediary
 from users.serializers import UserSerializerMinimal
 from django.template.defaultfilters import slugify
 from versatileimagefield.serializers import VersatileImageFieldSerializer
@@ -277,3 +277,12 @@ class StudyResourceListingMinimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudyResource
         fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', ]
+
+
+class StudyResourceIntermediarySerializer(serializers.ModelSerializer):
+    queryset = StudyResourceIntermediary.objects.all()
+    author = UserSerializerMinimal(read_only=True)
+
+    class Meta:
+        model = StudyResourceIntermediary
+        fields = ['pk', 'url', 'active', 'author', 'status', 'scraped_data', 'data']

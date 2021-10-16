@@ -1,7 +1,7 @@
 from django.test import TestCase
 from users.fake import create_user
 from study_resource.fake import new_study_resource, new_study_resource_review
-from .models import Review
+from ..models import Review
 from django.core.exceptions import ValidationError
 from users.models import CustomUser
 from tag.fake import create_tags

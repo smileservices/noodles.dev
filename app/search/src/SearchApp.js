@@ -56,7 +56,7 @@ function SearchApp() {
                     containerClass={'resources'} ListingComponent={StudyResourceSearchListing}/>)
             case 'collections':
                 return (<TabComponent
-                    tabname="collections" searchTerm={state.q} title={'Collections Results'}
+                    tabname="collections" searchTerm={state.q} title={'Collections Results'} listType="grid"
                     containerClass={'collections'} ListingComponent={CollectionSearchListing}/>)
             case 'technologies':
                 return (<TabComponent

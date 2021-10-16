@@ -1,5 +1,6 @@
 import json
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APISimpleTestCase
+from unittest.mock import patch
 from django.urls import reverse
 from random import choice, choices
 from users.models import CustomUser
@@ -22,7 +23,6 @@ from study_resource.models import StudyResource
 
 COLLECTION_VIEWSET_URL = reverse('collection-viewset-list')
 STUDY_RESOURCE_VIEWSET_URL = reverse('study-resource-viewset-list')
-
 
 
 class RestIntegrationTest(APITestCase):
@@ -180,3 +180,56 @@ class RestIntegrationTest(APITestCase):
         resource_techs = resource.technologies.through.objects.filter(study_resource=resource.pk).all()
         self.assertEqual(resource_techs[0].technology, self.technologies[2])
         self.assertEqual(resource_techs[0].version, 123.4)
+
+    @patch('study_resource.scrape.main.scrape_tutorial')
+    def test_study_resource_intermediary_new_url(self, mocked_scrape_function):
+        '''
+        Validate url endpoint creates a resource intermediary and stores the scraped data there
+        todo must find a way to properly mock the scrape_tutorial
+        '''
+        mocked_scrape_function.return_value = {'scraped': True}
+        author = create_user_single()
+        self.client.force_login(author)
+        good_response = self.client.post(
+            STUDY_RESOURCE_VIEWSET_URL+'validate_url/',
+            {'url': 'www.test-url.test'},
+            format='json'
+        )
+        self.assertEqual(good_response.status_code, 200)
+        self.assertEqual(good_response.data['scraped_data'], {'scraped': True})
+        self.assertEqual(good_response.data['status'], 0)
+
+    @patch('study_resource.scrape.main.scrape_tutorial')
+    def test_study_resource_intermediary_existing_url(self, mocked_scrape_function):
+        '''
+        Validate url not allow other user to add the same url if it's pending and is active for less than 5 minutes
+        but will return the intermediary if it's the same author
+        '''
+        mocked_scrape_function.return_value = {'scraped': True}
+        author = create_user_single()
+        other_user = create_user_single()
+        self.client.force_login(author)
+        first_response = self.client.post(
+            STUDY_RESOURCE_VIEWSET_URL+'validate_url/',
+            {'url': 'www.test-url.test'},
+            format='json'
+        )
+        self.assertEqual(first_response.status_code, 200)
+        second_response = self.client.post(
+            STUDY_RESOURCE_VIEWSET_URL + 'validate_url/',
+            {'url': 'www.test-url.test'},
+            format='json'
+        )
+        self.assertEqual(second_response.status_code, 200)
+        self.assertEqual(second_response.data['scraped_data'], {'scraped': True})
+        self.assertEqual(second_response.data['status'], 0)
+
+        self.client.force_login(other_user)
+        third_response = self.client.post(
+            STUDY_RESOURCE_VIEWSET_URL + 'validate_url/',
+            {'url': 'www.test-url.test'},
+            format='json'
+        )
+        self.assertEqual(third_response.status_code, 400)
+        self.assertEqual(third_response.data['error'], True)
+

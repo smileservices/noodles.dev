@@ -41,6 +41,7 @@ export default function StudyResourceSearchListing({data, addFilter}) {
                         <div className="resource-listing-title">
                             <h4 className="title" itemProp="name"><a href={data.url}>{data.name}</a></h4>
                             <span className="published">{data.publication_date} By {data.published_by}</span>
+                            <ResourceRating data={data} maxRating={MAX_RATING}/>
                             {/*<div className="tags">{media}</div>*/}
                         </div>
                         <div className="description">
@@ -49,7 +50,6 @@ export default function StudyResourceSearchListing({data, addFilter}) {
                             </p>
                         </div>
                         <div className="resource-tags bottom">{tags}</div>
-                        {/*<ResourceRating data={data} maxRating={MAX_RATING}/>*/}
                     </div>
                     {data.image ?
                         <div className="right">
