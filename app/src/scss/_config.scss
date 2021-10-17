@@ -54,13 +54,13 @@ $dropdown-hover-text: lighten($dropdown-text, 10);
 $sidebar-width: $fontsize-big*14;
 
 //z-index
-$header-zindex: 1;
+$dropdown-zindex: 20000;
 $sidebar-zindex: 10000;
-$dropdown-zindex: 10000;
 $navbarsearch-zindex: 11000;
 $collapsible-zindex: 90000;
 $modal-backdrop-zindex: 95000;
 $modal-content-zindex: 96000;
+$header-zindex: 1;
 
 //width layouts
 $width-sm: 450px;

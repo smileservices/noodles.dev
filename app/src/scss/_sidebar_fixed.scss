@@ -28,7 +28,6 @@ aside.sidebar {
     align-items: center;
     justify-content: space-between;
     line-height: $fontsize-big*2;
-    // width: $sidebar-width;
     min-width: 14rem;
     font-size: $fontsize-big;
     font-weight: 700;
@@ -52,23 +51,18 @@ aside.sidebar {
 
   #sidebar-app {
     position: absolute;
-    top: $nav-height;
     background-color: $sidebar-background;
-
     font-family: 'Montserrat', sans-serif;
     font-style: normal;
     font-size: 12px;
     line-height: 22px;
     color: #FFFFFF;
-
-    position: absolute;
     top: 0;
     left: 0;
 
     .categories {
-      margin-top: $padding-unit-big*2;
-      padding-bottom: $padding-unit-sm;
-      padding: 0px 1rem $padding-unit-sm 1rem;
+      margin-top: $padding-unit-sm;
+      padding: 0 1rem $padding-unit-sm 1rem;
       overflow-y: auto;
       height: 100vh;
       font-size: $fontsize-sm;

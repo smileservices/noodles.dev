@@ -1,12 +1,12 @@
 .navbar-logo {
   padding: $padding-unit*2 $padding-unit-big/2;
-  padding-left: 0px;
+  padding-left: 0;
   line-height: $fontsize-big;
 }
 
 .mobile-navbar-logo {
   padding: $padding-unit*2 $padding-unit-big/2;
-  padding-left: 0px;
+  padding-left: 0;
   line-height: $fontsize-big;
 }
 
@@ -21,7 +21,6 @@ nav {
   white-space: nowrap;
 
   .signed-out-button {
-    width: 132px !important;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
