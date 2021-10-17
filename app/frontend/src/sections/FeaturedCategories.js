@@ -39,7 +39,7 @@ const FeaturedCategories = () => {
                 title={render_name_with_path(featured.name, featured.path)}
                 description={featured.description}
                 actions={(
-                    <a href={featured.absolute_url}>View More</a>
+                    <a href={featured.url}>View More</a>
                 )}
               />
             )
@@ -57,7 +57,7 @@ const FeaturedCategories = () => {
                 title={render_name_with_path(featured.name, featured.path)}
                 description={featured.description}
                 actions={(
-                    <a href={featured.absolute_url}>View More</a>
+                    <a href={featured.url}>View More</a>
                 )}
             />
           );
