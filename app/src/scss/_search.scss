@@ -211,7 +211,7 @@
   .search-overlay {
     position: absolute;
     right: $fontsize-md * 2;
-    top: $fontsize-sm * 2;
+    top: 0.875rem;
     font-size: $fontsize-sm * 2;
     color: var(--color-background-2);
 

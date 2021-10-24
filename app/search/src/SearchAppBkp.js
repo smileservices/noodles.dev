@@ -14,8 +14,9 @@ import {codeParamsToUrl, decodeParamsFromUrl, updateUrl, getAvailableFilters} fr
 
 const NoResultsElement = (
     <div className="no-results">
-        <h2>Too picky maybe?</h2>
-        <p>Try to broaden your filters.</p>
+        <img src="/static/imgs/img_empty.png" />
+        <h2>Sorry, we can't find</h2>
+        <h2>what you're looking for</h2>
     </div>
 )
 

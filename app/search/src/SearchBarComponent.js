@@ -32,7 +32,7 @@ export default function SearchBarComponentWithInstantResults({setSearchTerm, sea
                 <span className="search-overlay">
                     {formData ?
                         <span className="clear" onClick={e => {setFormData(''); setSearchTerm('');}}>
-                        Clear Search <span className="icon-cancel"/></span>
+                        <span className="icon-cancel"/></span>
                     : ''}
                 </span>
             </form>

@@ -19,6 +19,16 @@
         .tab-headers {
           width: 100%;
         }
+
+        .tab-headers::-webkit-scrollbar {
+          display: none;
+        }
+        
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .tab-headers {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+        }
       }
       .close-search {
         width: 100% !important;
