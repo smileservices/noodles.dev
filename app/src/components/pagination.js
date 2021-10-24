@@ -39,7 +39,7 @@ export const PaginationElement = ({pagination, resultsCount, setPagination}) => 
     return (
         <ul className="pagination">
             {pagination.current > 1 ?
-                <li key={makeId(4)}><a onClick={(e) => handlePrevPage(e)}>«</a></li>
+                <li key={makeId(4)} className="arrow"><a onClick={(e) => handlePrevPage(e)}>«</a></li>
                 : ''
             }
             {Array.from({length: totalPages}).map((_, i) => {
@@ -56,7 +56,7 @@ export const PaginationElement = ({pagination, resultsCount, setPagination}) => 
                 })
             }
             { pagination.current < totalPages
-                ? <li key={makeId(4)}><a onClick={(e) => handleNextPage(e)}>»</a></li>
+                ? <li key={makeId(4)} className="arrow"><a onClick={(e) => handleNextPage(e)}>»</a></li>
                 : ''
             }
         </ul>

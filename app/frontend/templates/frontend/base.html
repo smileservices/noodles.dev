@@ -140,8 +140,39 @@
                     if (!isSubmenu) window.onclick = null;
                 }
             }
-        })
-    })
+        });
+    });
+
+    const addSearchOverlayObserver = new MutationObserver(function(mutations_list) {
+        mutations_list.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(added_node) {
+                if (added_node.classList && added_node.classList.contains('search-app-overlay')) {
+                    const footer = document.querySelector('.footer');
+                    const main = document.querySelector('main');
+                    console.log(main);
+                    main.style.display = 'none';
+                    footer.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    const removeSearchOverlayObserver = new MutationObserver(function(mutations_list) {
+        mutations_list.forEach(function(mutation) {
+            mutation.removedNodes.forEach(function(removed_node) {
+                if (removed_node.classList && removed_node.classList.contains('search-app-overlay')) {
+                    const footer = document.querySelector('.footer');
+                    const main = document.querySelector('main');
+                    console.log(main);
+                    main.style.display = 'block';
+                    footer.style.display = 'flex';
+                }
+            });
+        });
+    });
+
+    addSearchOverlayObserver.observe(document.querySelector("#search-bar-app"), { subtree: false, childList: true });
+    removeSearchOverlayObserver.observe(document.querySelector("#search-bar-app"), { subtree: false, childList: true });
 </script>
 <script src="{% static 'js/react-bundle.js' %}"></script>
 <script src="{% static 'frontend/sidebar-app.js' %}"></script>
