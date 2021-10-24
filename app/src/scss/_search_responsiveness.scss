@@ -128,4 +128,10 @@
     gap: 0.625rem;
     width: 100%;
   }
+
+  .results {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-unit-md;
+  }
 }
