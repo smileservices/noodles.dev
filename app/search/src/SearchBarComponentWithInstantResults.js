@@ -65,7 +65,7 @@ export default function SearchBarComponentWithInstantResults({setSearchTerm, sea
         if (content) return (<span className="clear" onClick={e=>{
             setFormData('');
             setSearchTerm('');
-        }}>Clear Search <span className="icon-cancel"/></span>);
+        }}><span className="icon-cancel"/></span>);
     }
 
     return (

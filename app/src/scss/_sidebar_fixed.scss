@@ -345,6 +345,25 @@ aside.sidebar.expanded {
       }
     }
 
+    .category-detail::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    /* Track */
+    .category-detail::-webkit-scrollbar-track {
+      background: #f1f1f1; 
+    }
+     
+    /* Handle */
+    .category-detail::-webkit-scrollbar-thumb {
+      background: #888; 
+    }
+    
+    /* Handle on hover */
+    .category-detail::-webkit-scrollbar-thumb:hover {
+      background: #555; 
+    }
+
     .category-detail-mobile {
       padding: 7rem 2rem 2rem 36px;
       overflow: auto;
