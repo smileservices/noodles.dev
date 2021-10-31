@@ -179,6 +179,16 @@
   }
 }
 
+@media only screen and (min-width: 901px) {
+  nav {
+    #search-bar-app {
+      .navbar-search-results-overlay {
+        margin-left: 44px;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 900px) {
 
   header {
@@ -250,6 +260,10 @@
           padding: 0px !important;
         }
       }
+
+      .navbar-search-results-overlay {
+        top: 8rem;
+      }
     }
   }
 
@@ -301,8 +315,8 @@
 
     form > .search-overlay {
       right: $padding-unit-big;
-      top: $fontsize-big*1.5;
-      font-size: $fontsize-md*2;
+      top: 0.875rem;
+      // font-size: $fontsize-md*2;
     }
   }
 
@@ -402,8 +416,8 @@
 
     form > .search-overlay {
       right: $padding-unit-big;
-      top: $fontsize-big;
-      font-size: $fontsize-big;
+      top: 0.875rem;
+      // font-size: $fontsize-big;
     }
   }
   .filters .filter-select {

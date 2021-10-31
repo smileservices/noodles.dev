@@ -1,0 +1,147 @@
+@media screen and (max-width: 980px) {
+  .results {
+    margin-top: $padding-unit-big;
+    display: flex;
+    flex-direction: column;
+    gap: $padding-unit-md;
+    width: 100%;
+    align-items: center;
+
+    .resource-card {
+      max-height: unset;
+    }
+  }
+  #search-bar-app {
+    .search-app-overlay {
+      .tab-navigation.search {
+        width: 100%;
+
+        .tab-headers {
+          width: 100%;
+        }
+
+        .tab-headers::-webkit-scrollbar {
+          display: none;
+        }
+        
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .tab-headers {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+        }
+      }
+      .close-search {
+        width: 100% !important;
+      }
+
+      .search-bar-big {
+        width: 100% !important;
+        margin: unset !important;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 980px) and (min-width: 715px) {
+  .technologies,
+  .category_concepts,
+  .technology_concepts,
+  .collections,
+  .categories,
+  .resources {
+    width: unset !important;
+  }
+  .grid-results {
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    gap: 0.625rem;
+  }
+}
+
+@media only screen and (max-width: 781px) {
+  .resources {
+    width: 100% !important;
+    .has-sort {
+      flex-direction: column !important;
+
+      h4 {
+        font-size: 1rem !important;
+      }
+    }
+
+    .results {
+      width: 100% !important;
+
+      .resource-card {
+        .resource-result {
+          flex-direction: column-reverse;
+          width: 100%;
+          .right {
+            max-width: unset !important;
+          }
+          .left {
+            width: 100%;
+            padding-left: 0px;
+            padding-right: 0px;
+            max-width: unset !important;
+            .resource-tags {
+              flex-flow: row wrap;
+              padding: 0px 1.5rem;
+            }
+            .resource-listing-title {
+              padding: 0px 1.5rem;
+            }
+            .description {
+              padding: 0px 1.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 714px) {
+  .technologies,
+  .category_concepts,
+  .technology_concepts,
+  .collections,
+  .categories {
+    width: unset !important;
+    .has-sort {
+      flex-direction: column !important;
+
+      h4 {
+        font-size: 1rem !important;
+      }
+    }
+  }
+
+  .grid-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+
+    // .technology-card {
+    //     max-width: 36.25rem;
+    // }
+  }
+}
+
+@media only screen and (min-width: 981px) {
+  .grid-results {
+    margin-top: $padding-unit-big;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.625rem;
+    width: 100%;
+  }
+
+  .results {
+    display: flex;
+    flex-direction: column;
+    gap: $padding-unit-md;
+  }
+}

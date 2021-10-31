@@ -2,7 +2,6 @@ import React from "react";
 import { shortenText } from '../../../frontend/src/utils/strings';
 
 export default function CategoryConceptSearchListing({data, addFilter}) {
-    console.log({ data });
     return (
         <div className="technology-concepts-card">
             <header>

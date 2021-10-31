@@ -38,7 +38,7 @@ const reducer = (state, {type, payload}) => {
                 overlay: false
             }
         case SUCCESS:
-            let message = 'Instant Results. For better search click the search icon.';
+            let message = 'SEARCH RESULTS';
             if (payload.length === 0) {
                 message = 'No Instant Results. Click the search icon.';
             }
@@ -123,7 +123,7 @@ export default function InstantSearchComponent({setSearchTerm}) {
         <Fragment>
             <div className="navbar-input-container">
                 <input type="text"
-                       placeholder="Search for anything..."
+                       placeholder="Search for a topic or technology"
                        className="navbar-search-input"
                        onChange={event => {
                            dispatch({type: SET_QUERY, payload: event.target.value})
@@ -138,7 +138,7 @@ export default function InstantSearchComponent({setSearchTerm}) {
                         {state.overlay.message}
                     </div>
                     {state.overlay.results.length > 0 ?
-                        <div className="results">
+                        <div className="small-results">
                             {state.overlay.results.map(r => <a key={r.url} href={r.url}>{r.name}</a>)}
                         </div>
                     : ''}
