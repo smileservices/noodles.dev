@@ -1,6 +1,7 @@
 from django.urls import include, path
 from django.shortcuts import render
 from frontend import views
+from django.conf import settings
 
 urlpatterns = [
     path('', views.homepage, name='homepage'),
@@ -14,3 +15,9 @@ urlpatterns = [
     path('terms/cookies-policy', lambda request: render(request, 'frontend/static/cookie-terms.html'), name='cookie-policy'),
     path('backstage', lambda request: render(request, 'frontend/static/backstage.html'), name='noodles-backstage'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('test_error_500', views.test_error_500, name='test_error_500'),
+        path('test_error_404', views.test_error_404, name='test_error_404'),
+    ]
