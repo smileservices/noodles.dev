@@ -33,12 +33,13 @@
 }
 
 .btn.create {
-  background-color: var(--color-background-3);
-}
-
-.btn.create:hover {
-  background-color: var(--color-text-gray-2);
-  color: var(--color-text-white);
+  background: #576EFF;
+  border-radius: 2.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  font-weight: normal;
 }
 
 .btn.submit.waiting {

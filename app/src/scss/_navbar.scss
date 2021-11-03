@@ -65,7 +65,7 @@ nav {
   }
 
   a:hover {
-    background-color: var(--color-background-3);
+    // background-color: var(--color-background-3);
     color: var(--color-text-white);
   }
 
@@ -77,9 +77,11 @@ nav {
     display: flex;
   }
 
-  .dropdown .dropdown-menu {
-    top: $nav-height + ($padding-unit-md/2);
-    min-width: $fontsize-big * 7;
+  .dropdown .dropdown-menu-account {
+    top: 4.25rem;
+    right: 3rem;
+    min-width: 18rem;
+    // min-width: $fontsize-big * 7;
   }
 }
 

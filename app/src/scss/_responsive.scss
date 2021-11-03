@@ -37,9 +37,31 @@
     .right-side {
       .dropdown {
         .dropdown-button-icon {
-          font-size: 36px;
+          font-size: 3.25rem;
           margin-right: 0.6rem;
           margin-right: 0px !important;
+        }
+  
+        .dropdown-button-icon:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  nav {
+    .right-side {
+      .dropdown {
+        .dropdown-menu-account {
+          .profile {
+            .dropdown-button-icon-mobile {
+              font-size: 3.25rem;
+              margin-right: 0.6rem;
+              margin-right: 0px !important;
+            }
+          }
         }
   
         .dropdown-button-icon:hover {

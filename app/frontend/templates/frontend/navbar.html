@@ -23,13 +23,28 @@
         {% if 1 %}
             <div class="dropdown hidden">
                 <span class="dropdown-button icon icon-person-circle"></span>
-                <div class="dropdown-menu">
+                <!--<div class="dropdown-menu">
                     <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
                     <a rel="nofollow noopener" href={% url "my-profile-edit" %}>Account</a>
                     <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
                     <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
                     <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
                     <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
+                </div>-->
+                <div class="dropdown-menu-account">
+                    <div class="profile">
+                        <span class="dropdown-button-icon-mobile icon-person-circle"></span>
+                        <div>
+                            <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
+                        </div>
+                    </div>
+                    <div class="other-menu-items">
+                        <a rel="nofollow noopener" href={% url "my-profile" %}>Account</a>
+                        <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
+                        <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
+                        <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
+                        <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
+                    </div>
                 </div>
             </div>
             <!-- <span class="icon icon-person-circle"></span> -->
@@ -67,31 +82,46 @@
         {% if user.is_authenticated %}
             <div class="right-side">
 
-                {# ACCOUNT DROPDOWN #}
-                <div class="dropdown hidden">
-                    <span class="dropdown-button">
-                        <span class="dropdown-button-icon icon-person-circle"></span>
-                    </span>
-                    <div class="dropdown-menu">
-                        <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
-                        <a rel="nofollow noopener" href={% url "my-profile-edit" %}>Account</a>
-                        <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
-                        <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
-                        <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
-                        <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
-                    </div>
-                </div>
-                {# ACCOUNT DROPDOWN END #}
-
                 {# CREATE DROPDOWN #}
                 <div class="dropdown hidden">
-                    <span class="btn create dropdown-button">Create</span>
+                    <span class="btn create dropdown-button">Add New</span>
                     <div class="dropdown-menu">
                         <a rel="nofollow noopener" href="{% url "create-resource" %}">Learning Resource</a>
                         <a rel="nofollow noopener" href="{% url "technology-create" %}">Technology</a>
                     </div>
                 </div>
                 {# CREATE DROPDOWN END #}
+
+                {# ACCOUNT DROPDOWN #}
+                <div class="dropdown hidden">
+                    <span class="dropdown-button">
+                        <span class="dropdown-button-icon icon-person-circle"></span>
+                    </span>
+                    <!--<div class="dropdown-menu">
+                        <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
+                        <a rel="nofollow noopener" href={% url "my-profile-edit" %}>Account</a>
+                        <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
+                        <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
+                        <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
+                        <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
+                    </div>-->
+                    <div class="dropdown-menu-account">
+                        <div class="profile">
+                            <span class="dropdown-button-icon icon-person-circle"></span>
+                            <div>
+                                <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
+                            </div>
+                        </div>
+                        <div class="other-menu-items">
+                            <a rel="nofollow noopener" href={% url "my-profile" %}>Account</a>
+                            <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
+                            <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
+                            <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
+                            <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
+                        </div>
+                    </div>
+                </div>
+                {# ACCOUNT DROPDOWN END #}
 
             </div>
             <script>
