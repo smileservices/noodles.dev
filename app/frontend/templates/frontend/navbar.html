@@ -20,30 +20,53 @@
             </a>
             <a class="mobile-navbar-logo" href="{% url "homepage" %}">Noodles.<span class="blue-text">dev</span></a>
         </div>
-        {% if 1 %}
-            <div class="dropdown hidden">
-                <span class="dropdown-button icon icon-person-circle"></span>
-                <!--<div class="dropdown-menu">
-                    <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
-                    <a rel="nofollow noopener" href={% url "my-profile-edit" %}>Account</a>
-                    <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
-                    <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
-                    <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
-                    <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
-                </div>-->
-                <div class="dropdown-menu-account">
-                    <div class="profile">
-                        <span class="dropdown-button-icon-mobile icon-person-circle"></span>
-                        <div>
-                            <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
-                        </div>
+        {% if user.is_authenticated %}
+            <div class="left-side-buttons">
+                <div class="dropdown hidden">
+                    <span class="btn create dropdown-button">Add New</span>
+                    <div class="dropdown-menu dropdown-create">
+                        <a rel="nofollow noopener" href="{% url "create-resource" %}">
+                            <span class="anchor-title">
+                                Add resource
+                            </span>
+                            <span class="anchor-description">
+                                An article, tutorial, course or a book about a specific technology
+                            </span>
+                        </a>
+                        <a rel="nofollow noopener" href="{% url "technology-create" %}">
+                            <span class="anchor-title">
+                                Add technology
+                            </span>
+                            <span class="anchor-description">
+                                Discuss about a programming language
+                            </span>
+                        </a>
                     </div>
-                    <div class="other-menu-items">
-                        <a rel="nofollow noopener" href={% url "my-profile" %}>Account</a>
+                </div>
+                <div class="dropdown hidden">
+                    <span class="dropdown-button icon icon-person-circle"></span>
+                    <!--<div class="dropdown-menu">
+                        <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
+                        <a rel="nofollow noopener" href={% url "my-profile-edit" %}>Account</a>
+                        <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
                         <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
                         <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
                         <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
-                        <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
+                    </div>-->
+                    <div class="dropdown-menu-account">
+                        <div class="profile">
+                            <span class="dropdown-button-icon-mobile icon-person-circle"></span>
+                            <div>
+                                <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
+                            </div>
+                        </div>
+                        <div class="other-menu-items">
+                            <a rel="nofollow noopener" href={% url "my-profile" %}>Account</a>
+                            <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
+                            <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
+                            <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
+                            <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -85,9 +108,23 @@
                 {# CREATE DROPDOWN #}
                 <div class="dropdown hidden">
                     <span class="btn create dropdown-button">Add New</span>
-                    <div class="dropdown-menu">
-                        <a rel="nofollow noopener" href="{% url "create-resource" %}">Learning Resource</a>
-                        <a rel="nofollow noopener" href="{% url "technology-create" %}">Technology</a>
+                    <div class="dropdown-menu dropdown-create">
+                        <a rel="nofollow noopener" href="{% url "create-resource" %}">
+                            <span class="anchor-title">
+                                Add resource
+                            </span>
+                            <span class="anchor-description">
+                                An article, tutorial, course or a book about a specific technology
+                            </span>
+                        </a>
+                        <a rel="nofollow noopener" href="{% url "technology-create" %}">
+                            <span class="anchor-title">
+                                Add technology
+                            </span>
+                            <span class="anchor-description">
+                                Discuss about a programming language
+                            </span>
+                        </a>
                     </div>
                 </div>
                 {# CREATE DROPDOWN END #}
