@@ -23,6 +23,10 @@
             line-height: 1.375rem;
             padding-right: 0.5rem;
         }
+
+        a:hover {
+            background-color: #373E7A;
+        }
     }
 
     .profile {
@@ -48,6 +52,11 @@
         a:hover {
             background-color: none !important;
         }
+    }
+
+    .profile:hover {
+        background-color: #373E7A;
+        cursor: pointer;
     }
 
     // > * {
@@ -80,6 +89,10 @@
             line-height: 1.375rem;
             padding-right: 0.5rem;
         }
+
+        a:hover {
+            background-color: #373E7A;
+        }
     }
 
     .profile {
@@ -105,6 +118,11 @@
         a:hover {
             background-color: none !important;
         }
+    }
+
+    .profile:hover {
+        background-color: #373E7A;
+        cursor: pointer;
     }
 
     // > * {

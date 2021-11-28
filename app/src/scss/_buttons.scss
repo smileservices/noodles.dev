@@ -33,13 +33,17 @@
 }
 
 .btn.create {
-  background: #576EFF;
+  background-color: #576EFF;
   border-radius: 2.5rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   font-size: 0.875rem;
   line-height: 1.375rem;
   font-weight: normal;
+}
+
+.btn.create:hover {
+  background-color: #4359EA;
 }
 
 .btn.submit.waiting {
