@@ -5,6 +5,7 @@
 */migrations/*
 static_col/*
 app/frontend/static/frontend/css/main.css
+app/static
 MEDIA/*
 STATIC_COL/*
 ext/
