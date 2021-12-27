@@ -1,6 +1,6 @@
 .form-container {
   position: relative;
-  background-color: var(--color-background-1);
+  background-color: $color-background-1;
   padding: $padding-unit;
   border-radius: $border-radius-lg;
 
@@ -17,6 +17,10 @@ form {
 
   > * {
     margin: 0;
+  }
+
+  .btn {
+    max-width: none;
   }
 
   .row {
@@ -49,7 +53,7 @@ form {
     }
 
     input, textarea {
-      color: var(--color-text-grey);
+      color: $color-text-grey;
     }
   }
 
@@ -58,7 +62,7 @@ form {
   }
 
   #form_rating_stars span {
-    color: var(--color-blue);
+    color: $color-blue;
   }
 
   #form_rating_stars span:hover {
@@ -104,12 +108,12 @@ ul.progress {
   }
 
   li.completed {
-    color: #ffffff;
-    background-color: var(--color-blue);
+    color: $color-text-white;
+    background-color: $color-blue;
   }
 
   li.active {
-    color: #ffffff;
+    color: $color-text-white;
     background-color: var(--color-blue-dark);
   }
 
@@ -129,19 +133,19 @@ textarea {
 
 
 .form-control {
-  background-color: var(--color-background);
-  color: var(--color-text-white);
-  border: 1px solid var(--color-background);
+  background-color: $color-background;
+  color: $color-text-white;
+  border: 1px solid $color-background;
 }
 
 .form-control:focus {
-  color: var(--color-text-white);
-  background-color: var(--color-background);
-  border-color: var(--color-blue);
+  color: $color-text-white;
+  background-color: $color-background;
+  border-color: $color-blue;
 }
 
 .react-select {
-  color: var(--color-text-grey);
+  color: $color-text-grey;
   font-size: $fontsize-md;
 
   .form-control__placeholder {
@@ -153,64 +157,64 @@ textarea {
   }
 
   .form-control__control {
-    background-color: var(--color-background);
+    background-color: $color-background;
     border: none;
     border-radius: $radius-medium;
   }
 
   .form-control__value-container, .form-control__single-value {
-    color: var(--color-text-white);
+    color: $color-text-white;
   }
 
   .form-control__value-container, .form-control__value-container--is-multi {
-    background-color: var(--color-background);
+    background-color: $color-background;
   }
 
   .form-control__multi-value {
-    background-color: var(--color-background-3);
+    background-color: $color-background-3;
     border-radius: $radius-medium;
   }
 
   .form-control__multi-value__label {
-    color: var(--color-text-grey);
+    color: $color-text-grey;
   }
 
   .form-control__input {
-    color: var(--color-text-white);
+    color: $color-text-white;
   }
 
   .form-control__control--is-disabled {
     background-color: var(--color-background-2);
 
     .form-control__indicator.form-control__dropdown-indicator {
-      color: var(--color-background-4);
+      color: $color-background-4;
     }
 
     .form-control__value-container {
-      background-color: var(--color-background-2);
+      background-color: $color-background-2;
 
       .form-control__single-value {
-        color: var(--color-background-4);
+        color: $color-background-4;
         font-style: italic;
       }
     }
   }
 
   .form-control__multi-value__remove {
-    color: var(--color-text-grey);
+    color: $color-text-grey;
     cursor: pointer;
   }
 
   .form-control__menu {
-    background-color: var(--color-background-3);
+    background-color: $color-background-3;
     border-radius: $radius-big;
 
     .form-control__option, .form-control__option--is-selected {
-      color: var(--color-text-white);
+      color: $color-text-white;
     }
 
     .form-control__option--is-focused {
-      color: var(--color-background-1);
+      color: $color-background-1;
     }
   }
 }
@@ -229,7 +233,7 @@ textarea {
     align-items: center;
 
     a.remove, a.remove:visited {
-      color: var(--color-background-3);
+      color: $color-background-3;
     }
 
     a.remove:hover {
