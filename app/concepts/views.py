@@ -12,9 +12,12 @@ from . import serializers_technology
 from . import models
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
+from core.utils import rest_paginate_queryset
 from app.settings import rewards
 from .serializers_category import CategoryConceptSerializerOption
 import json
+from . import models
+from django.shortcuts import get_object_or_404
 
 
 class ConceptCategoryViewset(ResourceWithEditSuggestionVieset):
@@ -30,6 +33,11 @@ class ConceptCategoryViewset(ResourceWithEditSuggestionVieset):
                                  models.CategoryConcept.ExperienceLevel.choices],
             'concepts': [CategoryConceptSerializerOption(c).data for c in models.CategoryConcept.objects.all()]
         })
+
+    @action(methods=['GET'], detail=False)
+    def featured(self, request, *args, **kwargs):
+        queryset = self.queryset
+        return rest_paginate_queryset(self, queryset)
 
 
 class CategoryConceptEditSuggestionViewset(EditSuggestionViewset):
@@ -58,14 +66,14 @@ class TechnologyConceptEditSuggestionViewset(EditSuggestionViewset):
     permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
 
 
-def category_detail(request, id, slug):
+def category_detail(request, slug):
     queryset = models.CategoryConcept.objects
-    detail = queryset.select_related().get(pk=id)
+    detail = queryset.prefetch_related('technology_concepts', 'children').get(slug=slug)
     data = {
-        'result': detail,
+        'detail': detail,
         'technology_concepts': detail.technology_concepts.all(),
         'children_concepts': detail.children.all(),
-        'vote_url': reverse_lazy('concept-category-viewset-vote', kwargs={'pk': id})
+        'vote_url': reverse_lazy('concept-category-viewset-vote', kwargs={'pk': detail.pk})
     }
     return render(request, 'concepts/category/detail_page.html', data)
 
@@ -113,12 +121,12 @@ def category_create(request):
     return render(request, 'concepts/category/create_page.html', data)
 
 
-def technology_detail(request, id, slug):
+def technology_detail(request, slug):
     queryset = models.TechnologyConcept.objects
-    detail = queryset.select_related().get(pk=id)
+    detail = queryset.select_related().get(slug=slug)
     data = {
-        'result': detail,
-        'vote_url': reverse_lazy('concept-technology-viewset-vote', kwargs={'pk': id})
+        'detail': detail,
+        'vote_url': reverse_lazy('concept-technology-viewset-vote', kwargs={'pk': detail.pk})
     }
     return render(request, 'concepts/technology/detail_page.html', data)
 
@@ -159,3 +167,32 @@ def technology_create(request):
     }
 
     return render(request, 'concepts/technology/create_page.html', data)
+
+
+def category_history(request, slug):
+    instance = get_object_or_404(models.CategoryConcept, slug=slug)
+    data = {
+        'instance': instance,
+        'data': {
+            'title': f'History of {instance.name} Concept',
+            'breadcrumbs': f'<a href="/">Homepage</a> / Resource <a href="{instance.absolute_url}">{instance.name}</a>',
+        },
+        'urls': {
+            'history_get': reverse_lazy('concept-category-viewset-history', kwargs={'pk': instance.pk}),
+        }
+    }
+    return render(request, 'history/history_page.html', data)
+
+def technology_history(request, slug):
+    instance = get_object_or_404(models.TechnologyConcept, slug=slug)
+    data = {
+        'instance': instance,
+        'data': {
+            'title': f'History of {instance.name} Implementation Concept',
+            'breadcrumbs': f'<a href="/">Homepage</a> / Resource <a href="{instance.absolute_url}">{instance.name}</a>',
+        },
+        'urls': {
+            'history_get': reverse_lazy('concept-technology-viewset-history', kwargs={'pk': instance.pk}),
+        }
+    }
+    return render(request, 'history/history_page.html', data)

@@ -2,51 +2,120 @@ footer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: $padding-unit-md*4;
+  justify-content: space-evenly;
+  gap: 12px;
   margin-top: 3rem;
   min-height: 15rem;
   padding: $padding-unit*6;
-  background-color: var(--color-background-1);
+  background-color: #2E3146;
   color: var(--color-text-grey);
 
   section header {
     color: var(--color-text-white);
-    font-size: $fontsize-md;
-    font-weight: 700;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 22px;
+  }
+
+  section p {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+    color: #C5C9E1;
+  }
+
+  section {
+    h4.header {
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 22px;
+      color: #FFFFFF;
+      margin-bottom: 3px;
+      span {
+        color: #576EFF;
+      }
+    }
   }
 
   a {
-    color: var(--color-text-grey);
+    color: #FFFFFF !important;
     white-space: nowrap;
+    margin-bottom: 4px;
   }
 
   a:hover {
-    color: var(--color-blue);
+    color: #576EFF !important;
   }
 
   section.about {
     min-width: $fontsize-md*20;
     max-width: $fontsize-md*40;
+
+    .button-links-container {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+    }
   }
 
   section.links {
     display: flex;
     flex-direction: column;
-    gap: $padding-unit*2;
+    gap: 5px;
+  }
 
-    a {
-      line-height: $padding-unit*2;
-      font-size: $fontsize-md;
-      font-weight: 400;
+  section.back-to-top {
+    display: flex;
+    flex-direction: column;
+    gap: 8.5px;
+    h4 {
+      transform: rotate(-90deg);
+      height: 96px;
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 20px;
+      color: #999DB7;
+    }
+    img {
+      height: 72px;
     }
   }
 
+  section.back-to-top:hover {
+    cursor: pointer;
+  }
+
   section.social {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
     .links {
       display: flex;
       flex-direction: column;
-      gap: $padding-unit*2;
+      gap: 5px;
+    }
+
+    .socials {
+      display: flex;
+      gap: 6px;
+
+      .icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #11111B;
+        border-radius: 50%;
+        color: white;
+      }
+
+      .icon:hover {
+        cursor: pointer;
+      }
     }
   }
 

@@ -24,15 +24,21 @@ section.content {
   .header {
     font-size: $fontsize-big;
     margin-bottom: $padding-unit-big*2;
+
     h1 {
       margin-bottom: $padding-unit-md/2;
     }
   }
+
   .or {
     font-size: $fontsize-big;
     font-weight: 400;
     margin: $padding-unit-md*2 0;
     text-align: center;
+  }
+
+  .btn {
+    max-width: none;
   }
 }
 
@@ -72,7 +78,7 @@ section.content {
 }
 
 a.socialaccount_provider:hover {
-    border-color: var(--color-blue);
+  border-color: var(--color-blue);
 }
 
 .email_list span {

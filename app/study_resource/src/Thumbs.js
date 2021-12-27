@@ -65,14 +65,14 @@ export default function Thumbs({thumbs_obj, url_endpoint}) {
         <Fragment>
             <div key={'vote-down' + url_endpoint} className={getThumbsClass('down', thumbs.down)}>
                 <a onClick={e => vote(e, -1)}>
-                    <span className="icon-thumbs-o-down"/>
                     <span>{thumbs.down.length}</span>
+                    <span className="icon-thumbs-o-down"/>
                 </a>
             </div>
             <div key={'vote-up' + url_endpoint} className={getThumbsClass('up', thumbs.up)}>
                 <a onClick={e => vote(e, 1)}>
-                    <span className="icon-thumbs-o-up"/>
                     <span>{thumbs.up.length}</span>
+                    <span className="icon-thumbs-o-up"/>
                 </a>
             </div>
         </Fragment>

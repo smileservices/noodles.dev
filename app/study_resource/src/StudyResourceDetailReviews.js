@@ -25,7 +25,7 @@ function ResourceReviewsApp() {
             pagination,
             setReviews,
             setWaiting,
-            err => setAlert(<Alert close={e=>setAlert(null)} text={err} type="danger"/>)
+            err => setAlert(<Alert close={e => setAlert(null)} text={err} type="danger"/>)
         )
     }, [pagination, reviewed])
 
@@ -35,33 +35,38 @@ function ResourceReviewsApp() {
 
     return (
         <Fragment>
-            <header>
-                <h3>Reviews</h3>
-            </header>
             {waiting ? SkeletonLoadingReviews : ''}
             {alert}
-            <PaginatedLayout data={reviews.results} resultsCount={reviews.count} pagination={pagination}
-                             setPagination={setPagination}
-                             resultsContainerClass="column-container"
-                             mapFunction={
-                                 (item, idx) =>
-                                     <Review
-                                         key={'review' + item.pk}
-                                         review={item}
-                                     />
-                             }
-            />
             {reviewed
                 ? <Alert text='Thank you for reviewing!' type='success'/>
                 : <div className="review form-container">
                     <div className="header">
-                        <h3>Write Review</h3>
+                        <h3>Write a review</h3>
+                        <p>How would you rate the resource?</p>
                     </div>
                     <ReviewCreateController data={{resource_id: RESOURCE_ID}} successCallback={createReviewCallback}/>
                 </div>
             }
-        </Fragment>
-    )
-}
+            {reviews.results
+                ? <PaginatedLayout data={reviews.results} resultsCount={reviews.count} pagination={pagination}
+                                   setPagination={setPagination}
+                                   resultsContainerClass="reviews-list column-container"
+                                   mapFunction={
+                                       (item, idx) =>
+                                           <Review
+                                               key={'review' + item.pk}
+                                               review={item}
+                                           />
+                                   }
+                  />
+                : (<div className="empty-div"><img src="/static/imgs/add_file.png"/>
+                    <p className="empty-text">No Reviews Yet!</p>
+                    <p className="empty-text">Be the first to write a review!</p>
+                    </div>)
+                }
 
-ReactDOM.render(<ResourceReviewsApp/>, document.querySelector('#reviews'))
+                </Fragment>
+                )
+            }
+
+            ReactDOM.render(<ResourceReviewsApp/>, document.querySelector('#reviews'))

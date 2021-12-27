@@ -1,32 +1,26 @@
 {% load markdownify %}
 
+
 <header>
-    <div class="top">
-        <a class="parent-technology" href="{% url 'tech-detail' result.technology.slug %}">
-            <img src="{{ result.technology.logo.small }}" alt="">
-            {{ result.technology.name }}
-        </a>
-        <div id="detail-toolbar" class="toolbar">
-            <a href="{% url 'technology-concept-edit' result.pk %}" rel="nofollow noopener">Suggest Edit</a>
-        </div>
+    <div class="left">
+        <h1 class="title" itemProp="name">{{ detail.name }}</h1>
+        <span class="published">Created By <a href="{% url 'user-profile' detail.author.username %}">{{ detail.author }}</a></span>
     </div>
-    <h2 class="title">{{ result.name }}</h2>
-    <div class="tags">
-        {% if result.parent %}
-            <a href="{% url 'concept-category-detail' result.parent.pk result.parent.slug %}" class="concept">{{ result.parent.name_tree }}</a>
-        {% endif %}
-        <a href="{% url 'search_page' %}?tab=resources&experience_level={{ result.experience_level_label }}" rel="nofollow noopener">Experience Level {{ result.experience_level_label }}</a>
+    <div class="right">
+        <a class="btn btn-light contribute" href="{% url 'category-concept-edit' detail.pk %}" rel="nofollow noopener">Suggest Edit</a>
+{#        <a class="btn" href="{% url 'category-history' slug=detail.slug %}" rel="nofollow noopener">View History</a>#}
     </div>
 </header>
+
 <div class="description">
-    {{ result.description | linebreaks }}
+    {{ detail.description | linebreaks }}
 </div>
+
 <div class="description-long">
-    {{ result.description_long|markdownify }}
+    {{ detail.description_long|markdownify }}
 </div>
 
 
-<meta itemprop="name" content="{{ result.name }}" />
-<meta itemprop="summary" content="{{ result.description }}" />
-<meta itemprop="educationalLevel" content="{{ result.experience_level_label }}" />
-<meta itemprop="keywords" content="{{ result.technology.name }}" />
+<meta itemprop="name" content="{{ detail.name }}"/>
+<meta itemprop="summary" content="{{ detail.description }}"/>
+<meta itemprop="educationalLevel" content="{{ detail.experience_level_label }}"/>

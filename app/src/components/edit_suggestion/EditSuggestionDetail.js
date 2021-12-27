@@ -7,6 +7,7 @@ import apiDelete from "../../api_interface/apiDelete";
 import apiPost from "../../api_interface/apiPost";
 import {makeId} from "../utils";
 import {Input} from "../form";
+import diff_match_patch from "diff-match-patch";
 
 export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publishCallback}) {
     /*
@@ -190,6 +191,30 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
         )
     }
 
+    const dmp = new diff_match_patch();
+    function DiffChangeComponent({c}) {
+        // c.new c.old c.type
+        function handleText(text) {
+            if (text) return String(text);
+            return '';
+        }
+        function displayChange() {
+            if (c.type === 'image') return (<img className="changed" src={c.small} alt=""/>);
+            let diff = dmp.diff_main(handleText(c.old), handleText(c.new));
+            dmp.diff_cleanupSemantic(diff);
+            const result = dmp.diff_prettyHtml(diff);
+            return (<span className="changed" dangerouslySetInnerHTML={{__html:result}}/>);
+        }
+        return (
+            <div key={"change" + c.field} className="edit-change">
+                <div className="field-name">
+                    <span className="">{c.field}</span>
+                </div>
+                {displayChange()}
+            </div>
+        )
+    }
+
     return (
         <div className="modal-content">
             {Object.keys(data).length
@@ -205,7 +230,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
                     <div className="changes-container">
                         <h4 className="changes-title">Changes ({data.changes.length}):</h4>
                         <div className="changes-list">
-                            {data.changes.map(c => <ChangeComponent c={c} key={makeId(3)}/>)}
+                            {data.changes.map(c => <DiffChangeComponent c={c} key={makeId(3)}/>)}
                         </div>
                     </div>
                     <div className="edit-reason">

@@ -17,16 +17,6 @@ export default function CreateFormStep2({data, submit, techs, tags, options, add
             //clean up technologies
             formData.technologies = formData.technologies.filter(t => t.name !== '');
         }
-        if (
-            formData.technologies.length === 0 &&
-            formData.category_concepts.length === 0 &&
-            formData.technology_concepts.length === 0
-        ) {
-            // if no technology is selected, at least one category/technology concept must be added
-            vErrors.category_concepts = 'Choose at least one category concept OR';
-            vErrors.technology_concepts = 'Choose at least one technology concept OR';
-            vErrors.technologies = 'Choose at least one technology';
-        }
         if (Object.keys(vErrors).length > 0) {
             setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)
             setErrors(vErrors);

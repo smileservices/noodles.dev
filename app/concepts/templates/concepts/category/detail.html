@@ -1,30 +1,26 @@
 {% load markdownify %}
 
+
 <header>
-    <div class="top">
-        <div class="tags">
-            {% for cat in result.category.get_ancestors %}
-                {{ cat.get_ahref | safe }}
-            {% endfor %}
-            {{ result.category.get_ahref | safe }}
-            <a href="{% url 'search_page' %}?tab=resources&experience_level={{ result.experience_level_label }}"
-               itemprop="educationalLevel" rel="nofollow noopener">Experience Level {{ result.experience_level_label }}</a>
-        </div>
-        <div id="detail-toolbar" class="toolbar">
-            <a href="{% url 'category-concept-edit' result.pk %}" rel="nofollow noopener">Suggest Edit</a>
-        </div>
+    <div class="left">
+        <h1 class="title" itemProp="name">{{ detail.name }}</h1>
+        <span class="published">Created By <a href="{% url 'user-profile' detail.author.username %}">{{ detail.author }}</a></span>
     </div>
-    <h1 class="title" itemProp="name">{{ result.name }}</h1>
+    <div class="right">
+        <a class="btn btn-light contribute" href="{% url 'category-concept-edit' detail.pk %}" rel="nofollow noopener">Suggest Edit</a>
+{#        <a class="btn" href="{% url 'category-history' slug=detail.slug %}" rel="nofollow noopener">View History</a>#}
+    </div>
 </header>
+
 <div class="description">
-    {{ result.description | linebreaks }}
+    {{ detail.description | linebreaks }}
 </div>
+
 <div class="description-long">
-    {{ result.description_long|markdownify }}
+    {{ detail.description_long|markdownify }}
 </div>
 
-<span class="published">Added By <a href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
 
-<meta itemprop="name" content="{{ result.name }}" />
-<meta itemprop="summary" content="{{ result.description }}" />
-<meta itemprop="educationalLevel" content="{{ result.experience_level_label }}" />
+<meta itemprop="name" content="{{ detail.name }}"/>
+<meta itemprop="summary" content="{{ detail.description }}"/>
+<meta itemprop="educationalLevel" content="{{ detail.experience_level_label }}"/>

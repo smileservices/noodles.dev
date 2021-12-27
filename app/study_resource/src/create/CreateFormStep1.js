@@ -33,7 +33,16 @@ export default function CreateFormStep1({data, submit}) {
             } else return data;
             //    return parsed data from url and pass it to big formdata
         }).then(data => {
-            if (data) submit(formData, data);
+            if (data) {
+                if (!data.scraped_data) {
+                    setAlert(<Alert
+                        close={e => setAlert(null)}
+                        text="Could not scrape the url. Please make sure it is correct and online." type="danger"
+                    />)
+                } else {
+                    submit(formData, data);
+                }
+            }
         })
     }
 

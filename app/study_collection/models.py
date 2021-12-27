@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from core.abstract_models import DateTimeModelMixin, SluggableModelMixin, \
-    ElasticSearchIndexableMixin
+from core.abstract_models import ResourceMixin
 from votable.models import VotableMixin
 from users.models import CustomUser
 from tag.models import Tag
@@ -19,7 +18,7 @@ class CollectionManager(models.Manager):
         return CollectionQueryset(self.model, using=self.db).annotate_with_items_count()
 
 
-class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+class Collection(ResourceMixin, VotableMixin):
     elastic_index = 'collections'
 
     objects = CollectionManager()
@@ -35,7 +34,7 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
     technologies = models.ManyToManyField(Technology, related_name='collections')
 
     def __str__(self):
-        return f'{self.name} by {self.author}'
+        return f'Collection::{self.name} by {self.author}'
 
     def get_study_resources(self):
         # return study resources of the collection ordered
@@ -77,6 +76,8 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
         return {
             "properties": {
                 "pk": {"type": "integer"},
+                "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
                 "created_at": {"type": "date", "format": "date_optional_time"},
 
                 # model fields
@@ -110,6 +111,8 @@ class Collection(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticS
     def get_elastic_data(self) -> (str, list):
         data = {
             "pk": self.pk,
+            "type": "study_collection",
+            "status": self.status_label,
             "created_at": self.created_at.replace(microsecond=0).isoformat(),
             "name": self.name,
             "url": self.absolute_url,

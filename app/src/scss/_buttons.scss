@@ -1,16 +1,38 @@
+$button-bg: $color-blue;
+$button-text: $color-text-white;
+$button-hover-bg: #4359EA;
+$button-radius: 40px;
+
+$button-secondary-bg: $color-background-1;
+$button-secondary-text: $color-text-white;
+$button-secondary-hover-bg: $color-background;
+
+$button-light-bg: $color-text-white;
+$button-light-text: $color-background-1;
+$button-light-hover-bg: $color-text-grey;
+
+
+$button-dark-bg: $color-background-1;
+$button-dark-text: $color-text-white;
+$button-dark-hover-bg: $color-background;
+
 .btn {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: $padding-unit-md;
   margin: 0;
-  background-color: var(--color-blue);
-  color: var(--color-text-white);
-  padding: $fontsize-big/2 $fontsize-big*1.75;
-  font-weight: 700 !important;
-  border-radius: $radius-small;
+  padding: 9px 28px;
+  max-width: 150px;
+  border-radius: $button-radius;
+  background-color: $button-bg;
+  font-weight: 600;
+  font-size: $fontsize-md;
+  color: $button-text;
+  white-space: nowrap;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  border: 1px solid $button-bg;
 
   span.icon {
     font-size: $fontsize-sm;
@@ -18,27 +40,41 @@
   }
 }
 
+a.btn:visited {
+  color: $button-text;
+}
+
 .btn:hover {
-  background-color: var(--color-blue-dark);
-  color: var(--color-text-white);
+  background-color: $button-hover-bg;
 }
 
 .btn.secondary {
-  background-color: var(--color-background-2);
+  border: 1px solid $button-secondary-text;
+  color: $button-secondary-text;
+  background-color: $button-secondary-bg;
 }
 
 .btn.secondary:hover {
-  background-color: var(--color-text-gray);
-  color: var(--color-text-white);
+  background-color: $button-secondary-hover-bg;
 }
 
-.btn.create {
-  background-color: var(--color-background-3);
+.btn.light {
+  border: 1px solid $button-light-bg;
+  background-color: $button-light-bg;
+  color: $button-light-text;
 }
 
-.btn.create:hover {
-  background-color: var(--color-text-gray-2);
-  color: var(--color-text-white);
+.btn.light:hover {
+  background-color: $button-light-hover-bg;
+}
+
+.btn.dark {
+  background-color: $button-dark-bg;
+  color: $button-dark-text;
+}
+
+.btn.dark:hover {
+  background-color: $button-dark-hover-bg;
 }
 
 .btn.submit.waiting {
@@ -58,14 +94,6 @@
 
 .btn.block {
   width: 100%;
-}
-
-.btn.dark {
-  background-color: var(--color-background);
-  color: var(--color-text-white);
-}
-.btn.dark:hover {
-  background-color: var(--color-text-gray-2);
 }
 
 .btn[disabled], .btn:disabled {

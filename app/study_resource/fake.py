@@ -34,6 +34,7 @@ def new_study_resource(user):
     image_file = open(os.path.join(MEDIA_IMAGES_PATH, image_name), 'rb')
     sr = models.StudyResource(
         name=name,
+        status=1,
         slug=slugify(name),
         publication_date=f.date_between(date(2000, 1, 1), date.today()),
         published_by=f.name(),
@@ -83,7 +84,6 @@ def study_resource_edit_suggestions(resource: models.StudyResource, author=None)
             edsug.technologies.through.objects.create(
                 technology_id=tech.technology_id,
                 name=tech.name,
-                slug=tech.slug,
                 study_resource=edsug,
                 version=tech.version
             )

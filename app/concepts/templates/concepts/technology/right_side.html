@@ -1,23 +1,31 @@
 <div class="related column-container" id="related-app">
-    <h4>Concepts of {{ result.technology.name }}</h4>
-    {% if result.technology.concepts.count > 0 %}
-        {% for result in result.technology.concepts.all %}
-            {% include 'concepts/technology/result.html' %}
-        {% endfor %}
-        <a class="contribute" href="{% url 'technology-concept-create' %}?technology={{ result.technology.pk }}" rel="nofollow noopener">
-            Add another concept
-        </a>
-    {% endif %}
-    <h4>Resources about {{ result.name }}</h4>
-    {% if result.related_resources.count > 0 %}
-        {% for result in result.related_resources.all %}
-            {% include 'study_resource/result.html' %}
-        {% endfor %}
-        <a class="contribute" href="{% url 'create-resource' %}" rel="nofollow noopener">Add a new learning resource</a>
-    {% else %}
-        <div class="alert alert-contribute">
-            <p>There are no resources added for {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'create-resource' %}" rel="nofollow noopener">Be the first to add a learning resource</a>
+    <div class="card meta-container">
+        <div class="row">
+            <span class="label">Technology</span>
+            <span class="tags">
+                <span class="tech"><a href="{{detail.technology.absolute_url}}">
+                    <svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.02696 4.82843L6.06618 2.72059L8.02696 0.612745C8.125 0.502451 8.14951 0.343137 8.10049 0.220588C8.03922 0.0857843 7.90441 0 7.75735 0H0.367647C0.159314 0 0 0.159314 0 0.367647V9.63235C0 9.84069 0.159314 10 0.367647 10C0.57598 10 0.735294 9.84069 0.735294 9.63235V5.44118H7.75735C7.96569 5.44118 8.125 5.26961 8.125 5.07353C8.125 4.98774 8.08824 4.90196 8.02696 4.82843Z"
+                              fill="#1752EA"/>
+                    </svg>
+                    {{ detail.technology }}
+                </a></span>
+            </span>
         </div>
-    {% endif %}
+    </div>
+    <div class="card meta-container">
+        <div class="row"><span class="label">Experience level</span><span
+                class="tags"><span class="meta">{{ detail.experience_level_label }}</span></span></div>
+    </div>
+    <div class="card">
+        <div class="header">Concepts Tree</div>
+        <div class="tree-container">
+            {{ detail.parent.get_ahref | safe }}
+            <ul class="category-tree">
+                <li class="active">
+                    {{ detail }}
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>

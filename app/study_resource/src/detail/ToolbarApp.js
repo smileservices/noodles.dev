@@ -36,8 +36,7 @@ function ToolbarApp() {
 
     if (!IS_AUTHENTICATED) return (
         <Fragment>
-            <a href={RESOURCE_EDIT_URL}>Suggest Edit</a>
-            <a className="icon-bookmark" href={LOGIN_URL}/>
+            <a className="btn secondary" href={LOGIN_URL}>Save to Collection</a>
         </Fragment>
     )
 
@@ -51,18 +50,17 @@ function ToolbarApp() {
 
     return (
         <Fragment>
-            {isOwner || isAdmin
+            {isOwner() || isAdmin()
                 ?
                 (<Fragment>
-                    <a onClick={e => setConfirmDelete(true)}>Delete</a>
-                    <a href={RESOURCE_EDIT_URL}>Edit</a>
+                    <a className="btn secondary" onClick={e => setConfirmDelete(true)}>Delete</a>
                 </Fragment>)
-                :
-                (<Fragment>
-                    <a href={RESOURCE_EDIT_URL}>Suggest Edit</a>
-                </Fragment>)
+                : ''
             }
-            <a className="icon-bookmark" onClick={e => setShowModal(true)}/>
+            {IS_AUTHENTICATED
+                ? <a className="btn secondary" onClick={e => setShowModal(true)}>Save to Collection</a>
+                : <a className="btn secondary" href={LOGIN_URL}>Login to add to collection</a>
+            }
             {showModal ? <AddToCollectionModal close={e => setShowModal(false)}/> : ''}
         </Fragment>
     );

@@ -1,0 +1,29 @@
+{% load static %}
+
+<div class="concepts">
+    <div class="header spread-out-container">
+        <div class="left">
+            <h2>Associated Technologies</h2>
+            <div class="sub">All technologies related to this category</div>
+        </div>
+        <div class="right">
+            <a class="btn secondary" href="{% url 'technology-create' %}"
+               rel="nofollow noopener">
+                <span class="icon-plus"></span> Add Technology
+            </a>
+        </div>
+    </div>
+    {% if technologies %}
+        <div class="tile-container">
+            {% for result in technologies %}
+                {% include 'technology/result.html' %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-container">
+            <div class="empty-div"><img src="{% static 'imgs/add_file.png' %}" alt="add concept"/>
+                <p class="empty-text">There are no technologies yet. Help the community by adding one yourself!</p>
+            </div>
+        </div>
+    {% endif %}
+</div>

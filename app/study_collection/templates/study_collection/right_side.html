@@ -1,18 +1,26 @@
 <div class="related column-container" id="related-app">
-    <div class="skeleton header sm"></div>
-    <div class="tags">
-        <span class="skeleton tag"></span>
-        <span class="skeleton tag"></span>
-        <span class="skeleton tag"></span>
+    <div class="card meta-container">
+        <div class="row"><span class="label">Created</span><span
+                class="tags"><span class="meta">{{ detail.created_at }}</span></span></div>
     </div>
-    <div class="skeleton header sm"></div>
-    <div class="tags">
-        <span class="skeleton tag"></span>
-        <span class="skeleton tag"></span>
-        <span class="skeleton tag"></span>
+    <div class="card meta-container">
+        <div class="row"><span class="label">Author</span>
+            <span class="tags"><a class="meta"
+                                  href="{% url 'user-profile' detail.author.username %}">{{ detail.author }}</a></span>
+        </div>
     </div>
-    <div class="skeleton header sm"></div>
-    <div class="skeleton result"></div>
-    <div class="skeleton result"></div>
-    <div class="skeleton result"></div>
+    <div class="card meta-container">
+        <div class="row"><span class="label">Resources</span>
+            <span class="tags"><span class="meta">{{ detail.items_count }}</span></span></div>
+    </div>
+
+    <div class="card">
+        <div class="header">Tags</div>
+        <div class="tags" itemProp="keywords">
+            {% for tag in detail.tags.all %}
+                <a class="tag" href="{% url 'search_page' %}?tab=collections&tags={{ tag }}"
+                   rel="nofollow noopener"># {{ tag }}</a>
+            {% endfor %}
+        </div>
+    </div>
 </div>

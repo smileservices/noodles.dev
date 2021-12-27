@@ -3,8 +3,8 @@
 {% load star_rating %}
 
 {% block meta_tags %}
-    <title>{{ result.name }}</title>
-    <meta name="description" content="{{ result.description }}"/>
+    <title>{{ detail.name }}</title>
+    <meta name="description" content="{{ detail.description }}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -12,24 +12,25 @@
 
 {% block content %}
     <script>
-        const RESOURCE_API_DELETE = "{% url 'concept-technology-viewset-detail' result.id %}";
+        const RESOURCE_API_DELETE = "{% url 'concept-technology-viewset-detail' detail.id %}";
         const RESULT = {
-            thumbs_up_array: JSON.parse("{{ result.thumbs_up_array }}"),
-            thumbs_down_array: JSON.parse("{{ result.thumbs_down_array }}"),
+            thumbs_up_array: JSON.parse("{{ detail.thumbs_up_array }}"),
+            thumbs_down_array: JSON.parse("{{ detail.thumbs_down_array }}"),
             vote_url: "{{ vote_url }}",
         }
     </script>
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / <a href="{{ result.technology.absolute_url }}">{{ result.technology.name }}</a> / <a href="{{ result.absolute_url }}">{{ result.name }}</a>
+        <a href="/">Homepage</a> > Technology: <a href="{{ detail.technology.absolute_url }}" >{{ detail.technology }}</a> {% if detail.parent %}> Concept: {{ detail.parent.get_ahref | safe}}{% endif %}
     </div>
-    <div class="detail-page resource">
-        <div class="column-container">
-            <section id="detail" class="card" itemscope itemtype="https://schema.org/CreativeWork">
-                {% include 'concepts/technology/detail.html' %}
-                <div id="votes-app" class="thumbs"></div>
-            </section>
-        </div>
+    <div class="detail-page concept">
+        <section id="detail" class="card" itemscope itemtype="https://schema.org/CreativeWork">
+            {% include 'concepts/technology/detail.html' %}
+            <div id="votes-app" class="thumbs"></div>
+        </section>
         {% include 'concepts/technology/right_side.html' %}
+        <div class="coloumn-container bottom">
+            {% include 'detail_resources.html' %}
+        </div>
     </div>
 {% endblock %}
 

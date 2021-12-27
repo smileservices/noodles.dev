@@ -12,7 +12,7 @@ const initialConceptsState = {
     concepts: [],
 }
 
-const ConceptListingElement = ({data}) => (<a href={data.absolute_url} className="concept">{data.name}</a>)
+const ConceptListingElement = ({data, index}) => (<a key={index} href={data.absolute_url} className="concept-link">{data.name}</a>)
 
 const conceptsReducer = (state, {type, payload}) => {
     switch (type) {
@@ -37,11 +37,6 @@ const conceptsReducer = (state, {type, payload}) => {
     }
 }
 
-const NoConcepts = (
-    <Alert text="There are no concepts yet. Help the community by adding one yourself!" stick={true}
-           hideable={false} type="warning"/>
-);
-
 export default function CategoryConceptsComponent({category}) {
     const [state, dispatch] = useReducer(conceptsReducer, {...initialConceptsState});
 
@@ -60,7 +55,29 @@ export default function CategoryConceptsComponent({category}) {
         })
     }, [category])
 
+    const NoConcepts = (
+        <div className="empty-container">
+            <div className="empty-div">
+                <img src="/static/imgs/add_file.png" />
+                <p className="empty-text">
+                    There are no concepts yet. Help the community by adding one yourself!
+                </p>
+                <a className="add-text" href={'/concepts/category/create?category='+category.pk}>
+                    + Add Concept
+                </a>
+            </div>
+        </div>
+    );
+
     if (state.waiting) return (<div className="tags">{SkeletonLoadingSidebarDetail}</div>);
     if (state.concepts.length === 0) return NoConcepts;
-    return (<div className="tags">{state.concepts.map(c => (<ConceptListingElement data={c}/>))}</div>);
+
+    const conceptElements = state.concepts.map((c, index) => (<ConceptListingElement key={index} index={index} data={c}/>));
+    conceptElements.push(
+        <a className="add-concept-btn" href={'/concepts/category/create?category='+category.pk}>
+            + Add Concept
+        </a>
+    );
+
+    return (<div className="tags">{conceptElements}</div>);
 }

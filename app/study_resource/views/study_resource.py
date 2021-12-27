@@ -5,23 +5,26 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
-
+from django.shortcuts import get_object_or_404
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
+from rest_framework import exceptions
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from study_resource.scrape.main import scrape_tutorial
 from study_resource import filters
-from study_resource.models import StudyResource
+from study_resource.models import StudyResource, StudyResourceIntermediary
 from study_resource import serializers
 from concepts.serializers_category import CategoryConceptSerializerOption
 from concepts.serializers_technology import TechnologyConceptSerializerOption
-
+from django.utils import timezone
+import datetime
+import json
 from concepts.models import CategoryConcept, TechnologyConcept
 
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
+from core.utils import rest_paginate_queryset
 from app.settings import rewards
 
 
@@ -65,6 +68,21 @@ def detail(request, id, slug):
     if request.user_agent.is_bot:
         return render(request, 'study_resource/detail_page_seo.html', data)
     return render(request, 'study_resource/detail_page.html', data)
+
+
+def history(request, slug):
+    instance = get_object_or_404(StudyResource, slug=slug)
+    data = {
+        'instance': instance,
+        'data': {
+            'title': f'History of {instance.name} Resource',
+            'breadcrumbs': f'<a href="/">Homepage</a> / Resource <a href="{instance.absolute_url}">{instance.name}</a>',
+        },
+        'urls': {
+            'history_get': reverse_lazy('study-resource-viewset-history', kwargs={'pk': instance.pk}),
+        }
+    }
+    return render(request, 'history/history_page.html', data)
 
 
 @login_required
@@ -113,6 +131,35 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
     filterset_class = filters.StudyResourceFilterRest
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
 
+    def create(self, request, *args, **kwargs):
+        intermediary = StudyResourceIntermediary.objects.filter(url=request.data['url']).get()
+        try:
+            create_response = super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
+            if create_response.status_code == 201:
+                # set intermediary status to SAVED
+                intermediary.status = StudyResourceIntermediary.Status.SAVED
+                intermediary.data = json.dumps(request.data)
+                intermediary.save()
+                create_response.data['success'] = {
+                    'message': f'<div class="message">Thank you for adding a new resource!</div>'
+                               f'<div class="score-info">'
+                               f'You gained <span className="user-reward">{rewards.RESOURCE_CREATE}</span> points! '
+                               f'Your score is now <span className="user-score">{request.user.positive_score}</span>'
+                               f'</div>',
+                }
+                return create_response
+            else:
+                raise Exception('Cannot save resource')
+        except Exception as e:
+            # set intermediary status to ERROR
+            intermediary.status = StudyResourceIntermediary.Status.ERROR
+            intermediary.data = {
+                'data': json.dumps(request.data),
+                'error': print(e)
+            }
+            intermediary.save()
+            raise Exception(print(e))
+
     # technologies and tags are saved in the serializer
     def edit_suggestion_handle_m2m_through_field(self, instance, data, f):
         # overriding the edit_suggestion method to handle technologies
@@ -141,38 +188,78 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
 
     @action(methods=['GET'], detail=True)
     def reviews(self, request, *args, **kwargs):
-        queryset = serializers.ReviewSerializer.queryset.filter(
+        queryset = serializers.ResourceReviewSerializer.queryset.filter(
             study_resource=self.kwargs['pk']
         ).order_by('-created_at')
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = serializers.ReviewSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-
         serializer = serializers.ReviewSerializer(queryset, many=True)
         return Response(serializer.data)
 
     @action(methods=['POST'], detail=False)
     def validate_url(self, request, *args, **kwargs):
+        '''
+        This endpoint checks if the resource URL is correct and if it already exists
+        If the url exists as an intermediary, that record is returned, else, it's created
+
+        Returns an intermediary instance or error if resource already exists
+        '''
         queryset = self.queryset
-        url = request.data['url'].split('?')[0]
+        url = request.data['url']
         if 'pk' in request.data:
             queryset = queryset.only('pk').exclude(pk=request.data['pk'])
-        try:
-            queryset.get(url=url)
+        if queryset.filter(url=url).count() > 0:
             return Response({
                 'error': True,
                 'message': 'Resource with the same url already exists.'
             })
-        except StudyResource.DoesNotExist:
-            try:
-                result = scrape_tutorial(url)
-                return Response(result)
-            except Exception as e:
-                return Response({
-                    'error': True,
-                    'message': str(e)
-                })
+        elif 'pk' in request.data:
+            # if we just update a resource, we don't crawl the resource
+            return Response({
+                'error': False,
+            })
+        try:
+            # we check for intermediary resource, if exists, we return it
+            intermediary = StudyResourceIntermediary.objects.filter(url=url).get()
+            time_difference = timezone.now() - intermediary.active
+            # if the status is 0 and active is less than 10 minutes, we raise exception
+            if intermediary.author == request.user:
+                # initial user that tried adding the resource resets the active counter
+                intermediary.active = timezone.now()
+                intermediary.save()
+            elif intermediary.status == StudyResourceIntermediary.Status.PENDING and time_difference < datetime.timedelta(
+                    minutes=5):
+                wait = datetime.timedelta(minutes=5) - time_difference
+                wait_minutes = round(wait.total_seconds() / 60, 1)
+                raise Exception(
+                    f'Someone else is adding this resource. '
+                    f'Please try a new URL or wait for {wait_minutes} minutes '
+                    f'before trying again.'
+                )
+            elif time_difference > datetime.timedelta(minutes=5):
+                # update the intermediary
+                intermediary.active = timezone.now()
+                intermediary.author = request.user
+                intermediary.save()
+        except StudyResourceIntermediary.DoesNotExist:
+            intermediary = StudyResourceIntermediary.objects.create(
+                url=url,
+                active=timezone.now(),
+                author=request.user,
+                status=StudyResourceIntermediary.Status.PENDING,
+            )
+            intermediary.scraped_data = scrape_tutorial(url)
+            intermediary.save()
+        except Exception as e:
+            return Response({
+                'error': True,
+                'message': str(e)
+            })
+        return Response(
+            serializers.StudyResourceIntermediarySerializer(intermediary).data
+        )
 
     @action(methods=['GET'], detail=False)
     def options(self, request, *args, **kwargs):
@@ -184,9 +271,11 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
             'category_concepts': [CategoryConceptSerializerOption(c).data for c in CategoryConcept.objects.all()],
             'technology_concepts': [TechnologyConceptSerializerOption(c).data for c in TechnologyConcept.objects.all()]
         })
-    #
-    # def get_success_headers(self, data):
-    #     return {'Location': reverse_lazy('study-resource-detail', kwargs={'id': data['pk'], 'slug': data['slug']})}
+
+    @action(methods=['GET'], detail=False)
+    def no_reviews(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(reviews_count=0, status=self.serializer_class.Meta.model.StatusOptions.APPROVED)
+        return rest_paginate_queryset(self, queryset)
 
 
 class StudyResourceEditSuggestionViewset(EditSuggestionViewset):

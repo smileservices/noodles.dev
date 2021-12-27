@@ -2,7 +2,8 @@ from django.conf import settings
 from users.models import CustomUser
 from app.settings import rewards
 
-AUTHOR_FIELDS = ['author', 'edit_suggestion_author']
+# this should hold the name of attributes having the author
+EDIT_SUGGESTION_AUTHOR_FIELD = 'edit_suggestion_author'
 
 
 def edit_suggestion_change_status_condition(instance, user: CustomUser):
@@ -12,16 +13,12 @@ def edit_suggestion_change_status_condition(instance, user: CustomUser):
 
 
 def post_publish_edit(instance, user):
-    for f in AUTHOR_FIELDS:
-        if hasattr(instance, f):
-            resource_author = getattr(instance, f)
-            resource_author.positive_score += rewards.EDIT_SUGGESTION_PUBLISH
-            resource_author.save()
+    resource_author = getattr(instance, EDIT_SUGGESTION_AUTHOR_FIELD)
+    resource_author.positive_score += rewards.EDIT_SUGGESTION_PUBLISH
+    resource_author.save()
 
 
 def post_reject_edit(instance, user, reason):
-    for f in AUTHOR_FIELDS:
-        if hasattr(instance, f):
-            resource_author = getattr(instance, f)
-            resource_author.negative_score += rewards.EDIT_SUGGESTION_REJECT
-            resource_author.save()
+    resource_author = getattr(instance, EDIT_SUGGESTION_AUTHOR_FIELD)
+    resource_author.negative_score -= rewards.EDIT_SUGGESTION_REJECT
+    resource_author.save()

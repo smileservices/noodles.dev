@@ -33,6 +33,8 @@ def search_specific(request, index):
         results = helpers._search_aggr_collections(term, sort, filter, page, page_size)
     elif index == 'technologies':
         results = helpers._search_aggr_technologies(term, sort, filter, page, page_size)
+    elif index == 'all':
+        results = helpers._search_all(term, sort, filter, page, page_size)
     else:
         results = f'{index} does not exist'
     return JsonResponse(results, safe=False)

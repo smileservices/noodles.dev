@@ -204,12 +204,17 @@ function StudyResourceCreateApp() {
         )
     }
 
-    function handleStepOne(formData, scraped_data) {
-        // will scrape the data from url and prepopulate next steps with it
-
+    function handleStepOne(formData, data) {
+        // will scrape the data from url and prepopulate next steps with it, by posting to validate_url endpoint
+        // will create an intermediary resource. we do this because some resources creation
+        // may fail or to not add same resource at the same time. we check the statuses:
+        //
+        // status: 0 - PENDING -- another user is trying to add the same url. cannot continue adding. try again
+        // status: 1 - ERROR -- last time someone tried to add this, there was an error. try again
+        // status: 2 - SAVED -- already added. cannot continue adding.
         setDataStep1(formData);
         let dataObjStep2 = {};
-
+        const scraped_data = data.scraped_data;
         scraped_data['tags']
             ? dataObjStep2['tags'] = scraped_data['tags']
                 .map(tag => {

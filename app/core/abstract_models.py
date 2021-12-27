@@ -2,18 +2,14 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from core.tasks import sync_to_elastic, sync_delete_to_elastic
+from users.models import CustomUser
+from django.contrib.contenttypes.fields import GenericRelation
+from history.models import ResourceHistoryModel
 
 
 class DateTimeModelMixin(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-
-class RequireAdminAprovalModelMixin(models.Model):
-    approved = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
@@ -27,7 +23,7 @@ class SluggableModelMixin(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):  # new
-        if not self.slug:
+        if not self.pk and not self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
 
@@ -69,3 +65,27 @@ class ElasticSearchIndexableMixin(models.Model):
         super().__init_subclass__(**kwargs)
         models.signals.post_save.connect(sync_to_elastic, sender=cls, weak=False)
         models.signals.post_delete.connect(sync_delete_to_elastic, sender=cls, weak=False)
+
+
+class ResourceMixin(DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexableMixin):
+    class StatusOptions(models.IntegerChoices):
+        UNREVIEWED = (0, 'Unreviewed')
+        APPROVED = (1, 'Approved')
+        REJECTED = (2, 'Rejected')
+        INACTIVE = (4, 'Inactive')
+
+    author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
+    status = models.IntegerField(default=1, choices=StatusOptions.choices, db_index=True)
+    history = GenericRelation(ResourceHistoryModel)
+
+    class Meta:
+        abstract = True
+
+    @property
+    def status_label(self):
+        return self.StatusOptions(self.status).label
+
+    def delete(self, using=None, keep_parents=False):
+        # enable soft delete
+        self.status = self.StatusOptions.INACTIVE
+        self.save()

@@ -26,15 +26,11 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': os.path.join(os.path.abspath('/home/vldmr/dev/noodles'), 'autotranslate.log'),
-        },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
         }
     },
     'loggers': {
         'django': {
-            'handlers': ['app_file', 'mail_admins'],
+            'handlers': ['app_file'],
             'level': 'INFO',
             'propagate': True,
         },

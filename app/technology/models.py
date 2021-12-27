@@ -6,13 +6,13 @@ from versatileimagefield.fields import VersatileImageField
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from versatileimagefield.utils import build_versatileimagefield_url_set
 from votable.models import VotableMixin
-from core.abstract_models import SluggableModelMixin, ElasticSearchIndexableMixin
+from core.abstract_models import SluggableModelMixin, ElasticSearchIndexableMixin, ResourceMixin
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
 from django_edit_suggestion.models import EditSuggestion
 from django.urls import reverse
 from category.models import Category
-
 from core import tasks
+from django.template.defaultfilters import slugify
 
 
 def delete_technology_images(sender, instance, **kwargs):
@@ -51,7 +51,7 @@ class TechnologyManager(models.Manager):
         )
 
 
-class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+class Technology(ResourceMixin, VotableMixin):
     elastic_index = 'technologies'
 
     class LicenseType(models.IntegerChoices):
@@ -72,7 +72,7 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     owner = models.CharField(max_length=128, db_index=True)
 
     image_file = VersatileImageField(upload_to='technologies', blank=True, null=True)
-    featured = models.BooleanField(default=False)
+    featured = models.BooleanField(default=False, db_index=True)
     meta = JSONField(blank=True, null=True)
 
     category = models.ManyToManyField(Category, related_name='related_technologies')
@@ -80,8 +80,9 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     category_concepts = models.ManyToManyField('concepts.CategoryConcept', related_name='related_technologies')
 
     edit_suggestions = EditSuggestion(
-        excluded_fields=('author', 'thumbs_up_array', 'thumbs_down_array'),
-        m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category}, {'name': 'category_concepts', 'model': 'concepts.CategoryConcept'}],
+        excluded_fields=('slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
+        m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category},
+                    {'name': 'category_concepts', 'model': 'concepts.CategoryConcept'}],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
@@ -116,6 +117,8 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
         return {
             "properties": {
                 "pk": {"type": "integer"},
+                "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
 
                 # model fields
                 "name": {
@@ -150,6 +153,8 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
     def get_elastic_data(self) -> (str, list):
         data = {
             "pk": self.pk,
+            "type": "technology",
+            "status": self.status_label,
             "name": self.name,
             "logo": self.logo if self.image_file else {},
             "url": self.absolute_url,
@@ -183,10 +188,14 @@ class Technology(SluggableModelMixin, VotableMixin, ElasticSearchIndexableMixin)
                 except Exception as ex:  # Catch field does not exist exception
                     pass
             kwargs['update_fields'] = changed_fields
+        else:
+            if not self.slug:
+                self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
 
-models.signals.pre_save.connect(remove_old_image, sender=Technology, weak=False)
 models.signals.post_save.connect(tasks.sync_technology_resources_to_elastic, sender=Technology, weak=False)
 models.signals.post_save.connect(warm_technology_logos, sender=Technology, weak=False)
-models.signals.post_delete.connect(delete_technology_images, sender=Technology, weak=False)
+# we need to keep the images for the history
+# models.signals.post_delete.connect(delete_technology_images, sender=Technology, weak=False)
+# models.signals.pre_save.connect(remove_old_image, sender=Technology, weak=False)

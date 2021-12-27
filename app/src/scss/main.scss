@@ -1,4 +1,7 @@
-@import url(//fonts.googleapis.com/css?family=Inter);
+// @import url(//fonts.googleapis.com/css?family=Inter);
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Noto+Sans&display=swap');
 
 @import "node_modules/bootstrap/scss/functions";
 @import "node_modules/bootstrap/scss/variables";
@@ -9,11 +12,12 @@
 
 :root {
   --color-sidebar-bg: #262626;
+  --color-sidebar-border: #1E1E2B;
   --color-sidebar-txt: #90929C;
   --color-sidebar-hover-bg: #555B5E;
   --color-sidebar-hover-txt: #F7F7F7;
 
-  --color-background: #0D0D0D;
+  --color-background: #1E1E2B;
   --color-background-1: #242728;
   --color-background-2: #303436;
   --color-background-3: #3D4143;
@@ -26,10 +30,13 @@
   --color-blue: #24A0ED;
   --color-blue-dark: #0C5C8D;
   --color-text-red: #FF0D0D;
+  --color-yellow: #FFDB1D;
+
+  --color-navsearch-app-bkg: #0d0d0d;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   background-color: var(--color-background);
   color: var(--color-text-white);
 }
@@ -56,14 +63,29 @@ body {
 @import "listings";
 @import "listing_resource";
 @import "listing_tech";
+@import "listing_history";
+@import "listing_collection";
+@import "listing_concept";
+
+@import "code_blocks";
+@import "card";
+@import "homepage_responsiveness";
+@import "footer_responsiveness";
+@import "sidebar_responsiveness";
+@import "search_responsiveness";
+@import "tags";
+@import "trees";
+
 @import "create-page";
 @import "detail_page";
 @import "detail_page_resource";
 @import "detail_page_technology";
 @import "detail_page_concepts";
+@import "detail_page_category";
 @import "detail_page_my_profile";
 @import "review";
 @import "search";
+@import "navbar-search";
 @import "homepage";
 @import "profile_page";
 @import "edit_suggestions";
@@ -71,5 +93,5 @@ body {
 @import "skeleton_loading";
 @import "static_pages";
 @import "authentication";
-@import "code_blocks";
+
 @import "responsive";

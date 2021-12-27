@@ -10,6 +10,13 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
     <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500&display=swap" rel="stylesheet"> -->
+    
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet"> -->
     {% block meta_tags %}
         <title>Noodles.com</title>
         <meta name="description"
@@ -20,6 +27,7 @@
     {% endblock %}
     <link rel="stylesheet" href="{% static 'frontend/css/main.css' %}">
     <link rel="stylesheet" href="{% static 'icomoon_fonts/style.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'icomoon_fonts/icomoon/style.css' %}"> -->
 
     {% block extra_css %}{% endblock %}
     {% block extra_top_js %}{% endblock %}
@@ -50,7 +58,8 @@
 
 <script>
     const authenticated_cookie_idx = document.cookie.search('authenticated'); // 1 for authenticated or 0 for not
-    const IS_AUTHENTICATED = (()=>{
+    const backToTopSection = document.querySelector('.back-to-top');
+    const IS_AUTHENTICATED = (() => {
         if (authenticated_cookie_idx === -1) {
             //this case means that there's an error on the server
             console.error('Missing "authenticated" cookie! Check the middleware that should create it!');
@@ -59,7 +68,7 @@
         return Boolean(parseInt(document.cookie.substr(authenticated_cookie_idx, 'authenticated=x'.length).split('=')[1]))
     })();
     const URL_USER_DATA = "{% url 'user-data' %}";
-    {#  handle user data; see if user is logged or not based on sessionid cookie; if user is logged, populate user_data key in sessionStorage #}
+    // {#  handle user data; see if user is logged or not based on sessionid cookie; if user is logged, populate user_data key in sessionStorage #}
     if (!IS_AUTHENTICATED) {
         window.sessionStorage.removeItem('user_data');
     }
@@ -83,8 +92,16 @@
     }
 
     function toggle_sidebar() {
-        document.querySelector('body').classList.toggle('sidebar-visible');
+        if (innerWidth > 600) {
+            document.querySelector('body').classList.toggle('sidebar-visible');
+        } else {
+            document.querySelector('body').classList.toggle('sidebar-visible-mobile');
+        }
     }
+
+    backToTopSection.addEventListener('click', () => {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    })
 
     window.addEventListener('load', e => {
         document.querySelectorAll('.collapsible .collapse-toggle').forEach(el => el.onclick = evt => {
@@ -123,14 +140,45 @@
                     if (!isSubmenu) window.onclick = null;
                 }
             }
-        })
-    })
+        });
+    });
+
+    const addSearchOverlayObserver = new MutationObserver(function(mutations_list) {
+        mutations_list.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(added_node) {
+                if (added_node.classList && added_node.classList.contains('search-app-overlay')) {
+                    const footer = document.querySelector('.footer');
+                    const main = document.querySelector('main');
+                    console.log(main);
+                    main.style.display = 'none';
+                    footer.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    const removeSearchOverlayObserver = new MutationObserver(function(mutations_list) {
+        mutations_list.forEach(function(mutation) {
+            mutation.removedNodes.forEach(function(removed_node) {
+                if (removed_node.classList && removed_node.classList.contains('search-app-overlay')) {
+                    const footer = document.querySelector('.footer');
+                    const main = document.querySelector('main');
+                    console.log(main);
+                    main.style.display = 'block';
+                    footer.style.display = 'flex';
+                }
+            });
+        });
+    });
+
+    addSearchOverlayObserver.observe(document.querySelector("#search-bar-app"), { subtree: false, childList: true });
+    removeSearchOverlayObserver.observe(document.querySelector("#search-bar-app"), { subtree: false, childList: true });
 </script>
 <script src="{% static 'js/react-bundle.js' %}"></script>
 <script src="{% static 'frontend/sidebar-app.js' %}"></script>
-{#    {% if not hide_navbar_search %}#}
-{#        <script src="{% static 'navbar-search-bar-app.js' %}"></script>#}
-{#    {% endif %}#}
+{% if not hide_navbar_search %}
+    <script src="{% static 'navbar-search-bar-app.js' %}"></script>
+{% endif %}
 {% block extra_js %}{% endblock %}
 </body>
 </html>

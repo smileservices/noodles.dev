@@ -7,3 +7,4 @@ def serializeErrorDetails(e: ErrorDetail):
 
 def serializeValidationError(e: ValidationError):
     return {k: serializeErrorDetails(v) for k, v in e.detail.items()}
+

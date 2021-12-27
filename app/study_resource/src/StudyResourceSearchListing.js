@@ -2,12 +2,10 @@ import React, {Fragment, useState} from "react";
 import ResourceRating from "./ResourceRating";
 import TruncatedTextComponent from "../../src/components/TruncatedTextComponent";
 
-const flagIcon = (
-    <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-            d="M9.50198 4.5L11.002 1H2.00198V0.5C2.00198 0.224 1.77798 0 1.50198 0C1.22598 0 1.00198 0.224 1.00198 0.5V11.5C1.00198 11.776 1.22598 12 1.50198 12C1.77798 12 2.00198 11.776 2.00198 11.5V8H11.002L9.50198 4.5Z"
-            fill="black"/>
-    </svg>);
+const flagIcon = (<svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.02696 4.82843L6.06618 2.72059L8.02696 0.612745C8.125 0.502451 8.14951 0.343137 8.10049 0.220588C8.03922 0.0857843 7.90441 0 7.75735 0H0.367647C0.159314 0 0 0.159314 0 0.367647V9.63235C0 9.84069 0.159314 10 0.367647 10C0.57598 10 0.735294 9.84069 0.735294 9.63235V5.44118H7.75735C7.96569 5.44118 8.125 5.26961 8.125 5.07353C8.125 4.98774 8.08824 4.90196 8.02696 4.82843Z"
+                              fill="#1752EA"/>
+                    </svg>);
 
 export default function StudyResourceSearchListing({data, addFilter}) {
     const MAX_RATING = 5
@@ -32,22 +30,24 @@ export default function StudyResourceSearchListing({data, addFilter}) {
         : (<a key={'media' + data.media} href={'/search?tab=resources&media='+data.media}>{data.media}</a>)
 
     return (
-            <div className="card">
-                <div className="result resource">
+            <div className="resource-card">
+                <div className="resource-result">
                     <div className="left">
-                        <div className="tags">
+                        <div className="resource-tags">
                             {technologies}{concepts.technology}{category}{concepts.category}{experience_level}
                         </div>
-                        <div className="listing-title">
+                        <div className="resource-listing-title">
                             <h4 className="title" itemProp="name"><a href={data.url}>{data.name}</a></h4>
                             <span className="published">{data.publication_date} By {data.published_by}</span>
-                            <div className="tags">{media}</div>
+                            <ResourceRating data={data} maxRating={MAX_RATING}/>
+                            {/*<div className="tags">{media}</div>*/}
                         </div>
                         <div className="description">
-                            <TruncatedTextComponent fullText={data.summary} charLimit={250}/>
+                            <p>
+                                <TruncatedTextComponent fullText={data.summary} charLimit={250}/>
+                            </p>
                         </div>
-                        <div className="tags">{tags}</div>
-                        <ResourceRating data={data} maxRating={MAX_RATING}/>
+                        <div className="resource-tags bottom">{tags}</div>
                     </div>
                     {data.image ?
                         <div className="right">

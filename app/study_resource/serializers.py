@@ -1,12 +1,13 @@
 from rest_framework import serializers
 from rest_framework.fields import FloatField, IntegerField
 from rest_framework import exceptions
-from .models import StudyResource, Review, StudyResourceImage, StudyResourceTechnology
+from .models import StudyResource, Review, StudyResourceImage, StudyResourceTechnology, StudyResourceIntermediary
 from users.serializers import UserSerializerMinimal
 from django.template.defaultfilters import slugify
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from django.conf import settings
 from django_edit_suggestion.rest_serializers import EditSuggestionSerializer
+from core.abstract_models import ResourceMixin
 from tag.serializers import TagSerializerOption
 from core import utils
 from tag.models import Tag
@@ -17,6 +18,9 @@ from concepts.serializers_category import CategoryConceptSerializerOption
 from concepts.serializers_technology import TechnologyConceptSerializerOption
 import json
 from .scrape.main import get_website_screenshot
+import logging
+
+logger = logging.getLogger('django')
 
 
 class ImageSerializer(serializers.ModelSerializer):
@@ -34,13 +38,17 @@ class ImageSerializer(serializers.ModelSerializer):
 class StudyResourceTechnologySerializer(serializers.ModelSerializer):
     queryset = StudyResourceTechnology.objects.all()
     url = serializers.SerializerMethodField()
+    label = serializers.SerializerMethodField()
 
     class Meta:
         model = StudyResourceTechnology
-        fields = ['pk', 'technology_id', 'name', 'version', 'url']
+        fields = ['pk', 'technology_id', 'name', 'version', 'url', 'label']
 
     def get_url(self, obj):
         return obj.absolute_url
+
+    def get_label(self, obj):
+        return f'{obj.name} {obj.version}'
 
 
 class StudyResourceEditSuggestionListingSerializer(serializers.ModelSerializer):
@@ -132,6 +140,8 @@ class StudyResourceEditSuggestionSerializer(serializers.ModelSerializer):
                                })
             elif change.field == 'slug':
                 continue
+            elif change.field == 'meta':
+                continue
             else:
                 result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
         return result
@@ -178,7 +188,10 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         # take screenshot (only for create)
         take_screenshot = 'image_screenshot' in data and json.loads(data['image_screenshot'])
         if take_screenshot:
-            validated_data['image_file'] = get_website_screenshot(data['url'])
+            try:
+                validated_data['image_file'] = get_website_screenshot(data['url'])
+            except Exception as e:
+                logger.error(f"Error while doing screenshot for {data['url']}: {print(e)}")
         if 'pk' in data and 'image_file' not in data and not take_screenshot:
             # populate with parent image file otherwise the edit will set the image_file blank
             validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']
@@ -233,17 +246,6 @@ class StudyResourceSerializer(EditSuggestionSerializer):
                 image.save()
 
 
-class ReviewSerializer(serializers.ModelSerializer):
-    queryset = Review.objects
-    study_resource = StudyResourceSerializer
-    author = UserSerializerMinimal(many=False, read_only=True)
-
-    class Meta:
-        model = Review
-        fields = ['pk', 'author', 'study_resource', 'rating', 'thumbs_up', 'thumbs_down', 'text', 'visible',
-                  'created_at', 'updated_at', 'thumbs_up_array', 'thumbs_down_array']
-
-
 class StudyResourceListingSerializer(serializers.ModelSerializer):
     queryset = StudyResource.objects.all()
     tags = TagSerializerOption(many=True, read_only=True)
@@ -270,3 +272,40 @@ class StudyResourceListingMinimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudyResource
         fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', ]
+
+
+class StudyResourceIntermediarySerializer(serializers.ModelSerializer):
+    queryset = StudyResourceIntermediary.objects.all()
+    author = UserSerializerMinimal(read_only=True)
+    data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = StudyResourceIntermediary
+        fields = ['pk', 'url', 'active', 'author', 'status', 'scraped_data', 'data']
+
+    def get_data(self, obj):
+        if obj.data:
+            data = obj.data
+            data['data'] = json.loads(data['data'])
+            return data
+        return None
+
+class ReviewSerializer(serializers.ModelSerializer):
+    queryset = Review.objects
+    study_resource = StudyResourceListingMinimalSerializer
+    author = UserSerializerMinimal(many=False, read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ['pk', 'author', 'study_resource', 'rating', 'thumbs_up', 'thumbs_down', 'text', 'visible',
+                  'created_at', 'updated_at', 'thumbs_up_array', 'thumbs_down_array']
+
+
+class ResourceReviewSerializer(serializers.ModelSerializer):
+    queryset = Review.objects
+    author = UserSerializerMinimal(many=False, read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ['pk', 'author', 'rating', 'thumbs_up', 'thumbs_down', 'text', 'visible',
+                  'created_at', 'updated_at', 'thumbs_up_array', 'thumbs_down_array']

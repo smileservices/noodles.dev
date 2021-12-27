@@ -131,3 +131,13 @@ def error_404(request, exception):
 def error_500(request):
     from django.views.defaults import server_error
     return server_error(request, template_name='errors/500.html')
+
+
+def test_error_500(request):
+    from django.views.defaults import server_error
+    return server_error(request, template_name='errors/500.html')
+
+
+def test_error_404(request):
+    from django.views.defaults import server_error
+    return server_error(request, template_name='errors/404.html')

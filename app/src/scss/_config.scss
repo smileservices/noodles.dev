@@ -3,6 +3,9 @@ $fontsize-md: $fontsize-big * 0.875 !default;   //14px
 $fontsize-sm: $fontsize-big * 0.75 !default;    //12px
 $fontsize-tn: $fontsize-big * 0.625 !default;   //10px
 
+$lineheight-base: $fontsize-big * 1.375 !default;  //22px
+
+
 $padding-unit: $fontsize-big * 0.625; //10px
 $padding-unit-big: $fontsize-big;     //16px
 $padding-unit-md: $fontsize-sm;       //12px
@@ -16,16 +19,16 @@ $radius-medium: 6px;
 $radius-big: 8px;
 
 //colors
-$color-background: #1A1A1A;
-$color-background-1: #242728;
+$color-background: #1B1D2F;
+$color-background-1: #27293B;
 $color-background-2: #303436;
 $color-background-3: #3D4143;
-$color-background-4: #494E50;
+$color-background-4: #5E6073;
 $color-background-5: #555B5E;
-$color-text-white: #FFFFFF;
-$color-text-grey: #B8C0C5;
-$color-text-grey-2: #85A0AD;
-$color-blue: #24A0ED;
+$color-text-white: #efefef;
+$color-text-grey: #7D829E;
+$color-text-grey-2: #96A4FF;
+$color-blue: #576EFF;
 $color-blue-hover: #3EABEF;
 $color-blue-clicked: #118AD4;
 $color-blue-disabled: fade_in($color-blue-clicked, 0.5);
@@ -51,18 +54,23 @@ $dropdown-hover-bg: darken($dropdown-bg, 10);
 $dropdown-hover-text: lighten($dropdown-text, 10);
 
 //sidebar
-$sidebar-width: $fontsize-big*10;
+$sidebar-width: $fontsize-big*14;
 
 //z-index
-$header-zindex: 1;
+$dropdown-zindex: 20000;
 $sidebar-zindex: 10000;
-$dropdown-zindex: 10000;
+$navbarsearch-zindex: 11000;
 $collapsible-zindex: 90000;
 $modal-backdrop-zindex: 95000;
 $modal-content-zindex: 96000;
+$header-zindex: 1;
 
 //width layouts
 $width-sm: 450px;
 $width-md: 650px;
 $width-lg: 850px;
 $width-xl: 1050px;
+
+// new colors
+$sidebar-background: $color-background-1;
+$sidebar-border: #1E1E2B;

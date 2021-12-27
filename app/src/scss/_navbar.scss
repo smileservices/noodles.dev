@@ -1,10 +1,35 @@
 .navbar-logo {
   padding: $padding-unit*2 $padding-unit-big/2;
+  padding-left: 0;
   line-height: $fontsize-big;
 }
 
+.mobile-navbar-logo {
+  padding: $padding-unit*2 $padding-unit-big/2;
+  padding-left: 0;
+  line-height: $fontsize-big;
+}
+
+@media only screen and (max-width: 600px) {
+  nav {
+    .dropdown .dropdown-menu-account {
+      width: 100%;
+      right: 0rem;
+    }
+  }
+}
+
+@media only screen and (min-width: 601px) {
+  nav {
+    .dropdown .dropdown-menu-account {
+      right: 3rem;
+      min-width: 18rem;
+      // min-width: $fontsize-big * 7;
+    }
+  }
+}
+
 nav {
-  background-color: var(--color-background-1);
   line-height: $fontsize-big;
   font-size: $fontsize-big;
   font-weight: 700;
@@ -12,12 +37,24 @@ nav {
   display: flex;
   justify-content: space-between;
   padding: $nav-padding;
-  box-shadow: inset 0px -1px 0px #2F2F2F;
   white-space: nowrap;
+
+  .signed-out-button {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    width: 132px;
+  }
 
   .left-side {
     margin: -$nav-padding;
     align-items: center;
+  }
+
+  .left-side-buttons {
+    display: none;
+    gap: 1rem;
   }
 
   .right-side {
@@ -39,6 +76,10 @@ nav {
     padding: $padding-unit*2 0;
   }
 
+  a.mobile-collapse-button {
+    padding: $padding-unit*2 0;
+  }
+
   a, a:visited, a:active {
     color: var(--color-text-white);
   }
@@ -48,7 +89,7 @@ nav {
   }
 
   a:hover {
-    background-color: var(--color-background-3);
+    // background-color: var(--color-background-3);
     color: var(--color-text-white);
   }
 
@@ -60,9 +101,44 @@ nav {
     display: flex;
   }
 
-  .dropdown .dropdown-menu {
-    top: $nav-height + $padding-unit-md;
-    min-width: $fontsize-big * 7;
+  .dropdown .dropdown-menu-account {
+    top: 4.25rem;
+    // min-width: $fontsize-big * 7;
+  }
+
+  .dropdown .dropdown-create {
+    max-width: 328px;
+    right: 6rem;
+    top: 4.25rem;
+    padding: 1.25rem;
+    display: block;
+
+    a {
+      display: flex;
+      flex-direction: column;
+      .anchor-title {
+        overflow-wrap: break-word;
+        white-space: normal;
+        font-weight: 600;
+        font-size: 1rem;
+        line-height: 1.375rem;
+        color: #B8C7FF;
+      }
+
+      .anchor-description {
+        overflow-wrap: break-word;
+        white-space: normal;
+        font-weight: normal;
+        font-size: 0.875rem;
+        line-height: 1.188rem;
+
+        color: #FFFFFF;
+      }
+    }
+
+    a:hover {
+      background-color: #373E7A;
+    }
   }
 }
 

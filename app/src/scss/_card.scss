@@ -1,0 +1,88 @@
+.card {
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: $color-background-1;
+    border-radius: 8px;
+    padding: 20px;
+    justify-content: space-between;
+    position: relative;
+
+    .card-content {
+        display: flex;
+        flex-direction: column;
+
+        .card-header {
+            margin-bottom: 12px;
+            .header-text {
+                font-size: 18px;
+                line-height: 22px;
+                font-weight: bold;
+                a, a:visited {
+                    color: $color-text-white;
+                }
+            }
+
+            .subheader-text {
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 22px;
+                color: #C5C9E1;
+            }
+        }
+    
+        .card-description {
+            p {
+                font-size: 14px;
+                line-height: 22px;
+                color: #C5C9E1;
+                font-weight: 500;
+            }
+        }
+
+        .detailed-description {
+            display: flex;
+            flex-direction: column;
+            h3 {
+                font-weight: bold;
+                font-size: 18px;
+                line-height: 22px;
+                color: #FFFFFF;
+            }
+            p {
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 22px;
+                color: #C5C9E1;
+    
+                a {
+                    color: $color-text-grey-2 !important;
+                }
+    
+                a:hover {
+                    cursor: pointer;
+                    color: #576EFF !important;
+                }
+            }
+        }
+    
+        .detailed-description-with-image {
+            display: flex;
+            margin-top: 1.5rem;
+            img {
+                margin-right: 18px;
+            }
+        }
+    }
+
+    .card-footer {
+        flex-grow: 1;
+        display: flex;
+        align-items: flex-end;
+    }
+}
+
+.card .listing {
+    max-height: 260px;
+    max-width: 482px;
+}

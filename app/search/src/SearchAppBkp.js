@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import PaginatedLayout from "../../src/components/PaginatedLayout";
 import {FilterComponent} from "../../src/components/FilterComponent";
 
-import SearchBarComponent from "./SearchBarComponent";
+import SearchBarComponentWithInstantResults from "./SearchBarComponent";
 import StudyResourceSearchListing from "../../study_resource/src/StudyResourceSearchListing";
 import CollectionSearchListing from "../../study_collection/src/CollectionSearchListing";
 import TechnologySearchListing from "../../technology/src/TechnologySearchListing";
@@ -14,8 +14,9 @@ import {codeParamsToUrl, decodeParamsFromUrl, updateUrl, getAvailableFilters} fr
 
 const NoResultsElement = (
     <div className="no-results">
-        <h2>Too picky maybe?</h2>
-        <p>Try to broaden your filters.</p>
+        <img src="/static/imgs/img_empty.png" />
+        <h2>Sorry, we can't find</h2>
+        <h2>what you're looking for</h2>
     </div>
 )
 
@@ -252,7 +253,6 @@ function SearchApp() {
 
         return (
             <div className="sorting">
-                <label htmlFor="sort_by">Sort By</label>
                 <select name="sort_by" id="sort_by" onChange={e => {
                     setSortField(e.target.value);
                     triggerSorting()
@@ -404,7 +404,7 @@ function SearchApp() {
                     <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies
                         {getAggregationsCounter(technologies)}</h4>
                 </div>
-                <SearchBarComponent search={setSearch} state={searchbarState}/>
+                <SearchBarComponentWithInstantResults search={setSearch} state={searchbarState}/>
                 {showCurrentTab(currentTab)}
             </section>
             <section id="related" className="column-container">

@@ -23,6 +23,7 @@ def new_collection(user=None):
     collection = models.Collection(
         author=user,
         name=f.text(40),
+        status=1,
         description=f.text(),
         is_public=choice([True, False])
     )

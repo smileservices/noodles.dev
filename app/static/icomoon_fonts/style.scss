@@ -137,9 +137,9 @@
     content: $icon-github; 
   }
 }
-.icon-linkedin {
+.icon-linkedin1 {
   &:before {
-    content: $icon-linkedin; 
+    content: $icon-linkedin1; 
   }
 }
 .icon-info-circle {
@@ -177,4 +177,95 @@
     content: $icon-angle-down; 
   }
 }
+
+.icon-arrow_right {
+  &:before {
+    content: $icon-arrow_right; 
+  }
+}
+
+.icon-arrow_drop_down {
+  &:before {
+    content: $icon-arrow_drop_down; 
+  }
+}
+
+.icon-caret-back-sharp {
+  &:before {
+    content: $icon-caret-back-sharp; 
+  }
+}
+
+.icon-caret-forward-sharp {
+  &:before {
+    content: $icon-caret-forward-sharp; 
+  }
+}
+
+.icon-edit {
+  &:before {
+    content: $icon-edit; 
+  }
+}
+
+.icon-plus {
+  &:before {
+    content: $icon-plus; 
+  }
+}
+
+.icon-linkedin {
+  &:before {
+    content: $icon-linkedin; 
+  }
+}
+
+.icon-facebook {
+  &:before {
+    content: $icon-facebook; 
+  }
+}
+
+.icon-twitter {
+  &:before {
+    content: $icon-twitter; 
+  }
+}
+
+.icon-reddit {
+  &:before {
+    content: $icon-reddit; 
+  }
+}
+
+.icon-telegram {
+  &:before {
+    content: $icon-telegram; 
+  }
+}
+
+.icon-telegram1 {
+  &:before {
+    content: $icon-telegram1; 
+  }
+}
+
+.icon-reddit-alien {
+  &:before {
+    content: $icon-reddit-alien; 
+  }
+}
+
+.icon-person-circle {
+  &:before {
+    content: $icon-person-circle; 
+  }
+}
+
+.icon-exit {
+  &:before {
+    content: $icon-exit; 
+  }
+}
+
 

@@ -68,6 +68,8 @@ class CategoryConceptEditSuggestionSerializer(serializers.ModelSerializer):
                                })
             elif change.field == 'slug':
                 continue
+            elif change.field == 'meta':
+                continue
             else:
                 result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
         return result
@@ -88,7 +90,7 @@ class CategoryConceptSerializer(EditSuggestionSerializer):
     queryset = CategoryConcept.objects.all()
     author = UserSerializerMinimal(many=False, read_only=True)
     category = CategorySerializerOption(many=False, read_only=True)
-    parent = CategoryConceptSerializerListing(many=False, read_only=True)
+    parent = CategoryConceptSerializerOption(many=False, read_only=True)
 
     class Meta:
         model = CategoryConcept

@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?g7sfqx');
-  src:  url('fonts/icomoon.eot?g7sfqx#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?g7sfqx') format('truetype'),
-    url('fonts/icomoon.woff?g7sfqx') format('woff'),
-    url('fonts/icomoon.svg?g7sfqx#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?yyphcd');
+  src:  url('fonts/icomoon.eot?yyphcd#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?yyphcd') format('truetype'),
+    url('fonts/icomoon.woff?yyphcd') format('woff'),
+    url('fonts/icomoon.svg?yyphcd#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,33 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-telegram1:before {
+  content: "\e91a";
+}
+.icon-caret-back-sharp:before {
+  content: "\e90f";
+}
+.icon-caret-forward-sharp:before {
+  content: "\e910";
+}
+.icon-logo-reddit:before {
+  content: "\e918";
+}
+.icon-person-circle:before {
+  content: "\e91b";
+}
+.icon-plus:before {
+  content: "\e912";
+}
+.icon-edit:before {
+  content: "\e911";
+}
+.icon-arrow_right:before {
+  content: "\e900";
+}
+.icon-arrow_drop_down:before {
+  content: "\e903";
+}
 .icon-cancel:before {
   content: "\e902";
 }
@@ -91,27 +118,51 @@
 .icon-github:before {
   content: "\eab0";
 }
-.icon-linkedin:before {
+.icon-linkedin1:before {
   content: "\eac9";
+}
+.icon-exit:before {
+  content: "\ea14";
 }
 .icon-info-circle:before {
   content: "\e90c";
 }
 .icon-thumbs-down:before {
-  content: "\e903";
+  content: "\e90e";
 }
 .icon-thumbs-up:before {
-  content: "\e90a";
+  content: "\e90d";
 }
 .icon-filter:before {
   content: "\e908";
 }
 .icon-thumbs-o-down:before {
-  content: "\e906";
-}
-.icon-thumbs-o-up:before {
   content: "\e907";
 }
+.icon-thumbs-o-up:before {
+  content: "\e90a";
+}
 .icon-angle-down:before {
-  content: "\e900";
+  content: "\e906";
+}
+.icon-reddit-alien:before {
+  content: "\e919";
+}
+.icon-linkedin:before {
+  content: "\e913";
+}
+.icon-facebook:before {
+  content: "\e914";
+}
+.icon-facebook-f:before {
+  content: "\e914";
+}
+.icon-twitter:before {
+  content: "\e915";
+}
+.icon-reddit:before {
+  content: "\e916";
+}
+.icon-telegram:before {
+  content: "\e917";
 }

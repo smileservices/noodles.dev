@@ -35,6 +35,7 @@ def make_technologies_and_categories():
     # CREATE CATEGORY CONCEPTS
     CONCEPT_DB_POINTERS = CategoryConcept.objects.create(
         name='Pointers',
+        status=1,
         description=f.text(),
         category=dbs,
         author=choice(users),
@@ -42,6 +43,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_DB_INDICES = CategoryConcept.objects.create(
         name='Indices',
+        status=1,
         description=f.text(),
         category=relational,
         author=choice(users),
@@ -49,6 +51,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_LANG_OOP = CategoryConcept.objects.create(
         name='OOP',
+        status=1,
         description=f.text(),
         category=lang,
         author=choice(users),
@@ -56,6 +59,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_LANG_FACTORY = CategoryConcept.objects.create(
         name='Factory',
+        status=1,
         description=f.text(),
         parent=CONCEPT_LANG_OOP,
         category=lang,
@@ -64,6 +68,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_LANG_FFUNC = CategoryConcept.objects.create(
         name='First Class Functions',
+        status=1,
         description=f.text(),
         category=lang,
         author=choice(users),
@@ -81,7 +86,8 @@ def make_technologies_and_categories():
         "name": 'Javascript',
         "image_url": 'https://www.postscapes.com/wp-content/uploads/bb-plugin/cache/MST8CKVShX8cHwVIZ_FUR42xQZAEpUOLiHTsWrcG0o-SKEjCIq1KhCGHshgxTlTJ0CaHlJpBZ3pbT7zlyRQyq-dzFosiw-circle.jpeg',
         "category": ','.join([str(cid) for cid in [categories['programming_language'].pk, categories['frontend'].pk]]),
-        "description": "Often abbreviated as JS, is a programming language that conforms to the ECMAScript specification."
+        "description": "Often abbreviated as JS, is a programming language that conforms to the ECMAScript specification.",
+        "description_long": "Often abbreviated as JS, is a programming language that conforms to the ECMAScript specification."
                        " JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax,"
                        " dynamic typing, prototype-based object-orientation, and first-class functions.\n"
                        " Alongside HTML and CSS, JavaScript is one of the core technologies of the World Wide Web."
@@ -109,7 +115,8 @@ def make_technologies_and_categories():
         "name": 'Python',
         "image_url": 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png',
         "category": ','.join([str(cid) for cid in [categories['programming_language'].pk, categories['backend'].pk]]),
-        "description": "Python is an interpreted, high-level and general-purpose programming language. "
+        "description": "Python is an interpreted, high-level and general-purpose programming language. ",
+        "description_long": "Python is an interpreted, high-level and general-purpose programming language. "
                        "Python's design philosophy emphasizes code readability with its notable use of significant "
                        "indentation.\n Its language constructs and object-oriented approach aim to help programmers"
                        " write clear, logical code for small and large-scale projects. Python is dynamically-typed"
@@ -127,7 +134,8 @@ def make_technologies_and_categories():
         "name": 'Php',
         "image_url": 'https://www.lije-creative.com/wp-content/uploads/2015/03/php7.jpeg',
         "category": ','.join([str(cid) for cid in [categories['programming_language'].pk, categories['backend'].pk]]),
-        "description": "PHP is a general-purpose scripting language especially suited to web development."
+        "description": "PHP is a general-purpose scripting language especially suited to web development.",
+        "description_long": "PHP is a general-purpose scripting language especially suited to web development."
                        " It was originally created by Danish-Canadian programmer Rasmus Lerdorf in 1994.\n"
                        " The PHP reference implementation is now produced by The PHP Group. "
                        "PHP originally stood for Personal Home Page, but it now stands for the "
@@ -143,7 +151,8 @@ def make_technologies_and_categories():
         "name": 'Django',
         "image_url": 'https://static.djangoproject.com/img/logos/django-logo-negative.png',
         "category": ','.join([str(cid) for cid in [categories['web_backend_framework'].pk, ]]),
-        "description": "Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.\n"
+        "description": "Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.\n",
+        "description_long": "Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.\n"
                        " Built by experienced developers, it takes care of much of the hassle of Web development,"
                        " so you can focus on writing your app without needing to reinvent the wheel. \n"
                        "It’s free and open source.",
@@ -158,7 +167,8 @@ def make_technologies_and_categories():
         "name": 'ReactJs',
         "image_url": 'https://chloerei.com/rails-frontend/images/reactjs-logo.png',
         "category": ','.join([str(cid) for cid in [categories['frontend'].pk, ]]),
-        "description": "React (also known as React.js or ReactJS) is an open-source, front end, JavaScript library"
+        "description": "React (also known as React.js or ReactJS) is an open-source, front end, JavaScript library",
+        "description_long": "React (also known as React.js or ReactJS) is an open-source, front end, JavaScript library"
                        " for building user interfaces or UI components. It is maintained by Facebook and a community "
                        "of individual developers and companies. React can be used as a base in the development"
                        " of single-page or mobile applications. However, React is only concerned with state management "
@@ -176,7 +186,8 @@ def make_technologies_and_categories():
         "name": 'Docker',
         "image_url": 'https://www.pinclipart.com/picdir/middle/116-1161113_docker-logo-png-clipart.png',
         "category": ','.join([str(cid) for cid in [categories['devops'].pk, ]]),
-        "description": "Docker is a set of platform as a service (PaaS) products that use OS-level virtualization to deliver"
+        "description": "Docker is a set of platform as a service (PaaS) products that use OS-level virtualization to deliver",
+        "description_long": "Docker is a set of platform as a service (PaaS) products that use OS-level virtualization to deliver"
                        " software in packages called containers. Containers are isolated from one another and bundle their"
                        " own software, libraries and configuration files; they can communicate with each other through well-defined"
                        " channels. \nBecause all of the containers share the services of a single operating system kernel, they use "
@@ -206,6 +217,8 @@ def make_technologies_and_categories():
         serialized = TechnologySerializer(data=tech, context={'request': request})
         if serialized.is_valid():
             serialized.save()
+        else:
+            print(f"Could not create technology {tech['name']}")
     created_techs = {}
     for tech in Technology.objects.all():
         tech.author = choice(users)
@@ -217,6 +230,7 @@ def make_technologies_and_categories():
         created_techs[tech[0]['name']].ecosystem.add(*[created_techs[t['name']] for t in tech[1]])
     CONCEPT_TECH_JS_CLOSURES = TechnologyConcept.objects.create(
         name='Closures',
+        status=1,
         description=f.text(),
         technology=created_techs['Javascript'],
         parent=CONCEPT_LANG_FFUNC,
@@ -225,6 +239,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_TECH_JS_PROMISES = TechnologyConcept.objects.create(
         name='Promises',
+        status=1,
         description=f.text(),
         technology=created_techs['Javascript'],
         author=choice(users),
@@ -232,6 +247,7 @@ def make_technologies_and_categories():
     )
     CONCEPT_TECH_JS_HIGH_FUNC = TechnologyConcept.objects.create(
         name='Higher-Order Functions',
+        status=1,
         description=f.text(),
         technology=created_techs['Javascript'],
         author=choice(users),

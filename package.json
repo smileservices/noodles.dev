@@ -28,6 +28,7 @@
     "node-sass": "^4.14.1"
   },
   "dependencies": {
+    "diff-match-patch": "^1.0.5",
     "react-onclickoutside": "^6.9.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

@@ -1,0 +1,11 @@
+.result.collection {
+  > * {
+    margin: 0;
+  }
+  .footer {
+    margin-top: $padding-unit-big;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

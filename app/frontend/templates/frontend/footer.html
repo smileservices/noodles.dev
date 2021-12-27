@@ -12,23 +12,71 @@
             code and confusing bugs. Never loose hope!
             That's why we have noodles here.
         </p>
-        <a href="{% url 'noodles-backstage' %}" rel="nofollow noopener">Noodles.dev Backstage</a>
-    </section>
-    <section class="links column-container">
-        <header>Resources</header>
-        <a href="{% url 'privacy-policy' %}" rel="nofollow noopener">Privacy Policy</a>
-        <a href="{% url 'terms-policy' %}" rel="nofollow noopener">Terms and Conditions</a>
-        <a href="{% url 'cookie-policy' %}" rel="nofollow noopener">Cokies Policy</a>
-    </section>
-    <section class="social column-container">
-        <header>Follow Us</header>
-        <div class="links">
-            <a href="https://www.facebook.com/Noodlesdev-246723616485973" rel="nofollow noopener">
-                <span class="icon-facebook2"> </span> Facebook Page
+        <div class="button-links-container">
+            <a
+                href="https://www.facebook.com/groups/noodles.dev"
+                rel="nofollow noopener"
+                class="uikit-button filled default"
+            >
+                Join our Facebook Group!
             </a>
-            <a href="https://www.facebook.com/groups/noodles.dev" rel="nofollow noopener">
-                <span class="icon-facebook2"> </span> Discussion Group
+            <a
+                href="{% url 'noodles-backstage' %}"
+                rel="nofollow noopener"
+                class="uikit-button outlined white"
+            >
+                Noodles.dev Backstage
             </a>
         </div>
+    </section>
+    <section class="mobile-links">
+        <div class="links column-container">
+            <h4 class="header">Noodles.<span>Dev</span></h4>
+            <a href="" rel="nofollow noopener">About</a>
+            <a href="/learn" rel="nofollow noopener">Technologies</a>
+            <a href="" rel="nofollow noopener">Concepts</a>
+            <a href="/tutorials" rel="nofollow noopener">Resources</a>
+            <a href="/collections" rel="nofollow noopener">Collections</a>
+        </div>
+        <div class="social column-container">
+            <h4 class="header">Links</h4>
+            <a href="{% url 'privacy-policy' %}" rel="nofollow noopener">Privacy Policy</a>
+            <a href="{% url 'terms-policy' %}" rel="nofollow noopener">Terms and Conditions</a>
+            <a href="{% url 'cookie-policy' %}" rel="nofollow noopener">Cookies Policy</a>
+        </div>
+    </section>
+    <section class="mobile-socials">
+        <span class="icon icon-facebook"></span>
+        <span class="icon icon-twitter"></span>
+        <span class="icon icon-linkedin"></span>
+        <span class="icon icon-telegram1"></span>
+        <span class="icon icon-reddit-alien"></span>
+    </section>
+    <section class="links column-container">
+        <h4 class="header">Noodles.<span>Dev</span></h4>
+        <a href="" rel="nofollow noopener">About</a>
+        <a href="/learn" rel="nofollow noopener">Technologies</a>
+        <a href="" rel="nofollow noopener">Concepts</a>
+        <a href="/tutorials" rel="nofollow noopener">Resources</a>
+        <a href="/collections" rel="nofollow noopener">Collections</a>
+    </section>
+    <section class="social column-container">
+        <div class="links">
+            <h4 class="header">Links</h4>
+            <a href="{% url 'privacy-policy' %}" rel="nofollow noopener">Privacy Policy</a>
+            <a href="{% url 'terms-policy' %}" rel="nofollow noopener">Terms and Conditions</a>
+            <a href="{% url 'cookie-policy' %}" rel="nofollow noopener">Cookies Policy</a>
+        </div>
+        <div class="socials">
+            <span class="icon icon-facebook"></span>
+            <span class="icon icon-twitter"></span>
+            <span class="icon icon-linkedin"></span>
+            <span class="icon icon-telegram1"></span>
+            <span class="icon icon-reddit-alien"></span>
+        </div>
+    </section>
+    <section class="back-to-top">
+        <img src="/static/imgs/back-to-top-arrow.png" />
+        <h4>Back to Top</h4>
     </section>
 </footer>

@@ -5,6 +5,7 @@ from django.http.response import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db import models
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -15,22 +16,26 @@ from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdmi
 from study_collection.models import Collection
 from study_resource.models import StudyResource
 from . import filters
-from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyListing
+from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyMinimal
 from .models import Technology
 from django.views.decorators.cache import cache_page
 from app.settings import rewards
+from django.shortcuts import get_object_or_404
+from core.utils import rest_paginate_queryset
 
 
 def detail(request, slug):
     queryset = Technology.objects
-    detail = queryset.select_related().get(slug=slug)
+    detail = queryset.prefetch_related('related_technologies', 'studyresourcetechnology_set').get(slug=slug)
     resources_ids = [tech['study_resource_id'] for tech in
                      detail.studyresourcetechnology_set.values('study_resource_id').all()]
     data = {
-        'result': detail,
+        'detail': detail,
         'concepts': detail.concepts.order_by('experience_level').all(),
         'collections': detail.collections.order_by('created_at').select_related().all(),
-        'resources': StudyResource.objects.filter(pk__in=resources_ids).order_by_rating_then_publishing_date().select_related(),
+        'related_technologies': detail.related_technologies.all(),
+        'resources': StudyResource.objects.filter(
+            pk__in=resources_ids).order_by_rating_then_publishing_date().select_related(),
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
         'thumbs_down_array': json.dumps(detail.thumbs_down_array),
         'vote_url': reverse_lazy('techs-viewset-vote', kwargs={'pk': detail.pk}),
@@ -52,6 +57,21 @@ def list_all(request):
         'results': results,
     }
     return render(request, 'technology/list_page_seo.html', data)
+
+
+def history(request, slug):
+    instance = get_object_or_404(Technology, slug=slug)
+    data = {
+        'instance': instance,
+        'data': {
+            'title': f'History of {instance.name} Technology',
+            'breadcrumbs': f'<a href="/">Homepage</a> / Technology <a href="{instance.absolute_url}">{instance.name}</a>',
+        },
+        'urls': {
+            'history_get': reverse_lazy('techs-viewset-history', kwargs={'pk': instance.pk}),
+        }
+    }
+    return render(request, 'history/history_page.html', data)
 
 
 @login_required
@@ -116,6 +136,22 @@ class TechViewset(ResourceWithEditSuggestionVieset):
         return Response({
             'error': False
         })
+
+    @action(methods=['GET'], detail=False)
+    def featured(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(featured=True)
+        return rest_paginate_queryset(self, queryset)
+
+    @action(methods=['GET'], detail=False)
+    def no_technology_concept(self, request, *args, **kwargs):
+        queryset = self.queryset.annotate(concepts_count=models.Count('concepts')).order_by('concepts_count')
+        return rest_paginate_queryset(self, queryset)
+
+    @action(methods=['GET'], detail=False)
+    def no_resources(self, request, *args, **kwargs):
+        queryset = self.queryset.annotate(resources_count=models.Count('resources')).order_by('resources_count')
+        self.serializer_class = TechnologyMinimal
+        return rest_paginate_queryset(self, queryset)
 
 
 @cache_page(60 * 5)

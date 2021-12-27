@@ -49,10 +49,11 @@ class TechnologyIntegrationTesting(APITestCase):
             'description': 'some description',
             'category': ','.join([str(id) for id in [self.categories[0].pk, self.categories[1].pk]]),
             'ecosystem': '',
+            'category_concepts': '{}',
             'license': 0,
             'url': 'wwww.google.com',
             'owner': 'some owner',
-            'meta': ''
+            'meta': '{}'
         }
 
     def test_create(self):
@@ -79,6 +80,7 @@ class TechnologyIntegrationTesting(APITestCase):
         edited_data = {**tech_data}
         edited_data['pk'] = res.data['pk']
         edited_data['name'] = 'edited'
+        edited_data['edit_suggestion_reason'] = 'test edit'
         edited_data['category'] = ','.join([str(id) for id in [self.categories[2].pk, self.categories[3].pk]])
         edit_res = self.client.put(
             reverse(TECHNOLOGY_DETAIL_URL, kwargs={'pk': res.data['pk']}),

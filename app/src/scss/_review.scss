@@ -3,32 +3,89 @@
   flex-direction: column;
   gap: $padding-unit;
 
-  .rating {
-    margin-bottom: 0;
-  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    gap: $padding-unit-md;
+    align-items: flex-start;
+    justify-content: flex-start;
 
-  .published {
-    font-size: $fontsize-sm;
-    font-weight: 400;
-    padding-top: $padding-unit-sm;
-    color: var(--color-text-grey-2);
+    .profile-picture {
+      [class^="icon-"] {
+        font-size: $fontsize-big*3;
+      }
+    }
+
+    .meta {
+      a.author, a.author:visited {
+        font-weight: 600;
+        font-size: $fontsize-md;
+        color: $color-text-white;
+      }
+      .published {
+        font-weight: 500;
+        color: $color-text-grey;
+        font-size: $fontsize-sm;
+      }
+      .rating {
+        margin-top: $padding-unit-sm;
+      }
+    }
   }
 
   .description {
     font-size: $fontsize-md;
     max-width: $fontsize-big*40;
   }
+
+}
+
+.review.form-container {
+  background-color: $color-background-1;
+
+  .header {
+    padding: $padding-unit-big;
+    margin-bottom: 0;
+
+    h3 {
+      font-weight: 600;
+      font-size: $fontsize-big*1.125;
+    }
+
+    p {
+      font-weight: 500;
+      font-size: $fontsize-md;
+    }
+  }
+
+  [class^="icon-star"] {
+    font-size: $fontsize-big*2;
+  }
+
+  form {
+    margin-top: 0;
+  }
+}
+
+.reviews-list {
+  gap: 2px;
+  .review {
+    border-radius: 0;
+  }
+  :first-child {
+    border-top-left-radius: $radius-big;
+    border-top-right-radius: $radius-big;
+  }
+
+  :last-child {
+    border-bottom-left-radius: $radius-big;
+    border-bottom-right-radius: $radius-big;
+  }
 }
 
 .review-listing {
-
-  .review-title {
-    font-size: $fontsize-md;
-    color: var(--color-text-grey-2);
-    margin: $padding-unit-md 0;
-  }
   .review {
-    background-color: var(--color-background-3);
+    background-color: $color-background-1;
     border-radius: $radius-medium;
     padding: $padding-unit-big;
   }

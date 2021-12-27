@@ -4,13 +4,14 @@
 {% load mptt_tags %}
 
 {% block meta_tags %}
-    <title>{{ result.name }}</title>
+    <title>{{ detail.name }}</title>
     <meta name="description"
-          content="{{ result.summary }}"/>
+          content="{{ detail.summary }}"/>
     <meta name="keywords" content="
 
 
-            {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies.all %}{{ tech }}, {% endfor %}"/>
+
+            {% for tag in detail.tags.all %}{{ tag }}, {% endfor %}{% for tech in detail.technologies.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
     <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -30,16 +31,20 @@
         }
     </script>
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / Technology <a href="{{ result.absolute_url }}">{{ result.name }}</a>
+        <a href="/">Homepage</a> > Technology <a href="{{ detail.absolute_url }}">{{ detail.name }}</a>
     </div>
     <div class="detail-page technology">
-        <div class="column-container">
-            <section id="detail" class="technology-detail" itemscope itemtype="https://schema.org/CreativeWork">
-                {% include 'technology/detail.html' %}
-                <div id="votes-app" class="thumbs"></div>
-            </section>
-        </div>
+        <section id="detail" class="card" itemscope
+                 itemtype="https://schema.org/CreativeWork">
+            {% include 'technology/detail.html' %}
+            <div id="votes-app" class="thumbs"></div>
+        </section>
         {% include 'technology/right_side.html' %}
+        <div class="column-container bottom">
+            {% include 'technology/detail_concepts.html' %}
+            {% include 'technology/collections.html' %}
+            {% include 'detail_resources.html' %}
+        </div>
     </div>
 {% endblock %}
 

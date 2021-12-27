@@ -10,66 +10,132 @@
             </svg>
         </a>
         <a class="navbar-logo" href="{% url "homepage" %}">Noodles.<span class="blue-text">dev</span></a>
-    </div>
-
-    <div class="right-side">
-
-{#        {% if user.is_authenticated %}#}
-            {# NOTIFICATIONS DROPDOWN #}
-{#            <div class="dropdown hidden">#}
-{#                    <span class="dropdown-button" id="navbar-notifications-button">#}
-{#                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">#}
-{#                        <path d="M22.3499 18.3C22.3499 18.3 19.4999 14.775 19.4999 11.25V8.25C19.4999 4.125 16.1249 0.75 11.9999 0.75C7.87493 0.75 4.49993 4.125 4.49993 8.25V11.25C4.49993 14.775 1.72493 18.225 1.64993 18.3C1.49993 18.525 1.42493 18.825 1.57493 19.125C1.72493 19.35 1.94993 19.5 2.24993 19.5H21.7499C22.0499 19.5 22.2749 19.35 22.4249 19.05C22.5749 18.825 22.4999 18.525 22.3499 18.3Z"#}
-{#                              fill="#90929C"/>#}
-{#                        <path d="M9.07495 21C9.37495 22.275 10.575 23.25 12 23.25C13.425 23.25 14.55 22.275 14.925 21H9.07495Z"#}
-{#                              fill="#90929C"/>#}
-{#                        </svg>#}
-{#                    </span>#}
-{#                <div class="dropdown-menu">#}
-{#                    <a href="">Some notification</a>#}
-{#                </div>#}
-{#            </div>#}
-            {# NOTIFICATIONS DROPDOWN END #}
-{#        {% endif %}#}
-
+        <div class="mobile-menu">
+            <a rel="nofollow noopener" href="#" onclick="toggle_sidebar()" class="mobile-collapse-button">
+                <svg viewBox="0 0 100 80" width="40" height="40">
+                    <rect width="100" height="20"></rect>
+                    <rect y="30" width="100" height="20"></rect>
+                    <rect y="60" width="100" height="20"></rect>
+                </svg>
+            </a>
+            <a class="mobile-navbar-logo" href="{% url "homepage" %}">Noodles.<span class="blue-text">dev</span></a>
+        </div>
         {% if user.is_authenticated %}
-            <div class="right-side">
-
-                {# ACCOUNT DROPDOWN #}
+            <div class="left-side-buttons">
                 <div class="dropdown hidden">
-                    <span class="dropdown-button">
-                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="36"
-                                  height="36">
-                                <circle cx="18" cy="18" r="18" fill="#F9F8F8"/>
-                            </mask>
-                            <g mask="url(#mask0)">
-                                <circle cx="18" cy="18" r="18" fill="black"/>
-                                <ellipse cx="17.5" cy="35" rx="18.5" ry="9" fill="#0348B0"/>
-                                <circle cx="18" cy="16" r="9" fill="#0348B0"/>
-                            </g>
-                        </svg>
-                    </span>
-                    <div class="dropdown-menu">
-                        <a rel="nofollow noopener" href="#" id="signout_button">{% trans 'Sign Out' %}</a>
+                    <span class="btn create dropdown-button">Add New</span>
+                    <div class="dropdown-menu dropdown-create">
+                        <a rel="nofollow noopener" href="{% url "create-resource" %}">
+                            <span class="anchor-title">
+                                Add resource
+                            </span>
+                            <span class="anchor-description">
+                                An article, tutorial, course or a book about a specific technology
+                            </span>
+                        </a>
+                        <a rel="nofollow noopener" href="{% url "technology-create" %}">
+                            <span class="anchor-title">
+                                Add technology
+                            </span>
+                            <span class="anchor-description">
+                                Discuss about a programming language
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="dropdown hidden">
+                    <span class="dropdown-button icon icon-person-circle"></span>
+                    <!--<div class="dropdown-menu">
+                        <a rel="nofollow noopener" href="#" class="signout_button">{% trans 'Sign Out' %}</a>
                         <a rel="nofollow noopener" href={% url "my-profile-edit" %}>Account</a>
                         <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
                         <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
                         <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
                         <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
+                    </div>-->
+                    <div class="dropdown-menu-account">
+                        <div class="profile">
+                            <span class="dropdown-button-icon-mobile icon-person-circle"></span>
+                            <div>
+                                <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
+                            </div>
+                        </div>
+                        <div class="other-menu-items">
+                            <a rel="nofollow noopener" href={% url "my-profile" %}>Account</a>
+                            <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
+                            <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
+                            <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
+                            <a rel="nofollow noopener" href="#" class="signout_button">{% trans 'Sign Out' %}</a>
+                        </div>
                     </div>
                 </div>
-                {# ACCOUNT DROPDOWN END #}
-
+            </div>
+            <!-- <span class="icon icon-person-circle"></span> -->
+        {% else %}
+            <div class="mid-screen-buttons">
+                <a href="{% url 'account_login' %}" rel="nofollow noopener"
+                   class="signed-out-button uikit-button outlined white">Login</a>
+                <a href="{% url 'account_login' %}" rel="nofollow noopener"
+                   class="signed-out-button uikit-button filled default">Register</a>
+            </div>
+            <div class="xs-screen-buttons">
+                <a href="{% url 'account_login' %}" rel="nofollow noopener"
+                   class="signed-out-button uikit-button outlined white">Login</a>
+                <a href="{% url 'account_login' %}" rel="nofollow noopener"
+                   class="signed-out-button uikit-button filled default">Register</a>
+            </div>
+        {% endif %}
+    </div>
+    <div class="right-side">
+        <div id="search-bar-app"></div>
+        {% if user.is_authenticated %}
+            <div class="right-side">
                 {# CREATE DROPDOWN #}
                 <div class="dropdown hidden">
-                    <span class="btn create dropdown-button">Create</span>
-                    <div class="dropdown-menu">
-                        <a rel="nofollow noopener" href="{% url "create-resource" %}">Learning Resource</a>
-                        <a rel="nofollow noopener" href="{% url "create-technology" %}">Technology</a>
+                    <span class="btn create dropdown-button">Add New</span>
+                    <div class="dropdown-menu dropdown-create">
+                        <a rel="nofollow noopener" href="{% url "create-resource" %}">
+                            <span class="anchor-title">
+                                Add resource
+                            </span>
+                            <span class="anchor-description">
+                                An article, tutorial, course or a book about a specific technology
+                            </span>
+                        </a>
+                        <a rel="nofollow noopener" href="{% url "technology-create" %}">
+                            <span class="anchor-title">
+                                Add technology
+                            </span>
+                            <span class="anchor-description">
+                                Discuss about a programming language
+                            </span>
+                        </a>
                     </div>
                 </div>
                 {# CREATE DROPDOWN END #}
+
+                {# ACCOUNT DROPDOWN #}
+                <div class="dropdown hidden">
+                    <span class="dropdown-button">
+                        <span class="dropdown-button-icon icon-person-circle"></span>
+                    </span>
+                    <div class="dropdown-menu-account">
+                        <div class="profile">
+                            <span class="dropdown-button-icon icon-person-circle"></span>
+                            <div>
+                                <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
+                            </div>
+                        </div>
+                        <div class="other-menu-items">
+                            <a rel="nofollow noopener" href={% url "my-profile" %}>Account</a>
+                            <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
+                            <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
+                            <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
+                            <a rel="nofollow noopener" href="#" class="signout_button">{% trans 'Sign Out' %}</a>
+                        </div>
+                    </div>
+                </div>
+                {# ACCOUNT DROPDOWN END #}
 
             </div>
             <script>
@@ -79,29 +145,34 @@
                     if (parts.length === 2) return parts.pop().split(";").shift();
                 }
 
-                document.getElementById('signout_button').addEventListener('click', e => {
-                    e.preventDefault();
-                    e.target.innerHTML = '<span class="icon-hour-glass spin-stop"> </span> Wait..';
-                    fetch(
-                        "{% url 'account_logout' %}",
-                        {
-                            method: "POST",
-                            headers: {
-                                'X-CSRFToken': getCsrfToken(),
-                            },
-                        }
-                    ).then(result => {
-                        if (result.ok) {
-                            location.reload();
-                        } else {
-                            alert(result.statusText);
-                        }
+                const sign_out_buttons = document.getElementsByClassName('signout_button')
+                for (i = 0; i < sign_out_buttons.length; i++) {
+                    sign_out_buttons[i].addEventListener('click', e => {
+                        e.preventDefault();
+                        e.target.innerHTML = '<span class="icon-hour-glass spin-stop"> </span> Wait..';
+                        fetch(
+                            "{% url 'account_logout' %}",
+                            {
+                                method: "POST",
+                                headers: {
+                                    'X-CSRFToken': getCsrfToken(),
+                                },
+                            }
+                        ).then(result => {
+                            if (result.ok) {
+                                location.reload();
+                            } else {
+                                alert(result.statusText);
+                            }
+                        })
                     })
-                })
+                }
             </script>
         {% else %}
-            <a href="{% url 'account_login' %}" rel="nofollow noopener" class="btn secondary login-button">Login</a>
-            <a href="{% url 'account_login' %}" rel="nofollow noopener" class="btn signup-button">Sign Up</a>
+            <a href="{% url 'account_login' %}" rel="nofollow noopener"
+               class="signed-out-button btn secondary">Login</a>
+            <a href="{% url 'account_login' %}" rel="nofollow noopener"
+               class="signed-out-button btn">Register</a>
         {% endif %}
     </div>
     </div>

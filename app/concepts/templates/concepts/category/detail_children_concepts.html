@@ -1,0 +1,29 @@
+{% load static %}
+
+<div class="concepts">
+    <div class="header spread-out-container">
+        <div class="left">
+            <h2>Theoretical Children Concepts</h2>
+            <div class="sub">A theoretical concept proposes a solution to a theoretical problem</div>
+        </div>
+        <div class="right">
+            <a class="btn secondary" href="{% url 'category-concept-create' %}?parent={{ detail.pk }}"
+               rel="nofollow noopener">
+                <span class="icon-plus"></span> Add Child Concept
+            </a>
+        </div>
+    </div>
+    {% if children_concepts %}
+        <div class="tile-container">
+            {% for result in children_concepts %}
+                {% include 'concepts/category/result.html' %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-container">
+            <div class="empty-div"><img src="{% static 'imgs/add_file.png' %}" alt="add concept"/>
+                <p class="empty-text">There are no concepts yet. Help the community by adding one yourself!</p>
+            </div>
+        </div>
+    {% endif %}
+</div>

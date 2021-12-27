@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from .views.study_resource import StudyResourceViewset, StudyResourceEditSuggestionViewset, create, detail, edit, list_all
+from .views.study_resource import StudyResourceViewset, StudyResourceEditSuggestionViewset, create, detail, edit, list_all, history
 from .views.image import StudyImageViewset
 from .views.review import ReviewVieset
 
@@ -12,6 +12,7 @@ router.register('images/resources', StudyImageViewset, basename='resource-image-
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('history/<slug:slug>', history, name='study-resource-history'),
     path('<int:id>/edit/', edit, name='study-resource-edit'),
     path('<int:id>/<slug:slug>', detail, name='study-resource-detail'),
     path('create/', create, name='create-resource'),

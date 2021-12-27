@@ -1,31 +1,26 @@
-<div class="result card technology">
+<div class="technology-card">
     <header>
-        {% if result.logo.medium %}
-            <div class="logo">
-                <img src={{ result.logo.medium }} alt=""/>
-            </div>
+        {% if result.logo.small %}
+            <img src={{ result.logo.small }} alt=""/>
         {% endif %}
-        <div class="right">
-            <h4 class="title"><a href={{ result.absolute_url }}>{{ result.name }}</a></h4>
-            <div class="tags">
-                <span>{{ result.license_label }}</span>
-                {% for category in result.category.all %}
-                    <span>{{ category.name_tree }}</span>
-                {% endfor %}
-            </div>
-        </div>
+        <h4 class="title"><a href={{ result.absolute_url }}>{{ result.name }}</a></h4>
     </header>
     <div class="description">
         {{ result.description }}
     </div>
-    {% if result.ecosystem.count %}
-        <h5>Ecosystem: </h5>
-        <span class="tags">
+
+    <div class="tags">
+        {% if result.ecosystem.count %}
             {% for tech in result.ecosystem.all %}
                 <a class="tech" href="{{ tech.absolute_url }}">{{ tech }}</a>
             {% endfor %}
-        </span>
-    {% endif %}
+        {% endif %}
+        <span>{{ result.license_label }}</span>
+        {% for category in result.category.all %}
+            <span>{{ category.name_tree }}</span>
+        {% endfor %}
+    </div>
+
     <div class="thumbs">
         <div class="down"><span class="icon-thumbs-o-down"> </span><span>{{ result.thumbs_down }}</span></div>
         <div class="up"><span class="icon-thumbs-o-up"> </span><span>{{ result.thumbs_up }}</span></div>

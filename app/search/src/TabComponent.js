@@ -169,14 +169,15 @@ function getTabFilters(tabname, resultsFilters) {
     }
 }
 
-export default function TabComponent({tabname, searchTerm, title, containerClass, ListingComponent}) {
+export default function TabComponent({tabname, searchTerm, title, containerClass, ListingComponent, listType = 'list'}) {
     const [state, dispatch] = useReducer(tabStateReducer, {...initialTabState, tab: tabname, search: searchTerm});
     useEffect(() => dispatch({type: SET_SEARCH, payload: searchTerm}), [searchTerm]);
 
     useEffect(() => {
         dispatch({type: FETCH_INIT, payload: {tab: tabname}});
         if (tabname !== state.tab) {
-            return ()=>{};
+            return () => {
+            };
         }
         const url = '/search/api/' + tabname + '?';
         let params = new URLSearchParams();
@@ -238,7 +239,7 @@ export default function TabComponent({tabname, searchTerm, title, containerClass
                     pagination={state.pagination}
                     resultsCount={state.results.stats.total}
                     data={state.results.items}
-                    resultsContainerClass="results"
+                    resultsContainerClass={listType !== 'list' ? 'grid-results' : 'results'}
                     setPagination={pagination => {
                         dispatch({type: SET_PAGINATION, payload: pagination});
                     }}

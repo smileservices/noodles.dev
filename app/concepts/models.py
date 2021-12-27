@@ -12,10 +12,10 @@ from django.contrib.postgres.fields import JSONField
 from django_edit_suggestion.models import EditSuggestion
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_publish_edit, post_reject_edit
 from core.tasks import sync_to_elastic
-from core.abstract_models import ElasticSearchIndexableMixin
+from core.abstract_models import ResourceMixin
 
 
-class AbstractConcept(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+class AbstractConcept(ResourceMixin, VotableMixin):
     class ExperienceLevel(models.IntegerChoices):
         ABEGINNER = (0, 'Absolute Beginner')
         JUNIOR = (1, 'Junior')
@@ -64,7 +64,7 @@ class CategoryConcept(MPTTModel, AbstractConcept):
     )
     edit_suggestions = EditSuggestion(
         excluded_fields=(
-            'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array', 'status'),
         special_foreign_fields=['parent', ],
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
@@ -74,6 +74,9 @@ class CategoryConcept(MPTTModel, AbstractConcept):
 
     class MPTTMeta:
         order_insertion_by = ['name']
+
+    def __str__(self):
+        return f'{self.name}'
 
     @property
     def name_tree(self):
@@ -89,13 +92,15 @@ class CategoryConcept(MPTTModel, AbstractConcept):
 
     @property
     def absolute_url(self):
-        return reverse('concept-category-detail', kwargs={'id': self.id, 'slug': self.slug})
+        return reverse('concept-category-detail', kwargs={'slug': self.slug})
 
     @staticmethod
     def get_elastic_mapping() -> {}:
         return {
             "properties": {
                 "pk": {"type": "integer"},
+                "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
 
                 # model fields
                 "name": {
@@ -129,6 +134,8 @@ class CategoryConcept(MPTTModel, AbstractConcept):
     def get_elastic_data(self) -> (str, list):
         data = {
             "pk": self.pk,
+            "type": "concept_category",
+            "status": self.status_label,
             "name": self.name,
             "description": self.description,
             "description_long": self.description_long,
@@ -156,22 +163,27 @@ class TechnologyConcept(AbstractConcept):
     )
     edit_suggestions = EditSuggestion(
         excluded_fields=(
-            'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array', 'status'),
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
         bases=(VotableMixin,)
     )
 
+    def __str__(self):
+        return f'{self.name}'
+
     @property
     def absolute_url(self):
-        return reverse('concept-technology-detail', kwargs={'id': self.id, 'slug': self.slug})
+        return reverse('concept-technology-detail', kwargs={'slug': self.slug})
 
     @staticmethod
     def get_elastic_mapping() -> {}:
         return {
             "properties": {
                 "pk": {"type": "integer"},
+                "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
 
                 # model fields
                 "name": {
@@ -205,6 +217,8 @@ class TechnologyConcept(AbstractConcept):
     def get_elastic_data(self) -> (str, list):
         data = {
             "pk": self.pk,
+            "type": "concept_technology",
+            "status": self.status_label,
             "name": self.name,
             "description": self.description,
             "description_long": self.description_long,

@@ -10,3 +10,57 @@
     }
   }
 }
+
+.technology-card {
+  max-width: 19.25rem;
+  background: $color-background-1;
+  border-radius: 0.5rem;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+
+  header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    img {
+      background: white;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      padding: 0.75rem 0.75rem;
+    }
+
+    h4.title {
+      padding: $padding-unit-md;
+    }
+  }
+
+  .description {
+    white-space: normal;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 0.875rem;
+    line-height: 1.313rem;
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    span {
+      margin-left: 0px;
+      background: #363845;
+      border-radius: 0.625rem;
+      padding: 0 0.75rem;
+      color: #a5aecf;
+      max-height: 20px;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .thumbs {
+    flex: 1;
+    align-items: flex-end;
+  }
+}

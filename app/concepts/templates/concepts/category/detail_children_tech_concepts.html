@@ -1,0 +1,29 @@
+{% load static %}
+
+<div class="concepts">
+    <div class="header spread-out-container">
+        <div class="left">
+            <h2>Technical Implementation</h2>
+            <div class="sub">An implementation concept solves a problem using an existing technology.</div>
+        </div>
+        <div class="right">
+            <a class="btn secondary" href="{% url 'category-concept-create' %}?parent={{ detail.pk }}"
+               rel="nofollow noopener">
+                <span class="icon-plus"></span> Add Tech Concept
+            </a>
+        </div>
+    </div>
+    {% if technology_concepts %}
+        <div class="tile-container">
+            {% for result in technology_concepts %}
+                {% include 'concepts/technology/result.html' %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-container">
+            <div class="empty-div"><img src="{% static 'imgs/add_file.png' %}" alt="add concept"/>
+                <p class="empty-text">There are no implementation concepts yet. Help the community by adding one yourself!</p>
+            </div>
+        </div>
+    {% endif %}
+</div>

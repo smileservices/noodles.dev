@@ -2,53 +2,39 @@
 {% load markdownify %}
 
 <header>
-    <div class="left-side">
-        <img src="{{ result.logo.medium }}" alt="">
-        <h1 class="title">{{ result.name }}</h1>
+    <div class="left">
+        <img src="{{ detail.logo.medium }}" alt="">
+        <div class="title-container">
+            <h1 class="title">{{ detail.name }}</h1>
+            <span>maintained by {{ detail.owner }}</span>
+            <a href="{{ detail.url }}">{{ detail.url }}</a>
+        </div>
     </div>
-    <a class="btn contribute" href="{% url 'tech-edit' id=result.pk %}" rel="nofollow noopener">Contribute</a>
+    <div class="right">
+        <a class="btn contribute" href="{% url 'tech-edit' id=detail.pk %}" rel="nofollow noopener">Suggest Edit</a>
+        <a class="btn contribute" href="{% url 'technology-history' slug=detail.slug %}"
+           rel="nofollow noopener">History</a>
+    </div>
 </header>
 
-<p class="tags">
-    <a href="{% url 'search_page' %}?tab=technologies&license={{ result.license_label }}">{{ result.license_label }}</a>
-</p>
 
-{% for category in result.category.all %}
-    <p class="tags">
-        {% for cat in category.get_ancestors %}
-            <a href="{% url 'category-detail' cat.slug %}">{{ cat }}</a>
-        {% endfor %}
-        <a href="{% url 'category-detail' category.slug %}">{{ category }}</a>
-    </p>
-{% endfor %}
 <div class="description">
-    <p class="summary">{{ result.description | linebreaks }}</p>
-    <p>Technology maintained by <span class="highlighted">{{ result.owner }}</span></p>
-    <p class="source_url"><a href="{{ result.url }}">{{ result.url }}</a></p>
+    <p class="summary">{{ detail.description | linebreaks }}</p>
 </div>
 <div class="description-long">
-    {{ result.description_long|markdownify }}
+    {{ detail.description_long|markdownify }}
 </div>
 
-{% if result.ecosystem.count > 0 %}
-    <p>Ecosystem:</p>
-    <div class="tags">
-        {% for tech in result.ecosystem.all %}
-            <a class="tech" href="{% url 'tech-detail' tech.slug %}">{{ tech }}</a>
-        {% endfor %}
-    </div>
-{% endif %}
-
-<meta itemprop="name" content="{{ result.name }}"/>
-<meta itemprop="summary" content="{{ result.description }}"/>
+<meta itemprop="name" content="{{ detail.name }}"/>
+<meta itemprop="summary" content="{{ detail.description }}"/>
 <meta itemprop="keywords" content="
-        {% for category in result.category.all %}
+        {% for category in detail.category.all %}
             {% for cat in category.get_ancestors %}
                 {{ category }}, {{ cat.name }},
             {% endfor %}
         {% endfor %}
-        {{ result.license_label }}
+        {{ detail.license_label }}
 "/>
 
 <span class="published">Added By <a
-        href="{% url 'user-profile' result.author.username %}">{{ result.author }}</a></span>
+        href="{% url 'user-profile' detail.author.username %}">{{ detail.author }}</a></span>

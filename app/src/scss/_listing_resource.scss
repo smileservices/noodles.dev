@@ -8,7 +8,6 @@
   .left {
     display: flex;
     flex-direction: column;
-    gap: $padding-unit;
     max-width: $fontsize-big*25;
     min-width: $fontsize-big*15;
     margin-bottom: 0;
@@ -16,6 +15,16 @@
     .rating {
       padding-top: 0;
     }
+  }
+
+  .published {
+    .tags {
+      display: inline-block;
+    }
+  }
+
+  .rating {
+    margin-bottom: $padding-unit-big;
   }
 
   .right {

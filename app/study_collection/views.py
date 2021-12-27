@@ -13,27 +13,25 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset
+from core.utils import rest_paginate_queryset
 from . import serializers, filters
 from .models import CollectionResources, Collection
-from django.views.decorators.cache import cache_page
 
 
 def detail(request, id, slug):
-    queryset = Collection.objects
-    resource = queryset.get(pk=id)
-    study_resources = resource.get_study_resources()
+    detail = Collection.objects.get(pk=id)
     data = {
-        'result': resource,
-        'study_resources': study_resources,
-        'thumbs_up_array': json.dumps(resource.thumbs_up_array),
-        'thumbs_down_array': json.dumps(resource.thumbs_down_array),
+        'detail': detail,
+        'resources': detail.get_study_resources(),
+        'thumbs_up_array': json.dumps(detail.thumbs_up_array),
+        'thumbs_down_array': json.dumps(detail.thumbs_down_array),
         'urls': {
             # options
             'tag_options_api': reverse_lazy('tags-options-list'),
             'tech_options_api': reverse_lazy('techs-options-list'),
             # collections urls
             'collections_api': reverse_lazy('collection-viewset-list'),
-            'vote_url': reverse_lazy('collection-viewset-vote', kwargs={'pk': resource.pk}),
+            'vote_url': reverse_lazy('collection-viewset-vote', kwargs={'pk': detail.pk}),
         }
     }
     return render(request, 'study_collection/detail_page.html', data)
@@ -76,12 +74,7 @@ class CollectionViewset(ResourceWithEditSuggestionVieset):
     def owned(self, *args, **kwargs):
         # get all user collections
         queryset = self.queryset.filter(author=self.request.user.id).all().order_by('created_at')
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.serializer_class(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
+        return rest_paginate_queryset(self, queryset)
 
     @action(methods=['GET'], detail=False)
     def owned_with_resource(self, *args, **kwargs):
@@ -135,6 +128,11 @@ class CollectionViewset(ResourceWithEditSuggestionVieset):
             .order_by('order')
         serializer = serializers.CollectionResourceListingSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    @action(methods=['GET'], detail=False)
+    def featured(self, request, *args, **kwargs):
+        queryset = self.queryset
+        return rest_paginate_queryset(self, queryset)
 
 
 # todo

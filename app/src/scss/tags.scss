@@ -1,0 +1,87 @@
+$color-tag-bg: #363845;
+$color-tag-text: #A5AECF;
+$color-tag-hover-text: #ffffff;
+
+$color-tag-tech-bg: #D4EAFF;
+$color-tag-tech-text: #1752EA;
+$color-tag-tech-hover-text: #658BEB;
+
+$color-tag-concept-bg: #D4EAFF;
+$color-tag-concept-text: #1752EA;
+$color-tag-concept-hover-text: #658BEB;
+
+$color-tag-meta-bg: #1B1D2F;
+$color-tag-meta-text: #FFFFFF;
+
+.tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: $padding-unit-sm;
+
+  > *, > a:visited {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    border-radius: 10px;
+    background-color: $color-tag-bg;
+    color: $color-tag-text;
+    font-weight: 600;
+    font-size: $fontsize-sm;
+    line-height: $lineheight-base;
+  }
+
+  > *:first-child {
+    margin-left: 0;
+  }
+
+  > *:last-child {
+    margin-right: 0;
+  }
+
+  > *:hover, a:hover {
+    cursor: pointer;
+    color: $color-tag-hover-text;
+  }
+
+  > *.tech, > a.tech:visited {
+    background-color: $color-tag-tech-bg;
+    color: $color-tag-tech-text;
+  }
+
+  > *.tech:hover {
+    color: $color-tag-tech-hover-text;
+  }
+
+  .meta {
+    border-radius: 3px;
+    padding: 0 8px;
+    font-size: $fontsize-sm;
+    font-weight: 400;
+    line-height: $lineheight-base;
+    background-color: $color-tag-meta-bg;
+    color: $color-tag-meta-text;
+  }
+
+  > .tech svg {
+    height: $fontsize-tn;
+    width: $fontsize-tn;
+    margin-right: $padding-unit-sm/2;
+  }
+
+  > .tech span {
+    display: flex;
+    align-content: center;
+  }
+
+  > *.concept, > a.concept:visited {
+    background-color: $color-tag-concept-bg;
+    color: $color-tag-concept-text;
+  }
+
+  > *.concept:hover {
+    color: $color-tag-concept-hover-text;
+  }
+}

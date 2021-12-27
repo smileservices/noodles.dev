@@ -1,28 +1,25 @@
 <div class="related column-container" id="related-app">
-    <h4>{{ detail.name }} Concepts</h4>
-    {% if concepts %}
-        {% for result in concepts %}
-            {% include 'concepts/category/result.html' %}
-        {% endfor %}
-        <a class="contribute" href="{% url 'category-concept-create' %}?category={{ detail.pk }}" rel="nofollow noopener">
-            Add a new concept
-        </a>
-    {% else %}
-        <a class="contribute" href="{% url 'category-concept-create' %}?category={{ detail.pk }}" rel="nofollow noopener">
-            Be the first to add a concept
-        </a>
-    {% endif %}
-    <h4>{{ detail.name }} Technologies</h4>
-    {% if technologies %}
-        {% for result in technologies %}
-            {% include 'technology/result.html' %}
-        {% endfor %}
-        <a class="contribute" href="{% url 'create-technology' %}" rel="nofollow noopener">
-            Add a new technology
-        </a>
-    {% else %}
-        <a class="contribute" href="{% url 'create-technology' %}" rel="nofollow noopener">
-            Be the first to add a technology
-        </a>
-    {% endif %}
+    <div class="card">
+        <div class="header">Category Tree</div>
+        <div class="tree-container">
+            {% if not detail.is_root %}
+                <div class="parent">{{ detail.parent.get_ahref|safe }}</div>
+            {% endif %}
+            <ul class="category-tree">
+                <li class="active">
+                    {{ detail }}
+                    {% if detail.children.count %}
+                        <ul>
+                        {% for child in detail.get_children %}
+                            <li>{{ child.get_ahref|safe }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+                {% for sibling in detail.get_siblings %}
+                    <li>{{ sibling.get_ahref|safe }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>

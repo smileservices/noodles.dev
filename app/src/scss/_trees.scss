@@ -1,0 +1,63 @@
+//structure is like this
+//
+//<div class="tree-container">
+//    <ul class="category-tree">
+//        <li class="active">
+//            Category: Databases
+//            <ul>
+//                <li>SQL</li>
+//                <li>NO SQL</li>
+//            </ul>
+//        </li>
+//    </ul>
+//</div>
+
+
+ul.category-tree {
+  list-style: none;
+  margin-left: $padding-unit-md;
+
+  ul {
+    list-style: none;
+    margin-left: $padding-unit-big*1.5;
+  }
+
+  li {
+    padding-bottom: $padding-unit-sm/2;
+    padding-left: $padding-unit-sm/2;
+    line-height: $lineheight-base*1.125;
+    color: $color-text-white;
+    font-weight: 500;
+    border-left: 1px solid $color-text-grey;
+  }
+
+  li:last-child {
+    border-left: none;
+  }
+
+  li:before {
+    position: relative;
+    top: -$padding-unit-sm/2;
+    height: $padding-unit-md;
+    width: $padding-unit-big;
+    color: $color-text-white;
+    border-bottom: 1px solid $color-text-grey;
+    content: "";
+    display: inline-block;
+    left: -$padding-unit-sm/2;
+  }
+
+  li:last-child:before {
+    border-left: 1px solid $color-text-grey;
+  }
+
+  li > a, li > a:visited {
+    color: $color-text-white;
+  }
+
+  li.active {
+    color: #1ac41a;
+    font-weight: 700;
+  }
+
+}

@@ -1,40 +1,31 @@
 <div class="related column-container" id="related-app">
-    <h4>Children Concepts</h4>
-    {% if children_concepts %}
-        {% for result in children_concepts %}
-            {% include 'concepts/category/result.html' %}
-        {% endfor %}
-        <a class="contribute" href="{% url 'category-concept-create' %}?category={{ result.category.pk }}&parent={{ result.pk }}"
-           rel="nofollow noopener">
-            Add a new concept
-        </a>
-    {% else %}
-        <div class="alert alert-contribute">
-            <p>There are no concepts added for {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'category-concept-create' %}?category={{ result.category.pk }}&parent={{ result.pk }}"
-               rel="nofollow noopener">
-                Be the first to add a new concept
-            </a>
+    <div class="card meta-container">
+        <div class="row"><span class="label">Category</span><span
+                class="tags"><span class="meta">{{detail.category.get_ahref|safe}}</span></span></div>
+    </div>
+    <div class="card meta-container">
+        <div class="row"><span class="label">Experience level</span><span
+                class="tags"><span class="meta">{{ detail.experience_level_label }}</span></span></div>
+    </div>
+    <div class="card">
+        <div class="header">Concepts Tree</div>
+        <div class="tree-container">
+            {{ detail.parent.get_ahref | safe }}
+            <ul class="category-tree">
+                <li class="active">
+                    {{ detail }}
+                    {% if detail.children.count %}
+                        <ul>
+                        {% for child in detail.get_children %}
+                            <li>{{ child.get_ahref|safe }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+                {% for sibling in detail.get_siblings %}
+                    <li>{{ sibling.get_ahref|safe }}</li>
+                {% endfor %}
+            </ul>
         </div>
-
-    {% endif %}
-    {% if technology_concepts %}
-        <h4>Technology Related Concepts</h4>
-        {% for result in technology_concepts %}
-            {% include 'concepts/technology/result.html' %}
-        {% endfor %}
-    {% endif %}
-    <h4>Resources about {{ result.name }}</h4>
-    {% if result.related_resources.count > 0 %}
-        {% for result in result.related_resources.all %}
-            {% include 'study_resource/result.html' %}
-        {% endfor %}
-        <a class="contribute" href="{% url 'create-resource' %}" rel="nofollow noopener">Add a new learning resource</a>
-    {% else %}
-        <div class="alert alert-contribute">
-            <p>There are no resources added for {{ result.name }}.</p>
-            <a class="contribute" href="{% url 'create-resource' %}" rel="nofollow noopener">Be the first to add a
-                learning resource</a>
-        </div>
-    {% endif %}
+    </div>
 </div>

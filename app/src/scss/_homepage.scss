@@ -1,14 +1,336 @@
 #homepage-app {
-  display: grid;
-  grid-gap: $padding-unit-big;
-  grid-template-columns: 2.5fr 1fr;
-  grid-template-areas:
-  "search related";
-
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 
   .resources, .collections, .technologies {
     .most-voted, .latest {
       margin-bottom: $padding-unit-big*3;
+    }
+  }
+
+  .button-icon {
+    margin-right: 10px;
+  }
+
+  .banner-section {
+    width: 100%;
+    margin-bottom: 4rem;
+
+    .banner {
+      width: 100%;
+      height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      border-radius: 10px;
+      background-image: linear-gradient(to right, #542199, #6a3995, #462da8, #3c1e6b);
+
+      h2 {
+        margin-bottom: 1.3rem;
+      }
+    }
+  }
+
+  .featured-categories-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4.5rem;
+
+    .featured-categories-section-title {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.2rem;
+    }
+
+    .featured-categories-container {
+      .call-to-action-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        .call-to-action {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          color: #1E1E2B;
+          border-radius: 10px;
+          text-align: center;
+
+          img {
+            max-height: 60px;
+            margin-bottom: 1.5rem;
+          }
+
+          h2 {
+            font-weight: bold;
+            font-size: 21px;
+            line-height: 26px;
+            margin-bottom: 2rem;
+          }
+        }
+
+        .contribute-container {
+          background: #CBDDFF;
+          border: 2px solid #77A3F4;
+        }
+
+        .add-tutorial-container {
+          background: #D2CBFF;
+          border: 2px solid #77A3F4;
+        }
+      }
+    }
+  }
+
+  .technolgies-and-concepts-section {
+    margin-bottom: 4.5rem;
+    .concepts-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .concepts-text {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+      }
+
+      .concepts-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.3rem;
+        margin-bottom: 1.3rem;
+      }
+    }
+
+    .featured-technologies-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .featured-technologies-text {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+      }
+
+      .add-technology {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #FAE1A1;
+        border: 2px solid #FCD46F;
+        box-sizing: border-box;
+        border-radius: 10px;
+        color: #1E1E2B;
+        text-align: center;
+        margin-bottom: 1.6rem;
+
+        img {
+          max-height: 60px;
+          margin-bottom: 1.5rem;
+        }
+
+        h2 {
+          font-weight: bold;
+          font-size: 21px;
+          line-height: 26px;
+          margin-bottom: 2rem;
+        }
+      }
+
+      .featured-tech-cards-container {
+        width: 100%;
+        margin-bottom: 1rem;
+        .see-more-small {
+          background: #363845;
+          border-radius: 8px;
+          color: $color-text-grey-2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .tech-card {
+          display: flex;
+          align-items: center;
+          background: $color-background-1;
+          border-radius: 8px;
+          min-height: 72px;
+          padding-left: 20px;
+
+          img {
+            margin-right: 12px;
+          }
+
+          .tech-summary{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+
+            h3 {
+              font-size: 18px;
+              line-height: 22px;
+              color: #FFFFFF;
+              margin-bottom: 0px;
+            }
+
+            p {
+              font-size: 14px;
+              line-height: 22px;
+              color: #C5C9E1;
+            }
+          }
+        }
+      }
+
+      .see-more-large {
+        width: 100%;
+        height: 72px;
+        background: #363845;
+        border-radius: 8px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  .resources-and-reviews-section {
+    margin-bottom: 4.5rem;
+
+    .tech-resources-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      .tech-resources-text {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+      }
+
+      .tech-resources-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.3rem;
+        margin-bottom: 1.3rem;
+      }
+    }
+
+    .reviews-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      .reviews-text {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+      }
+
+      .reviews-cards-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.3rem;
+        margin-bottom: 1.3rem;
+      }    
+    }
+  }
+
+  .collections-section {
+    margin-bottom: 4.5rem;
+
+    .collections-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .collections-text {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+      }
+
+      .collections-cards-container {
+        width: 100%;
+        .collections-cards {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          margin-bottom: 1.3rem;
+
+          .collection-card {
+            display: flex;
+            align-items: center;
+            background-color: $color-background-1;
+            border-radius: 8px;
+            height: 72px;
+            padding-left: 1.3rem;
+
+            .card-count {
+              border-radius: 50%;
+              height: 48px;
+              width: 48px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background-color: #FFF1BF;
+              color: #1E1E2B;
+              margin-right: 12px;
+            }
+
+            .collection-details {
+              display: flex;
+              flex-direction: column;
+
+              h2 {
+                font-weight: bold;
+                font-size: 18px;
+                line-height: 22px;
+                margin-bottom: 4px;
+              }
+
+              p {
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 22px;
+                color: #C5C9E1;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .add-collections-call-to-action {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #CBDDFF;
+      border: 2px solid #77A3F4;
+      box-sizing: border-box;
+      border-radius: 10px;
+      color: #1E1E2B;
+      text-align: center;
+      margin-bottom: 1.6rem;
+
+      img {
+        max-height: 60px;
+        margin-bottom: 1.5rem;
+      }
+
+      h2 {
+        font-weight: bold;
+        font-size: 21px;
+        line-height: 26px;
+        margin-bottom: 2rem;
+      }
     }
   }
 }

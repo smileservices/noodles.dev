@@ -1,5 +1,7 @@
 body {
-  line-height: $fontsize-big*1.1;
+  font-size: $fontsize-md;
+  line-height: $lineheight-base;
+  font-weight: 400;
 }
 
 h1, h2, h3, h4, h5 {
@@ -40,16 +42,16 @@ h5 {
 
 a {
   text-decoration: none;
-  color: var(--color-blue);
+  color: $color-text-grey-2;
 }
 
 a:visited {
-  color: var(--color-blue-dark);
+  color: #576EFF;
 }
 
 a:hover {
-  color: var(--color-blue-dark);
   cursor: pointer;
+  color: #576EFF;
 }
 
 small, .small {
@@ -61,9 +63,13 @@ small, .small {
 }
 
 .breadcrumbs {
-  font-size: $fontsize-tn;
-  color: var(--color-text-grey-2);
-  margin-bottom: $padding-unit-big;
+  font-size: $fontsize-md;
+  color: $color-text-grey;
+  margin-bottom: $padding-unit*4;
+
+  a, a:visited {
+      color: $color-text-grey-2;
+  }
 }
 
 .main-content {
@@ -71,65 +77,12 @@ small, .small {
   font-weight: 500;
 }
 
-.tags {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-
-  > *, > a:visited {
-    display: inline-block;
-    border-radius: $radius-small;
-    padding: $padding-unit-sm/2;
-    margin: $padding-unit-sm/2;
-    font-size: $fontsize-tn;
-    font-weight: 700;
-    line-height: $fontsize-sm;
-    background-color: var(--color-background-3);
-    color: var(--color-text-grey);
-  }
-
-  > *:last-child {
-    margin-right: 0;
-  }
-
-  > span:hover, a:hover {
-    cursor: pointer;
-    background-color: var(--color-background-2);
-    color: var(--color-text-grey);
-  }
-
-  > *.tech, > a.tech:visited {
-    background-color: var(--color-blue);
-    color: var(--color-background-1);
-  }
-
-  > *.tech:hover {
-    background-color: var(--color-blue-dark);
-    color: var(--color-background-1);
-  }
-
-  > .tech svg {
-    height: $fontsize-tn;
-    width: $fontsize-tn;
-    margin-right: $padding-unit-sm/2;
-  }
-
-  > .tech span {
-    display: flex;
-    align-content: center;
-  }
-
-  > *.concept, > a.concept:visited {
-    background-color: var(--color-text-white);
-    color: var(--color-blue-dark);
-  }
-
-  > *.concept:hover {
-    background-color: var(--color-text-grey);
-    color: var(--color-blue-dark);
-  }
-}
-
 .blue-text {
   color: var(--color-blue);
+}
+
+.diff {
+  ins,del {
+    color: #211f1f;
+  }
 }

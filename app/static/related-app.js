@@ -1,1 +1,285 @@
-!function(e){var t={};function a(n){if(t[n])return t[n].exports;var r=t[n]={i:n,l:!1,exports:{}};return e[n].call(r.exports,r,r.exports,a),r.l=!0,r.exports}a.m=e,a.c=t,a.d=function(e,t,n){a.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:n})},a.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},a.t=function(e,t){if(1&t&&(e=a(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(a.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var r in e)a.d(n,r,function(t){return e[t]}.bind(null,r));return n},a.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return a.d(t,"a",t),t},a.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},a.p="",a(a.s=86)}({0:function(e,t){e.exports=React},2:function(e,t,a){var n=a(31),r=a(32),c=a(25),l=a(33);e.exports=function(e,t){return n(e)||r(e,t)||c(e,t)||l()}},23:function(e,t,a){"use strict";a.d(t,"a",(function(){return s}));var n=a(0),r=a.n(n),c=a(5),l=function(e){var t=e.size;return r.a.createElement("div",{className:"skeleton header "+t})};function s(e,t){var a="";switch(e){case"filter":a=function(){return r.a.createElement("div",{className:"skeleton filter-select"})};break;case"result":a=function(){return r.a.createElement("div",{className:"skeleton result"})};break;case"review":a=function(){return r.a.createElement("div",{className:"skeleton review"})};break;case"tag":a=function(){return r.a.createElement("span",{className:"skeleton tag"})};break;case"header":return[r.a.createElement(l,{key:Object(c.e)(4),size:t})];case"sidebar-tech":a=function(){return r.a.createElement("div",{className:"result-minimal skeleton"})};break;default:alert("Cannot find Skeleton Element of name "+e)}var n=[],s=0;do{n.push(r.a.createElement(a,{key:Object(c.e)(4)})),s+=1}while(s<t);return n}},25:function(e,t,a){var n=a(26);e.exports=function(e,t){if(e){if("string"==typeof e)return n(e,t);var a=Object.prototype.toString.call(e).slice(8,-1);return"Object"===a&&e.constructor&&(a=e.constructor.name),"Map"===a||"Set"===a?Array.from(e):"Arguments"===a||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(a)?n(e,t):void 0}}},26:function(e,t){e.exports=function(e,t){(null==t||t>e.length)&&(t=e.length);for(var a=0,n=new Array(t);a<t;a++)n[a]=e[a];return n}},31:function(e,t){e.exports=function(e){if(Array.isArray(e))return e}},32:function(e,t){e.exports=function(e,t){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e)){var a=[],n=!0,r=!1,c=void 0;try{for(var l,s=e[Symbol.iterator]();!(n=(l=s.next()).done)&&(a.push(l.value),!t||a.length!==t);n=!0);}catch(e){r=!0,c=e}finally{try{n||null==s.return||s.return()}finally{if(r)throw c}}return a}}},33:function(e,t){e.exports=function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}},37:function(e,t,a){"use strict";a.d(t,"a",(function(){return s}));var n=a(2),r=a.n(n),c=a(0),l=a.n(c);function s(e){var t=e.fullText,a=e.charLimit,n=e.action,s=Object(c.useState)(!1),o=r()(s,2),i=o[0],u=o[1];return t.length<=a?t:i?l.a.createElement(c.Fragment,null,t,l.a.createElement("span",{className:"read-more",onClick:function(e){return u(!1)}},"hide")):l.a.createElement(c.Fragment,null,t.substring(0,a),"...",l.a.createElement("span",{className:"read-more",onClick:function(e){return n||u(!0)}},"show more"))}},44:function(e,t,a){"use strict";a.d(t,"a",(function(){return c}));var n=a(0),r=a.n(n);function c(e){for(var t=e.rating,a=e.maxRating,c=e.ratingChange,l=e.isDisabled,s=[],o=function(e){var a=e<=t?"icon-star-full":"icon-star-empty";s.push(r.a.createElement("span",{key:"rating-star"+e,className:a,onClick:c&&!l?function(t){return c(e)}:null}))},i=1;i<=a;i++)o(i);return r.a.createElement(n.Fragment,null,s.map((function(e){return e})))}},5:function(e,t,a){"use strict";a.d(t,"e",(function(){return c})),a.d(t,"d",(function(){return l})),a.d(t,"a",(function(){return s})),a.d(t,"b",(function(){return o})),a.d(t,"f",(function(){return i})),a.d(t,"c",(function(){return u}));var n=a(2),r=a.n(n),c=function(e){for(var t="",a="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",n=a.length,r=0;r<e;r++)t+=a.charAt(Math.floor(Math.random()*n));return t};function l(){return function(e){var t=("; "+document.cookie).split("; "+e+"=");if(2===t.length)return t.pop().split(";").shift()}("csrftoken")}function s(e,t){switch(a=t,Object.prototype.toString.call(a).slice(8,-1).toLowerCase()){case"object":return Object.keys(t).map((function(a){return e.append(a,t[a])}));case"array":return t.map((function(t){e.append(Object.keys(t)[0],Object.values(t)[0])}))}var a}function o(){var e,t={},a={},n=["resultsPerPage","current","offset"],c=new URLSearchParams(document.location.search);return c.delete("search"),c.delete("tab"),e=c.get("sort"),c.delete("sort"),Array.from(c,(function(e){var c=r()(e,2),l=c[0],s=c[1];n.indexOf(l)>-1?a[l]=Number(s):t[l]=s})),[t,e,a]}function i(e,t){var a=new URLSearchParams;""!==t.tab&&(a.set("tab",t.tab),t.filters&&Object.keys(t.filters).length>0&&s(a,t.filters)),t.search&&a.set("search",t.search),t.sort&&a.set("sort",t.sort),history.pushState(null,"Search",e+a.toString())}function u(e,t,a){return e?{label:t,type:a,options:Object.keys(e).map((function(t){return[t,t+"("+e[t]+")"]}))}:{}}},51:function(e,t,a){"use strict";a.d(t,"a",(function(){return l}));var n=a(0),r=a.n(n),c=a(44);function l(e){var t=e.data,a=e.maxRating;return t.rating?r.a.createElement("div",{className:"rating"},r.a.createElement("span",{className:"stars"},r.a.createElement(c.a,{maxRating:a,rating:t.rating})),r.a.createElement("span",{itemProp:"ratingCount"},t.reviews_count," Reviews")):r.a.createElement("div",{className:"rating"},r.a.createElement("span",{itemProp:"ratingCount"},"No Reviews Yet. ",r.a.createElement("a",{href:t.url},"Contribute")))}},52:function(e,t,a){"use strict";a.d(t,"a",(function(){return o}));var n=a(0),r=a.n(n),c=a(51),l=a(37),s=r.a.createElement("svg",{viewBox:"0 0 12 12",fill:"none",xmlns:"http://www.w3.org/2000/svg"},r.a.createElement("path",{d:"M9.50198 4.5L11.002 1H2.00198V0.5C2.00198 0.224 1.77798 0 1.50198 0C1.22598 0 1.00198 0.224 1.00198 0.5V11.5C1.00198 11.776 1.22598 12 1.50198 12C1.77798 12 2.00198 11.776 2.00198 11.5V8H11.002L9.50198 4.5Z",fill:"black"}));function o(e){var t=e.data,a=e.addFilter,n=t.technologies.map((function(e){return r.a.createElement("a",{key:e.url,href:e.url,className:"tech"},s," ",e.name,e.version?" "+e.version:"")})),o={category:t.category_concepts.map((function(e){return r.a.createElement("a",{href:e.url,className:"concept"},e.name)})),technology:t.technology_concepts.map((function(e){return r.a.createElement("a",{href:e.url,className:"concept"},e.name)}))},i=a?r.a.createElement("span",{onClick:function(e){a("category",t.category)}},t.category):r.a.createElement("a",{key:"cat"+t.media,href:"/search?tab=resources&category="+t.category},t.category),u=a?r.a.createElement("span",{onClick:function(e){return a("experience_level",t.experience_level)}},t.experience_level):r.a.createElement("a",{key:"exp"+t.experience_level,href:"/search?tab=resources&experience_level="+t.experience_level},t.experience_level),m=t.tags.map((function(e){return a?r.a.createElement("span",{key:"tag"+e,onClick:function(t){return a("tags",e)},className:"tag"},"#",e):r.a.createElement("a",{key:"tag"+e,href:"/search?tab=resources&tags="+e,className:"tag"},"#",e)})),f=a?r.a.createElement("span",{onClick:function(e){return a("media",t.media)}},t.media):r.a.createElement("a",{key:"media"+t.media,href:"/search?tab=resources&media="+t.media},t.media);return r.a.createElement("div",{className:"card"},r.a.createElement("div",{className:"result resource"},r.a.createElement("div",{className:"left"},r.a.createElement("div",{className:"tags"},n,o.technology,i,o.category,u),r.a.createElement("div",{className:"listing-title"},r.a.createElement("h4",{className:"title",itemProp:"name"},r.a.createElement("a",{href:t.url},t.name)),r.a.createElement("span",{className:"published"},t.publication_date," By ",t.published_by),r.a.createElement("div",{className:"tags"},f)),r.a.createElement("div",{className:"description"},r.a.createElement(l.a,{fullText:t.summary,charLimit:250})),r.a.createElement("div",{className:"tags"},m),r.a.createElement(c.a,{data:t,maxRating:5})),t.image?r.a.createElement("div",{className:"right"},r.a.createElement("div",{className:"image"},r.a.createElement("a",{itemProp:"name",href:t.url},r.a.createElement("img",{className:"primary-image",src:t.image.small,alt:""})))):""))}},60:function(e,t,a){"use strict";a.d(t,"a",(function(){return m}));var n=a(2),r=a.n(n),c=a(0),l=a.n(c),s=a(52),o=a(23),i=React.createElement(c.Fragment,null,Object(o.a)("header","sm"),React.createElement("div",{className:"tags"},Object(o.a)("tag",3)),Object(o.a)("header","sm"),React.createElement("div",{className:"tags"},Object(o.a)("tag",3)),Object(o.a)("header","sm"),Object(o.a)("result",4)),u=l.a.createElement("svg",{viewBox:"0 0 12 12",fill:"none",xmlns:"http://www.w3.org/2000/svg"},l.a.createElement("path",{d:"M9.50198 4.5L11.002 1H2.00198V0.5C2.00198 0.224 1.77798 0 1.50198 0C1.22598 0 1.00198 0.224 1.00198 0.5V11.5C1.00198 11.776 1.22598 12 1.50198 12C1.77798 12 2.00198 11.776 2.00198 11.5V8H11.002L9.50198 4.5Z",fill:"black"}));function m(){var e=Object(c.useState)({}),t=r()(e,2),a=t[0],n=t[1],o=Object(c.useState)(!0),m=r()(o,2),f=m[0],g=m[1];return Object(c.useEffect)((function(e){fetch("/search/api/related/",{method:"GET"}).then((function(e){if(g(!1),e.ok)return e.json()})).then((function(e){n(e)}))}),[]),f||0===Object.keys(a).length?i:l.a.createElement(c.Fragment,null,Object.keys(a.aggregations.technologies).length?l.a.createElement(c.Fragment,null,l.a.createElement("h4",null,"Popular Technologies"),l.a.createElement("div",{className:"tags"},Object.keys(a.aggregations.technologies).map((function(e){return l.a.createElement("a",{key:"popular-tech-"+e,className:"tech",href:"/search/?tab=resources&tech_v="+e},u," ",e," (",a.aggregations.technologies[e],")")})))):"",Object.keys(a.aggregations.tags).length?l.a.createElement(c.Fragment,null,l.a.createElement("h4",null,"Tags to follow"),l.a.createElement("div",{className:"tags"},Object.keys(a.aggregations.tags).map((function(e){return l.a.createElement("a",{key:"popular-tag-"+e,href:"/search/?tab=resources&tags="+e},"# ",e," (",a.aggregations.tags[e],")")})))):"",l.a.createElement("h4",null,"Latest Added Resources"),a.resources.items.map((function(e){return l.a.createElement(s.a,{key:"latest-resource-"+e.pk,data:e})})))}},86:function(e,t,a){"use strict";a.r(t);var n=a(9),r=a.n(n),c=a(60);function l(){return React.createElement(c.a,{addFilter:(e="resources",function(t,a){return window.location="/search/?tab="+e+"&"+t+"="+a})});var e}r.a.render(React.createElement(l,null),document.getElementById("related-app"))},9:function(e,t){e.exports=ReactDOM}});
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./app/frontend/src/RelatedApp.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./app/frontend/src/RelatedApp.js":
+/*!****************************************!*\
+  !*** ./app/frontend/src/RelatedApp.js ***!
+  \****************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-dom */ \"react-dom\");\n/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _search_src_RelatedComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../search/src/RelatedComponent */ \"./app/search/src/RelatedComponent.js\");\n\n\n\nfunction RelatedApp() {\n  function addFilterFactory(tab) {\n    return function (name, value) {\n      return window.location = '/search/?tab=' + tab + '&' + name + '=' + value;\n    };\n  }\n\n  return /*#__PURE__*/React.createElement(_search_src_RelatedComponent__WEBPACK_IMPORTED_MODULE_1__[\"default\"], {\n    addFilter: addFilterFactory('resources')\n  });\n}\n\nreact_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render( /*#__PURE__*/React.createElement(RelatedApp, null), document.getElementById('related-app'));\n\n//# sourceURL=webpack:///./app/frontend/src/RelatedApp.js?");
+
+/***/ }),
+
+/***/ "./app/search/src/RelatedComponent.js":
+/*!********************************************!*\
+  !*** ./app/search/src/RelatedComponent.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return RelatedComponent; });\n/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ \"./node_modules/@babel/runtime/helpers/slicedToArray.js\");\n/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _study_resource_src_StudyResourceSearchListing__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../study_resource/src/StudyResourceSearchListing */ \"./app/study_resource/src/StudyResourceSearchListing.js\");\n/* harmony import */ var _src_components_skeleton_SkeletonLoadingRelatedSection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../src/components/skeleton/SkeletonLoadingRelatedSection */ \"./app/src/components/skeleton/SkeletonLoadingRelatedSection.js\");\n\n\n\n\nvar flagIcon = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"svg\", {\n  viewBox: \"0 0 12 12\",\n  fill: \"none\",\n  xmlns: \"http://www.w3.org/2000/svg\"\n}, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"path\", {\n  d: \"M9.50198 4.5L11.002 1H2.00198V0.5C2.00198 0.224 1.77798 0 1.50198 0C1.22598 0 1.00198 0.224 1.00198 0.5V11.5C1.00198 11.776 1.22598 12 1.50198 12C1.77798 12 2.00198 11.776 2.00198 11.5V8H11.002L9.50198 4.5Z\",\n  fill: \"black\"\n}));\nfunction RelatedComponent() {\n  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__[\"useState\"])({}),\n      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),\n      data = _useState2[0],\n      setData = _useState2[1];\n\n  var _useState3 = Object(react__WEBPACK_IMPORTED_MODULE_1__[\"useState\"])(true),\n      _useState4 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState3, 2),\n      waiting = _useState4[0],\n      setWaiting = _useState4[1];\n\n  Object(react__WEBPACK_IMPORTED_MODULE_1__[\"useEffect\"])(function (e) {\n    fetch('/search/api/related/', {\n      method: 'GET'\n    }).then(function (result) {\n      setWaiting(false);\n\n      if (result.ok) {\n        return result.json();\n      }\n    }).then(function (data) {\n      setData(data);\n    });\n  }, []);\n  if (waiting || Object.keys(data).length === 0) return _src_components_skeleton_SkeletonLoadingRelatedSection__WEBPACK_IMPORTED_MODULE_3__[\"SkeletonLoadingRelatedSection\"];\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__[\"Fragment\"], null, Object.keys(data.aggregations.technologies).length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__[\"Fragment\"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"h4\", null, \"Popular Technologies\"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"div\", {\n    className: \"tags\"\n  }, Object.keys(data.aggregations.technologies).map(function (tech) {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"a\", {\n      key: 'popular-tech-' + tech,\n      className: \"tech\",\n      href: '/search/?tab=resources&tech_v=' + tech\n    }, flagIcon, \" \", tech, \" (\", data.aggregations.technologies[tech], \")\");\n  }))) : '', Object.keys(data.aggregations.tags).length ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__[\"Fragment\"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"h4\", null, \"Tags to follow\"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"div\", {\n    className: \"tags\"\n  }, Object.keys(data.aggregations.tags).map(function (tag) {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"a\", {\n      key: 'popular-tag-' + tag,\n      href: '/search/?tab=resources&tags=' + tag\n    }, \"# \", tag, \" (\", data.aggregations.tags[tag], \")\");\n  }))) : '', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"h4\", null, \"Latest Added Resources\"), data.resources.items.map(function (resource) {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_study_resource_src_StudyResourceSearchListing__WEBPACK_IMPORTED_MODULE_2__[\"default\"], {\n      key: 'latest-resource-' + resource.pk,\n      data: resource\n    });\n  }));\n}\n\n//# sourceURL=webpack:///./app/search/src/RelatedComponent.js?");
+
+/***/ }),
+
+/***/ "./app/src/components/StarRating.js":
+/*!******************************************!*\
+  !*** ./app/src/components/StarRating.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return StarRating; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n\nfunction StarRating(_ref) {\n  var rating = _ref.rating,\n      maxRating = _ref.maxRating,\n      ratingChange = _ref.ratingChange,\n      isDisabled = _ref.isDisabled;\n  var starsArr = [];\n\n  var _loop = function _loop(r) {\n    var className = r <= rating ? 'icon-star-full' : 'icon-star-empty';\n    starsArr.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"span\", {\n      key: 'rating-star' + r,\n      className: className,\n      onClick: ratingChange && !isDisabled ? function (e) {\n        return ratingChange(r);\n      } : null\n    }));\n  };\n\n  for (var r = 1; r <= maxRating; r++) {\n    _loop(r);\n  }\n\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__[\"Fragment\"], null, starsArr.map(function (starEl) {\n    return starEl;\n  }));\n}\n\n//# sourceURL=webpack:///./app/src/components/StarRating.js?");
+
+/***/ }),
+
+/***/ "./app/src/components/TruncatedTextComponent.js":
+/*!******************************************************!*\
+  !*** ./app/src/components/TruncatedTextComponent.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return TruncatedTextComponent; });\n/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ \"./node_modules/@babel/runtime/helpers/slicedToArray.js\");\n/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n\n\nfunction TruncatedTextComponent(_ref) {\n  var fullText = _ref.fullText,\n      charLimit = _ref.charLimit,\n      action = _ref.action;\n\n  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_1__[\"useState\"])(false),\n      _useState2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_useState, 2),\n      showAll = _useState2[0],\n      setShowAll = _useState2[1];\n\n  if (fullText.length <= charLimit) return fullText;\n\n  if (showAll) {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__[\"Fragment\"], null, fullText, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"span\", {\n      className: \"read-more\",\n      onClick: function onClick(e) {\n        return setShowAll(false);\n      }\n    }, \"hide\"));\n  } else {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_1__[\"Fragment\"], null, fullText.substring(0, charLimit), \"...\", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(\"span\", {\n      className: \"read-more\",\n      onClick: function onClick(e) {\n        return action ? action : setShowAll(true);\n      }\n    }, \"show more\"));\n  }\n}\n\n//# sourceURL=webpack:///./app/src/components/TruncatedTextComponent.js?");
+
+/***/ }),
+
+/***/ "./app/src/components/skeleton/SkeletonLoadingComponent.js":
+/*!*****************************************************************!*\
+  !*** ./app/src/components/skeleton/SkeletonLoadingComponent.js ***!
+  \*****************************************************************/
+/*! exports provided: SkeletonChildrenFactory, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"SkeletonChildrenFactory\", function() { return SkeletonChildrenFactory; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return SkeletonLoadingComponent; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ \"./app/src/components/utils.js\");\n\n\n\nvar SkeletonHeader = function SkeletonHeader(_ref) {\n  var size = _ref.size;\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: 'skeleton header ' + size\n  });\n};\n\nfunction SkeletonChildrenFactory(name, count) {\n  var Element = '';\n\n  switch (name) {\n    case 'filter':\n      Element = function Element() {\n        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n          className: \"skeleton filter-select\"\n        });\n      };\n\n      break;\n\n    case 'result':\n      Element = function Element() {\n        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n          className: \"skeleton result\"\n        });\n      };\n\n      break;\n\n    case 'review':\n      Element = function Element() {\n        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n          className: \"skeleton review\"\n        });\n      };\n\n      break;\n\n    case 'tag':\n      Element = function Element() {\n        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"span\", {\n          className: \"skeleton tag\"\n        });\n      };\n\n      break;\n\n    case 'header':\n      // count this time is string\n      return [/*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SkeletonHeader, {\n        key: Object(_utils__WEBPACK_IMPORTED_MODULE_1__[\"makeId\"])(4),\n        size: count\n      })];\n\n    case 'sidebar-tech':\n      Element = function Element() {\n        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n          className: \"result-minimal skeleton\"\n        });\n      };\n\n      break;\n\n    default:\n      alert('Cannot find Skeleton Element of name ' + name);\n  }\n\n  var resultList = [];\n  var i = 0;\n\n  do {\n    resultList.push( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Element, {\n      key: Object(_utils__WEBPACK_IMPORTED_MODULE_1__[\"makeId\"])(4)\n    }));\n    i += 1;\n  } while (i < count);\n\n  return resultList;\n}\nfunction SkeletonLoadingComponent(_ref2) {\n  var element = _ref2.element;\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"skeleton-loading-container\"\n  }, element);\n}\n\n//# sourceURL=webpack:///./app/src/components/skeleton/SkeletonLoadingComponent.js?");
+
+/***/ }),
+
+/***/ "./app/src/components/skeleton/SkeletonLoadingRelatedSection.js":
+/*!**********************************************************************!*\
+  !*** ./app/src/components/skeleton/SkeletonLoadingRelatedSection.js ***!
+  \**********************************************************************/
+/*! exports provided: SkeletonLoadingRelatedSection */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"SkeletonLoadingRelatedSection\", function() { return SkeletonLoadingRelatedSection; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _SkeletonLoadingComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SkeletonLoadingComponent */ \"./app/src/components/skeleton/SkeletonLoadingComponent.js\");\n\n\nvar SkeletonLoadingRelatedSection = /*#__PURE__*/React.createElement(react__WEBPACK_IMPORTED_MODULE_0__[\"Fragment\"], null, Object(_SkeletonLoadingComponent__WEBPACK_IMPORTED_MODULE_1__[\"SkeletonChildrenFactory\"])('header', 'sm'), /*#__PURE__*/React.createElement(\"div\", {\n  className: \"tags\"\n}, Object(_SkeletonLoadingComponent__WEBPACK_IMPORTED_MODULE_1__[\"SkeletonChildrenFactory\"])('tag', 3)), Object(_SkeletonLoadingComponent__WEBPACK_IMPORTED_MODULE_1__[\"SkeletonChildrenFactory\"])('header', 'sm'), /*#__PURE__*/React.createElement(\"div\", {\n  className: \"tags\"\n}, Object(_SkeletonLoadingComponent__WEBPACK_IMPORTED_MODULE_1__[\"SkeletonChildrenFactory\"])('tag', 3)), Object(_SkeletonLoadingComponent__WEBPACK_IMPORTED_MODULE_1__[\"SkeletonChildrenFactory\"])('header', 'sm'), Object(_SkeletonLoadingComponent__WEBPACK_IMPORTED_MODULE_1__[\"SkeletonChildrenFactory\"])('result', 4));\n\n//# sourceURL=webpack:///./app/src/components/skeleton/SkeletonLoadingRelatedSection.js?");
+
+/***/ }),
+
+/***/ "./app/src/components/utils.js":
+/*!*************************************!*\
+  !*** ./app/src/components/utils.js ***!
+  \*************************************/
+/*! exports provided: makeId, debounce, getCookie, getCsrfToken, extractURLParams, whatType, codeParamsToUrl, decodeParamsFromUrl, updateUrl, getAvailableFilters */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"makeId\", function() { return makeId; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"debounce\", function() { return debounce; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getCookie\", function() { return getCookie; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getCsrfToken\", function() { return getCsrfToken; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"extractURLParams\", function() { return extractURLParams; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"whatType\", function() { return whatType; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"codeParamsToUrl\", function() { return codeParamsToUrl; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"decodeParamsFromUrl\", function() { return decodeParamsFromUrl; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"updateUrl\", function() { return updateUrl; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getAvailableFilters\", function() { return getAvailableFilters; });\n/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ \"./node_modules/@babel/runtime/helpers/slicedToArray.js\");\n/* harmony import */ var _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0__);\n\nvar makeId = function makeId(length) {\n  var result = '';\n  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\n  var charactersLength = characters.length;\n\n  for (var i = 0; i < length; i++) {\n    result += characters.charAt(Math.floor(Math.random() * charactersLength));\n  }\n\n  return result;\n};\nfunction debounce(func, wait, immediate) {\n  var timeout;\n  return function () {\n    var context = this,\n        args = arguments;\n\n    var later = function later() {\n      timeout = null;\n      if (!immediate) func.apply(context, args);\n    };\n\n    var callNow = immediate && !timeout;\n    clearTimeout(timeout);\n    timeout = setTimeout(later, wait);\n    if (callNow) func.apply(context, args);\n  };\n}\nfunction getCookie(name) {\n  var value = \"; \" + document.cookie;\n  var parts = value.split(\"; \" + name + \"=\");\n  if (parts.length === 2) return parts.pop().split(\";\").shift();\n}\nfunction getCsrfToken() {\n  return getCookie('csrftoken');\n}\nfunction extractURLParams(str) {\n  if (str === '') return false;\n  var params = {};\n  var unparsed_params = str.split(\"?\").pop().split(\"&\");\n  unparsed_params.map(function (p) {\n    var p_arr = p.split('=');\n    if (p_arr[1] !== '') params[p_arr[0]] = p_arr[1];\n  });\n  return params;\n}\nfunction whatType(item) {\n  var typeStr = Object.prototype.toString.call(item).slice(8, -1);\n  return typeStr.toLowerCase();\n}\nfunction codeParamsToUrl(params, data) {\n  switch (whatType(data)) {\n    case 'object':\n      return Object.keys(data).map(function (name) {\n        return params.append(name, data[name]);\n      });\n\n    case 'array':\n      return data.map(function (f) {\n        params.append(Object.keys(f)[0], Object.values(f)[0]);\n      });\n  }\n}\nfunction decodeParamsFromUrl() {\n  var filters = {};\n  var sorting = '';\n  var pagination = {};\n  var paginationParamNames = ['resultsPerPage', 'current', 'offset'];\n  var urlParams = new URLSearchParams(document.location.search);\n  urlParams[\"delete\"]('search');\n  urlParams[\"delete\"]('tab');\n  sorting = urlParams.get('sort');\n  urlParams[\"delete\"]('sort');\n  Array.from(urlParams, function (_ref) {\n    var _ref2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_ref, 2),\n        key = _ref2[0],\n        value = _ref2[1];\n\n    var f = {};\n\n    if (paginationParamNames.indexOf(key) > -1) {\n      pagination[key] = Number(value);\n    } else {\n      filters[key] = value;\n    }\n  });\n  return [filters, sorting, pagination];\n}\nfunction updateUrl(url, params) {\n  /*\n  * url = string;\n  * params = {search: searchTerm, tab: tabName, filters: filters,...}\n  * */\n  var paramsObj = new URLSearchParams(); // this is to be populated from scratch\n\n  if (params['tab'] !== '') {\n    paramsObj.set('tab', params['tab']); // process filters per tab only!\n\n    if (params['filters'] && Object.keys(params['filters']).length > 0) {\n      codeParamsToUrl(paramsObj, params['filters']);\n    }\n  }\n\n  if (params['search']) {\n    paramsObj.set('search', params['search']);\n  }\n\n  if (params['sort']) {\n    paramsObj.set('sort', params['sort']);\n  }\n\n  history.pushState(null, 'Search', url + paramsObj.toString());\n}\nfunction getAvailableFilters(aggregated, label, type) {\n  if (!aggregated) return {};\n  /*\n  * filtername: string\n  * aggregated: [{value: itemsCount}, ...]\n  *\n  * returns {label: string, type: string, options: [[value, text],...]}, ...}\n  * */\n\n  return {\n    label: label,\n    type: type,\n    options: Object.keys(aggregated).map(function (value) {\n      return [value, value + '(' + aggregated[value] + ')'];\n    })\n  };\n}\n\n//# sourceURL=webpack:///./app/src/components/utils.js?");
+
+/***/ }),
+
+/***/ "./app/study_resource/src/ResourceRating.js":
+/*!**************************************************!*\
+  !*** ./app/study_resource/src/ResourceRating.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return ResourceRating; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _src_components_StarRating__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../src/components/StarRating */ \"./app/src/components/StarRating.js\");\n\n\nfunction ResourceRating(_ref) {\n  var data = _ref.data,\n      maxRating = _ref.maxRating;\n  if (data.rating) return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"rating\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"span\", {\n    className: \"stars\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_src_components_StarRating__WEBPACK_IMPORTED_MODULE_1__[\"default\"], {\n    maxRating: maxRating,\n    rating: data.rating\n  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"span\", {\n    itemProp: \"ratingCount\"\n  }, data.reviews_count, \" Reviews\"));\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"rating\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"span\", {\n    itemProp: \"ratingCount\"\n  }, \"No Reviews Yet. \", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"a\", {\n    href: data.url\n  }, \"Contribute\")));\n}\n\n//# sourceURL=webpack:///./app/study_resource/src/ResourceRating.js?");
+
+/***/ }),
+
+/***/ "./app/study_resource/src/StudyResourceSearchListing.js":
+/*!**************************************************************!*\
+  !*** ./app/study_resource/src/StudyResourceSearchListing.js ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return StudyResourceSearchListing; });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _ResourceRating__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ResourceRating */ \"./app/study_resource/src/ResourceRating.js\");\n/* harmony import */ var _src_components_TruncatedTextComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../src/components/TruncatedTextComponent */ \"./app/src/components/TruncatedTextComponent.js\");\n\n\n\nvar flagIcon = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"svg\", {\n  width: \"9\",\n  height: \"10\",\n  viewBox: \"0 0 9 10\",\n  fill: \"none\",\n  xmlns: \"http://www.w3.org/2000/svg\"\n}, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"path\", {\n  d: \"M8.02696 4.82843L6.06618 2.72059L8.02696 0.612745C8.125 0.502451 8.14951 0.343137 8.10049 0.220588C8.03922 0.0857843 7.90441 0 7.75735 0H0.367647C0.159314 0 0 0.159314 0 0.367647V9.63235C0 9.84069 0.159314 10 0.367647 10C0.57598 10 0.735294 9.84069 0.735294 9.63235V5.44118H7.75735C7.96569 5.44118 8.125 5.26961 8.125 5.07353C8.125 4.98774 8.08824 4.90196 8.02696 4.82843Z\",\n  fill: \"#1752EA\"\n}));\nfunction StudyResourceSearchListing(_ref) {\n  var data = _ref.data,\n      addFilter = _ref.addFilter;\n  var MAX_RATING = 5;\n  var technologies = data.technologies.map(function (t) {\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"a\", {\n      key: t.url,\n      href: t.url,\n      className: \"tech\"\n    }, flagIcon, \" \", t.name, t.version ? ' ' + t.version : '');\n  });\n  var concepts = {\n    category: data.category_concepts.map(function (c) {\n      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"a\", {\n        href: c.url,\n        className: \"concept\"\n      }, c.name);\n    }),\n    technology: data.technology_concepts.map(function (c) {\n      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"a\", {\n        href: c.url,\n        className: \"concept\"\n      }, c.name);\n    })\n  };\n  var category = addFilter ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"span\", {\n    onClick: function onClick(e) {\n      addFilter('category', data.category);\n    }\n  }, data.category) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"a\", {\n    key: 'cat' + data.media,\n    href: '/search?tab=resources&category=' + data.category\n  }, data.category);\n  var experience_level = addFilter ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"span\", {\n    onClick: function onClick(e) {\n      return addFilter('experience_level', data.experience_level);\n    }\n  }, data.experience_level) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"a\", {\n    key: 'exp' + data.experience_level,\n    href: '/search?tab=resources&experience_level=' + data.experience_level\n  }, data.experience_level);\n  var tags = data.tags.map(function (t) {\n    if (addFilter) return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"span\", {\n      key: 'tag' + t,\n      onClick: function onClick(e) {\n        return addFilter('tags', t);\n      },\n      className: \"tag\"\n    }, \"#\", t);\n    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"a\", {\n      key: 'tag' + t,\n      href: '/search?tab=resources&tags=' + t,\n      className: \"tag\"\n    }, \"#\", t);\n  });\n  var media = addFilter ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"span\", {\n    onClick: function onClick(e) {\n      return addFilter('media', data.media);\n    }\n  }, data.media) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"a\", {\n    key: 'media' + data.media,\n    href: '/search?tab=resources&media=' + data.media\n  }, data.media);\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"resource-card\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"resource-result\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"left\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"resource-tags\"\n  }, technologies, concepts.technology, category, concepts.category, experience_level), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"resource-listing-title\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"h4\", {\n    className: \"title\",\n    itemProp: \"name\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"a\", {\n    href: data.url\n  }, data.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"span\", {\n    className: \"published\"\n  }, data.publication_date, \" By \", data.published_by), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ResourceRating__WEBPACK_IMPORTED_MODULE_1__[\"default\"], {\n    data: data,\n    maxRating: MAX_RATING\n  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"description\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"p\", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_src_components_TruncatedTextComponent__WEBPACK_IMPORTED_MODULE_2__[\"default\"], {\n    fullText: data.summary,\n    charLimit: 250\n  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"resource-tags bottom\"\n  }, tags)), data.image ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"right\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"div\", {\n    className: \"image\"\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"a\", {\n    itemProp: \"name\",\n    href: data.url\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(\"img\", {\n    className: \"primary-image\",\n    src: data.image.small,\n    alt: \"\"\n  })))) : ''));\n}\n\n//# sourceURL=webpack:///./app/study_resource/src/StudyResourceSearchListing.js?");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/arrayLikeToArray.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/arrayLikeToArray.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("function _arrayLikeToArray(arr, len) {\n  if (len == null || len > arr.length) len = arr.length;\n\n  for (var i = 0, arr2 = new Array(len); i < len; i++) {\n    arr2[i] = arr[i];\n  }\n\n  return arr2;\n}\n\nmodule.exports = _arrayLikeToArray;\n\n//# sourceURL=webpack:///./node_modules/@babel/runtime/helpers/arrayLikeToArray.js?");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/arrayWithHoles.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/arrayWithHoles.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("function _arrayWithHoles(arr) {\n  if (Array.isArray(arr)) return arr;\n}\n\nmodule.exports = _arrayWithHoles;\n\n//# sourceURL=webpack:///./node_modules/@babel/runtime/helpers/arrayWithHoles.js?");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/iterableToArrayLimit.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/iterableToArrayLimit.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("function _iterableToArrayLimit(arr, i) {\n  if (typeof Symbol === \"undefined\" || !(Symbol.iterator in Object(arr))) return;\n  var _arr = [];\n  var _n = true;\n  var _d = false;\n  var _e = undefined;\n\n  try {\n    for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {\n      _arr.push(_s.value);\n\n      if (i && _arr.length === i) break;\n    }\n  } catch (err) {\n    _d = true;\n    _e = err;\n  } finally {\n    try {\n      if (!_n && _i[\"return\"] != null) _i[\"return\"]();\n    } finally {\n      if (_d) throw _e;\n    }\n  }\n\n  return _arr;\n}\n\nmodule.exports = _iterableToArrayLimit;\n\n//# sourceURL=webpack:///./node_modules/@babel/runtime/helpers/iterableToArrayLimit.js?");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/nonIterableRest.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/nonIterableRest.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("function _nonIterableRest() {\n  throw new TypeError(\"Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\");\n}\n\nmodule.exports = _nonIterableRest;\n\n//# sourceURL=webpack:///./node_modules/@babel/runtime/helpers/nonIterableRest.js?");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/slicedToArray.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/slicedToArray.js ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("var arrayWithHoles = __webpack_require__(/*! ./arrayWithHoles */ \"./node_modules/@babel/runtime/helpers/arrayWithHoles.js\");\n\nvar iterableToArrayLimit = __webpack_require__(/*! ./iterableToArrayLimit */ \"./node_modules/@babel/runtime/helpers/iterableToArrayLimit.js\");\n\nvar unsupportedIterableToArray = __webpack_require__(/*! ./unsupportedIterableToArray */ \"./node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js\");\n\nvar nonIterableRest = __webpack_require__(/*! ./nonIterableRest */ \"./node_modules/@babel/runtime/helpers/nonIterableRest.js\");\n\nfunction _slicedToArray(arr, i) {\n  return arrayWithHoles(arr) || iterableToArrayLimit(arr, i) || unsupportedIterableToArray(arr, i) || nonIterableRest();\n}\n\nmodule.exports = _slicedToArray;\n\n//# sourceURL=webpack:///./node_modules/@babel/runtime/helpers/slicedToArray.js?");
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("var arrayLikeToArray = __webpack_require__(/*! ./arrayLikeToArray */ \"./node_modules/@babel/runtime/helpers/arrayLikeToArray.js\");\n\nfunction _unsupportedIterableToArray(o, minLen) {\n  if (!o) return;\n  if (typeof o === \"string\") return arrayLikeToArray(o, minLen);\n  var n = Object.prototype.toString.call(o).slice(8, -1);\n  if (n === \"Object\" && o.constructor) n = o.constructor.name;\n  if (n === \"Map\" || n === \"Set\") return Array.from(o);\n  if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);\n}\n\nmodule.exports = _unsupportedIterableToArray;\n\n//# sourceURL=webpack:///./node_modules/@babel/runtime/helpers/unsupportedIterableToArray.js?");
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "React" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = React;\n\n//# sourceURL=webpack:///external_%22React%22?");
+
+/***/ }),
+
+/***/ "react-dom":
+/*!***************************!*\
+  !*** external "ReactDOM" ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = ReactDOM;\n\n//# sourceURL=webpack:///external_%22ReactDOM%22?");
+
+/***/ })
+
+/******/ });

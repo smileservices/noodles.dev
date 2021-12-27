@@ -56,7 +56,7 @@ export function FormElement({data, children, callback, alert, waiting, buttonTex
         }}>
             {children}
             {alert}
-            <button type="submit" className="btn submit">{buttonText ? buttonText : 'Submit'}</button>
+            <button type="submit" className="btn light submit">{buttonText ? buttonText : 'Submit'}</button>
         </form>
     )
 }

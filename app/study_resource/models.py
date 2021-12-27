@@ -8,8 +8,9 @@ import requests
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from versatileimagefield.utils import build_versatileimagefield_url_set
 from django.conf import settings
+from django.contrib.postgres.fields import JSONField
 
-from core.abstract_models import DateTimeModelMixin, SluggableModelMixin
+from core.abstract_models import ResourceMixin, DateTimeModelMixin
 from votable.models import VotableMixin
 from django_edit_suggestion.models import EditSuggestion
 from core.edit_suggestions import edit_suggestion_change_status_condition, post_reject_edit, post_publish_edit
@@ -33,6 +34,8 @@ def delete_study_resource_primary_images(sender, instance, **kwargs):
 
 def warm_study_resource_primary_image(sender, instance, **kwargs):
     """Ensures Technologies logos are created post-save"""
+    if not instance.image:
+        return None
     sr_images_warmer = VersatileImageFieldWarmer(
         instance_or_queryset=instance,
         rendition_key_set='resource_image',
@@ -105,7 +108,7 @@ class StudyResourceTechnology(models.Model):
         return reverse('tech-detail', kwargs={'slug': self.slug})
 
 
-class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, ElasticSearchIndexableMixin):
+class StudyResource(ResourceMixin, VotableMixin):
     elastic_index = 'study_resources'
 
     class Price(models.IntegerChoices):
@@ -128,12 +131,12 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
     objects = StudyResourceManager()
     publication_date = models.DateField()
     published_by = models.CharField(max_length=256)
-    url = models.TextField(max_length=1024)
+    url = models.CharField(max_length=256, db_index=True)
     image_file = VersatileImageField(upload_to='tutorials', blank=True, null=True)
     summary = models.TextField(max_length=2048)
     # related fields
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
-    tags = models.ManyToManyField(Tag, related_name='tags')
+    tags = models.ManyToManyField(Tag, related_name='resources')
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.DO_NOTHING, related_name='resources')
     technologies = models.ManyToManyField(Technology, related_name='resources', through='StudyResourceTechnology')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -147,7 +150,8 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
     experience_level = models.IntegerField(default=0, choices=ExperienceLevel.choices, db_index=True)
     edit_suggestions = EditSuggestion(
         excluded_fields=(
-            'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array'),
+            'slug', 'created_at', 'updated_at', 'author', 'thumbs_up_array', 'thumbs_down_array', 'status'
+        ),
         m2m_fields=[
             {'name': 'tags', 'model': Tag},
             {'name': 'category_concepts', 'model': CategoryConcept},
@@ -174,7 +178,7 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
     )
 
     def __str__(self):
-        return f'{self.media_label} on {self.name}'
+        return f'Tutorial::{self.media_label} on {self.name}'
 
     @property
     def absolute_url(self):
@@ -207,6 +211,8 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
         return {
             "properties": {
                 "pk": {"type": "integer"},
+                "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
 
                 # model fields
                 "name": {
@@ -277,6 +283,8 @@ class StudyResource(SluggableModelMixin, DateTimeModelMixin, VotableMixin, Elast
         rating = instance_from_manager['rating'] if instance_from_manager['rating'] else 0
         data = {
             "pk": self.pk,
+            "type": "study_resource",
+            "status": self.status_label,
 
             # model fields
             "name": self.name,
@@ -372,6 +380,25 @@ class Review(DateTimeModelMixin, VotableMixin):
              update_fields=None):
         super(Review, self).save()
         self.study_resource.save()  # this to trigger syncing to elasticsearch
+
+
+class StudyResourceIntermediary(models.Model):
+    '''
+    keeps the study resource data from receiving the scraped data.
+    the user can not submit the entry anymore so we have to remember the data
+    and we use it whenever someone tries to add the same url
+    '''
+    class Status(models.IntegerChoices):
+        PENDING = (0, 'Pending')
+        ERROR = (1, 'Error')
+        SAVED = (2, 'Saved')
+
+    url = models.CharField(db_index=True, max_length=256)
+    active = models.DateTimeField()
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    status = models.IntegerField(default=0, choices=Status.choices, db_index=True)
+    scraped_data = JSONField(null=True, blank=True)
+    data = JSONField(null=True, blank=True)
 
 
 models.signals.pre_save.connect(remove_old_image, sender=StudyResource, weak=False)

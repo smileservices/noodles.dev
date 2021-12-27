@@ -12,16 +12,18 @@
 
 {% block content %}
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / Category {{ detail.name_tree_urls | safe }}
+        <a href="/">Homepage</a> > Category {{ detail.name_tree_urls | safe }}
     </div>
-    <div class="detail-page resource">
-        <div class="column-container">
-            <section id="detail" class="card" itemscope
-                     itemtype="https://schema.org/CreativeWork">
-                {% include 'category/detail.html' %}
-            </section>
-        </div>
+    <div class="detail-page category">
+        <section id="detail" class="card" itemscope
+                 itemtype="https://schema.org/CreativeWork">
+            {% include 'category/detail.html' %}
+        </section>
         {% include 'category/right_side.html' %}
+        <div class="column-container bottom">
+            {% include 'category/detail_concepts.html' %}
+            {% include 'detail_technologies.html' %}
+            {% include 'detail_resources.html' %}
+        </div>
     </div>
-
 {% endblock %}

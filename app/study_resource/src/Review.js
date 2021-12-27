@@ -49,9 +49,17 @@ export default function Review({review}) {
         <div className={current_owner() ? 'card review highlighted' : 'card review'}>
             {waiting}
             {alert}
-            <div className="rating">
-                <span className="stars"><StarRating rating={review.rating} maxRating={MAX_RATING}/></span>
-                <p className="published">{date.toUTCString()} by <a href={'/users/profile/'+review.author.username}>{review.author.username}</a></p>
+            <div className="header">
+                <div className="profile-picture">
+                    <span className="icon-person-circle"/>
+                </div>
+                <div className="meta">
+                    <a className="author" href={'/users/profile/' + review.author.username}>{review.author.username}</a>
+                    <p className="published">{date.toUTCString()}</p>
+                    <div className="rating">
+                        <span className="stars"><StarRating rating={review.rating} maxRating={MAX_RATING}/></span>
+                    </div>
+                </div>
             </div>
             {current_owner()
                 ? <div className="toolbar">{deleteElement(confirm)}</div>

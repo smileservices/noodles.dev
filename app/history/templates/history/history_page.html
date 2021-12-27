@@ -1,0 +1,25 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="breadcrumbs">
+        {{ data.breadcrumbs | safe }}
+    </div>
+    <h1>{{ data.title }}</h1>
+    <div id="resource-history-app">
+        <div class="waiting-container">
+            <span class="icon-hour-glass spin-stop"> </span>
+            <span class="text">Loading the History App. It's a one time load.</span>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        const URLS = {
+            'history': "{{ urls.history_get }}"
+        };
+    </script>
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'js/resource-history.js' %}"></script>
+{% endblock %}

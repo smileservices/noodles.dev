@@ -16,18 +16,15 @@
     <div class="breadcrumbs">
         <a href="/">Homepage</a> / Technologies
     </div>
-    <header class="header">
+    <header>
         <h1>List All Technologies</h1>
     </header>
-    <section class="search-page">
-        <div class="results column-container">
-            {% for result in results %}
-                {% include 'technology/result.html' %}
-            {% endfor %}
-            {% if results.has_other_pages %}
-                {% paginator_tag results 3 %}
-            {% endif %}
-        </div>
-        {% include 'technology/right_side.html' %}
+    <section class="search-results tile-container">
+        {% for result in results %}
+            {% include 'technology/result.html' %}
+        {% endfor %}
+        {% if results.has_other_pages %}
+            {% paginator_tag results 3 %}
+        {% endif %}
     </section>
 {% endblock %}

@@ -90,7 +90,7 @@ ul.progress {
     flex-basis: 0;
     text-align: center;
     padding: 2%;
-    color: var(--color-text-grey-2);
+    color: $color-text-grey-2;
     cursor: pointer;
     clip-path: polygon(0 0, 95% 0, 100% 50%, 95% 100%, 0 100%, 5% 50%);
   }

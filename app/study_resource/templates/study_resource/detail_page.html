@@ -34,29 +34,12 @@
         const LOGIN_URL = "{% url 'account_login' %}";
     </script>
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / {{ result.category.name_tree_urls | safe }}
+        <a href="/">Home</a> > Category: {{ result.category.name_tree_urls | safe }}
     </div>
     <div class="detail-page resource">
-        <div class="column-container">
-            <section id="detail" class="card" itemscope
-                     itemtype="https://schema.org/CreativeWork">
-                <meta itemprop="name" content="{{ result.name }}"/>
-                <meta itemprop="datePublished" content="{{ result.publication_date }}"/>
-                <meta itemprop="description" content="{{ result.summary }}"/>
-                {% include 'study_resource/detail.html' %}
-            </section>
-            <span itemscope itemtype="https://schema.org/AggregateRating">
-                <span itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
-                <meta itemprop="bestRating" content="5"/>
-                <meta itemprop="worstRating" content="1"/>
-                <meta itemprop="ratingValue" content="{{ result.rating }}"/>
-                <meta itemprop="reviewCount" content="{{ result.reviews_count }}"/>
-                <meta itemprop="ratingCount" content="{{ result.reviews_count }}"/>
-            </span>
-            </span>
-            <section id="reviews" class="column-container card reviews"></section>
-        </div>
+        {% include 'study_resource/detail.html' %}
         {% include 'study_resource/right_side.html' %}
+        <section id="reviews" class="column-container reviews"></section>
     </div>
 
 {% endblock %}
@@ -64,5 +47,4 @@
 {% block extra_js %}
     <script src="{% static 'study_resource/study-resource-detail-reviews.js' %}"></script>
     <script src="{% static 'study_resource/detail-toolbar.js' %}"></script>
-    <script src="{% static 'related-app.js' %}"></script>
 {% endblock %}

@@ -1,30 +1,29 @@
 main .detail-page.technology {
-  grid-template-areas:
-  "detail related"
-  "tab-navigation related";
-    section#detail {
-      header {
-        display: flex;
-        flex-wrap: wrap-reverse;
-        justify-content: space-between;
-        align-items: center;
-        gap: $padding-unit-big;
-        .btn.contribute {
-          margin: 0;
-        }
 
-        .left-side {
-          display: flex;
-          gap: $padding-unit-big;
-          align-items: center;
-          justify-content: start;
-        }
+  section#detail {
+    .left {
+      flex-direction: row;
+      align-items: center;
+      gap: $padding-unit-big;
+
+      img {
+        background: white;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        padding: 0.75rem 0.75rem;
       }
-      .tech-concepts-container {
-        margin-top: $padding-unit-big*2;
-        .alert.alert-contribute {
-          background-color: var(--color-background-1);
+
+      .title-container {
+        flex-direction: column;
+        gap: $padding-unit-md;
+        color: $color-text-grey;
+
+        h1 {
+          color: $color-text-white;
+          margin-bottom: $padding-unit-sm;
         }
       }
     }
+  }
 }

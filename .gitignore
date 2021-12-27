@@ -4,6 +4,7 @@
 .idea/
 */migrations/*
 static_col/*
+app/frontend/static/frontend/css/main.css
 MEDIA/*
 STATIC_COL/*
 ext/
@@ -11,3 +12,4 @@ ext/
 .env
 venv/
 node_modules/
+docker-compose.yml

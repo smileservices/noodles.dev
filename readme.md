@@ -68,8 +68,23 @@ Caching:
     
 ==========================
 
+Edit Suggestions
+------------------
+We are using the [django-edit-suggestions](https://django-edit-suggestion.readthedocs.io/en/latest/)
+library to handle edit suggestions. 
+
+Resources History
+-----------------
+The app history handles keeping the changes on resources. The core.abstract_viewsets.ResourceWithEditSuggestionVieset has history endpoint:
+```python
+    @action(methods=['GET'], detail=True)
+    def history(self, request, *args, **kwargs):
+        ...
+```
+It retrieves the history list of the resource in a paginated way. The resource model must inherit from core.abstract_models.ResourceMixin
+
 ## Management Scripts:
-python manage.py clean_migrations - deletes all migrations files; 
+python manage.py clean_migrations - deletes all migrations files;
 python manage.py clean_db - recreates the DB
 python manage.py populate_initial_fixtures - populates the DB with test data
 
@@ -110,7 +125,7 @@ frontend
 
 track history
 -------------
-- p/s/t/lr have history tracking; use django-easy-audit
+- p/s/t/lr have history tracking; the `history` app manages this. it creates an entry for each create/edit published
 
 ## In progress:
 
@@ -181,3 +196,17 @@ User badges
 - badge for reviews
    - junior reviewer
    - stars for thumbs up
+   
+   
+   
+# API Endpoints
+
+** Homepage Frontend **
+
+featured categories                 GET /categories/api/featured/
+category concepts                   GET /concepts/api/category/featured/
+featured technologies               GET /learn/api/featured/1
+technologies with no concepts       GET /learn/api/no_technology_concept/
+resources with no reviews           GET /tutorials/api/resources/no_reviews/
+featured collections                GET /collections/api/featured/
+

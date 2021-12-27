@@ -46,6 +46,8 @@ class TechnologyConceptEditSuggestionSerializer(serializers.ModelSerializer):
                                })
             elif change.field == 'slug':
                 continue
+            elif change.field == 'meta':
+                continue
             else:
                 result.append({'field': change.field.capitalize(), 'old': change.old, 'new': change.new})
         return result

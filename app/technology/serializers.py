@@ -104,6 +104,8 @@ class TechnologyEditSerializer(serializers.ModelSerializer):
                                'old': instance.edit_suggestion_parent.logo,
                                'new': instance.logo
                                })
+            elif change.field == 'meta':
+                continue
             elif change.field == 'slug':
                 continue
             else:
@@ -164,7 +166,8 @@ class TechnologySerializer(EditSuggestionSerializer):
                 del validated_data['image_url']
             except Exception as e:
                 raise exceptions.ValidationError('Error getting the image from specified url')
-        validated_data['slug'] = slugify(validated_data['name'])
+        if 'category_concepts' in data:
+            validated_data['category_concepts'] = json.loads(data['category_concepts'])
         validated_data['category'] = [int(t) for t in data['category'].split(',')] if data['category'] else []
         validated_data['ecosystem'] = [int(t) for t in data['ecosystem'].split(',')] if data['ecosystem'] else []
         return validated_data
@@ -183,7 +186,8 @@ class TechnologyListing(serializers.ModelSerializer):
 
 class TechnologyMinimal(serializers.ModelSerializer):
     queryset = Technology.objects.all()
+    resources_count = serializers.IntegerField()
 
     class Meta:
         model = Technology
-        fields = ['pk', 'name', 'absolute_url', 'thumbs_up', 'thumbs_down']
+        fields = ['pk', 'name', 'absolute_url', 'thumbs_up', 'thumbs_down', 'resources_count']

@@ -1,5 +1,5 @@
 from django.db import models
-from core.abstract_models import SluggableModelMixin
+from core.abstract_models import ResourceMixin
 from mptt.models import MPTTModel, TreeForeignKey
 from django.shortcuts import reverse
 from core.abstract_models import ElasticSearchIndexableMixin
@@ -44,7 +44,7 @@ class CategoryModelManager(models.Manager):
         return validated_categories
 
 
-class Category(MPTTModel, SluggableModelMixin, ElasticSearchIndexableMixin):
+class Category(MPTTModel, ResourceMixin):
     elastic_index = 'categories'
     name = models.CharField(max_length=128, db_index=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
@@ -55,19 +55,34 @@ class Category(MPTTModel, SluggableModelMixin, ElasticSearchIndexableMixin):
         order_insertion_by = ['name']
 
     def __str__(self):
-        return self.name
+        return f'{self.name}'
 
     @property
     def name_tree(self):
         tree_list = [c.name for c in self.get_ancestors()]
         tree_list.append(self.name)
-        return ' / '.join(tree_list)
+        return ' > '.join(tree_list)
 
     @property
-    def name_tree_urls(self):
+    def category_tree_urls(self):
+        # for displaying the tree in the detail page
+        # show parent category, siblings, children
         tree_list = [c.get_ahref for c in self.get_ancestors()]
         tree_list.append(self.get_ahref)
-        return ' / '.join(tree_list)
+        return ' > '.join(tree_list)
+
+    @property
+    def category_tree_list_urls(self):
+        # for displaying the tree in the detail page
+        # show parent category, siblings, children
+        tree_str = ''
+        ancestors_list = self.get_ancestors()
+        for c in ancestors_list:
+            tree_str += f'<li>{c.get_ahref}<ul>'
+        tree_str += f'<li class="active">{self.get_ahref}</li>'
+        if len(ancestors_list) > 0:
+            tree_str += '</ul></li>' * len(ancestors_list)
+        return tree_str
 
     @property
     def absolute_url(self):
@@ -82,6 +97,8 @@ class Category(MPTTModel, SluggableModelMixin, ElasticSearchIndexableMixin):
         return {
             "properties": {
                 "pk": {"type": "integer"},
+                "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
 
                 # model fields
                 "name": {
@@ -113,6 +130,8 @@ class Category(MPTTModel, SluggableModelMixin, ElasticSearchIndexableMixin):
     def get_elastic_data(self) -> (str, list):
         data = {
             "pk": self.pk,
+            "type": "category",
+            "status": self.status_label,
             "name": self.name,
             "description": self.description,
             "description_long": self.description_long,

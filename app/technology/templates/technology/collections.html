@@ -1,0 +1,29 @@
+{% load static %}
+
+<div class="collections">
+    <div class="header spread-out-container">
+        <div class="left">
+            <h2>Collections of Resources</h2>
+            <div class="sub">A collection of selected resources for explaining or learning about a specific topic about {{ detail.name }}</div>
+        </div>
+        <div class="right">
+            <a class="btn secondary" href="{% url 'my-collections' %}"
+               rel="nofollow noopener">
+                <span class="icon-plus"></span> New Collection
+            </a>
+        </div>
+    </div>
+    {% if collections %}
+        <div class="tile-container">
+            {% for result in collections %}
+                {% include 'study_collection/result.html' %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-container">
+            <div class="empty-div"><img src="{% static 'imgs/add_file.png' %}" alt="add concept"/>
+                <p class="empty-text">There are no collections for this technology yet. Help the community by creating one yourself!</p>
+            </div>
+        </div>
+    {% endif %}
+</div>

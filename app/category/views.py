@@ -1,28 +1,32 @@
 import time
 from django.http.response import JsonResponse
 from django.shortcuts import render
-from django.views.decorators.cache import cache_page
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
+from core.utils import rest_paginate_queryset
 from technology.models import Technology
 from .serializers import CategorySerializer, CategorySerializerOption
 from concepts.serializers_category import CategoryConceptSerializerListing, CategoryConceptSerializerOption
+from study_resource.models import StudyResource
 from . import models
 
 
 def detail(request, slug):
     queryset = models.Category.objects
-    detail = queryset.select_related().get(slug=slug)
+    detail = queryset.get(slug=slug)
     instance_descendants = detail.get_descendants(include_self=True)
+    resources = []
     techs = []
-    for cat in instance_descendants.select_related():
+    for cat in instance_descendants.prefetch_related('resources', 'related_technologies'):
         techs += cat.related_technologies.all()
+        resources += cat.resources.filter(status=StudyResource.StatusOptions.APPROVED).all()
     data = {
         'detail': detail,
         'concepts': detail.concepts.all(),
         'technologies': techs,
+        'resources': resources,
     }
     return render(request, 'category/detail_page.html', data)
 
@@ -31,7 +35,6 @@ class CategoryViewset(ModelViewSet):
     serializer_class = CategorySerializer
     queryset = CategorySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
-    pagination_class = None
 
     @action(methods=['GET'], detail=True)
     def get_technologies(self, request, *args, **kwargs):
@@ -87,6 +90,11 @@ class CategoryViewset(ModelViewSet):
                 concepts += [CategoryConceptSerializerOption(c).data for c in
                              subcat.concepts.order_by('experience_level').all()]
         return Response(concepts)
+
+    @action(methods=['GET'], detail=False)
+    def featured(self, request, *args, **kwargs):
+        queryset = self.queryset.filter()
+        return rest_paginate_queryset(self, queryset)
 
 
 class CategoryViewsetSelect(ModelViewSet):

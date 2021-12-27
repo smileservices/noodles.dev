@@ -58,22 +58,12 @@ class TestConcepts(APITestCase):
         user create sub concept with parent=root in sub category
         '''
         self.client.force_login(user=self.users['normal'])
-        res = self.client.post(
-            reverse('concept-category-viewset-list'),
-            {
-                'name': 'category',
-                'description': f.text(),
-                'category': self.categories['root'].pk,
-                'experience_level': 0,
-                'meta': ''
-            }
-        )
-        self.assertEqual(201, res.status_code)
         res_root = self.client.post(
             reverse('concept-category-viewset-list'),
             {
                 'name': 'category',
                 'description': f.text(),
+                'description_long': f.text(),
                 'category': self.categories['root'].pk,
                 'experience_level': 0,
                 'meta': ''
@@ -85,6 +75,7 @@ class TestConcepts(APITestCase):
             {
                 'name': 'sub',
                 'description': f.text(),
+                'description_long': f.text(),
                 'category': self.categories['sub'].pk,
                 'parent': res_root.data['pk'],
                 'experience_level': 0,
@@ -92,8 +83,8 @@ class TestConcepts(APITestCase):
             }
         )
         self.assertEqual(201, res_sub.status_code)
-        self.assertEqual(res_root.data['pk'], res_sub.data['parent']['pk'])
-        self.assertEqual('category > sub', res_sub.data['name_tree'])
+        self.assertEqual(res_root.data['pk'], res_sub.data['parent']['value'])
+        self.assertEqual('category / sub', res_sub.data['name_tree'])
 
     def test_create_technology_concept(self):
         '''
