@@ -106,17 +106,22 @@ main .detail-page {
     }
 
     .description-long {
-      h1, h2 {
-        font-weight: bold;
+      h1, h2, h3 {
+        font-weight: 600;
         margin: $padding-unit-big 0 $padding-unit;
       }
 
       h1 {
-        font-size: $fontsize-big*1.5;
+        font-size: $fontsize-big*1.115;
       }
 
       h2 {
-        font-size: $fontsize-big*1.2;
+        font-size: $fontsize-big;
+      }
+
+      h3 {
+        font-size: $fontsize-md;
+        margin: $padding-unit-md 0 $padding-unit-sm;
       }
 
       p {
@@ -140,7 +145,7 @@ main .detail-page {
         margin: $padding-unit 0;
       }
 
-      strong {
+      strong, em {
         font-weight: bold;
       }
 

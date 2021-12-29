@@ -285,6 +285,7 @@ MARKDOWNIFY = {
         "WHITELIST_TAGS": [
             'h1',
             'h2',
+            'h3',
             'p',
             'hr',
             'blockquote',
