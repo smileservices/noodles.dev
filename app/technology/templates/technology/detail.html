@@ -3,7 +3,9 @@
 
 <header>
     <div class="left">
+        {% if detail.logo.medium %}
         <img src="{{ detail.logo.medium }}" alt="">
+        {% endif %}
         <div class="title-container">
             <h1 class="title">{{ detail.name }}</h1>
             <span>maintained by {{ detail.owner }}</span>
