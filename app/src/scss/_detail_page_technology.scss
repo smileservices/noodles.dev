@@ -15,8 +15,8 @@ main .detail-page.technology {
       }
 
       .title-container {
+        display: flex;
         flex-direction: column;
-        gap: $padding-unit-md;
         color: $color-text-grey;
 
         h1 {
