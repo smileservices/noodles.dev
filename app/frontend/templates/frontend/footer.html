@@ -14,16 +14,16 @@
         </p>
         <div class="button-links-container">
             <a
-                href="https://www.facebook.com/groups/noodles.dev"
-                rel="nofollow noopener"
-                class="uikit-button filled default"
+                    href="https://www.facebook.com/groups/noodles.dev"
+                    rel="nofollow noopener"
+                    class="uikit-button filled default"
             >
                 Join our Facebook Group!
             </a>
             <a
-                href="{% url 'noodles-backstage' %}"
-                rel="nofollow noopener"
-                class="uikit-button outlined white"
+                    href="{% url 'noodles-backstage' %}"
+                    rel="nofollow noopener"
+                    class="uikit-button outlined white"
             >
                 Noodles.dev Backstage
             </a>
@@ -47,19 +47,20 @@
         </div>
     </section>
     <section class="mobile-socials">
-        <span class="icon icon-facebook"></span>
+        <a href="https://www.facebook.com/groups/noodles.dev"><span class="icon icon-facebook"></span></a>
         <span class="icon icon-twitter"></span>
-        <span class="icon icon-linkedin"></span>
+        <a href="https://www.linkedin.com/in/vladimir-gorea-7570b118/"><span class="icon icon-linkedin"></span></a>
         <span class="icon icon-telegram1"></span>
         <span class="icon icon-reddit-alien"></span>
     </section>
     <section class="links column-container">
         <h4 class="header">Noodles.<span>Dev</span></h4>
-        <a href="" rel="nofollow noopener">About</a>
-        <a href="/learn" rel="nofollow noopener">Technologies</a>
-        <a href="" rel="nofollow noopener">Concepts</a>
-        <a href="/tutorials" rel="nofollow noopener">Resources</a>
-        <a href="/collections" rel="nofollow noopener">Collections</a>
+        <a href="">About</a>
+        <a href="/learn">Technologies</a>
+        <a href="{% url 'category-concept-all' %}">General Concepts</a>
+        <a href="{% url 'technology-concept-all' %}">Implementation Concepts</a> <a
+            href="/tutorials">Resources</a>
+        <a href="/collections">Collections</a>
     </section>
     <section class="social column-container">
         <div class="links">
@@ -69,15 +70,15 @@
             <a href="{% url 'cookie-policy' %}" rel="nofollow noopener">Cookies Policy</a>
         </div>
         <div class="socials">
-            <span class="icon icon-facebook"></span>
+            <a href="https://www.facebook.com/groups/noodles.dev"><span class="icon icon-facebook"></span></a>
             <span class="icon icon-twitter"></span>
-            <span class="icon icon-linkedin"></span>
+            <a href="https://www.linkedin.com/in/vladimir-gorea-7570b118/"><span class="icon icon-linkedin"></span></a>
             <span class="icon icon-telegram1"></span>
             <span class="icon icon-reddit-alien"></span>
         </div>
     </section>
     <section class="back-to-top">
-        <img src="/static/imgs/back-to-top-arrow.png" />
+        <img src="/static/imgs/back-to-top-arrow.png"/>
         <h4>Back to Top</h4>
     </section>
 </footer>
