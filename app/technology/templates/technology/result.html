@@ -12,12 +12,18 @@
     <div class="tags">
         {% if result.ecosystem.count %}
             {% for tech in result.ecosystem.all %}
-                <a class="tech" href="{{ tech.absolute_url }}">{{ tech }}</a>
+                <a class="tech" href="{{ tech.absolute_url }}">
+                    <svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.02696 4.82843L6.06618 2.72059L8.02696 0.612745C8.125 0.502451 8.14951 0.343137 8.10049 0.220588C8.03922 0.0857843 7.90441 0 7.75735 0H0.367647C0.159314 0 0 0.159314 0 0.367647V9.63235C0 9.84069 0.159314 10 0.367647 10C0.57598 10 0.735294 9.84069 0.735294 9.63235V5.44118H7.75735C7.96569 5.44118 8.125 5.26961 8.125 5.07353C8.125 4.98774 8.08824 4.90196 8.02696 4.82843Z"
+                              fill="#1752EA"/>
+                    </svg>
+                    {{ tech }}
+                </a>
             {% endfor %}
         {% endif %}
         <span>{{ result.license_label }}</span>
         {% for category in result.category.all %}
-            <span>{{ category.name_tree }}</span>
+            {{ category.as_tags | safe }}
         {% endfor %}
     </div>
 

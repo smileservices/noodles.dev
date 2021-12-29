@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from category.serializers import CategorySerializerOption
 from technology.models import Technology
 from technology.serializers import TechnologySerializerOption
@@ -196,3 +197,35 @@ def technology_history(request, slug):
         }
     }
     return render(request, 'history/history_page.html', data)
+
+
+def list_all_category(request):
+    queryset = models.CategoryConcept.objects.all()
+    paginator = Paginator(queryset, 10)
+    try:
+        results = paginator.page(request.GET.get('page', 1))
+    except PageNotAnInteger:
+        results = paginator.page(1)
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
+    data = {
+        'paginator': paginator,
+        'results': results,
+    }
+    return render(request, 'concepts/category/list_page_seo.html', data)
+
+
+def list_all_technology(request):
+    queryset = models.TechnologyConcept.objects.all()
+    paginator = Paginator(queryset, 10)
+    try:
+        results = paginator.page(request.GET.get('page', 1))
+    except PageNotAnInteger:
+        results = paginator.page(1)
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
+    data = {
+        'paginator': paginator,
+        'results': results,
+    }
+    return render(request, 'concepts/technology/list_page_seo.html', data)

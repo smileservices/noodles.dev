@@ -64,6 +64,14 @@ class Category(MPTTModel, ResourceMixin):
         return ' > '.join(tree_list)
 
     @property
+    def as_tags(self):
+        tags = ''
+        for c in self.get_ancestors():
+            tags += c.get_ahref
+        tags += self.get_ahref
+        return tags
+
+    @property
     def category_tree_urls(self):
         # for displaying the tree in the detail page
         # show parent category, siblings, children
@@ -90,7 +98,7 @@ class Category(MPTTModel, ResourceMixin):
 
     @property
     def get_ahref(self):
-        return f"<a href='{reverse('category-detail', kwargs={'slug': self.slug})}'>{self.name}</a>"
+        return f"<a href='{self.absolute_url}'>{self.name}</a>"
 
     @staticmethod
     def get_elastic_mapping() -> {}:

@@ -22,4 +22,8 @@ urlpatterns = [
     path('technology/create', views.technology_create, name="technology-concept-create"),
     path('technology/edit/<int:id>', views.technology_edit, name="technology-concept-edit"),
     path('technology/<slug:slug>', views.technology_detail, name="concept-technology-detail"),
+
+    path('general', views.list_all_category, name="category-concept-all"),
+    path('implemenation', views.list_all_category, name="technology-concept-all"),
+
 ]

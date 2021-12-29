@@ -14,19 +14,17 @@
 
 {% block content %}
     <div class="breadcrumbs">
-        <a href="/">Homepage</a> / Resources
+        <a href="/">Homepage</a> / Concepts / Categories
     </div>
-    <header class="header">
-        <h1>List All Resources</h1>
+    <header>
+        <h1>List All Categories Concepts</h1>
     </header>
-    <section class="search-page">
-        <div class="results column-container">
-            {% for result in results %}
-                {% include 'study_resource/result.html' %}
-            {% endfor %}
-            {% if results.has_other_pages %}
-                {% paginator_tag results 3 %}
-            {% endif %}
-        </div>
+    <section class="search-results tile-container">
+        {% for result in results %}
+            {% include 'concepts/technology/result.html' %}
+        {% endfor %}
+        {% if results.has_other_pages %}
+            {% paginator_tag results 3 %}
+        {% endif %}
     </section>
 {% endblock %}
