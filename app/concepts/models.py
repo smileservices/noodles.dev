@@ -85,10 +85,19 @@ class CategoryConcept(MPTTModel, AbstractConcept):
         return ' / '.join(tree_list)
 
     @property
-    def name_tree_urls(self):
-        tree_list = [c.get_ahref for c in self.get_ancestors()]
-        tree_list.append(self.get_ahref)
-        return ' / '.join(tree_list)
+    def tree_as_list(self):
+        list = ''
+        # show ancestors, siblings of same category and children
+        self_node = f'<span>{self.name}</span>'
+        if self.children.count():
+            children = ''.join([f'<li>{c.get_ahref}</li>' for c in self.get_children()])
+            self_node += f'<ul>{children}</ul>'
+        list += f'<li class="active">{self_node}</li>'
+        for sibling in self.get_siblings().filter(category=self.category):
+            list += f'<li>{sibling.get_ahref}</li>'
+        for ancestor in self.get_ancestors()[::-1]:
+            list = f'<li>{ancestor.get_ahref}<ul>{list}</ul></li>'
+        return f'<ul class="category-tree">{list}</ul>'
 
     @property
     def absolute_url(self):

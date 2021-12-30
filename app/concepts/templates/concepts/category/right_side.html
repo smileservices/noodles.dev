@@ -10,22 +10,7 @@
     <div class="card">
         <div class="header">Concepts Tree</div>
         <div class="tree-container">
-            {{ detail.parent.get_ahref | safe }}
-            <ul class="category-tree">
-                <li class="active">
-                    {{ detail }}
-                    {% if detail.children.count %}
-                        <ul>
-                        {% for child in detail.get_children %}
-                            <li>{{ child.get_ahref|safe }}</li>
-                        {% endfor %}
-                        </ul>
-                    {% endif %}
-                </li>
-                {% for sibling in detail.get_siblings %}
-                    <li>{{ sibling.get_ahref|safe }}</li>
-                {% endfor %}
-            </ul>
+            {{ detail.tree_as_list|safe }}
         </div>
     </div>
 </div>
