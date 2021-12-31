@@ -26,12 +26,14 @@
     font-weight: 700;
     font-size: $fontsize-big*1.125;
 
-    a, a:visited {
-      color: $color-text-white;
-    }
+    .title {
+      a, a:visited {
+        color: $color-text-white;
+      }
 
-    a:hover {
-      text-decoration: underline;
+      a:hover {
+        text-decoration: underline;
+      }
     }
   }
 

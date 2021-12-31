@@ -38,30 +38,30 @@ function SearchApp() {
     })
     const getTabContent = tabName => {
         switch (tabName) {
-            case 'categories':
-                return (<TabComponent
-                    tabname="categories" searchTerm={state.q} title={'Categories Results'}
-                    containerClass={'categories'} ListingComponent={CategorySearchListing}/>)
+            // case 'categories':
+            //     return (<TabComponent
+            //         tabname="categories" searchTerm={state.q} title={'Categories Results'}
+            //         containerClass={'categories'} ListingComponent={CategorySearchListing} listType="grid"/>)
             case 'category_concepts':
                 return (<TabComponent
                     tabname="category_concepts" searchTerm={state.q} title={'Theoretical Concepts Results'}
-                    containerClass={'category_concepts'} ListingComponent={CategoryConceptSearchListing}/>)
+                    containerClass={'category_concepts'} ListingComponent={CategoryConceptSearchListing} listType="grid"/>)
             case 'technology_concepts':
                 return (<TabComponent
                     tabname="technology_concepts" searchTerm={state.q} title={'Implementation Concepts Results'}
-                    containerClass={'technology_concepts'} ListingComponent={TechnologyConceptSearchListing}/>)
+                    containerClass={'technology_concepts'} ListingComponent={TechnologyConceptSearchListing} listType="grid"/>)
             case 'resources':
                 return (<TabComponent
                     tabname="resources" searchTerm={state.q} title={'Resources Results'}
-                    containerClass={'resources'} ListingComponent={StudyResourceSearchListing}/>)
+                    containerClass={'resources'} ListingComponent={StudyResourceSearchListing} listType="list"/>)
             case 'collections':
                 return (<TabComponent
-                    tabname="collections" searchTerm={state.q} title={'Collections Results'} listType="grid"
-                    containerClass={'collections'} ListingComponent={CollectionSearchListing}/>)
+                    tabname="collections" searchTerm={state.q} title={'Collections Results'}
+                    containerClass={'collections'} ListingComponent={CollectionSearchListing} listType="grid"/>)
             case 'technologies':
                 return (<TabComponent
                     tabname="technologies" searchTerm={state.q} title={'Technologies Results'}
-                    containerClass={'technologies'} ListingComponent={TechnologySearchListing}/>)
+                    containerClass={'technologies'} ListingComponent={TechnologySearchListing} listType="grid"/>)
             default:
                 alert('current tab value not recognized:' + tabName);
         }
@@ -83,19 +83,16 @@ function SearchApp() {
         <Fragment>
             <section className="tab-navigation search">
                 <div className="tab-headers">
-                    <h4 onClick={e => changeTab('categories')} className={headerClass('categories')}>Categories</h4>
-                    <h4 onClick={e => changeTab('category_concepts')} className={headerClass('category_concepts')}>Theory Concepts</h4>
-                    <h4 onClick={e => changeTab('technology_concepts')} className={headerClass('technology_concepts')}>Implementation Concepts</h4>
-                    <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies</h4>
                     <h4 onClick={e => changeTab('resources')} className={headerClass('resources')}>Resources</h4>
+                    {/*<h4 onClick={e => changeTab('categories')} className={headerClass('categories')}>Categories</h4>*/}
+                    <h4 onClick={e => changeTab('category_concepts')} className={headerClass('category_concepts')}>Theory Concepts</h4>
+                    <h4 onClick={e => changeTab('technologies')} className={headerClass('technologies')}>Technologies</h4>
+                    <h4 onClick={e => changeTab('technology_concepts')} className={headerClass('technology_concepts')}>Implementation Concepts</h4>
                     <h4 onClick={e => changeTab('collections')} className={headerClass('collections')}>Collections</h4>
                 </div>
                 <SearchBarComponentWithInstantResults searchTerm={state.q} setSearchTerm={term => setState({...state, q: term})}
                                                       placeholder="Search for something specific"/>
                 {getTabContent(state.currentTab)}
-            </section>
-            <section id="related" className="column-container">
-                <RelatedComponent/>
             </section>
         </Fragment>
     );

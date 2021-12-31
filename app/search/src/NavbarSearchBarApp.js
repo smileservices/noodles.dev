@@ -17,7 +17,7 @@ const CHANGE_TAB = 'CHANGE_TAB';
 const initialState = {
     open: false,
     query: false,
-    currentTab: 'categories'
+    currentTab: 'resources'
 }
 
 const reducer = (state, {type, payload}) => {
@@ -52,14 +52,24 @@ function NavbarSearchApp() {
     const [state, dispatch] = useReducer(reducer, {...initialState});
 
     const getTabContent = tabName => {
+        if (!state.query.term) {
+            return (
+                <div className="no-results">
+                    <img src="/static/imgs/img_empty.png"/>
+                    <h2>Please set a search term and then press enter</h2>
+                    <h2>What are you looking for?</h2>
+                </div>
+            )
+        }
         switch (tabName) {
             case 'categories':
                 return (<TabComponentNoUrlUpdate
-                    tabname="categories" searchTerm={state.query.term} title={'Categories Results'}
+                    tabname="categories" searchTerm={state.query.term} title={'Categories Results'} listType="grid"
                     containerClass={'categories'} ListingComponent={CategorySearchListing}/>)
             case 'category_concepts':
                 return (<TabComponentNoUrlUpdate
-                    tabname="category_concepts" searchTerm={state.query.term} title={'Theoretical Concepts Results'} listType="grid"
+                    tabname="category_concepts" searchTerm={state.query.term} title={'Theoretical Concepts Results'}
+                    listType="grid"
                     containerClass={'category_concepts'} ListingComponent={CategoryConceptSearchListing}/>)
             case 'technology_concepts':
                 return (<TabComponentNoUrlUpdate
@@ -93,29 +103,33 @@ function NavbarSearchApp() {
 
     if (state.open) {
         return (
-            <div className="search-app-overlay">
-                <div className="close-search" onClick={e => dispatch({type: CLOSE})}>
-                        <p>CLOSE SEARCH</p>
-                        <span className="icon-exit"> </span>
+            <div className="search-page search-app-overlay">
+                <div className="top-menu">
+                    <div className="left-side" onClick={e => dispatch({type: CLOSE})}>
+                        <a href="/search">Open Search Page <span className="icon-search"/></a>
+                    </div>
+                    <div className="close-search" onClick={e => dispatch({type: CLOSE})}>
+                        <a href="#" onClick={e=>e.preventDefault()}>Close Search <span className="icon-close"/> </a>
+                    </div>
                 </div>
                 <section className="tab-navigation search">
-                    <SearchBarComponent placeholder="Search for anything..."
+                    <SearchBarComponent placeholder="Search for anything and press Enter..."
                                         searchTerm={state.query.term}
                                         setSearchTerm={term => dispatch({type: SET_QUERY, payload: {term: term}})}
                     />
                     <div className="tab-headers">
-                        <h4 onClick={e => changeTab('categories')}
-                            className={headerClass('categories')}>Categories</h4>
-                        <h4 onClick={e => changeTab('category_concepts')}
-                            className={headerClass('category_concepts')}>Theory Concepts</h4>
-                        <h4 onClick={e => changeTab('technology_concepts')}
-                            className={headerClass('technology_concepts')}>Implementation Concepts</h4>
-                        <h4 onClick={e => changeTab('technologies')}
-                            className={headerClass('technologies')}>Technologies</h4>
                         <h4 onClick={e => changeTab('resources')}
                             className={headerClass('resources')}>Resources</h4>
+                        <h4 onClick={e => changeTab('category_concepts')}
+                            className={headerClass('category_concepts')}>Theory Concepts</h4>
+                        <h4 onClick={e => changeTab('technologies')}
+                            className={headerClass('technologies')}>Technologies</h4>
+                        <h4 onClick={e => changeTab('technology_concepts')}
+                            className={headerClass('technology_concepts')}>Implementation Concepts</h4>
                         <h4 onClick={e => changeTab('collections')}
                             className={headerClass('collections')}>Collections</h4>
+                        <h4 onClick={e => changeTab('categories')}
+                            className={headerClass('categories')}>Categories</h4>
                     </div>
                     {getTabContent(state.currentTab)}
                 </section>

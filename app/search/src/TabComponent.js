@@ -228,6 +228,7 @@ export default function TabComponent({tabname, searchTerm, title, containerClass
                 <div className="has-sort">
                     <h4>{title} (<span className="aggregation">{state.results.stats.total}</span>):</h4>
                     <SortComponent
+                        key="sort-component"
                         sort={state.sort}
                         sortOptions={state.results.sort}
                         callback={sort => {

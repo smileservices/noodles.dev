@@ -51,11 +51,6 @@
   .resources {
     width: unset !important;
   }
-  .grid-results {
-    grid-template-columns: 1fr 1fr;
-    display: grid;
-    gap: 0.625rem;
-  }
 }
 
 @media only screen and (max-width: 781px) {
@@ -115,33 +110,5 @@
         font-size: 1rem !important;
       }
     }
-  }
-
-  .grid-results {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.625rem;
-
-    // .technology-card {
-    //     max-width: 36.25rem;
-    // }
-  }
-}
-
-@media only screen and (min-width: 981px) {
-  .grid-results {
-    margin-top: $padding-unit-big;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0.625rem;
-    width: 100%;
-  }
-
-  .results {
-    display: flex;
-    flex-direction: column;
-    gap: $padding-unit-md;
   }
 }

@@ -104,51 +104,6 @@ const tabStateReducer = (state, {type, payload}) => {
     }
 }
 
-function getTabFilters(tabname, resultsFilters) {
-    // sets the available filters
-    // used when populating filter component
-    if (resultsFilters === undefined) return {};
-
-    switch (tabname) {
-        case 'categories':
-            return {
-                'parent': getAvailableFilters(resultsFilters['parent'], 'Parent', 'simple-select'),
-            }
-        case 'category_concepts':
-            return {
-                'category': getAvailableFilters(resultsFilters['parent'], 'Category', 'simple-select'),
-                'parent': getAvailableFilters(resultsFilters['parent'], 'Parent', 'simple-select'),
-                'experience_level': getAvailableFilters(resultsFilters['experience_level'], 'Experience Level', 'simple-select'),
-            }
-        case 'technology_concepts':
-            return {
-                'parent': getAvailableFilters(resultsFilters['parent'], 'Parent', 'simple-select'),
-                'experience_level': getAvailableFilters(resultsFilters['experience_level'], 'Experience Level', 'simple-select'),
-                'technology': getAvailableFilters(resultsFilters['technology'], 'Technology', 'simple-select'),
-            }
-        case 'resources':
-            return {
-                'tech_v': getAvailableFilters(resultsFilters['technologies'], 'Technologies', 'simple-select'),
-                'tags': getAvailableFilters(resultsFilters['tags'], 'Tags', 'simple-select'),
-                'price': getAvailableFilters(resultsFilters['price'], 'Price', 'simple-select'),
-                'media': getAvailableFilters(resultsFilters['media'], 'Media', 'simple-select'),
-                'experience_level': getAvailableFilters(resultsFilters['experience_level'], 'Experience Level', 'simple-select'),
-                'category': getAvailableFilters(resultsFilters['category'], 'Category', 'simple-select'),
-            }
-        case 'collections':
-            return {
-                'technologies': getAvailableFilters(resultsFilters['technologies'], 'Technologies', 'simple-select'),
-                'tags': getAvailableFilters(resultsFilters['tags'], 'Tags', 'simple-select'),
-            }
-        case 'technologies':
-            return {
-                'license': getAvailableFilters(resultsFilters['license'], 'License Type', 'simple-select'),
-                'ecosystem': getAvailableFilters(resultsFilters['ecosystem'], 'Technology Ecosystem', 'simple-select'),
-                'category': getAvailableFilters(resultsFilters['category'], 'Category', 'simple-select'),
-            }
-    }
-}
-
 export default function TabComponentNoUrlUpdate({tabname, searchTerm, title, containerClass, ListingComponent, listType = 'list'}) {
     const [state, dispatch] = useReducer(tabStateReducer, {...initialTabState, tab: tabname, search: searchTerm});
     useEffect(() => dispatch({type: SET_SEARCH, payload: searchTerm}), [searchTerm]);
@@ -195,14 +150,6 @@ export default function TabComponentNoUrlUpdate({tabname, searchTerm, title, con
         </div>
     )
     return (<div className={containerClass}>
-        {/*<FilterComponent
-            key={"filters" + containerClass}
-            fields={getTabFilters(tabname, state.results.filters)}
-            queryFilter={state.filters}
-            setQueryFilter={filter => {
-                dispatch({type: SET_FILTER, payload: filter});
-            }}
-        />*/}
         {state.results.items?.length > 0 ?
             <Fragment>
                 <div className="has-sort">

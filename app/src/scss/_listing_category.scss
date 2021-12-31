@@ -1,0 +1,24 @@
+.result.category {
+  header {
+    max-width: 50%;
+    margin-bottom: 0.75rem;
+    font-size: $fontsize-big;
+    line-height: 1.375rem;
+    a, a:visited {
+      color: $color-blue;
+    }
+  }
+
+  p {
+    font-size: $fontsize-md;
+    color: $color-text-white;
+    flex: 1;
+    inline-size: 100%;
+    overflow-wrap: break-word;
+    white-space: normal;
+  }
+}
+
+.grid-results .result.category {
+  max-width: 21rem;
+}

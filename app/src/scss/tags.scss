@@ -26,8 +26,8 @@ $color-tag-meta-text: #FFFFFF;
     justify-content: space-between;
     padding: 0 8px;
     border-radius: 10px;
-    background-color: $color-tag-bg;
-    color: $color-tag-text;
+    background-color: $color-tag-bg!important;
+    color: $color-tag-text!important;
     font-weight: 600;
     font-size: $fontsize-sm;
     line-height: $lineheight-base;
@@ -47,8 +47,8 @@ $color-tag-meta-text: #FFFFFF;
   }
 
   > *.tech, > a.tech:visited {
-    background-color: $color-tag-tech-bg;
-    color: $color-tag-tech-text;
+    background-color: $color-tag-tech-bg!important;
+    color: $color-tag-tech-text!important;
   }
 
   > *.tech:hover {

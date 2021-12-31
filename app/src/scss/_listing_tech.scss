@@ -12,7 +12,6 @@
 }
 
 .technology-card {
-  max-width: 19.25rem;
   background: $color-background-1;
   border-radius: 0.5rem;
   padding: 1.5rem 1rem;
@@ -63,4 +62,8 @@
     flex: 1;
     align-items: flex-end;
   }
+}
+
+.grid-results .technology-card {
+  max-width: 21rem;
 }

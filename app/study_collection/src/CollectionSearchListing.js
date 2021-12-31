@@ -11,21 +11,20 @@ const flagIcon = (
 
 export default function CollectionSearchListing({data, addFilter}) {
     return (
-        <div className="collections-card">
-            <div className="tags">
-                {data.technologies.map(t =>
-                    <a key={data.pk + t} onClick={e => addFilter('technologies', t)}
-                       className="tech"><span>{flagIcon} {t}</span></a>)
-                }
-            </div>
-
+        <div className="card result collection">
             <div className="listing-title">
-                <a itemProp="name" className="name" href={data.url}>{data.name}</a>
+                <div className="tags">
+                    {data.technologies.map(t =>
+                        <a key={data.pk + t} onClick={e => addFilter('technologies', t)}
+                           className="tech">{flagIcon} {t}</a>)
+                    }
+                </div>
+                <h4 className="title"><a href={data.url}>{data.name}</a></h4>
                 <span className="published">Created by {data.author.username}</span>
             </div>
 
             <p className="description">
-                {shortenText(data.description, 0, 85)}...
+                {shortenText(data.description, 0, 160)}...
             </p>
 
             <span className="tags">
@@ -33,19 +32,17 @@ export default function CollectionSearchListing({data, addFilter}) {
                                           className="tag"># {t}</span>)}
 
             </span>
-
+            <div className="footer">
+                <div>{data.items_count} Resources</div>
             <div className="thumbs">
-                <span className="published">{data.items_count} Resources</span>
-                <div className="container">
-                    <div className="down">
-                        <span className="icon-thumbs-o-down"> </span><span>{data.thumbs_down}</span>
-                    </div>
-                    <div className="up"><span className="icon-thumbs-o-up"> </span>
-                        <span>{data.thumbs_up}</span>
-                    </div>
+                <div className="down">
+                    <span className="icon-thumbs-o-down"> </span><span>{data.thumbs_down}</span>
+                </div>
+                <div className="up"><span className="icon-thumbs-o-up"> </span>
+                    <span>{data.thumbs_up}</span>
                 </div>
             </div>
-
+            </div>
         </div>
     )
 }

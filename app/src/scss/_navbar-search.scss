@@ -1,7 +1,13 @@
 #search-bar-app {
+  form {
+    margin: 0;
+    padding: 0;
+    gap: 0;
+  }
   .navbar-input-container {
     display: -ms-flexbox; /* IE10 */
     display: flex;
+
     .navbar-search-input {
       border-radius: 20px;
       background-color: #000000;
@@ -64,6 +70,7 @@
         width: 100%;
       }
     }
+
     .message {
       padding-top: 0.75rem;
       padding-left: 1.5rem;
@@ -72,6 +79,7 @@
       line-height: 22px;
       color: #C5C9E1;
     }
+
     .result {
       font-size: $fontsize-sm;
     }
@@ -91,27 +99,35 @@
     padding: $padding-unit-big*2;
     background-color: var(--color-navsearch-app-bkg);
 
-    .close-search {
-      width: 944px;
+    .top-menu {
       display: flex;
-      align-items: center;
+      flex-direction: row;
+      flex-wrap: nowrap;
       justify-content: flex-end;
-      gap: 8px;
-      color: $color-text-grey-2;
+      width: 944px;
+      gap: $padding-unit-big;
 
-      p {
+      * {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        color: $color-text-grey-2;
         font-style: normal;
         font-weight: 500;
         font-size: 12px;
         line-height: 22px;
       }
+
     }
+
 
     .toolbar {
       right: 1rem;
       top: 1rem;
       font-size: $fontsize-big*1.5;
       color: var(--color-blue-dark);
+
       span:hover {
         color: var(--color-blue);
         cursor: pointer;
@@ -161,6 +177,7 @@
   #search-bar-app {
     .navbar-input-container {
       width: 382px;
+
       .navbar-search-input {
         position: relative;
         left: 41px;

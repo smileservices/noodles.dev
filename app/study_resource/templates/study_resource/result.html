@@ -14,7 +14,7 @@
                 </a>
         {% endfor %}
             {{ result.category.get_ahref | safe }}
-            <a href="{% url 'search_page' %}?tab=resources&experience={{ result.experience_level_label }}">{{ result.experience_level_label }}</a>
+            <a href="{% url 'search_page' %}?tab=resources&experience_level={{ result.experience_level_label }}">{{ result.experience_level_label }}</a>
             {% for con in result.category_concepts.all %}
                 {{ con.get_ahref | safe }}
             {% endfor %}

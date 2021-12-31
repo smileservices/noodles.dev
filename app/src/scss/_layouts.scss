@@ -8,12 +8,14 @@ main {
 //}
 
 .tab-navigation {
+  .search {
+    .filters-container {
+      margin-left: $padding-unit-big;
+    }
+  }
   .search-results {
-    width: 944px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    max-width: 944px;
     gap: 3rem;
   }
   .categories,
@@ -31,8 +33,6 @@ main {
     gap: 0.325rem;
     overflow: auto;
     align-items: center;
-    justify-content: center;
-    // width: 944px;
     justify-content: space-between;
     padding-bottom: 0.75rem;
 
@@ -48,9 +48,11 @@ main {
     padding: 12px 18px;
     border-radius: 20px;
     cursor: pointer;
-    color: var(--color-background-5);
+    color: $color-background-4;
+    white-space: nowrap;
+
     a, a:visited {
-      color: var(--color-background-5);
+      color: $color-background-4;
     }
   }
 

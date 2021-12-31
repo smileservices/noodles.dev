@@ -75,7 +75,7 @@ export default function InstantSearchComponent({setSearchTerm}) {
     const controller = new AbortController();
     const wrapperRef = useRef(null);
 
-    (function (ref){
+    (function (ref) {
         useEffect(() => {
             /**
              * Close instant search overlay when click outside
@@ -88,6 +88,7 @@ export default function InstantSearchComponent({setSearchTerm}) {
                     }
                 }
             }
+
             // Bind the event listener
             document.addEventListener("mousedown", handleClickOutside);
             return () => {
@@ -121,17 +122,24 @@ export default function InstantSearchComponent({setSearchTerm}) {
 
     return (
         <Fragment>
-            <div className="navbar-input-container">
-                <input type="text"
-                       placeholder="Search for a topic or technology"
-                       className="navbar-search-input"
-                       onChange={event => {
-                           dispatch({type: SET_QUERY, payload: event.target.value})
-                       }}
-                />
-                {state.wait ? <span className="search-overlay"><WaitingInline /></span> : ''}
-                <span className="icon-search" onClick={e => setSearchTerm(state.query.term)}> </span>
-            </div>
+            <form onSubmit={e => {
+                e.preventDefault();
+                setSearchTerm(state.query.term);
+            }}>
+                <div className="navbar-input-container">
+
+                    <input type="text"
+                           placeholder="Search for a topic or technology"
+                           className="navbar-search-input"
+                           onChange={event => {
+                               dispatch({type: SET_QUERY, payload: event.target.value})
+                           }}
+                    />
+                    {state.wait ? <span className="search-overlay"><WaitingInline/></span> : ''}
+                    <span className="icon-search" onClick={e => setSearchTerm(state.query.term)}> </span>
+                </div>
+            </form>
+
             {state.overlay ?
                 <div className="navbar-search-results-overlay" ref={wrapperRef}>
                     <div className="message">
@@ -141,9 +149,9 @@ export default function InstantSearchComponent({setSearchTerm}) {
                         <div className="small-results">
                             {state.overlay.results.map(r => <a key={r.url} href={r.url}>{r.name}</a>)}
                         </div>
-                    : ''}
+                        : ''}
                 </div>
-            : ''}
+                : ''}
         </Fragment>
     )
 }

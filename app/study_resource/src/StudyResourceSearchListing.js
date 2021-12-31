@@ -33,7 +33,7 @@ export default function StudyResourceSearchListing({data, addFilter}) {
             <div className="resource-card">
                 <div className="resource-result">
                     <div className="left">
-                        <div className="resource-tags">
+                        <div className="tags">
                             {technologies}{concepts.technology}{category}{concepts.category}{experience_level}
                         </div>
                         <div className="resource-listing-title">
@@ -47,7 +47,7 @@ export default function StudyResourceSearchListing({data, addFilter}) {
                                 <TruncatedTextComponent fullText={data.summary} charLimit={250}/>
                             </p>
                         </div>
-                        <div className="resource-tags bottom">{tags}</div>
+                        <div className="tags bottom">{tags}</div>
                     </div>
                     {data.image ?
                         <div className="right">
