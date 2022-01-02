@@ -1,7 +1,4 @@
-import requests
 import json
-from django.db import IntegrityError, models
-from django.db.models import Q
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -12,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from core.abstract_viewsets import ResourceWithEditSuggestionVieset
+from core.abstract_viewsets import VotableVieset
 from core.utils import rest_paginate_queryset
 from . import serializers, filters
 from .models import CollectionResources, Collection
@@ -53,7 +50,7 @@ def list_all(request):
     return render(request, 'study_collection/list_page_seo.html', data)
 
 
-class CollectionViewset(ResourceWithEditSuggestionVieset):
+class CollectionViewset(VotableVieset):
     serializer_class = serializers.CollectionSerializer
     queryset = serializers.CollectionSerializer.queryset.order_by('-created_at')
     permission_classes = [IsAuthenticatedOrReadOnly]

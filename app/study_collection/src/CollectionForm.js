@@ -56,7 +56,6 @@ function CollectionForm({formData, setFormData, extraData, submitCallback, waiti
         if (normalizedData.name.length < 5) vErrors.name = 'Name is too short. It has to be at least 5 characters';
         if (normalizedData.description.length < 20) vErrors.description = 'Description is too short. It has to be at least 20 characters';
         if (!normalizedData.tags || normalizedData.tags.length === 0) vErrors.tags = 'Choose at least one tag';
-        if (!normalizedData.technologies || normalizedData.technologies.length === 0) vErrors.technologies = 'Choose at least one technology';
         if (Object.keys(vErrors).length > 0) {
             setAlert(<Alert close={e => setAlert(null)} text="Please fix the form errors" type="danger"/>)
             setErrors({...vErrors});
