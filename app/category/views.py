@@ -21,12 +21,12 @@ def detail(request, slug):
     techs = []
     for cat in instance_descendants.prefetch_related('resources', 'related_technologies'):
         techs += cat.related_technologies.all()
-        resources += cat.resources.filter(status=StudyResource.StatusOptions.APPROVED).all()
+        # resources += cat.resources.filter(status=StudyResource.StatusOptions.APPROVED).all()
     data = {
         'detail': detail,
         'concepts': detail.concepts.all(),
         'technologies': techs,
-        'resources': resources,
+        'resources': detail.resources.filter(status=StudyResource.StatusOptions.APPROVED).all(),
     }
     return render(request, 'category/detail_page.html', data)
 
