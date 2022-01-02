@@ -267,7 +267,7 @@ img {
         appearance: none;
         color: inherit;
         background-color: inherit;
-  
+
         option {
           font-weight: 600;
           font-size: 16px;
@@ -290,4 +290,15 @@ img {
 
 .blue {
   color: var(--color-blue);
+}
+
+.resource.sortableHelper {
+  // used in the collections modal when doing drag&drop
+  z-index: $top-level;
+  display: grid;
+  grid-template-columns: 1rem 3fr 1fr 1rem;
+  justify-content: start;
+  background-color: var(--color-background);
+  border-radius: 6px;
+  padding: .625rem;
 }
