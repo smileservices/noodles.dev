@@ -14,6 +14,7 @@ urlpatterns = [
     path('terms/terms-conditions', lambda request: render(request, 'frontend/static/terms.html'), name='terms-policy'),
     path('terms/cookies-policy', lambda request: render(request, 'frontend/static/cookie-terms.html'), name='cookie-policy'),
     path('backstage', lambda request: render(request, 'frontend/static/backstage.html'), name='noodles-backstage'),
+    path('about', lambda request: render(request, 'frontend/static/about.html'), name='noodles-about'),
 ]
 
 if settings.DEBUG:

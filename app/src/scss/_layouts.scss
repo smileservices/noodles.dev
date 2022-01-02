@@ -7,6 +7,10 @@ main {
 //  display: none;
 //}
 
+.vmargin-big {
+  margin: $padding-unit-big 0;
+}
+
 .tab-navigation {
   .search {
     .filters-container {
