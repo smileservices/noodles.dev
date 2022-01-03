@@ -72,9 +72,9 @@ function CollectionForm({formData, setFormData, extraData, submitCallback, waiti
         cpd.tags = data.tags.map(t => {
             return t.value
         });
-        cpd.technologies = data.technologies.map(t => {
+        cpd.technologies = data.technologies ? data.technologies.map(t => {
             return t.value
-        });
+        }) : [];
         return cpd;
     }
 
