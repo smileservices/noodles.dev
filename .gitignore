@@ -4,8 +4,8 @@
 .idea/
 */migrations/*
 static_col/*
-app/frontend/static/frontend/css/main.css
-app/static
+app/static/js
+app/static/css
 MEDIA/*
 STATIC_COL/*
 ext/

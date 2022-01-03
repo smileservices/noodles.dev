@@ -175,9 +175,9 @@
     removeSearchOverlayObserver.observe(document.querySelector("#search-bar-app"), { subtree: false, childList: true });
 </script>
 <script src="{% static 'js/react-bundle.js' %}"></script>
-<script src="{% static 'frontend/sidebar-app.js' %}"></script>
+<script src="{% static 'js/frontend/sidebar-app.js' %}"></script>
 {% if not hide_navbar_search %}
-    <script src="{% static 'navbar-search-bar-app.js' %}"></script>
+    <script src="{% static 'js/navbar-search-bar-app.js' %}"></script>
 {% endif %}
 {% block extra_js %}{% endblock %}
 </body>
