@@ -120,6 +120,17 @@ export default function InstantSearchComponent({setSearchTerm}) {
         }
     }, [state.query.term]);
 
+    function get_type_tag(type_str) {
+        var name = type_str;
+        if (type_str === 'study_resource') {
+            name = 'tutorial'
+        }
+        if (type_str === 'concept_category' || type_str === 'concept_technology') {
+            name = 'concept'
+        }
+        return  (<span className="tag">{name}</span>);
+    }
+
     return (
         <Fragment>
             <form onSubmit={e => {
@@ -147,7 +158,7 @@ export default function InstantSearchComponent({setSearchTerm}) {
                     </div>
                     {state.overlay.results.length > 0 ?
                         <div className="small-results">
-                            {state.overlay.results.map(r => <a key={r.url} href={r.url}>{r.name}</a>)}
+                            {state.overlay.results.map(r => <a key={r.url} href={r.url}>{r.name} {get_type_tag(r.type)}</a>)}
                         </div>
                         : ''}
                 </div>

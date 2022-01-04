@@ -105,10 +105,10 @@ function NavbarSearchApp() {
         return (
             <div className="search-page search-app-overlay">
                 <div className="top-menu">
-                    <div className="left-side" onClick={e => dispatch({type: CLOSE})}>
+                    <div>
                         <a href="/search">Open Search Page <span className="icon-search"/></a>
                     </div>
-                    <div className="close-search" onClick={e => dispatch({type: CLOSE})}>
+                    <div onClick={e => dispatch({type: CLOSE})}>
                         <a href="#" onClick={e=>e.preventDefault()}>Close Search <span className="icon-close"/> </a>
                     </div>
                 </div>

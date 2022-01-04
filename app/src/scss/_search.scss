@@ -90,6 +90,7 @@
     margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
+
     a {
       padding: 0px;
       font-weight: bold;
@@ -160,6 +161,7 @@
   position: relative;
   margin: $padding-unit-md * 2 0 $padding-unit-md 0;
   padding-top: 0;
+  align-items: center;
 
   input {
     height: $fontsize-sm * 4;
@@ -169,6 +171,8 @@
     color: $color-text-white;
     border-radius: 40px;
     padding-left: $padding-unit-big;
+    max-width: 50*$fontsize-big;
+    width: 100%;
   }
 
   .search-overlay {
@@ -284,6 +288,8 @@
   align-items: center;
   justify-content: center;
   gap: $padding-unit-md;
+  white-space: break-spaces;
+  text-align: center;
 
   p {
     font-size: $fontsize-md;
@@ -305,18 +311,18 @@
     border-radius: 0.5rem;
     max-width: 59rem;
     padding: 1.75rem 1.5rem 2.25rem 1.5rem;
-  
+
     header {
       max-width: 50%;
       margin-bottom: 0.75rem;
-  
+
       a {
         padding: 0px;
         font-size: 1rem;
         line-height: 1.375rem;
       }
     }
-  
+
     p {
       font-style: normal;
       font-weight: normal;
@@ -340,19 +346,19 @@
     background-color: $color-background-1;
     border-radius: 8px;
     justify-content: space-between;
-  
+
     .resource-result {
       flex-wrap: wrap-reverse;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-  
+
       .right {
         max-width: $fontsize-big * 17;
         background: #fff;
         border-radius: 4px;
         opacity: 0.3;
-  
+
         .image {
           display: flex;
           align-items: center;
@@ -360,19 +366,19 @@
           height: 100%;
           flex-direction: column;
           border-radius: 4px;
-  
+
           a {
             height: 100%;
             border-radius: 4px;
             padding: 0px !important;
-  
+
             img {
               height: 100%;
             }
           }
         }
       }
-  
+
       .left {
         display: flex;
         flex-direction: column;
@@ -388,9 +394,10 @@
         .tags.bottom {
           margin-bottom: 0px !important;
         }
-  
+
         .resource-listing-title {
           margin-bottom: 8px;
+
           .title {
             a {
               padding: 0px !important;
@@ -401,6 +408,7 @@
               color: #ffffff;
             }
           }
+
           .published {
             font-style: normal;
             font-weight: normal;
@@ -409,13 +417,14 @@
             color: $color-text-grey;
           }
         }
-  
+
         .description {
           max-width: 100%;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           margin-bottom: 24px;
+
           p {
             white-space: nowrap;
             overflow: hidden;
@@ -427,20 +436,21 @@
             color: #ffffff;
           }
         }
-  
+
         .rating {
           padding-top: 0;
         }
       }
-  
+
       .right:hover {
         opacity: 1;
       }
-  
+
       .image {
         display: flex;
         align-items: center;
         justify-content: center;
+
         img {
           border-radius: $radius-small;
         }
