@@ -63,4 +63,17 @@
         <div class="row"><span class="label">Topic</span><span
                 class="tags"><span class="meta">{{ result.category.name_tree }}</span></span></div>
     </div>
+
+{% if result.collections.count > 0 %}
+    <div class="card">
+        <div class="header">Collections</div>
+        <div class="links-container">
+            {% for collection in collections %}
+                <a href="{{ collection.absolute_url }}">
+                    {{ collection }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
 </div>

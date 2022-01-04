@@ -229,6 +229,12 @@ main .detail-page {
         justify-content: space-between;
       }
     }
+
+    .links-container {
+      display: flex;
+      flex-direction: column;
+      gap: $padding-unit;
+    }
   }
 
   .empty-container {

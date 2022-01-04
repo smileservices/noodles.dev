@@ -26,6 +26,7 @@ from concepts.models import CategoryConcept, TechnologyConcept
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
 from core.utils import rest_paginate_queryset
 from app.settings import rewards
+from study_collection.models import Collection
 
 
 def list_all(request):
@@ -49,6 +50,7 @@ def detail(request, id, slug):
     resource = queryset.select_related().get(pk=id)
     data = {
         'result': resource,
+        'collections': resource.collections.filter(is_public=True, status=Collection.StatusOptions.APPROVED).all(),
         'MAX_RATING': settings.MAX_RATING,
         'urls': {
             'review_api': reverse_lazy('review-viewset-list'),
