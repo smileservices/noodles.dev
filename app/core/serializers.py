@@ -6,5 +6,8 @@ def serializeErrorDetails(e: ErrorDetail):
 
 
 def serializeValidationError(e: ValidationError):
-    return {k: serializeErrorDetails(v) for k, v in e.detail.items()}
+    result = {}
+    for k,v in e.detail.items():
+        result[k] = serializeValidationError(v) if type(v) == ValidationError else v
+    return result
 

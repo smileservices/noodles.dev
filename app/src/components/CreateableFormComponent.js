@@ -22,15 +22,16 @@ export default function CreateableFormComponent({endpoint, data, extraData, Form
                                         hideable={false} close={e => setAlert(null)}/>)
                     return;
                 }
-                result.json().then(errors => {
-                    if (errors) {
+                result.json().then(data => {
+                    if (data.error) {
                         let flattenedErrors = {};
-                        Object.keys(errors).map(k => {
-                            flattenedErrors[k] = [k].join('</br>');
+                        Object.keys(data.error).map(k => {
+                            flattenedErrors[k] = data.error[k];
                         })
                         setErrors(flattenedErrors);
+                        let errorMessage = 'Please check the field errors and try again';
                         setAlert(<Alert key={makeId()}
-                                        text="Please check the field errors and try again."
+                                        text={data.error.detail ? `${errorMessage}: ${data.error.detail}` : errorMessage}
                                         type="danger" stick={false}
                                         hideable={false} close={e => setAlert(null)}/>)
                     } else {

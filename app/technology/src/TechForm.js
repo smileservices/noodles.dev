@@ -85,7 +85,8 @@ function TechForm({formData, setFormData, extraData, submitCallback, waiting, al
     function validate(normalizedData, callback) {
         let vErr = {};
         if (normalizedData.description.length < 30) vErr.description = 'Description is too short. It has to be at least 30 characters';
-        if (normalizedData.owner.length < 5) vErr.owner = 'Owner/Maintainer name is too short, has to be at least 5 characters';
+        if (normalizedData.description.length > 256) vErr.description = 'Description is too long. It has to be at most 256 characters';
+        if (normalizedData.owner.length < 2) vErr.owner = 'Owner/Maintainer name is too short, has to be at least 2 characters';
         if (extraData.formElements) {
             extraData.formElements.validate(normalizedData, vErr);
         }
