@@ -32,7 +32,8 @@ $color-blue: #576EFF;
 $color-blue-hover: #3EABEF;
 $color-blue-clicked: #118AD4;
 $color-blue-disabled: fade_in($color-blue-clicked, 0.5);
-
+$color-status-active: #179617;
+$color-status-inactive: #ce2a2a;
 
 // text and general elements
 $theme-color-main: #1A1A1A;

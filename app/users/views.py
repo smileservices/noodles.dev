@@ -40,9 +40,15 @@ def user_data(request, *args, **kwargs):
 
 
 def user_profile(request, username):
+    user = CustomUser.objects.get(username=username)
     data = {
-        'is_owner': json.dumps(request.user.username == username),
-        'profile': json.dumps(UserSerializerMinimal(CustomUser.objects.get(username=username)).data)
+        'profile': user,
+        'reviews': user.review_set.filter(visible=True),
+        'collections': user.collection_set.filter(status=StudyResource.StatusOptions.APPROVED),
+        'resources': user.studyresource_set.filter(status=StudyResource.StatusOptions.APPROVED),
+        'technologies': user.technology_set.filter(status=StudyResource.StatusOptions.APPROVED),
+        'concepts_technology': user.technologyconcept_set.filter(status=StudyResource.StatusOptions.APPROVED),
+        'concepts_category': user.categoryconcept_set.filter(status=StudyResource.StatusOptions.APPROVED),
     }
     return render(request, 'users/profile.html', data)
 

@@ -131,6 +131,7 @@ section.header {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
   gap: $padding-unit-big;
   font-size: $fontsize-md;
 

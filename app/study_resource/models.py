@@ -178,7 +178,7 @@ class StudyResource(ResourceMixin, VotableMixin):
     )
 
     def __str__(self):
-        return f'Tutorial::{self.media_label} on {self.name}'
+        return f'{self.media_label} on {self.name}'
 
     @property
     def absolute_url(self):
