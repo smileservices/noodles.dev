@@ -127,11 +127,11 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
         cpd.tags = data.tags.map(t => {
             return t.value
         });
-        cpd.technologies = data.technologies.map(t => {
+        cpd.technologies = data.technologies ? data.technologies.map(t => {
             return {technology_id: t.technology_id, version: t.version ? t.version : 0};
-        });
-        cpd.category_concepts = data.category_concepts.map(c=>c.value);
-        cpd.technology_concepts = data.technology_concepts.map(c=>c.value);
+        }) : [];
+        cpd.category_concepts = data.category_concepts ? data.category_concepts.map(c=>c.value) : [];
+        cpd.technology_concepts = data.technology_concepts ? data.technology_concepts.map(c=>c.value) : [];
         cpd.category = data.category.value;
         cpd.publication_date = formatDate(data.publication_date);
         //image validation part
