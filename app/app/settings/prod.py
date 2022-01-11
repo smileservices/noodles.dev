@@ -18,7 +18,7 @@ if DEBUG:
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
-ACTIVITY_LOG_PATH = os.path.join(os.getcwd(), '..', 'logs', 'activity.log')
+ACTIVITY_LOG_PATH = os.path.join(os.getcwd(), '..', 'LOGS', 'activity.log')
 
 LOGGING = {
     'version': 1,

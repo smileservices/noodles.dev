@@ -188,7 +188,6 @@ def get_log_user_handler(op):
             'display': {
                 'event': f'{events.USER}-{op}',
                 'username': user.username,
-                'usernam': user.nothinghere,
             }
         }
         activity_logger.info(json.dumps(msg_dict))
