@@ -1,5 +1,5 @@
 from . import *
-
+import pathlib
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -18,9 +18,17 @@ if DEBUG:
 
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
+ACTIVITY_LOG_PATH = os.path.join(os.getcwd(), '..', 'logs', 'activity.log')
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'activity': {
+            'format': '{asctime}--{levelname}--{message}',
+            'style': '{',
+        }
+    },
     'handlers': {
         'console': {
             'level': 'INFO',
@@ -29,13 +37,24 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
-        }
+        },
+        'activity_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': ACTIVITY_LOG_PATH,
+            'formatter': 'activity'
+        },
     },
     'loggers': {
         'django': {
             'handlers': ['console', 'mail_admins'],
             'level': 'INFO',
             'propagate': False,
+        },
+        'activity': {
+            'handlers': ['activity_file'],
+            'level': 'INFO',
+            'propagate': True,
         },
     },
 }

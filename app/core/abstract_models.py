@@ -5,7 +5,7 @@ from core.tasks import sync_to_elastic, sync_delete_to_elastic
 from users.models import CustomUser
 from django.contrib.contenttypes.fields import GenericRelation
 from history.models import ResourceHistoryModel
-
+from core.logging import logger
 
 class DateTimeModelMixin(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)

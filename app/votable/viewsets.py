@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import action
-
+from core.logging import  logger
 
 class VotableVieset(ModelViewSet):
 
@@ -15,6 +15,7 @@ class VotableVieset(ModelViewSet):
                 instance.vote_up(request.user)
             else:
                 instance.vote_down(request.user)
+            logger.log_vote(instance, request.data['vote'], request.user)
             return Response({
                 'thumbs': {
                     'up': instance.thumbs_up_array,

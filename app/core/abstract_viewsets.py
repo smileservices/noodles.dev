@@ -10,6 +10,7 @@ from django.core.mail import mail_admins
 from core.serializers import serializeValidationError
 from core.tasks import add_history_record_update
 from core.utils import get_serialized_models_diff
+from core.logging import logger, events
 import json
 
 from history.models import ResourceHistoryModel
@@ -25,6 +26,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
             # we have to resync to elasticsearch because we now have finished adding the m2m data
             instance = self.serializer_class.Meta.model.objects.get(pk=response.data['pk'])
             instance.save()
+            logger.log_resource_op(instance, request, events.OP_CREATE)
             response.data['success'] = {
                 'message': f'<div class="message">Keep up the good work!</div>'
                            f'<div class="score-info">'
@@ -34,10 +36,12 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
             }
             return response
         except ValidationError as e:
+            logger.log_resource_error(serializeValidationError(e), request, events.OP_CREATE)
             return Response(status=502, data={
                 'error': serializeValidationError(e)
             })
         except Exception as e:
+            logger.log_resource_error(str(e), request, events.OP_CREATE)
             mail_admins(
                 subject=f'Error Creating Resource: {self.request.META["PATH_INFO"]}',
                 message=f'ERROR: \n'
@@ -59,6 +63,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
             try:
                 old_record = self.serializer_class(instance).data
                 response = super(ResourceWithEditSuggestionVieset, self).update(request, *args, **kwargs)
+                logger.log_resource_op(instance, self.request, events.OP_UPDATE)
                 if response.status_code == 200:
                     # we run the task creating the history object
                     new_record = response.data
@@ -76,6 +81,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
             except ValidationError as e:
                 raise e
             except Exception as e:
+                logger.log_resource_error(str(e), request, events.OP_UPDATE)
                 mail_admins(
                     subject=f'Error Updating Resource: {self.request.META["PATH_INFO"]}',
                     message=f'ERROR: \n'
@@ -90,10 +96,12 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                 validated_data = serialized_instance.run_validation(request.data)
                 edsug = self.edit_suggestion_perform_create(instance, validated_data)
                 edsug_serializer = self.serializer_class.get_edit_suggestion_serializer()
+                logger.log_resource_edit_suggestion_created(instance, request)
                 return Response(edsug_serializer(edsug).data, status=HTTP_209_EDIT_SUGGESTION_CREATED)
             except ValidationError as e:
                 raise e
             except Exception as e:
+                logger.log_resource_error(str(e), request, events.EDIT_SUGGESTION)
                 mail_admins(
                     subject=f'Error Creating Edit Suggestion for Resource: {self.request.META["PATH_INFO"]}',
                     message=f'ERROR: \n'
@@ -112,6 +120,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                 edit_suggestion_parent=parent
             )
             edit_instance.edit_suggestion_publish(request.user)
+            logger.log_resource_op(parent, self.request, events.OP_UPDATE_EDIT_PUBLISH)
             # we run the create history update task
             old_record = self.serializer_class(parent).data
             parent.refresh_from_db()  # retrieve new data from db
@@ -133,6 +142,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                 'message': str(e)
             })
         except Exception as e:
+            logger.log_resource_error(str(e), request, events.EDIT_SUGGESTION)
             return Response(status=401, data={
                 'error': True,
                 'message': str(e)
@@ -141,6 +151,12 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
             'error': False,
             'message': 'Edit suggestion has been published! Resource has been updated.'
         })
+
+    @action(methods=['POST'], detail=True)
+    def edit_suggestion_reject(self, request, *args, **kwargs):
+        response = super(ResourceWithEditSuggestionVieset, self).edit_suggestion_reject(request, *args, **kwargs)
+        logger.log_resource_edit_suggestion_operation(self.get_object(), f'REJECT - {request.data["edit_suggestion_reject_reason"]}', request)
+        return response
 
     @action(methods=['GET'], detail=True)
     def history(self, request, *args, **kwargs):
@@ -157,6 +173,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
 
     def perform_destroy(self, instance):
         if self.request.user.is_staff or instance.author == self.request.user:
+            logger.log_resource_op(instance, self.request, events.OP_SOFT_DELETE)
             return super(ResourceWithEditSuggestionVieset, self).perform_destroy(instance)
         else:
             raise PermissionDenied('Only staff or resource owner can delete the resource.')
@@ -176,12 +193,14 @@ class EditSuggestionViewset(VotableVieset):
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         if self.request.user.is_staff or instance.edit_suggestion_author == self.request.user:
+            logger.log_resource_edit_suggestion_operation(instance, events.OP_UPDATE, self.request)
             return super(EditSuggestionViewset, self).update(request, *args, **kwargs)
         else:
             raise PermissionDenied('Only staff or resource owner can update the edit suggestion.')
 
     def perform_destroy(self, instance):
         if self.request.user.is_staff or instance.edit_suggestion_author == self.request.user:
+            logger.log_resource_edit_suggestion_operation(instance, events.OP_DELETE, self.request)
             return super(EditSuggestionViewset, self).perform_destroy(instance)
         else:
             raise PermissionDenied('Only staff or resource owner can delete the edit suggestion.')

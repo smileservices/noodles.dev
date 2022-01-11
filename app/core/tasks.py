@@ -4,8 +4,7 @@ from .elasticsearch.elasticsearch_interface import save_to_elastic, delete_from_
 from .elasticsearch.elasticsearch_interface import ElasticSearchInterface
 import logging
 from django.core.management import call_command
-from history.models import ResourceHistoryModel
-import json
+from core.logging import logger
 
 
 def set_to_sync(syncable_instance):
@@ -185,3 +184,8 @@ def add_history_record_update(model, pk, changes_text, author_id, operation_sour
         operation_source=operation_source,
         operation_type=operation_type,
     )
+    logger.log_history_record(
+        instance, author_id, edit_published_by_id,
+        operation_type, operation_source, edit_reason
+    )
+

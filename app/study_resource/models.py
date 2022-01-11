@@ -17,6 +17,7 @@ from core.edit_suggestions import edit_suggestion_change_status_condition, post_
 from core.abstract_models import ElasticSearchIndexableMixin
 from core.tasks import sync_to_elastic
 from core import utils
+from core.logging import logger
 
 from tag.models import Tag
 from technology.models import Technology
@@ -380,7 +381,7 @@ class Review(DateTimeModelMixin, VotableMixin):
              update_fields=None):
         super(Review, self).save()
         self.study_resource.save()  # this to trigger syncing to elasticsearch
-
+        logger.log_review(self)
 
 class StudyResourceIntermediary(models.Model):
     '''

@@ -334,3 +334,32 @@ EMAIL_USE_SSL = env.str('EMAIL_USE_SSL', False)
 SERVER_EMAIL = env.str('EMAIL_HOST_USER')
 
 WEBSITE_SCREENSHOT_TOKEN = env.str('WEBSITE_SCREENSHOT_TOKEN')
+
+
+ACTIVITY_LOG_PATH = os.path.join(os.getcwd(), '..', 'LOGS', 'activity.log')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'activity': {
+            'format': '{asctime}--{levelname}--{message}',
+            'style': '{',
+        }
+    },
+    'handlers': {
+        'activity_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': ACTIVITY_LOG_PATH,
+            'formatter': 'activity'
+        },
+    },
+    'loggers': {
+        'activity': {
+            'handlers': ['activity_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}

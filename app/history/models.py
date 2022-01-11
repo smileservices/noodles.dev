@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import fields
 from users.models import CustomUser
-
+from core.logging import events
 
 # Create your models here.
 class ResourceHistoryModel(models.Model):
@@ -12,9 +12,9 @@ class ResourceHistoryModel(models.Model):
         AUTO = (2, 'automatic')
 
     class OperationType(models.IntegerChoices):
-        CREATE = (0, 'create')
-        UPDATE = (1, 'update')
-        DELETE = (2, 'delete')
+        CREATE = (0, events.OP_CREATE)
+        UPDATE = (1, events.OP_UPDATE)
+        DELETE = (2, events.OP_DELETE)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, db_index=True)
     object_id = models.PositiveIntegerField(db_index=True)

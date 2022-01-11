@@ -13,9 +13,17 @@ INTERNAL_IPS = [
 
 # DEBUG_TOOLBAR_PANELS = ['cachalot.panels.CachalotPanel',]
 
+ACTIVITY_LOG_PATH = os.path.join(os.getcwd(), '..', 'LOGS', 'activity.log')
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'activity': {
+            'format': '{asctime}--{levelname}--{message}',
+            'style': '{',
+        }
+    },
     'handlers': {
         'app_file': {
             'level': 'INFO',
@@ -25,8 +33,14 @@ LOGGING = {
         'autotranslate_file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(os.path.abspath('/home/vldmr/dev/noodles'), 'autotranslate.log'),
-        }
+            'filename': os.path.join(os.getcwd(), '../', 'autotranslate.log'),
+        },
+        'activity_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': ACTIVITY_LOG_PATH,
+            'formatter': 'activity'
+        },
     },
     'loggers': {
         'django': {
@@ -36,6 +50,11 @@ LOGGING = {
         },
         'autotranslate': {
             'handlers': ['autotranslate_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'activity': {
+            'handlers': ['activity_file'],
             'level': 'INFO',
             'propagate': True,
         },
