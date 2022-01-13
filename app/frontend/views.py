@@ -12,6 +12,8 @@ import time
 from django.shortcuts import reverse
 
 def homepage(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        return render(request, 'dashboard/staff.html')
     return render(request, 'frontend/homepage.html')
 
 

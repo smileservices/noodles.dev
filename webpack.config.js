@@ -56,10 +56,10 @@ module.exports = (env, argv) => ({
         '/static/js/profile-app': './app/users/src/ProfileApp.js',
 
         //history
-        '/static/js/resource-history': './app/history/src/ResourceHistoryApp.js'
+        '/static/js/resource-history': './app/history/src/ResourceHistoryApp.js',
 
         // admin dashboard
-        // '/static/dashboard/admin/dashboard': './app/dashboard/src/main-page/App.js'
+        '/static/js/dashboard/admin': './app/dashboard/src/AdminApp.js'
     },
     output: {
         filename: '[name].js',

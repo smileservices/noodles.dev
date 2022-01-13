@@ -1,0 +1,46 @@
+.activity-log {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .log-line {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    gap: 4rem;
+    padding: 0 $padding-unit;
+    font-size: $fontsize-sm;
+    background-color: $color-background;
+
+    &.WARN {
+      background-color: #575f36;
+    }
+
+    &.ERROR {
+      background-color: #5f3636;
+    }
+
+    .display-data {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+
+      .field {
+        display: flex;
+        flex-direction: column;
+
+        .key {
+          font-size: 0.6rem;
+          line-height: 0.8rem;
+          color: $color-text-grey;
+        }
+
+        .value.resource_url {
+          font-size: 0.6rem;
+          line-height: 0.8rem;
+          color: $color-blue;
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,4 @@
 import React, {Fragment} from 'react';
-import {makeId} from "./utils";
-import {SortComponent} from "./SortComponent";
 import {PaginationElement} from "./pagination";
 
 export default function PaginatedLayout({data, mapFunction, pagination, resultsCount, setPagination, resultsContainerClass}) {

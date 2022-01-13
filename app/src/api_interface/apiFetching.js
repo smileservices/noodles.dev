@@ -9,6 +9,8 @@ export const FetchDataAndSetState = (
         .then(result => {
             if (result.ok) {
                 return result.json();
+            } else {
+                return result.statusText;
             }
         })
         .then(data => {

@@ -1,0 +1,19 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div id="admin-dashboard">
+        <h1>Admin</h1>
+        <section id="admin-dashboard-app"></section>
+    </div>
+
+    <script>
+        const LATEST_ACTIVITY_ENDPOINT = "{% url 'dashboard_api_latest_activity' %}";
+    </script>
+{% endblock %}
+
+
+{% block extra_js %}
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'js/dashboard/admin.js' %}"></script>
+{% endblock %}
