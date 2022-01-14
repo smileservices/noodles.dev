@@ -20,6 +20,7 @@ from concepts.serializers_category import CategoryConceptSerializerOption
 from concepts.serializers_technology import TechnologyConceptSerializerOption
 from django.utils import timezone
 import datetime
+from core.logging import logger, events
 import json
 from concepts.models import CategoryConcept, TechnologyConcept
 
@@ -138,6 +139,7 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
         try:
             create_response = super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
             if create_response.status_code == 201:
+                logger.log_study_resource_create(create_response, request)
                 # set intermediary status to SAVED
                 intermediary.status = StudyResourceIntermediary.Status.SAVED
                 intermediary.data = json.dumps(request.data)
@@ -160,6 +162,7 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
                 'error': print(e)
             }
             intermediary.save()
+            logger.log_resource_error(f'saved intermediary :: {intermediary.url} :: {str(e)}', request, events.OP_CREATE)
             raise Exception(print(e))
 
     # technologies and tags are saved in the serializer

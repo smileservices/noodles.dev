@@ -18,7 +18,8 @@ def failsafe_log_decorator(func):
         except Exception as e:
             # if it fails, log error log.
             try:
-                activity_logger.error(f'LOGGING ERROR::{str(e)}')
+                error_msg = {'event': 'LOGGER', 'message': str(e)}
+                activity_logger.error(json.dumps(error_msg))
             except Exception as e:
                 # if that fails too, send email to admin
                 mail_admins(
@@ -37,12 +38,9 @@ def serialize_for_further_import(instance):
     }
 
 @failsafe_log_decorator
-def log_activity(message, OP):
+def log_activity(obj):
     msg_dict = {
-        'display': {
-            'op': OP,
-            'msg': message,
-        }
+        'display': obj
     }
     activity_logger.info(json.dumps(msg_dict))
 
@@ -59,6 +57,23 @@ def log_resource_op(instance, request, OP):
         'process': {
             'event': f'{events.RESOURCE}-{OP}',
             'instance': serialize_for_further_import(instance),
+            'event_author': request.user.pk
+        }
+    }
+    activity_logger.info(json.dumps(msg_dict))
+
+@failsafe_log_decorator
+def log_study_resource_create(create_response, request):
+    msg_dict = {
+        'display': {
+            'event_author': request.user.username,
+            'event': f'{events.RESOURCE}-{events.OP_CREATE}',
+            'resource_url': create_response.data['absolute_url'],
+            'name': create_response.data['name'],
+        },
+        'process': {
+            'event': f'{events.RESOURCE}-{events.OP_CREATE}',
+            'instance': {'model_str': 'study_resource.models.StudyResource', 'pk': create_response.data['pk']},
             'event_author': request.user.pk
         }
     }
