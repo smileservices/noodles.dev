@@ -113,6 +113,8 @@ main .detail-page {
 
       h1 {
         font-size: $fontsize-big*1.115;
+        border-bottom: 4px solid $color-background;
+        margin-top: $padding-unit-big*3;
       }
 
       h2 {
@@ -204,6 +206,7 @@ main .detail-page {
   .bottom {
     grid-area: bottom;
     margin-top: $padding-unit-big*3;
+
     > * {
       margin-bottom: $padding-unit-big*4;
     }
