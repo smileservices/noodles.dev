@@ -36,8 +36,6 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-M0SSQCF73S"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
-        const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
         const HOMEPAGE = "{% url 'homepage' %}";
 
         function gtag() {
