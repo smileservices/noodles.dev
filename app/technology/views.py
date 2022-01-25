@@ -39,6 +39,7 @@ def detail(request, slug):
         'thumbs_up_array': json.dumps(detail.thumbs_up_array),
         'thumbs_down_array': json.dumps(detail.thumbs_down_array),
         'vote_url': reverse_lazy('techs-viewset-vote', kwargs={'pk': detail.pk}),
+        'subscribe_url': reverse_lazy('techs-viewset-subscribe', kwargs={'pk': detail.pk}),
     }
     return render(request, 'technology/detail_page.html', data)
 

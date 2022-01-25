@@ -37,7 +37,6 @@ main {
     gap: 0.325rem;
     overflow: auto;
     align-items: center;
-    justify-content: space-between;
     padding-bottom: 0.75rem;
 
     // -ms-overflow-style: none;  /* IE and Edge */
@@ -49,7 +48,7 @@ main {
   
   .tab-headers > * {
     display: inline-block;
-    padding: 12px 18px;
+    padding: 5px 16px;
     border-radius: 20px;
     cursor: pointer;
     color: $color-background-4;
@@ -71,7 +70,7 @@ main {
 
   .tab-headers > *.active {
     color: #1E1E2B;
-    background-color: #FAE1A1;
+    background-color: $color-text-white;
 
     a, a:visited {
       color: var(--color-blue);

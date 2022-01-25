@@ -381,7 +381,6 @@ class Review(DateTimeModelMixin, VotableMixin):
              update_fields=None):
         super(Review, self).save()
         self.study_resource.save()  # this to trigger syncing to elasticsearch
-        logger.log_review(self, events.OP_CREATE)
 
 class StudyResourceIntermediary(models.Model):
     '''

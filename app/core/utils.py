@@ -97,10 +97,11 @@ def get_serialized_models_diff(old, new, fields):
     return changes
 
 
-def rest_paginate_queryset(viewset_instance, queryset):
+def rest_paginate_queryset(viewset_instance, queryset, serializer=None):
     page = viewset_instance.paginate_queryset(queryset)
+    serializer = serializer if serializer else viewset_instance.serializer_class
     if page is not None:
-        serialized = viewset_instance.serializer_class(page, many=True)
+        serialized = serializer(page, many=True)
         return viewset_instance.get_paginated_response(serialized.data)
-    serialized = viewset_instance.serializer_class(queryset, many=True)
+    serialized = serializer(queryset, many=True)
     return Response(serialized.data)

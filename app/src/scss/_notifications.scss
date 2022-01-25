@@ -1,0 +1,43 @@
+#notifications-app {
+  .dropdown-button {
+    position: relative;
+    .button {
+      cursor: pointer;
+      font-size: 2.5rem;
+      color: $color-text-grey;
+      &.active {
+      color: $color-blue;
+      }
+    }
+    .unseen {
+      position: absolute;
+      right: -0.5rem;
+      top: -1.3rem;
+      font-size: 0.8rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 2rem;
+      background-color: $color-text-white;
+      color: $color-tag-bg;
+      text-align: center;
+      line-height: 1.2rem;
+    }
+  }
+}
+
+.notifications {
+  .item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: $padding-unit-big*3;
+
+    .date {
+      color: $color-text-grey;
+    }
+
+    .message {
+      color: $color-text-white;
+    }
+  }
+}

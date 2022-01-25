@@ -23,7 +23,8 @@ import datetime
 from core.logging import logger, events
 import json
 from concepts.models import CategoryConcept, TechnologyConcept
-
+from notifications.tasks import create_notification
+from notifications import events as notification_events
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
 from core.utils import rest_paginate_queryset
 from app.settings import rewards
@@ -56,6 +57,7 @@ def detail(request, id, slug):
         'urls': {
             'review_api': reverse_lazy('review-viewset-list'),
             'reviews_list': reverse_lazy('study-resource-viewset-reviews', kwargs={'pk': resource.pk}),
+            'subscribe_url': reverse_lazy('study-resource-viewset-subscribe', kwargs={'pk': resource.pk}),
             # options
             'study_resource_options': reverse_lazy('study-resource-viewset-options'),
             'tag_options_api': reverse_lazy('tags-options-list'),
@@ -139,6 +141,7 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
         try:
             create_response = super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
             if create_response.status_code == 201:
+                create_notification(StudyResource, create_response.data['pk'], request.user.pk, notification_events.VERB_CREATE)
                 logger.log_study_resource_create(create_response, request)
                 # set intermediary status to SAVED
                 intermediary.status = StudyResourceIntermediary.Status.SAVED

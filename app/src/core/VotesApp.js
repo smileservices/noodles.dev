@@ -11,7 +11,7 @@ function VotesApp() {
     return (
         <Thumbs
             thumbs_obj={votes_data}
-            url_endpoint={RESULT.vote_url}
+            url_endpoint={ROUTES.vote_url}
         />
     )
 }

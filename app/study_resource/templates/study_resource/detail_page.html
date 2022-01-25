@@ -32,6 +32,9 @@
         const USER_COLLECTIONS_WITH_RESOURCE = "{{ urls.user_collections_with_resource }}";
         const USER_COLLECTIONS_SET_API = "{{ urls.user_collections_set_resource_to_collections }}";
         const LOGIN_URL = "{% url 'account_login' %}";
+        const ROUTES = {
+            subscribe_url: "{{ urls.subscribe_url }}",
+        }
     </script>
     <div class="breadcrumbs">
         <a href="/">Home</a> > Category: {{ result.category.category_tree_urls | safe }}
@@ -47,4 +50,5 @@
 {% block extra_js %}
     <script src="{% static 'js/study_resource/study-resource-detail-reviews.js' %}"></script>
     <script src="{% static 'js/study_resource/detail-toolbar.js' %}"></script>
+    <script src="{% static 'js/subscribe.js' %}"></script>
 {% endblock %}

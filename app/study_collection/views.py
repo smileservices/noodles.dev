@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
+from notifications.viewsets import SubscribableVieset
 from core.abstract_viewsets import VotableVieset
 from core.utils import rest_paginate_queryset
 from . import serializers, filters
@@ -29,6 +30,7 @@ def detail(request, id, slug):
             # collections urls
             'collections_api': reverse_lazy('collection-viewset-list'),
             'vote_url': reverse_lazy('collection-viewset-vote', kwargs={'pk': detail.pk}),
+            'subscribe_url': reverse_lazy('collection-viewset-subscribe', kwargs={'pk': detail.pk}),
         }
     }
     return render(request, 'study_collection/detail_page.html', data)
@@ -50,7 +52,7 @@ def list_all(request):
     return render(request, 'study_collection/list_page_seo.html', data)
 
 
-class CollectionViewset(VotableVieset):
+class CollectionViewset(VotableVieset, SubscribableVieset):
     serializer_class = serializers.CollectionSerializer
     queryset = serializers.CollectionSerializer.queryset.order_by('-created_at')
     permission_classes = [IsAuthenticatedOrReadOnly]

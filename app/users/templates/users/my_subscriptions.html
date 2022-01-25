@@ -1,0 +1,17 @@
+{% extends 'users/_my_profile_base.html' %}
+{% load star_rating %}
+
+{% block sub_content %}
+    <div class="card vmargin-big">
+        <header class="vmargin-big">
+            <h1>My Subscriptions</h1>
+        </header>
+        {% for subscription in subscriptions %}
+            <div class="subscription">
+                <span class="content-type">{{ subscription.content_type.name }}</span>
+                <span class="separator">::</span>
+                <span class="content-object"><a href="{{ subscription.content_object.absolute_url }}">{{ subscription.content_object.name }}</a></span>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

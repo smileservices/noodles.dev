@@ -1,0 +1,15 @@
+CREATE = 'CREATE'
+UPDATE = 'UPDATE'
+DELETE = 'DELETE'
+
+VERB_CREATE = 'created'
+VERB_UPDATE = 'updated'
+VERB_DELETE = 'deleted'
+VERB_REVIEW_NEW = 'reviewed'
+VERB_REVIEW_REMOVE = 'removed review of'
+VERB_EDIT_NEW = 'created new edit suggestion for '
+VERB_EDIT_PUBLISH = 'published an edit suggestion for '
+VERB_EDIT_REJECT = 'rejected an edit suggestion for '
+VERB_EDIT_DELETE = 'deleted an edit suggestion for '
+
+MESSAGE_ACTOR = '{actor} {verb} <a href="{url}">{name}<a/>'

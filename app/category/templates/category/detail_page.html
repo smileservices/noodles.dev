@@ -11,6 +11,11 @@
 {% endblock %}
 
 {% block content %}
+    <script>
+        const ROUTES = {
+            subscribe_url: "{{ subscribe_url }}",
+        }
+    </script>
     <div class="breadcrumbs">
         <a href="/">Homepage</a> > Category {{ detail.category_tree_urls | safe }}
     </div>
@@ -26,4 +31,9 @@
             {% include 'detail_resources.html' %}
         </div>
     </div>
+{% endblock %}
+
+
+{% block extra_js %}
+    <script src="{% static 'js/subscribe.js' %}"></script>
 {% endblock %}

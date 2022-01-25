@@ -7,6 +7,7 @@
         <span class="published">Created By <a href="{% url 'user-profile' detail.author.username %}">{{ detail.author }}</a></span>
     </div>
     <div class="right">
+        <div id="subscribe-app"></div>
         <a class="btn btn-light contribute" href="{% url 'category-concept-edit' detail.pk %}" rel="nofollow noopener">Suggest Edit</a>
 {#        <a class="btn" href="{% url 'category-history' slug=detail.slug %}" rel="nofollow noopener">View History</a>#}
     </div>

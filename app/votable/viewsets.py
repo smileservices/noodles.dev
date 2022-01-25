@@ -9,7 +9,7 @@ class VotableVieset(ModelViewSet):
 
     @action(methods=['POST'], detail=True)
     def vote(self, request, *args, **kwargs):
-        instance = self.queryset.get(id=kwargs['pk'])
+        instance = self.get_object()
         try:
             if request.data['vote'] > 0:
                 instance.vote_up(request.user)

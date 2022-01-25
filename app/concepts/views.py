@@ -21,6 +21,7 @@ from . import models
 from django.shortcuts import get_object_or_404
 from study_resource.models import StudyResource
 
+
 class ConceptCategoryViewset(ResourceWithEditSuggestionVieset):
     serializer_class = serializers_category.CategoryConceptSerializer
     queryset = serializers_category.CategoryConceptSerializer.queryset
@@ -75,7 +76,8 @@ def category_detail(request, slug):
         'technology_concepts': detail.technology_concepts.all(),
         'children_concepts': detail.children.all(),
         'resources': detail.related_resources.filter(status=StudyResource.StatusOptions.APPROVED).all(),
-        'vote_url': reverse_lazy('concept-category-viewset-vote', kwargs={'pk': detail.pk})
+        'vote_url': reverse_lazy('concept-category-viewset-vote', kwargs={'pk': detail.pk}),
+        'subscribe_url': reverse_lazy('concept-category-viewset-subscribe', kwargs={'pk': detail.pk}),
     }
     return render(request, 'concepts/category/detail_page.html', data)
 
@@ -129,7 +131,8 @@ def technology_detail(request, slug):
     data = {
         'detail': detail,
         'resources': detail.related_resources.filter(status=StudyResource.StatusOptions.APPROVED).all(),
-        'vote_url': reverse_lazy('concept-technology-viewset-vote', kwargs={'pk': detail.pk})
+        'vote_url': reverse_lazy('concept-technology-viewset-vote', kwargs={'pk': detail.pk}),
+        'subscribe_url': reverse_lazy('concept-technology-viewset-subscribe', kwargs={'pk': detail.pk}),
     }
     return render(request, 'concepts/technology/detail_page.html', data)
 
@@ -185,6 +188,7 @@ def category_history(request, slug):
         }
     }
     return render(request, 'history/history_page.html', data)
+
 
 def technology_history(request, slug):
     instance = get_object_or_404(models.TechnologyConcept, slug=slug)

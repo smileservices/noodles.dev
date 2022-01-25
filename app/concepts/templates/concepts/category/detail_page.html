@@ -17,7 +17,10 @@
         const RESULT = {
             thumbs_up_array: JSON.parse("{{ detail.thumbs_up_array }}"),
             thumbs_down_array: JSON.parse("{{ detail.thumbs_down_array }}"),
+        }
+        const ROUTES = {
             vote_url: "{{ vote_url }}",
+            subscribe_url: "{{ subscribe_url }}",
         }
     </script>
     <div class="breadcrumbs">
@@ -39,4 +42,5 @@
 
 {% block extra_js %}
     <script src="{% static 'js/votes.js' %}"></script>
+    <script src="{% static 'js/subscribe.js' %}"></script>
 {% endblock %}

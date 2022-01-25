@@ -105,12 +105,12 @@ def log_resource_edit_suggestion_operation(instance, operation, request):
         'display': {
             'event_author': request.user.username,
             'event': f'{events.EDIT_SUGGESTION}-{operation}',
-            'resource_url': instance.absolute_url,
+            'resource_url': instance.edit_suggestion_parent.absolute_url,
             'name': instance.name,
         },
         'process': {
             'event': f'{events.EDIT_SUGGESTION}-{operation}',
-            'instance': serialize_for_further_import(instance),
+            'instance': serialize_for_further_import(instance.edit_suggestion_parent),
             'event_author': request.user.pk
         }
     }
@@ -148,7 +148,7 @@ def log_review(review, operation):
             'event_author': review.author.username,
         }
     }
-    activity_logger.error(json.dumps(msg_dict))
+    activity_logger.info(json.dumps(msg_dict))
 
 
 @failsafe_log_decorator

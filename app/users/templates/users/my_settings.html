@@ -1,7 +1,13 @@
 {% extends 'users/_my_profile_base.html' %}
 
 {% block sub_content %}
-        <a href="{% url 'account_email' %}">Email</a>
-        <a href="{% url 'account_change_password' %}">Change Password</a>
-        <a href="{% url 'socialaccount_connections' %}">Link Social Account</a>
+    <section id="detail" class="card">
+        <header>
+            <div class="column-container">
+                <a href="{% url 'account_email' %}">Email</a>
+                <a href="{% url 'account_change_password' %}">Change Password</a>
+                <a href="{% url 'socialaccount_connections' %}">Link Social Account</a>
+            </div>
+        </header>
+    </section>
 {% endblock %}

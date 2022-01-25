@@ -37,6 +37,9 @@ module.exports = (env, argv) => ({
         //vote app
         '/static/js/votes': './app/src/core/VotesApp.js',
 
+        //subscribe app
+        '/static/js/subscribe': './app/src/core/SubscribeApp.js',
+
         //search app
         '/static/js/navbar-search-bar-app': './app/search/src/NavbarSearchBarApp.js',
         '/static/js/search-app': './app/search/src/SearchApp.js',
@@ -48,6 +51,9 @@ module.exports = (env, argv) => ({
 
         //sidebar
         '/static/js/frontend/sidebar-app': './app/frontend/src/sidebar/SidebarApp.js',
+
+        //notifications
+        '/static/js/notifications': './app/src/core/NotificationsApp.js',
 
         //related section
         '/static/js/related-app': './app/frontend/src/RelatedApp.js',

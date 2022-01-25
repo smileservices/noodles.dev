@@ -2,6 +2,7 @@
   > * {
     margin: 0;
   }
+
   .footer {
     margin-top: $padding-unit-big;
     display: flex;
@@ -12,4 +13,15 @@
 
 .grid-results .result.collection {
   max-width: 21rem;
+}
+
+.my-collections-page .buttons-container {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  .btn {
+    max-width: 30rem;
+  }
 }

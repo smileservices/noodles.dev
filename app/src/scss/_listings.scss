@@ -24,7 +24,8 @@
     flex-wrap: wrap;
     align-items: baseline;
     font-weight: 700;
-    font-size: $fontsize-big*1.125;
+    line-height: $fontsize-big*1.25;
+    font-size: $fontsize-big;
 
     .title {
       a, a:visited {

@@ -1,9 +1,14 @@
 {% load markdownify %}
 
 <header>
+    <div class="left">
     <h1 class="title">{{ detail.name }}</h1>
     <div class="meta">
         <p class="published">updated on {{ detail.updated_at|date:"d M, Y G:i" }}</p>
+    </div>
+    </div>
+    <div class="right">
+        <div id="subscribe-app"></div>
     </div>
 </header>
 

@@ -1,5 +1,6 @@
 {% load static %}
 {% load i18n %}
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -36,6 +37,9 @@
     <script>
         window.dataLayer = window.dataLayer || [];
 
+        const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
+        const HOMEPAGE = "{% url 'homepage' %}";
+
         function gtag() {
             dataLayer.push(arguments);
         }
@@ -57,6 +61,7 @@
 {% include 'frontend/footer.html' %}
 
 <script>
+    const NOTIFICATIONS_URL = "{% url 'user-viewset-notifications' %}"
     const authenticated_cookie_idx = document.cookie.search('authenticated'); // 1 for authenticated or 0 for not
     const backToTopSection = document.querySelector('.back-to-top');
     const IS_AUTHENTICATED = (() => {
@@ -176,6 +181,7 @@
 </script>
 <script src="{% static 'js/react-bundle.js' %}"></script>
 <script src="{% static 'js/frontend/sidebar-app.js' %}"></script>
+<script src="{% static 'js/notifications.js' %}"></script>
 {% if not hide_navbar_search %}
     <script src="{% static 'js/navbar-search-bar-app.js' %}"></script>
 {% endif %}

@@ -56,13 +56,15 @@ function MyCollectionsApp() {
 
     return (
         <Fragment>
-            <CreateableComponent
-                endpoint={COLLECTIONS_API}
-                data={{}}
-                extraData={{addButtonText: 'Create Collection', formTitle: 'Create Collection'}}
-                FormViewComponent={CollectionForm}
-                successCallback={data => setPagination({...pagination, current: 1})}
-            />
+            <div className="buttons-container">
+                <CreateableComponent
+                    endpoint={COLLECTIONS_API}
+                    data={{}}
+                    extraData={{addButtonText: 'Create Collection', formTitle: 'Create Collection'}}
+                    FormViewComponent={CollectionForm}
+                    successCallback={data => setPagination({...pagination, current: 1})}
+                />
+            </div>
             {waiting ? SkeletonLoadingCollections : ''}
             {alert}
             <PaginatedLayout data={collections.results} resultsCount={collections.count} pagination={pagination}
@@ -83,7 +85,7 @@ function MyCollectionsApp() {
                                      deleteCallback={() => handleDelete(item)}
                                  />)
                              }}
-                             resultsContainerClass="column-container"
+                             resultsContainerClass="grid-results"
             />
             {detailModal}
         </Fragment>

@@ -6,10 +6,12 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from core.utils import rest_paginate_queryset
+from notifications.viewsets import SubscribableVieset
 from technology.models import Technology
 from .serializers import CategorySerializer, CategorySerializerOption
 from concepts.serializers_category import CategoryConceptSerializerListing, CategoryConceptSerializerOption
 from study_resource.models import StudyResource
+from django.urls import reverse_lazy
 from . import models
 
 
@@ -27,11 +29,12 @@ def detail(request, slug):
         'concepts': detail.concepts.all(),
         'technologies': techs,
         'resources': detail.resources.filter(status=StudyResource.StatusOptions.APPROVED).all(),
+        'subscribe_url': reverse_lazy('categories-viewset-subscribe', kwargs={'pk': detail.pk}),
     }
     return render(request, 'category/detail_page.html', data)
 
 
-class CategoryViewset(ModelViewSet):
+class CategoryViewset(SubscribableVieset):
     serializer_class = CategorySerializer
     queryset = CategorySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]

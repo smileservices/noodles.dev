@@ -3,6 +3,7 @@ from django.views.generic import FormView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import OrderingFilter
+from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import UserSerializer
 from study_resource.models import StudyResource, Review
@@ -20,15 +21,30 @@ from search.helpers import _search_study_resources, _search_technologies, _searc
 from django.http.response import JsonResponse
 from django.http.response import HttpResponseForbidden, HttpResponseBadRequest
 import json
+from notifications.models import Subscribers, Notifications
+from notifications.serializers import NotificationSerializer, SubscribtionSerializer
+from core.utils import rest_paginate_queryset
 
 
 class UsersViewset(ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
+    queryset = CustomUser.objects
     filterset_fields = ['is_active', 'date_joined']
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     search_fields = ['first_name', 'last_name', 'email', 'date_joined']
     ordering_fields = ['first_name', 'last_name', 'email', 'is_active', 'date_joined']
+
+    @action(methods=['GET'], detail=False)
+    def subscriptions(self, request, *args, **kwargs):
+        # get subscriptions per user in paginated form
+        subs = Subscribers.objects.filter(users__contains=[request.user.pk])
+        return rest_paginate_queryset(self, subs, SubscribtionSerializer)
+
+    @action(methods=['GET'], detail=False)
+    def notifications(self, request, *args, **kwargs):
+        notifications = Notifications.objects.filter(user_id=request.user.pk).order_by('-datetime')
+        return rest_paginate_queryset(self, notifications, NotificationSerializer)
 
 
 def user_data(request, *args, **kwargs):
@@ -55,14 +71,26 @@ def user_profile(request, username):
 
 @login_required
 def my_profile(request):
+    user = request.user
     data = {
         'active': 'profile',
-        'statistics': {
-            'average_given_rating': Review.objects.filter(author=request.user).only('rating__avg').aggregate(
-                Avg('rating'))
-        }
+        'profile': user,
+        'reviews': user.review_set.filter(visible=True),
+        'collections': user.collection_set.filter(status=StudyResource.StatusOptions.APPROVED),
+        'resources': user.studyresource_set.filter(status=StudyResource.StatusOptions.APPROVED),
+        'technologies': user.technology_set.filter(status=StudyResource.StatusOptions.APPROVED),
+        'concepts_technology': user.technologyconcept_set.filter(status=StudyResource.StatusOptions.APPROVED),
+        'concepts_category': user.categoryconcept_set.filter(status=StudyResource.StatusOptions.APPROVED),
     }
     return render(request, 'users/my_profile.html', data)
+
+@login_required
+def my_subscriptions(request):
+    data = {
+        'active': 'subscriptions',
+        'subscriptions': Subscribers.objects.filter(users__contains=[request.user.pk]).prefetch_related('content_object', 'content_type')
+    }
+    return render(request, 'users/my_subscriptions.html', data)
 
 
 @login_required

@@ -75,6 +75,11 @@ main .detail-page {
         font-weight: 500 !important;
         background-color: $color-background-1;
         white-space: nowrap;
+
+        &.primary {
+          background-color: $color-blue;
+          border: 1px solid $color-blue;
+        }
       }
 
       .btn:hover {

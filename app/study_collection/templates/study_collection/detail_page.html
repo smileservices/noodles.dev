@@ -6,6 +6,7 @@
     <title>{{ detail.name }}</title>
     <meta name="description" content="{{ detail.description }}"/>
     <meta name="keywords" content="
+
             {% for tag in detail.tags.all %}{{ tag }}, {% endfor %}{% for tech in detail.technologies_set.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -25,7 +26,10 @@
         const RESULT = {
             thumbs_up_array: JSON.parse("{{ thumbs_up_array }}"),
             thumbs_down_array: JSON.parse("{{ thumbs_down_array }}"),
+        }
+        const ROUTES = {
             vote_url: "{{ urls.vote_url }}",
+            subscribe_url: "{{ urls.subscribe_url }}",
         }
     </script>
     <div class="breadcrumbs">
@@ -46,4 +50,5 @@
 
 {% block extra_js %}
     <script src="{% static 'js/votes.js' %}"></script>
+    <script src="{% static 'js/subscribe.js' %}"></script>
 {% endblock %}

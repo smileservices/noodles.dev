@@ -45,14 +45,6 @@
                 </div>
                 <div class="dropdown hidden">
                     <span class="dropdown-button icon icon-person-circle"></span>
-                    <!--<div class="dropdown-menu">
-                        <a rel="nofollow noopener" href="#" class="signout_button">{% trans 'Sign Out' %}</a>
-                        <a rel="nofollow noopener" href={% url "my-profile-edit" %}>Account</a>
-                        <a rel="nofollow noopener" href={% url "my-profile" %}>My Profile</a>
-                        <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
-                        <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
-                        <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
-                    </div>-->
                     <div class="dropdown-menu-account">
                         <div class="profile">
                             <span class="dropdown-button-icon-mobile icon-person-circle"></span>
@@ -61,9 +53,7 @@
                             </div>
                         </div>
                         <div class="other-menu-items">
-                            <a rel="nofollow noopener" href={% url "my-profile" %}>Account</a>
-                            <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
-                            <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
+                            <a rel="nofollow noopener" href={% url "my-collections" %}>Subscriptions</a>
                             <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
                             <a rel="nofollow noopener" href="#" class="signout_button">{% trans 'Sign Out' %}</a>
                         </div>
@@ -86,6 +76,7 @@
             </div>
         {% endif %}
     </div>
+
     <div class="right-side">
         <div id="search-bar-app"></div>
         {% if user.is_authenticated %}
@@ -114,6 +105,12 @@
                 </div>
                 {# CREATE DROPDOWN END #}
 
+
+                {# NOTIFICATIONS APP START #}
+                <div id="notifications-app" class="dropdown notifications"></div>
+                {# NOTIFICATIONS APP END #}
+
+
                 {# ACCOUNT DROPDOWN #}
                 <div class="dropdown hidden">
                     <span class="dropdown-button">
@@ -127,9 +124,7 @@
                             </div>
                         </div>
                         <div class="other-menu-items">
-                            <a rel="nofollow noopener" href={% url "my-profile" %}>Account</a>
-                            <a rel="nofollow noopener" href={% url "my-resources" %}>My Resources</a>
-                            <a rel="nofollow noopener" href={% url "my-reviews" %}>My Reviews</a>
+                            <a rel="nofollow noopener" href={% url "my-subscriptions" %}>Subscriptions</a>
                             <a rel="nofollow noopener" href={% url "my-collections" %}>My Collections</a>
                             <a rel="nofollow noopener" href="#" class="signout_button">{% trans 'Sign Out' %}</a>
                         </div>
@@ -174,6 +169,5 @@
             <a href="{% url 'account_login' %}" rel="nofollow noopener"
                class="signed-out-button btn">Register</a>
         {% endif %}
-    </div>
     </div>
 </nav>

@@ -5,7 +5,8 @@ from core.tasks import sync_to_elastic, sync_delete_to_elastic
 from users.models import CustomUser
 from django.contrib.contenttypes.fields import GenericRelation
 from history.models import ResourceHistoryModel
-from core.logging import logger
+from notifications.mixins import HasSubscribersMixin
+
 
 class DateTimeModelMixin(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -67,7 +68,7 @@ class ElasticSearchIndexableMixin(models.Model):
         models.signals.post_delete.connect(sync_delete_to_elastic, sender=cls, weak=False)
 
 
-class ResourceMixin(DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexableMixin):
+class ResourceMixin(DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexableMixin, HasSubscribersMixin):
     class StatusOptions(models.IntegerChoices):
         UNREVIEWED = (0, 'Unreviewed')
         APPROVED = (1, 'Approved')
@@ -77,6 +78,7 @@ class ResourceMixin(DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexa
     author = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.DO_NOTHING)
     status = models.IntegerField(default=1, choices=StatusOptions.choices, db_index=True)
     history = GenericRelation(ResourceHistoryModel)
+
 
     class Meta:
         abstract = True

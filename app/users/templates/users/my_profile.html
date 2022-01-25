@@ -2,26 +2,115 @@
 {% load star_rating %}
 
 {% block sub_content %}
-    <h4>{{ user.username }} <a href="{% url 'my-profile-edit' %}">Edit</a></h4>
-    <h4>{{ user.get_full_name }}</h4>
-    <div class="description">
-        {{ user.about }}
-    </div>
-    <div class="header">
-        <h4>Statistics</h4>
-    </div>
-    <div class="group">
-        <p class="color-accent">Given reviews</p>
-        <p>Average rating: {% star_rating statistics.average_given_rating.rating__avg %}</p>
-    </div>
-    <div class="group">
-        <p class="color-accent">Your overall score</p>
-        <p>Positive: {{ user.positive_score }}</p>
-        <p>Negative: {{ user.negative_score }}</p>
-    </div>
-    <div class="group">
-        <p class="color-accent">Your actions on others</p>
-        <p>Appreciated: {{ user.positive_thumbs }}</p>
-        <p>Not appreciated: {{ user.negative_thumbs }}</p>
+    <div class="detail-page profile">
+        <section id="detail" class="card">
+            <header>
+                <div class="left">
+                    <span class="icon-person-circle"> </span>
+                    <div class="title-container">
+                        <h1 class="title">{{ profile.username }} <a href="{% url 'my-profile-edit' %}">Edit</a></h1>
+                        <span>join on {{ profile.date_joined }}</span>
+                        {% if profile.is_active %}
+                            <span class="status active">active</span>
+                        {% else %}
+                            <span class="status inactive">inactive</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="meta">
+                    <div class="row">Score
+                        <span class="thumbs">
+                        <span class="icon-plus"> </span> {{ profile.positive_score }}
+                        <span class="icon-minus"> </span> {{ profile.negative_score }}
+                    </span>
+                    </div>
+                    <div class="row">Rated Others
+                        <span class="thumbs">
+                            <span class="icon-thumbs-o-up"> </span> {{ profile.positive_thumbs }}
+                            <span class="icon-thumbs-o-down"> </span> {{ profile.negative_thumbs }}
+                        </span>
+                    </div>
+                    <div class="row">
+                        Total Score
+                        <div class="total-score">
+                            {{ profile.community_score }}
+                        </div>
+                    </div>
+                </div>
+
+            </header>
+            <div class="description">
+                {% if profile.about %}{{ profile.about }}{% else %}nothing here yet{% endif %}</div>
+
+            <h3>Collections</h3>
+            {% if collections.count > 0 %}
+                {% for resource in collections %}
+                    <p class="resource"><a href="{{ resource.absolute_url }}">{{ resource.name }}</a></p>
+                {% endfor %}
+            {% else %}
+                <p class="nothing">none created</p>
+            {% endif %}
+
+            <h3>Study Resources</h3>
+            {% if resources.count > 0 %}
+                {% for resource in resources %}
+                    <p class="resource"><a href="{{ resource.absolute_url }}">{{ resource.name }}</a></p>
+                {% endfor %}
+            {% else %}
+                <p class="nothing">none created</p>
+            {% endif %}
+
+            <h3>Technologies</h3>
+            {% if technologies.count > 0 %}
+                {% for resource in technologies %}
+                    <p class="resource"><a href="{{ resource.absolute_url }}">{{ resource.name }}</a></p>
+                {% endfor %}
+            {% else %}
+                <p class="nothing">none created</p>
+            {% endif %}
+
+            <h3>Theory Concepts</h3>
+            {% if technologies.count > 0 %}
+                {% for resource in concepts_category %}
+                    <p class="resource"><a href="{{ resource.absolute_url }}">{{ resource.name }}</a></p>
+                {% endfor %}
+            {% else %}
+                <p class="nothing">none created</p>
+            {% endif %}
+
+
+            <h3>Implementation Concepts</h3>
+            {% if technologies.count > 0 %}
+                {% for resource in concepts_technology %}
+                    <p class="resource"><a href="{{ resource.absolute_url }}">{{ resource.name }}</a></p>
+                {% endfor %}
+            {% else %}
+                <p class="nothing">none created</p>
+            {% endif %}
+
+        </section>
+
+        <div class="related column-container">
+            <div class="card reviews">
+                <div class="header">Given Reviews</div>
+                {% if reviews.count > 0 %}
+                    {% for review in reviews %}
+                        <div class="review">
+                            <div class="resource">
+                                <a href="{{ review.study_resource.absolute_url }}">{{ review.study_resource }}</a>
+                            </div>
+                            <div class="review-body">
+                                <div class="rating"><span class="stars">{% star_rating review.rating %}</span></div>
+                                {{ review.text }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-results">Nothing reviewed yet</p>
+                {% endif %}
+            </div>
+        </div>
+
+
     </div>
 {% endblock %}

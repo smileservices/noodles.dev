@@ -12,12 +12,15 @@ from core.tasks import add_history_record_update
 from core.utils import get_serialized_models_diff
 from core.logging import logger, events
 import json
+from notifications.tasks import create_notification
+from notifications import events as notification_event
 
 from history.models import ResourceHistoryModel
 from history.serializers import ResourceHistorySerializer
+from notifications.viewsets import SubscribableVieset
 
 
-class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset):
+class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset, SubscribableVieset):
     m2m_fields = None
 
     def create(self, request, *args, **kwargs):
@@ -26,6 +29,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
             # we have to resync to elasticsearch because we now have finished adding the m2m data
             instance = self.serializer_class.Meta.model.objects.get(pk=response.data['pk'])
             instance.save()
+            create_notification(instance._meta.model, instance.pk, request.user.pk, notification_event.VERB_CREATE)
             logger.log_resource_op(instance, request, events.OP_CREATE)
             response.data['success'] = {
                 'message': f'<div class="message">Keep up the good work!</div>'
@@ -63,6 +67,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
             try:
                 old_record = self.serializer_class(instance).data
                 response = super(ResourceWithEditSuggestionVieset, self).update(request, *args, **kwargs)
+                create_notification(instance._meta.model, instance.pk, request.user.pk, notification_event.VERB_UPDATE)
                 logger.log_resource_op(instance, self.request, events.OP_UPDATE)
                 if response.status_code == 200:
                     # we run the task creating the history object
@@ -96,6 +101,8 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                 validated_data = serialized_instance.run_validation(request.data)
                 edsug = self.edit_suggestion_perform_create(instance, validated_data)
                 edsug_serializer = self.serializer_class.get_edit_suggestion_serializer()
+                create_notification(instance._meta.model, instance.pk, request.user.pk,
+                                    notification_event.VERB_EDIT_NEW)
                 logger.log_resource_edit_suggestion_created(instance, request)
                 return Response(edsug_serializer(edsug).data, status=HTTP_209_EDIT_SUGGESTION_CREATED)
             except ValidationError as e:
@@ -120,6 +127,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
                 edit_suggestion_parent=parent
             )
             edit_instance.edit_suggestion_publish(request.user)
+            create_notification(parent._meta.model, parent.pk, request.user.pk, notification_event.VERB_EDIT_PUBLISH)
             logger.log_resource_op(parent, self.request, events.OP_UPDATE_EDIT_PUBLISH)
             # we run the create history update task
             old_record = self.serializer_class(parent).data
@@ -154,8 +162,12 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
 
     @action(methods=['POST'], detail=True)
     def edit_suggestion_reject(self, request, *args, **kwargs):
+        parent = self.get_object()
         response = super(ResourceWithEditSuggestionVieset, self).edit_suggestion_reject(request, *args, **kwargs)
-        logger.log_resource_edit_suggestion_operation(self.get_object(), f'REJECT - {request.data["edit_suggestion_reject_reason"]}', request)
+        create_notification(parent._meta.model, parent.pk, request.user.pk, notification_event.VERB_EDIT_REJECT)
+        logger.log_resource_edit_suggestion_operation(self.get_object(),
+                                                      f'REJECT - {request.data["edit_suggestion_reject_reason"]}',
+                                                      request)
         return response
 
     @action(methods=['GET'], detail=True)
@@ -173,6 +185,7 @@ class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVi
 
     def perform_destroy(self, instance):
         if self.request.user.is_staff or instance.author == self.request.user:
+            create_notification(instance._meta.model, instance.pk, self.request.user.pk, notification_event.VERB_DELETE)
             logger.log_resource_op(instance, self.request, events.OP_SOFT_DELETE)
             return super(ResourceWithEditSuggestionVieset, self).perform_destroy(instance)
         else:
@@ -200,6 +213,11 @@ class EditSuggestionViewset(VotableVieset):
 
     def perform_destroy(self, instance):
         if self.request.user.is_staff or instance.edit_suggestion_author == self.request.user:
+            create_notification(
+                instance.edit_suggestion_parent._meta.model,
+                instance.edit_suggestion_parent.parent.pk,
+                self.request.user.pk, notification_event.VERB_EDIT_DELETE
+            )
             logger.log_resource_edit_suggestion_operation(instance, events.OP_DELETE, self.request)
             return super(EditSuggestionViewset, self).perform_destroy(instance)
         else:

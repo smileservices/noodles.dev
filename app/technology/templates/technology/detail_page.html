@@ -11,6 +11,7 @@
 
 
 
+
             {% for tag in detail.tags.all %}{{ tag }}, {% endfor %}{% for tech in detail.technologies.all %}{{ tech }}, {% endfor %}"/>
     <meta name="robots" content="index, follow"/>
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
@@ -19,15 +20,16 @@
 
 {% block content %}
     <script>
-        const LOGIN_URL = "{% url 'account_login' %}?next={{ request.get_full_path }}";
-        const HOMEPAGE = "{% url 'homepage' %}";
         const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
         const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
 
         const RESULT = {
             thumbs_up_array: JSON.parse("{{ thumbs_up_array }}"),
             thumbs_down_array: JSON.parse("{{ thumbs_down_array }}"),
+        }
+        const ROUTES = {
             vote_url: "{{ vote_url }}",
+            subscribe_url: "{{ subscribe_url }}",
         }
     </script>
     <div class="breadcrumbs">
@@ -50,4 +52,5 @@
 
 {% block extra_js %}
     <script src="{% static 'js/votes.js' %}"></script>
+    <script src="{% static 'js/subscribe.js' %}"></script>
 {% endblock %}

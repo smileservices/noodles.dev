@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'dashboard',
     'frontend',
     'search',
+    'notifications',
     # models
     'users',
     'tag',
