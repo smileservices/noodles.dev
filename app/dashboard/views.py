@@ -30,10 +30,9 @@ def latest_users(request):
 
 @staff_member_required
 def latest_activity_raw(request, page=1):
-    line_buffer_size = 250
-    page = int(request.GET.get('offset', 1)) if int(request.GET.get('offset', 1)) > 0 else 1
+    line_buffer_size = 2500
     page_size = int(request.GET.get('limit', 10)) * line_buffer_size
-    offset = -1 * page * page_size
+    offset = (int(request.GET.get('offset', 1)) or 1) * line_buffer_size * -1
     line_ending = '\n'
     try:
         with open(settings.ACTIVITY_LOG_PATH, 'rb') as activity_file:
