@@ -84,7 +84,7 @@ def create_notification(model, pk: int, actor: int, verb: str):
     notifications = []
     subscribers, created = instance.subscribers.get_or_create()
     users_to_notify = subscribers.users + upstream_subscriptions(instance, actor)
-    users_to_notify.users.remove(actor)
+    users_to_notify.remove(actor)
     for user_id in users_to_notify:
         notifications.append(Notifications(user_id=user_id, message=message))
     if len(notifications):
