@@ -16,7 +16,7 @@ class SubscribableVieset(ModelViewSet):
         if request.data['action'] == 'check':
             subscribers, created = instance.subscribers.get_or_create()
             if created:
-                subscribers.users.append(instance.author)
+                subscribers.users.append(instance.author.pk)
                 subscribers.save()
             else:
                 is_subscribed = request.user.pk in subscribers.users
