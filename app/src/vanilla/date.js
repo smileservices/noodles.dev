@@ -2,6 +2,7 @@ export default function FormatDate(dateStr, type) {
     // type: date/datetime
     let dateObj = new Date(dateStr);
     if (isNaN(Date.parse(dateObj))) {
+        console.error('could not parse date string');
         dateObj = new Date(Date.now());
     }
 

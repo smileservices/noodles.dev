@@ -26,6 +26,13 @@ body.modal-open {
   overflow-x: hidden;
   overflow-y: scroll;
   outline: 0;
+
+  .buttons-container {
+    display: flex;
+    justify-content: end;
+    gap: $padding-unit-big;
+  }
+
 }
 
 .modal > div:first-child {

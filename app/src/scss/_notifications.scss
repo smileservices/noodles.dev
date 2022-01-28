@@ -29,11 +29,18 @@
   .item {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    gap: $padding-unit-big*3;
+    gap: $padding-unit-big*1.5;
+    padding: $padding-unit $padding-unit-big;
+    background-color: #2c2e41;
+    border-radius: $radius-medium;
+
+    &.unseen {
+      background-color: #1a214f;
+    }
 
     .date {
       color: $color-text-grey;
+      white-space: nowrap;
     }
 
     .message {

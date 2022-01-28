@@ -9,24 +9,20 @@ from .serializers import UserSerializer
 from study_resource.models import StudyResource, Review
 from study_resource import filters
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Avg
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ProfileForm
 from django.urls import reverse_lazy
 from users.models import CustomUser
-from users.serializers import UserSerializerMinimal
 from technology.models import Technology
 from search.helpers import _search_study_resources, _search_technologies, _search_collections
 from django.http.response import JsonResponse
 from django.http.response import HttpResponseForbidden, HttpResponseBadRequest
 import json
-from notifications.models import Subscribers, Notifications
-from notifications.serializers import NotificationSerializer, SubscribtionSerializer
-from core.utils import rest_paginate_queryset
+from notifications.models import Subscribers
+from notifications.viewsets import HasSubscriptionsViewset
 
-
-class UsersViewset(ModelViewSet):
+class UsersViewset(HasSubscriptionsViewset):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
     queryset = CustomUser.objects
@@ -34,17 +30,6 @@ class UsersViewset(ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     search_fields = ['first_name', 'last_name', 'email', 'date_joined']
     ordering_fields = ['first_name', 'last_name', 'email', 'is_active', 'date_joined']
-
-    @action(methods=['GET'], detail=False)
-    def subscriptions(self, request, *args, **kwargs):
-        # get subscriptions per user in paginated form
-        subs = Subscribers.objects.filter(users__contains=[request.user.pk])
-        return rest_paginate_queryset(self, subs, SubscribtionSerializer)
-
-    @action(methods=['GET'], detail=False)
-    def notifications(self, request, *args, **kwargs):
-        notifications = Notifications.objects.filter(user_id=request.user.pk).order_by('-datetime')
-        return rest_paginate_queryset(self, notifications, NotificationSerializer)
 
 
 def user_data(request, *args, **kwargs):
@@ -84,11 +69,13 @@ def my_profile(request):
     }
     return render(request, 'users/my_profile.html', data)
 
+
 @login_required
 def my_subscriptions(request):
     data = {
         'active': 'subscriptions',
-        'subscriptions': Subscribers.objects.filter(users__contains=[request.user.pk]).prefetch_related('content_object', 'content_type')
+        'subscriptions': Subscribers.objects.filter(users__contains=[request.user.pk]).prefetch_related(
+            'content_object', 'content_type')
     }
     return render(request, 'users/my_subscriptions.html', data)
 
