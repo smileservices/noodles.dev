@@ -34,7 +34,7 @@ def create_technologies():
             url=f.url(),
             owner=f.company(),
             meta='',
-            image_file='',
+            image_file=None,
             featured=True
         )
         tobj.save()

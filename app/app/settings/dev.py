@@ -71,3 +71,9 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MODERATOR_USER_SCORE = 5
+
+
+HUEY = {
+    'name': 'huey-noodles',
+    'immediate': True,
+}

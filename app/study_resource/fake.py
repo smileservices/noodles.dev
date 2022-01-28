@@ -18,6 +18,11 @@ FAKE_IMAGES_PATH = os.path.join(os.getcwd(), 'study_resource', 'fake_images')
 MEDIA_IMAGES_PATH = os.path.join(settings.MEDIA_ROOT, 'tutorials')
 
 
+def get_dummy_image():
+    image_path = choice(os.listdir(FAKE_IMAGES_PATH))
+    image = open(os.path.join(FAKE_IMAGES_PATH,image_path), 'rb')
+    return image.read()
+
 def clean():
     models.StudyResource.objects.all().delete()
     shutil.rmtree(MEDIA_IMAGES_PATH)

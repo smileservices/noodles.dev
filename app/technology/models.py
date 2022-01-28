@@ -25,6 +25,8 @@ def delete_technology_images(sender, instance, **kwargs):
 
 def warm_technology_logos(sender, instance, **kwargs):
     """Ensures Technologies logos are created post-save"""
+    if not instance.image_file:
+        return None
     sr_images_warmer = VersatileImageFieldWarmer(
         instance_or_queryset=instance,
         rendition_key_set='technology_logo',

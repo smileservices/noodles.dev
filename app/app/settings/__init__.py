@@ -72,7 +72,6 @@ INSTALLED_APPS = [
     'dashboard',
     'frontend',
     'search',
-    'notifications',
     # models
     'users',
     'tag',
@@ -81,6 +80,8 @@ INSTALLED_APPS = [
     'concepts',
     'study_resource',
     'study_collection',
+    # model dependant
+    'notifications',
 ]
 
 MIDDLEWARE = [

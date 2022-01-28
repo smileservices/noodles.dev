@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import FormView
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import action
@@ -28,7 +28,7 @@ from core.utils import rest_paginate_queryset
 
 class UsersViewset(ModelViewSet):
     serializer_class = UserSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
     queryset = CustomUser.objects
     filterset_fields = ['is_active', 'date_joined']
     filter_backends = [DjangoFilterBackend, OrderingFilter]

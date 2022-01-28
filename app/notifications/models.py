@@ -19,3 +19,6 @@ class Notifications(models.Model):
     message = models.TextField()
     seen = models.BooleanField(default=False)
     datetime = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.user.pk}:{self.message}'
