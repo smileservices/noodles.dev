@@ -22,7 +22,7 @@ from django.views.decorators.cache import cache_page
 from app.settings import rewards
 from django.shortcuts import get_object_or_404
 from core.utils import rest_paginate_queryset
-
+from discussions.views import HasDiscussionViewsetMixin
 
 def detail(request, slug):
     queryset = Technology.objects
@@ -112,7 +112,7 @@ def edit(request, id):
     return render(request, 'technology/edit_page.html', data)
 
 
-class TechViewset(ResourceWithEditSuggestionVieset):
+class TechViewset(ResourceWithEditSuggestionVieset, HasDiscussionViewsetMixin):
     serializer_class = TechnologySerializer
     queryset = TechnologySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]

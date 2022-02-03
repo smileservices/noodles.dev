@@ -12,6 +12,7 @@ from .serializers import CategorySerializer, CategorySerializerOption
 from concepts.serializers_category import CategoryConceptSerializerListing, CategoryConceptSerializerOption
 from study_resource.models import StudyResource
 from django.urls import reverse_lazy
+from discussions.views import HasDiscussionViewsetMixin
 from . import models
 
 
@@ -34,7 +35,7 @@ def detail(request, slug):
     return render(request, 'category/detail_page.html', data)
 
 
-class CategoryViewset(SubscribableVieset):
+class CategoryViewset(SubscribableVieset, HasDiscussionViewsetMixin):
     serializer_class = CategorySerializer
     queryset = CategorySerializer.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]

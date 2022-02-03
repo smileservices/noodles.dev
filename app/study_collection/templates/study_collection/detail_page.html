@@ -20,6 +20,7 @@
 
         const TAGS_OPTIONS_API = "{{ urls.tag_options_api }}";
         const TECH_OPTIONS_API = "{{ urls.tech_options_api }}";
+        const RESOURCE_DISCUSSION_API_URL = "{% url 'collection-viewset-discussion-posts' detail.id %}";
 
         const MANAGE_COLLECTIONS_URL = "{% url 'my-collections' %}"
         const COLLECTIONS_API = "{{ urls.collections_api }}";
@@ -43,6 +44,7 @@
         </section>
         {% include 'study_collection/right_side.html' %}
         <div class="column-container bottom">
+            <div id="discussions-app"></div>
             {% include 'detail_resources.html' with sub_text="Resources in this collection. Add a resource here from the resource detail page." %}
         </div>
     </div>
@@ -51,4 +53,5 @@
 {% block extra_js %}
     <script src="{% static 'js/votes.js' %}"></script>
     <script src="{% static 'js/subscribe.js' %}"></script>
+    <script src="{% static 'js/discussions.js' %}"></script>
 {% endblock %}

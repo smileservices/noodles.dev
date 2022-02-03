@@ -14,7 +14,7 @@ from core.abstract_viewsets import VotableVieset
 from core.utils import rest_paginate_queryset
 from . import serializers, filters
 from .models import CollectionResources, Collection
-
+from discussions.views import HasDiscussionViewsetMixin
 
 def detail(request, id, slug):
     detail = Collection.objects.get(pk=id)
@@ -52,7 +52,7 @@ def list_all(request):
     return render(request, 'study_collection/list_page_seo.html', data)
 
 
-class CollectionViewset(VotableVieset, SubscribableVieset):
+class CollectionViewset(VotableVieset, SubscribableVieset, HasDiscussionViewsetMixin):
     serializer_class = serializers.CollectionSerializer
     queryset = serializers.CollectionSerializer.queryset.order_by('-created_at')
     permission_classes = [IsAuthenticatedOrReadOnly]

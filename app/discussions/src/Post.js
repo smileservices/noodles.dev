@@ -120,7 +120,7 @@ export default function Post({data}) {
                     <div className="poster-info">
                         <div className="author">
                             <div className="name">
-                                <a className="author" href={data.author.url}>{data.author.username}</a>
+                                <a className="author" href={data.author.profile_url}>{data.author.username}</a>
                                 <div className="meta">
                                     <div className="row">{data.author.community_score} noodles</div>
                                 </div>

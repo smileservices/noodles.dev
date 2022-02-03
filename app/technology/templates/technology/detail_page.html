@@ -22,6 +22,7 @@
     <script>
         const TAGS_ENDPOINT = "{% url 'tags-viewset-list' %}";
         const TECH_ENDPOINT = "{% url 'techs-viewset-list' %}";
+        const RESOURCE_DISCUSSION_API_URL = "{% url 'techs-viewset-discussion-posts' detail.id %}";
 
         const RESULT = {
             thumbs_up_array: JSON.parse("{{ thumbs_up_array }}"),
@@ -43,6 +44,7 @@
         </section>
         {% include 'technology/right_side.html' %}
         <div class="column-container bottom">
+            <div id="discussions-app"></div>
             {% include 'technology/detail_concepts.html' %}
             {% include 'technology/collections.html' %}
             {% include 'detail_resources.html' %}
@@ -53,4 +55,5 @@
 {% block extra_js %}
     <script src="{% static 'js/votes.js' %}"></script>
     <script src="{% static 'js/subscribe.js' %}"></script>
+    <script src="{% static 'js/discussions.js' %}"></script>
 {% endblock %}
