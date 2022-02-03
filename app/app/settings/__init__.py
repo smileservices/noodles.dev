@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'concepts',
     'study_resource',
     'study_collection',
+    'discussions',
     # model dependant
     'notifications',
 ]

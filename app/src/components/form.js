@@ -46,7 +46,7 @@ function handleSelectClass(error) {
     }
 }
 
-export function FormElement({data, children, callback, alert, waiting, buttonText}) {
+export function FormElement({data, children, callback, alert, waiting, buttonText, cancel = false}) {
     if (waiting) return (<Waiting text={waiting}/>);
     return (
         <form onSubmit={e => {
@@ -56,7 +56,13 @@ export function FormElement({data, children, callback, alert, waiting, buttonTex
         }}>
             {children}
             {alert}
-            <button type="submit" className="btn light submit">{buttonText ? buttonText : 'Submit'}</button>
+            <div className="buttons-container">
+                {cancel
+                    ? <button className="btn light" onClick={cancel}>{buttonText ? buttonText : 'Cancel'}</button>
+                    : ''
+                }
+                <button type="submit" className="btn light submit">{buttonText ? buttonText : 'Submit'}</button>
+            </div>
         </form>
     )
 }

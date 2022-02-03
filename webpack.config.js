@@ -55,6 +55,9 @@ module.exports = (env, argv) => ({
         //notifications
         '/static/js/notifications': './app/src/core/NotificationsApp.js',
 
+        //discussions
+        '/static/js/discussions': './app/discussions/src/DiscussionsApp.js',
+
         //related section
         '/static/js/related-app': './app/frontend/src/RelatedApp.js',
 

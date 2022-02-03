@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import StarRating from "../../src/components/StarRating";
-import Thumbs from "./Thumbs";
+import VotableComponent from "../../src/components/VotableComponent";
 import apiDelete from "../../src/api_interface/apiDelete";
 import Alert from "../../src/components/Alert";
 
@@ -67,7 +67,7 @@ export default function Review({review}) {
             }
             <p className="text">{review.text}</p>
             <div className="thumbs">
-                <Thumbs
+                <VotableComponent
                     thumbs_obj={thumbs_obj}
                     url_endpoint={api_vote_url_endpoint}
                 />

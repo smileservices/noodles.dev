@@ -2,7 +2,7 @@ import React, {Fragment, useState, useEffect} from "react"
 import FormatDate from "../../vanilla/date";
 import Alert from "../Alert";
 import {apiDetail} from "../../api_interface/apiDetail";
-import Thumbs from "../../../study_resource/src/Thumbs";
+import VotableComponent from "../VotableComponent";
 import apiDelete from "../../api_interface/apiDelete";
 import apiPost from "../../api_interface/apiPost";
 import {makeId} from "../utils";
@@ -238,7 +238,7 @@ export default function EditSuggestionDetail({pk, api_urls, deleteCallback, publ
                         <p>{data.edit_suggestion_reason}</p>
                     </div>
                     <div className="thumbs">
-                        <Thumbs
+                        <VotableComponent
                             thumbs_obj={{up: data.thumbs_up_array, down: data.thumbs_down_array}}
                             url_endpoint={api_urls['edit_suggestions_api'] + pk + '/vote/'}
                         />

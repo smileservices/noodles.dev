@@ -12,4 +12,9 @@ VERB_EDIT_PUBLISH = 'published an edit suggestion for '
 VERB_EDIT_REJECT = 'rejected an edit suggestion for '
 VERB_EDIT_DELETE = 'deleted an edit suggestion for '
 
+VERB_DISCUSSION_NEW = 'created new post on'
+VERB_DISCUSSION_EDIT = 'edited post on '
+VERB_DISCUSSION_DELETE = 'deleted post on'
+VERB_DISCUSSION_INACTIVATE = 'deactivated post on'
+
 MESSAGE_ACTOR = '{actor} {verb} <a href="{url}">{name}<a/>'

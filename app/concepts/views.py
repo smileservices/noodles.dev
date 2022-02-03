@@ -70,7 +70,7 @@ class TechnologyConceptEditSuggestionViewset(EditSuggestionViewset):
 
 def category_detail(request, slug):
     queryset = models.CategoryConcept.objects
-    detail = queryset.prefetch_related('technology_concepts', 'children').get(slug=slug)
+    detail = queryset.prefetch_related('technology_concepts', 'children', 'related_resources').get(slug=slug)
     data = {
         'detail': detail,
         'technology_concepts': detail.technology_concepts.all(),

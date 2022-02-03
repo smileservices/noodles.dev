@@ -18,9 +18,10 @@ from notifications import events as notification_event
 from history.models import ResourceHistoryModel
 from history.serializers import ResourceHistorySerializer
 from notifications.viewsets import SubscribableVieset
+from discussions.views import HasDiscussionViewsetMixin
 
 
-class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset, SubscribableVieset):
+class ResourceWithEditSuggestionVieset(ModelViewsetWithEditSuggestion, VotableVieset, SubscribableVieset, HasDiscussionViewsetMixin):
     m2m_fields = None
 
     def create(self, request, *args, **kwargs):

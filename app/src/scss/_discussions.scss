@@ -1,0 +1,81 @@
+.discussion {
+  display: flex;
+  flex-direction: column;
+  gap: $padding-unit;
+
+  .header {}
+
+  .empty-div {
+    text-align: center;
+  }
+
+  .posts {
+    //all posts
+    display: flex;
+    flex-direction: column;
+
+    & > .post-container > .post {
+      margin-left: 0 !important;
+    }
+
+    .post-container {
+      //  a post and its replies
+
+      .post {
+        // the actual post
+        margin: $padding-unit 0;
+
+        &.own {
+          border: 1px solid $color-status-active;
+        }
+
+        .text {
+        }
+
+        .footer {
+          display: flex;
+          flex-direction: row;
+          gap: $padding-unit-big;
+          justify-content: space-between;
+          flex-wrap: wrap-reverse;
+        }
+
+        .actions {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          gap: 1rem;
+          align-items: end;
+
+          .left {
+            display: flex;
+            gap: 1rem;
+            justify-content: left;
+          }
+
+          .right {
+            display: flex;
+            gap: 1rem;
+            justify-content: right;
+          }
+
+        }
+
+        .poster-info {
+          width: 13rem;
+        }
+
+      }
+
+      .replies {
+        //  replies associated to a post; a container of .post-containers
+        display: flex;
+        flex-direction: column;
+        gap: $padding-unit;
+        margin-left: $padding-unit-big*2;
+        border-left: 0.25rem dotted $color-background-2;
+        padding-left: $padding-unit-big;
+      }
+    }
+  }
+}

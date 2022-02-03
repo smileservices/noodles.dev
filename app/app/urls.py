@@ -29,6 +29,7 @@ urlpatterns = [
     path('collections/', include('study_collection.urls')),
     path('concepts/', include('concepts.urls')),
     path('categories/', include('category.urls')),
+    path('discussions/', include('discussions.urls')),
     path('tags/', include('tag.urls')),
     path('learn/', include('technology.urls')),
     path('users/', include('users.urls')),

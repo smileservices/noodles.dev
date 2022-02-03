@@ -62,6 +62,7 @@
     const NOTIFICATIONS_URL = "{% url 'user-viewset-notifications' %}";
     const NOTIFICATIONS_MARK_SEEN_URL = "{% url 'user-viewset-notifications-mark-seen' %}";
     const NOTIFICATIONS_DELETE_URL = "{% url 'user-viewset-notifications-delete' %}";
+    const LOGIN_URL = "{% url 'account_login' %}";
 
     const authenticated_cookie_idx = document.cookie.search('authenticated'); // 1 for authenticated or 0 for not
     const backToTopSection = document.querySelector('.back-to-top');

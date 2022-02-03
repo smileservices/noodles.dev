@@ -1,0 +1,12 @@
+<div class="discussion">
+    {% if resource.discussions.count %}
+        <header>
+            <h2>Discussion</h2>
+        </header>
+        <div class="posts">
+            {% for post in resource.discussions.root_posts %}
+                {% include 'discussions/post.html' with post=post %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

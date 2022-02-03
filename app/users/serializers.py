@@ -16,5 +16,5 @@ class UserSerializerMinimal(ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['pk', 'username', 'is_active', 'about', 'first_name', 'last_name']
+        fields = ['pk', 'username', 'is_active', 'about', 'first_name', 'last_name', 'profile_url', 'community_score']
 

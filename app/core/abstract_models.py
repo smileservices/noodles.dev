@@ -6,7 +6,7 @@ from users.models import CustomUser
 from django.contrib.contenttypes.fields import GenericRelation
 from history.models import ResourceHistoryModel
 from notifications.mixins import HasSubscribersMixin
-
+from discussions.mixins import HasDiscussionsMixin
 
 class DateTimeModelMixin(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -68,7 +68,7 @@ class ElasticSearchIndexableMixin(models.Model):
         models.signals.post_delete.connect(sync_delete_to_elastic, sender=cls, weak=False)
 
 
-class ResourceMixin(DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexableMixin, HasSubscribersMixin):
+class ResourceMixin(DateTimeModelMixin, SluggableModelMixin, ElasticSearchIndexableMixin, HasSubscribersMixin, HasDiscussionsMixin):
     class StatusOptions(models.IntegerChoices):
         UNREVIEWED = (0, 'Unreviewed')
         APPROVED = (1, 'Approved')

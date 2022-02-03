@@ -25,38 +25,45 @@ export const PaginationElement = ({pagination, resultsCount, setPagination}) => 
     const totalPages = Math.ceil(resultsCount / pagination.resultsPerPage);
     const handlePrevPage = (e) => {
         e.preventDefault();
-        setPagination({...pagination, offset: pagination.offset-pagination.resultsPerPage, current: pagination.current-1});
+        setPagination({
+            ...pagination,
+            offset: pagination.offset - pagination.resultsPerPage,
+            current: pagination.current - 1
+        });
     }
     const handleNextPage = (e) => {
         e.preventDefault();
-        setPagination({...pagination, offset: pagination.offset+pagination.resultsPerPage, current: pagination.current+1});
+        setPagination({
+            ...pagination,
+            offset: pagination.offset + pagination.resultsPerPage,
+            current: pagination.current + 1
+        });
     }
     const handlePageClick = (e, page) => {
         e.preventDefault();
-        setPagination({...pagination, offset: pagination.resultsPerPage*(page-1), current: page});
+        setPagination({...pagination, offset: pagination.resultsPerPage * (page - 1), current: page});
     }
     if (resultsCount === 0) return '';
     return (
         <ul className="pagination">
             {pagination.current > 1 ?
-                <li key={makeId(4)} className="arrow"><a onClick={(e) => handlePrevPage(e)}>«</a></li>
+                <li key={makeId(4)} className="arrow" onClick={(e) => handlePrevPage(e)}>«</li>
                 : ''
             }
             {Array.from({length: totalPages}).map((_, i) => {
-                    const pageNo = i+1;
-                    const pageActive = pageNo === pagination.current;
-                    return (
-                        <li key={makeId(4)} className={pageActive ? "active" : ""}>
-                            {pageActive
-                                ? <span>{pageNo}</span>
-                                : <a onClick={(e) => handlePageClick(e, pageNo)}>{pageNo}</a>
-                            }
-                        </li>
-                    )
-                })
+                const pageNo = i + 1;
+                const pageActive = pageNo === pagination.current;
+                return (
+                    <li key={makeId(4)} className={pageActive ? "active" : ""}
+                        onClick={(e) => handlePageClick(e, pageNo)}
+                    >
+                        {pageNo}
+                    </li>
+                )
+            })
             }
-            { pagination.current < totalPages
-                ? <li key={makeId(4)} className="arrow"><a onClick={(e) => handleNextPage(e)}>»</a></li>
+            {pagination.current < totalPages
+                ? <li key={makeId(4)} className="arrow" onClick={(e) => handleNextPage(e)}>»</li>
                 : ''
             }
         </ul>

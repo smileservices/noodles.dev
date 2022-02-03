@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import ReactDOM from "react-dom";
-import Thumbs from "../../study_resource/src/Thumbs";
+import VotableComponent from "../components/VotableComponent";
 
 function VotesApp() {
     let votes_data = {
@@ -9,7 +9,7 @@ function VotesApp() {
     }
 
     return (
-        <Thumbs
+        <VotableComponent
             thumbs_obj={votes_data}
             url_endpoint={ROUTES.vote_url}
         />

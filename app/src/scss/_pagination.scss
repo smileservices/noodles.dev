@@ -15,38 +15,27 @@ ul.pagination {
     position: relative;
     margin: 0 5px;
     cursor: pointer;
+    line-height: $fontsize-big*1.8;
+    text-align: center;
+    background-color: $color-background-1;
 
-    span {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    a, a:visited {
-      color: $color-text-white !important;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    a:hover {
+    &:hover {
       color: $color-blue !important;
+      background-color: $color-background-1;
     }
   }
 
   li.active {
     color: $color-text-white;
-    background-color: $color-background-4;
+    background-color: $color-blue;
     pointer-events: none;
   }
 
-  li.arrow a {
-    color: $color-blue !important;
-  }
-
-  li.arrow a:hover {
-    color: $color-text-white !important;
-  }
+  //li.arrow {
+  //  color: $color-blue !important;
+  //}
+  //
+  //li.arrow:hover {
+  //  color: $color-text-white !important;
+  //}
 }

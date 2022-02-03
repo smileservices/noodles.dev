@@ -1,8 +1,9 @@
 import React, {Fragment, useState} from "react";
 import apiPost from "../../src/api_interface/apiPost";
 import Alert from "../../src/components/Alert";
-import {WaitingInline} from "../../src/components/Waiting";
-export default function Thumbs({thumbs_obj, url_endpoint}) {
+import {WaitingInline} from "./Waiting";
+
+export default function VotableComponent({thumbs_obj, url_endpoint}) {
 
     /*
     *
@@ -32,17 +33,17 @@ export default function Thumbs({thumbs_obj, url_endpoint}) {
                         });
                 } else if (result.status === 403) {
                     result.json().then(
-                        data => setAlert(<Alert close={e=>setAlert(null)}
-                                text={ data.error || data.detail || "Operation forbidden"}
-                                type="danger" hideable={false}
-                                stick={false}
-                            />)
+                        data => setAlert(<Alert close={e => setAlert(null)}
+                                                text={data.error || data.detail || "Operation forbidden"}
+                                                type="danger" hideable={false}
+                                                stick={false}
+                        />)
                     );
 
                 } else {
-                    setAlert(<Alert close={e=>setAlert(null)}
-                        text="Something went wrong :("
-                        type="danger" hideable={false} stick={false}
+                    setAlert(<Alert close={e => setAlert(null)}
+                                    text="Something went wrong :("
+                                    type="danger" hideable={false} stick={false}
                     />)
                 }
             })
@@ -58,21 +59,21 @@ export default function Thumbs({thumbs_obj, url_endpoint}) {
         return initialClassList;
     }
 
-    if (waiting) return <WaitingInline text={waiting} />;
+    if (waiting) return <WaitingInline text={waiting}/>;
     if (alert) return alert;
 
     return (
         <Fragment>
-            <div key={'vote-down' + url_endpoint} className={getThumbsClass('down', thumbs.down)}>
-                <a onClick={e => vote(e, -1)}>
-                    <span>{thumbs.down.length}</span>
-                    <span className="icon-thumbs-o-down"/>
-                </a>
-            </div>
             <div key={'vote-up' + url_endpoint} className={getThumbsClass('up', thumbs.up)}>
                 <a onClick={e => vote(e, 1)}>
                     <span>{thumbs.up.length}</span>
                     <span className="icon-thumbs-o-up"/>
+                </a>
+            </div>
+            <div key={'vote-down' + url_endpoint} className={getThumbsClass('down', thumbs.down)}>
+                <a onClick={e => vote(e, -1)}>
+                    <span>{thumbs.down.length}</span>
+                    <span className="icon-thumbs-o-down"/>
                 </a>
             </div>
         </Fragment>

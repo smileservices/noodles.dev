@@ -7,6 +7,12 @@
   .header {
     margin-bottom: 2rem;
   }
+
+  .buttons-container {
+    display: flex;
+    gap: $padding-unit-big;
+    justify-content: end;
+  }
 }
 
 form {

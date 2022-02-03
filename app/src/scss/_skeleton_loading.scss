@@ -26,6 +26,10 @@
     background: linear-gradient(90deg, var(--color-background-5), transparent);
   }
 
+  &.post {
+    height: $fontsize-md*4;
+  }
+
   &.header {
     height: $padding-unit-big + $fontsize-big;
     margin-bottom: $padding-unit-big;

@@ -15,6 +15,9 @@ export function SkeletonChildrenFactory(name, count) {
         case 'review':
             Element = () => (<div className="skeleton review"/>);
             break;
+        case 'post':
+            Element = () => (<div className="skeleton post"/>);
+            break;
         case 'tag':
             Element = () => (<span className="skeleton tag"/>);
             break;

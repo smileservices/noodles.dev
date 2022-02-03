@@ -1,0 +1,35 @@
+<div class="post-container">
+    <div class="card post">
+        <header>
+            <div class="author">
+                <div class="name"><a href="{% url 'user-profile' post.author.username %}">{{ post.author }}</a></div>
+                <div class="meta">
+                    <div class="row">Score: {{ post.author.community_score }}</div>
+                </div>
+            </div>
+            <div class="date">
+                <div class="posted">{{ post.created_at }}</div>
+                {% if post.updated_at.hour != post.created_at.hour %}
+                    <div class="updated">Updated at {{ post.updated_at }}</div>
+                {% endif %}
+            </div>
+        </header>
+        <div class="body">
+            <div class="text">{{ post.text }}</div>
+            <div class="actions">
+                <div class="left"></div>
+                <div class="right thumbs">
+                    <div class="down"><span class="icon-thumbs-o-down"> </span><span>{{ post.thumbs_down }}</span></div>
+                    <div class="up"><span class="icon-thumbs-o-up"> </span><span>{{ post.thumbs_up }}</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if post.replies.count %}
+        <div class="replies">
+            {% for post in post.replies.all %}
+                {% include 'discussions/post.html' %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

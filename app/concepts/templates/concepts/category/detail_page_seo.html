@@ -14,7 +14,6 @@
 {% block content %}
     <script>
         const RESOURCE_API_DELETE = "{% url 'concept-category-viewset-detail' detail.id %}";
-        const RESOURCE_DISCUSSION_API_URL = "{% url 'concept-category-viewset-discussion-posts' detail.id %}";
         const RESULT = {
             thumbs_up_array: JSON.parse("{{ detail.thumbs_up_array }}"),
             thumbs_down_array: JSON.parse("{{ detail.thumbs_down_array }}"),
@@ -34,7 +33,6 @@
         </section>
         {% include 'concepts/category/right_side.html' %}
         <div class="coloumn-container bottom">
-            <div id="discussions-app"></div>
             {% include 'concepts/category/detail_children_concepts.html' %}
             {% include 'detail_resources.html' %}
         </div>
@@ -45,5 +43,4 @@
 {% block extra_js %}
     <script src="{% static 'js/votes.js' %}"></script>
     <script src="{% static 'js/subscribe.js' %}"></script>
-    <script src="{% static 'js/discussions.js' %}"></script>
 {% endblock %}

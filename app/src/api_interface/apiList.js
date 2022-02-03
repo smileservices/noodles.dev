@@ -10,7 +10,9 @@ export default async function apiList(
 ) {
     setWaiting(<Waiting text={'Retrieving data'}/>);
     let url = list_endpoint;
-    url += '?limit=' + pagination.resultsPerPage + '&offset=' + pagination.offset;
+    if (pagination) {
+        url += '?limit=' + pagination.resultsPerPage + '&offset=' + pagination.offset;
+    }
     // parse filter query
     if (queryFilter) {
         Object.keys(queryFilter).map(key => {

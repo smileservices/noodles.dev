@@ -66,4 +66,4 @@ class CustomUser(AbstractUser):
 
 
     def profile_url(self):
-        return reverse_lazy('user-profile')
+        return reverse_lazy('user-profile', kwargs={"username": self.username})
