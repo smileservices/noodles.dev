@@ -184,7 +184,6 @@ function StudyResourceEditForm({formData, setFormData, extraData, submitCallback
             if (typeof normalizedData.media !== 'number') vErrors.media = 'Required';
 
             if (!normalizedData.tags || normalizedData.tags.length === 0) vErrors.tags = 'Choose at least one tag';
-            if (!normalizedData.technologies || normalizedData.technologies.length === 0) vErrors.technologies = 'Choose at least one technology';
 
             if (extraData.formElements) {
                 extraData.formElements.validate(normalizedData, vErrors);
