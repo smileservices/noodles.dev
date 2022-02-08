@@ -4,40 +4,44 @@
   line-height: $fontsize-big;
 }
 
-.mobile-navbar-logo {
-  padding: $padding-unit*2 $padding-unit-big/2;
-  padding-left: 0;
-  line-height: $fontsize-big;
-}
-
-@media only screen and (max-width: 600px) {
-  nav {
-    .dropdown .dropdown-menu-account {
-      width: 100%;
-      right: 0;
-    }
-  }
-}
-
-@media only screen and (min-width: 601px) {
-  nav {
-    .dropdown .dropdown-menu-account {
-      right: 3rem;
-      min-width: 18rem;
-      // min-width: $fontsize-big * 7;
-    }
-  }
-}
-
 nav {
   line-height: $fontsize-big;
   font-size: $fontsize-big;
   font-weight: 700;
   overflow: hidden;
-  display: flex;
+  display: grid;
   justify-content: space-between;
   padding: $nav-padding;
   white-space: nowrap;
+
+  grid-template-areas: "logo searchbar searchbar searchbar profile";
+
+  #nav-logo {
+    grid-area: logo;
+    margin: -$nav-padding;
+    align-items: center;
+  }
+
+  #search-bar-app {
+    grid-area: searchbar;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #profile-app {
+    grid-area: profile;
+    display: flex;
+    align-items: center;
+
+    & > * {
+      margin-right: $nav-padding;
+    }
+
+    .dropdown-button-icon {
+      font-size: 3.25rem;
+    }
+  }
 
   .signed-out-button {
     font-style: normal;
@@ -45,24 +49,6 @@ nav {
     font-size: 14px;
     line-height: 22px;
     width: 132px;
-  }
-
-  .left-side {
-    margin: -$nav-padding;
-    align-items: center;
-  }
-
-  .left-side-buttons {
-    display: none;
-    gap: 1rem;
-  }
-
-  .right-side {
-    align-items: center;
-  }
-
-  .right-side > * {
-    margin-right: $nav-padding;
   }
 
   a {
@@ -89,7 +75,6 @@ nav {
   }
 
   a:hover {
-    // background-color: var(--color-background-3);
     color: var(--color-text-white);
   }
 
@@ -101,44 +86,10 @@ nav {
     display: flex;
   }
 
-  .dropdown .dropdown-menu-account {
+  .dropdown .dropdown-menu {
     top: 4.25rem;
-    // min-width: $fontsize-big * 7;
+    right: 1rem;
   }
 
-  .dropdown .dropdown-create {
-    max-width: 328px;
-    right: 6rem;
-    top: 4.25rem;
-    padding: 1.25rem;
-    display: block;
-
-    a {
-      display: flex;
-      flex-direction: column;
-      .anchor-title {
-        overflow-wrap: break-word;
-        white-space: normal;
-        font-weight: 600;
-        font-size: 1rem;
-        line-height: 1.375rem;
-        color: #B8C7FF;
-      }
-
-      .anchor-description {
-        overflow-wrap: break-word;
-        white-space: normal;
-        font-weight: normal;
-        font-size: 0.875rem;
-        line-height: 1.188rem;
-
-        color: #FFFFFF;
-      }
-    }
-
-    a:hover {
-      background-color: #373E7A;
-    }
-  }
 }
 

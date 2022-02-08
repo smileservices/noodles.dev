@@ -49,6 +49,12 @@ class HasSubscriptionsViewset(ModelViewSet):
         notifications = Notifications.objects.filter(user_id=request.user.pk).order_by('-datetime')
         return rest_paginate_queryset(self, notifications, NotificationSerializer)
 
+    @action(methods=['GET'], detail=False)
+    def notifications_summary(self, request, *args, **kwargs):
+        from django.db.models import Q, Count
+        data = Notifications.objects.filter(user=2).aggregate(unseen=Count('id', filter=Q(seen=False)), total=Count('id'))
+        return Response(data=data)
+
     @action(methods=['POST'], detail=False)
     def notifications_mark_seen(self, request, *args, **kwargs):
         Notifications.objects.filter(user_id=request.user.pk).update(seen=True)

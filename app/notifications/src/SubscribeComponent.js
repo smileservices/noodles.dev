@@ -10,7 +10,7 @@ export default function SubscribeComponent({url_endpoint}) {
         action: 'check'
     });
 
-    if (!IS_AUTHENTICATED) return (<a className="btn contribute" href={LOGIN_URL}><span
+    if (!IS_AUTHENTICATED) return (<a className="btn contribute" href={URLS.login}><span
                 className="icon-bookmark"/>Follow</a>)
 
     useEffect(() => {

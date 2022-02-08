@@ -1,5 +1,6 @@
 import React, {useEffect, useReducer, Fragment, useRef} from "react";
 import {WaitingInline} from "../../src/components/Waiting";
+import {handleClickOutside} from "../../src/components/utils";
 
 const FETCH_AUTOCOMPLETE_RESULTS_API = '/search/api/autocomplete';
 
@@ -75,28 +76,7 @@ export default function InstantSearchComponent({setSearchTerm}) {
     const controller = new AbortController();
     const wrapperRef = useRef(null);
 
-    (function (ref) {
-        useEffect(() => {
-            /**
-             * Close instant search overlay when click outside
-             */
-            function handleClickOutside(event) {
-                if (ref.current && !ref.current.contains(event.target)) {
-                    const instantResultsOverlayVisible = document.querySelector('.navbar-search-results-overlay');
-                    if (instantResultsOverlayVisible) {
-                        dispatch({type: HIDE_RESULTS})
-                    }
-                }
-            }
-
-            // Bind the event listener
-            document.addEventListener("mousedown", handleClickOutside);
-            return () => {
-                // Unbind the event listener on clean up
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }, [ref])
-    })(wrapperRef);
+    handleClickOutside(wrapperRef, ()=>dispatch({type: HIDE_RESULTS}));
 
     const getResults = (query_term) => {
         fetch(`${FETCH_AUTOCOMPLETE_RESULTS_API}/${query_term}/`, {

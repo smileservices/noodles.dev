@@ -1,31 +1,32 @@
-#notifications-app {
-  .dropdown-button {
-    position: relative;
-    .button {
-      cursor: pointer;
-      font-size: 2.5rem;
-      color: $color-text-grey;
-      &.active {
-      color: $color-blue;
-      }
-    }
-    .unseen {
-      position: absolute;
-      right: -0.5rem;
-      top: -1.3rem;
-      font-size: 0.8rem;
-      width: 1.25rem;
-      height: 1.25rem;
-      border-radius: 2rem;
-      background-color: $color-text-white;
-      color: $color-tag-bg;
-      text-align: center;
-      line-height: 1.2rem;
-    }
+$color-critical: #ff5757;
+
+.notifications {
+  &.unseen {
+    position: absolute;
+    right: -0.25rem;
+    font-size: 0.8rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background-color: $color-critical;
+    color: $color-text-white;
+    text-align: center;
+    line-height: 1.2rem;
   }
+ &.menu-item {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   background-color: $color-background-1;
+   .unseen {
+     padding: 0.1rem 0.5rem;
+     background-color: $color-critical;
+   }
+ }
 }
 
 .notifications {
+
   .item {
     display: flex;
     flex-direction: row;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PaginationComponent from '../uikit/Pagination';
 import Card from '../uikit/Card';
-import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import apiFetch from '../../../src/api_interface/apiFetch'
 import { HOMEPAGE_APIS } from '../utils/constants';
 
 const TechnologiesWithNoResourceSection = () => {
@@ -9,7 +9,7 @@ const TechnologiesWithNoResourceSection = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        FetchDataAndSetState(
+        apiFetch(
             HOMEPAGE_APIS.GET_TECHNOLOGIES_WITHOUT_RESOURCES_API,
             setTechWithoutResource,
             setLoading,

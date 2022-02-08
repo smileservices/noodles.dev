@@ -1,3 +1,5 @@
+import {useEffect} from "react";
+
 export const makeId = (length) => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -37,7 +39,7 @@ export function extractURLParams(str) {
     if (str === '') return false;
     let params = {};
     const unparsed_params = str.split("?").pop().split("&");
-    unparsed_params.map(p=>{
+    unparsed_params.map(p => {
         const p_arr = p.split('=');
         if (p_arr[1] !== '') params[p_arr[0]] = p_arr[1];
     })
@@ -120,3 +122,25 @@ export function getAvailableFilters(aggregated, label, type) {
     };
 }
 
+
+export function handleClickOutside(wrapperRef, callback) {
+    (function (ref) {
+
+        useEffect(() => {
+
+            function handleClickOutside(event) {
+                if (ref.current && !ref.current.contains(event.target)) {
+                    callback();
+                }
+            }
+
+            // Bind the event listener
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                // Unbind the event listener on clean up
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }, [ref])
+
+    })(wrapperRef);
+}

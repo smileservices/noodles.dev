@@ -13,7 +13,7 @@ export default function ReviewCreateController({data, successCallback}) {
     const [errors, setErrors] = useState({});
     const [waiting, setWaiting] = useState('');
     const [alert, setAlert] = useState('');
-    const errorLogin = (<span>To submit review you need to <a href={LOGIN_URL}>Login or Register</a></span>);
+    const errorLogin = (<span>To submit review you need to <a href={URLS.login}>Login or Register</a></span>);
 
     if (!IS_AUTHENTICATED) return errorLogin;
 

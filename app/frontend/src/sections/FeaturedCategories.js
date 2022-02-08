@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "../uikit/Card";
 import PaginationComponent from '../uikit/Pagination';
-import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import apiFetch from '../../../src/api_interface/apiFetch'
 import { HOMEPAGE_APIS } from '../utils/constants';
 
 function render_name_with_path(name, path) {
@@ -13,7 +13,7 @@ const FeaturedCategories = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    FetchDataAndSetState(
+    apiFetch(
       HOMEPAGE_APIS.GET_FEATURED_CATEGORIES_API,
       setFeaturedCategories,
       setLoading,

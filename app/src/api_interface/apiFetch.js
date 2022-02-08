@@ -1,9 +1,9 @@
-export const FetchDataAndSetState = (
+export default async function apiFetch (
     url,
     setData,
     setLoading,
     setError = (err) => console.log(err),
-) => {
+) {
     setLoading(true);
     fetch(url)
         .then(result => {

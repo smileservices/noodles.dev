@@ -36,7 +36,7 @@ function ToolbarApp() {
 
     if (!IS_AUTHENTICATED) return (
         <Fragment>
-            <a className="btn secondary" href={LOGIN_URL}>Save to Collection</a>
+            <a className="btn secondary" href={URLS.login}>Save to Collection</a>
         </Fragment>
     )
 
@@ -59,7 +59,7 @@ function ToolbarApp() {
             }
             {IS_AUTHENTICATED
                 ? <a className="btn secondary" onClick={e => setShowModal(true)}>Save to Collection</a>
-                : <a className="btn secondary" href={LOGIN_URL}>Login to add to collection</a>
+                : <a className="btn secondary" href={URLS.login}>Login to add to collection</a>
             }
             {showModal ? <AddToCollectionModal close={e => setShowModal(false)}/> : ''}
         </Fragment>

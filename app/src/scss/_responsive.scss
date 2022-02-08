@@ -11,9 +11,12 @@
     grid-template-columns: 1fr 1fr;
     grid-template-areas: 'collections related';
   }
-  .collapse-button {
-    display: none;
+  #sidebar-app {
+    .top-section .collapse-button {
+      display: none;
+    }
   }
+
 }
 
 @media only screen and (min-width: 900px) {
@@ -32,55 +35,6 @@
   }
 }
 
-@media only screen and (min-width: 901px) {
-  nav {
-    .right-side {
-      .dropdown {
-        .dropdown-button-icon {
-          font-size: 3.25rem;
-          margin-right: 0.6rem;
-          margin-right: 0px !important;
-        }
-  
-        .dropdown-button-icon:hover {
-          cursor: pointer;
-        }
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 900px) {
-  nav {
-    .right-side {
-      .dropdown {
-        .dropdown-menu-account {
-          .profile {
-            .dropdown-button-icon-mobile {
-              font-size: 3.25rem;
-              margin-right: 0.6rem;
-              margin-right: 0px !important;
-            }
-          }
-        }
-  
-        .dropdown-button-icon:hover {
-          cursor: pointer;
-        }
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 900px) {
-  nav {
-    .right-side {
-      .dropdown {
-        display: none;
-      }
-    }
-  }
-}
 
 @media only screen and (min-width: 900px) {
   nav .collapsible .collapse-toggle {
@@ -159,7 +113,7 @@
         gap: 4px;
         margin-right: 0.5rem;
         margin-top: 0.5rem;
-        
+
         a {
           width: unset !important;
         }
@@ -201,16 +155,6 @@
   }
 }
 
-@media only screen and (min-width: 901px) {
-  nav {
-    #search-bar-app {
-      .navbar-search-results-overlay {
-        margin-left: 44px;
-      }
-    }
-  }
-}
-
 @media only screen and (max-width: 900px) {
 
   header {
@@ -232,42 +176,24 @@
   }
 
   nav {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     margin-bottom: 0px !important;
-    .left-side {
-      margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
+    grid-template-areas: "logo profile"
+                          "searchbar searchbar";
 
-      .navbar-logo {
-        display: none;
-      }
-
-      .collapse-button {
-        display: none;
-      }
-
-      .mobile-menu {
-        display: flex;
-      }
-
-      .left-side-buttons {
-        display: flex;
-      }
-
-      span.icon {
-        font-size: 36px;
-        margin-right: 0.6rem;
-      }
-    }
     #search-bar-app {
       width: 100%;
-      margin-right: 0px;
+      margin-top: $padding-unit-big;
+
+      form {
+        width: 100%;
+      }
+
       .navbar-input-container {
         justify-content: center;
         gap: 12px;
         align-items: center;
+
         .navbar-search-input {
           // position: absolute;
           top: $nav-height;
@@ -276,19 +202,17 @@
           width: -moz-available; /* WebKit-based browsers will ignore this. */
           width: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
           width: fill-available;
-          margin: $padding-unit 0px;
+          margin: $padding-unit 0;
         }
 
-        span {
-          height: 40px;
-          width: 40px;
-          justify-content: center;
-          padding: 0px !important;
+        .icon-search {
+          top: 14px;
         }
       }
 
       .navbar-search-results-overlay {
-        top: 8rem;
+        top: 8.4rem;
+        width: 95%;
       }
     }
   }
@@ -320,20 +244,6 @@
     display: none;
   }
 
-  //nav .dropdown .dropdown-menu {
-  //  position: static;
-  //}
-  //
-  //nav .dropdown .dropdown-button {
-  //  display: flex;
-  //  flex-direction: row;
-  //  justify-content: space-between;
-  //}
-  //
-  //nav .dropdown .dropdown-menu a {
-  //  padding-left: 2rem;
-  //}
-
   .search-bar-big {
     form > input {
       font-size: $fontsize-md*2;
@@ -364,10 +274,6 @@
   body.sidebar-visible-mobile {
     aside.sidebar {
       display: block;
-
-      // #sidebar-app .category-detail {
-      //   width: 60vw;
-      // }
     }
   }
 
@@ -400,29 +306,14 @@
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 473px) {
   nav {
     .dropdown .dropdown-menu {
-      top: 3.125rem;
+      top: 4.25rem;
       left: 0;
       border-radius: 0;
       width: 100%;
     }
-  }
-}
-
-@media only screen and (max-width: 473px) {
-  nav {
-    .right-side .login-button {
-      display: none;
-    }
-
-    // .dropdown .dropdown-menu {
-    //   top: 3.125rem;
-    //   left: 0;
-    //   border-radius: 0;
-    //   width: 100%;
-    // }
   }
 
   .tab-navigation {
@@ -443,7 +334,6 @@
     form > .search-overlay {
       right: $padding-unit-big;
       top: 0.875rem;
-      // font-size: $fontsize-big;
     }
   }
   .filters .filter-select {

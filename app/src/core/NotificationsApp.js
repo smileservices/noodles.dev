@@ -9,11 +9,10 @@ import Waiting from "../components/Waiting";
 import Alert from "../components/Alert";
 import FormatDate from "../vanilla/date";
 
-function NotificationsApp() {
-    const [modal, setModal] = useState({open: false});
+
+function NotificationsModalComponent({close}) {
     const [state, setState] = useState({
-        unseen: 0,
-        data: {},
+        data: [],
         waiting: false,
         error: false,
         pagination: {
@@ -21,11 +20,19 @@ function NotificationsApp() {
             current: 1,
             offset: 0
         }
-    })
+    });
+
+    function markAllSeen() {
+        apiPost(
+            URLS.notifications.mark_seen,
+            {},
+            waiting => {}
+        )
+    }
 
     useEffect(e => {
         apiList(
-            NOTIFICATIONS_URL,
+            URLS.notifications.get,
             state.pagination,
             data => setState({...state, data: data}),
             waiting => setState({...state, waiting: waiting}),
@@ -33,79 +40,92 @@ function NotificationsApp() {
         )
     }, [state.pagination])
 
-    useEffect(e => {
-        if (state.data.results?.length) {
-            let unseen_count = 0;
-            state.data.results.map(n => n.seen ? '' : unseen_count++)
-            if (unseen_count) {
-                setState({...state, unseen: unseen_count})
-            }
-        }
-    }, [state.data])
-
-    // hit get notifications backend every 5 seconds refresh notifications
-    // if has unseen notifications, apply class "unseen" to the icon
-
-    useEffect(e => {
-        // mark as seen when open modal
-        if (modal.open && state.unseen) {
-            apiPost(
-                NOTIFICATIONS_MARK_SEEN_URL,
-                {},
-                waiting => setState({...state, waiting: waiting})
-            ).then(result => {
-                if (result.ok) setState({...state, unseen: 0});
-            });
-        }
-    }, [modal.open]);
-
     function deleteAll(e) {
         e.preventDefault();
         apiPost(
-            NOTIFICATIONS_DELETE_URL,
+            URLS.notifications.delete,
             {},
             waiting => setState({...state, waiting: waiting})
-        ).then(result => {
-            if (result.ok) setState({...state, data: {count: 0, results: []}, unseen: 0});
-        });
+        ).then(result=>{
+            if (result.ok) {
+                setState({...state, data: []})
+            }
+        })
     }
 
     return (
+        <Modal close={()=> {markAllSeen(); close();}}>
+            <header>
+                <h3>Notifications</h3>
+                <div className="sub">Displaying latest notifications first</div>
+            </header>
+            {state.waiting ? <Waiting text="Retrieving Notifications..."/> : ''}
+            {state.error ? <Alert text={state.error}/> : ''}
+            {state.data.length === 0 ? 'No notifications' : ''}
+            <PaginatedLayout data={state.data.results} resultsCount={state.data.count}
+                             pagination={state.pagination}
+                             setPagination={pagination => setState({...state, pagination: pagination})}
+                             resultsContainerClass="notifications column-container vmargin-big"
+                             mapFunction={(item, idx) =>
+                                 <div key={makeId(5)} className={"item" + (item.seen ? '' : ' unseen')}>
+                                     <span className="date">{FormatDate(item.datetime, 'datetime')}</span>
+                                     <span className="message"
+                                           dangerouslySetInnerHTML={{__html: item.message}}/>
+                                 </div>
+                             }
+            />
+            <div className="buttons-container">
+                <button className="btn btn-default" onClick={deleteAll}>Delete All</button>
+            </div>
+        </Modal>
+    )
+}
+
+function NotificationsListItemComponent({data, openModal}) {
+    return (
         <Fragment>
-            <span className="dropdown-button" onClick={e => setModal({...modal, open: true})} key={makeId(6)}>
-                <span className={"button icon-info-circle" + (state.unseen ? ' active' : '')}/>
-                {state.unseen ? <span className="unseen">{state.unseen}</span> : ''}
-            </span>
-            {modal.open
-                ? <Modal close={e => setModal({...modal, open: false})}>
-                    <header>
-                        <h3>Notifications</h3>
-                        <div className="sub">Displaying latest notifications first</div>
-                    </header>
-                    {state.waiting ? <Waiting text="Retrieving Notifications..."/> : ''}
-                    {state.error ? <Alert text={state.error}/> : ''}
-                    {state.data.count === 0 ? <h4>No Notification Yet</h4> :
-                        <PaginatedLayout data={state.data.results} resultsCount={state.data.count}
-                                         pagination={state.pagination}
-                                         setPagination={pagination => setState({...state, pagination: pagination})}
-                                         resultsContainerClass="notifications column-container vmargin-big"
-                                         mapFunction={(item, idx) =>
-                                             <div key={makeId(5)} className={"item" + (item.seen ? '' : ' unseen')}>
-                                                 <span className="date">{FormatDate(item.datetime, 'datetime')}</span>
-                                                 <span className="message"
-                                                       dangerouslySetInnerHTML={{__html: item.message}}/>
-                                             </div>
-                                         }
-                        />
-                    }
-                    <div className="buttons-container">
-                        <button className="btn btn-default" onClick={deleteAll}>Delete All</button>
-                    </div>
-                </Modal>
-                : ''}
+            <a href="#" className="notifications menu-item"
+               onClick={data.total ? openModal : ()=>{}}
+               key={makeId(6)}>
+                {data.total ? data.total : 'No'} notifications
+                {data.unseen ? <span className="unseen">{data.unseen} unseen</span> : ''}
+            </a>
         </Fragment>
     )
 }
 
-const notificationsElement = document.getElementById('notifications-app');
-if (notificationsElement) ReactDOM.render(<NotificationsApp/>, notificationsElement);
+
+export default function NotificationsComponent({notificationCallback}) {
+    const [state, setState] = useState({
+        unseen: 0,
+        data: {},
+        waiting: false,
+        error: false,
+    })
+    const [modal, setModal] = useState(false);
+
+    useEffect(e => {
+        // hit the notifications report endpoint
+        fetch(URLS.notifications.summary).then(response => {
+            if (response.ok) {
+                return response.json()
+            }
+        }).then(data => {
+            setState({...state, data: data, unseen: data.unseen});
+            // success -> execute notificationCallback which returns the NotificationsListItemComponent
+            notificationCallback(
+                <NotificationsListItemComponent
+                    data={data}
+                    openModal={()=>setModal(true)}
+                />);
+        })
+    }, [modal])
+
+    // hit get notifications backend every 5 seconds refresh notifications
+    // if has unseen notifications, apply class "unseen" to the icon
+
+    return <Fragment>
+        {state.unseen ? (<span className="notifications unseen">{state.unseen}</span>) : ''}
+        {modal ? <NotificationsModalComponent close={e => setModal(false)}/> : ''}
+    </Fragment>
+}

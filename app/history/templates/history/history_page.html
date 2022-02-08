@@ -16,9 +16,7 @@
 
 {% block extra_js %}
     <script>
-        const URLS = {
-            'history': "{{ urls.history_get }}"
-        };
+        URLS.history = "{{ urls.history_get }}"
     </script>
     <script src="{% static 'js/react-bundle.js' %}"></script>
     <script src="{% static 'js/resource-history.js' %}"></script>

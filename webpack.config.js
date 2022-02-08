@@ -52,8 +52,8 @@ module.exports = (env, argv) => ({
         //sidebar
         '/static/js/frontend/sidebar-app': './app/frontend/src/sidebar/SidebarApp.js',
 
-        //notifications
-        '/static/js/notifications': './app/src/core/NotificationsApp.js',
+        //profile app
+        '/static/js/navbar-profile-app': './app/frontend/src/NavbarProfileApp.js',
 
         //discussions
         '/static/js/discussions': './app/discussions/src/DiscussionsApp.js',

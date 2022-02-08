@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Card from '../uikit/Card';
 import PaginationComponent from '../uikit/Pagination';
-import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import apiFetch from '../../../src/api_interface/apiFetch'
 import { HOMEPAGE_APIS } from '../utils/constants';
 
 const ResourceReviewsSection = () => {
@@ -9,7 +9,7 @@ const ResourceReviewsSection = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        FetchDataAndSetState(
+        apiFetch(
             HOMEPAGE_APIS.GET_LEARNING_RESOURCES_WITHOUT_REVIEWS_API,
             setLearningResources,
             setLoading,

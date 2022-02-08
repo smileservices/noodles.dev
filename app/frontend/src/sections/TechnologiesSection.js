@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { shortenText } from '../utils/strings';
-import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import apiFetch from '../../../src/api_interface/apiFetch'
 import { HOMEPAGE_APIS } from '../utils/constants';
 
 const TechnologiesSection = () => {
@@ -8,7 +8,7 @@ const TechnologiesSection = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        FetchDataAndSetState(
+        apiFetch(
             HOMEPAGE_APIS.GET_FEATURED_TECHNOLOGIES_API,
             setFeaturedTech,
             setLoading,

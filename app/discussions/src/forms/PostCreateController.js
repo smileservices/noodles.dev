@@ -13,7 +13,7 @@ export default function PostCreateController({parent, successCallback, cancel = 
     const [errors, setErrors] = useState({});
     const [waiting, setWaiting] = useState('');
     const [alert, setAlert] = useState('');
-    const errorLogin = (<span>To create a discussion post you need to <a href={LOGIN_URL}>Login or Register</a></span>);
+    const errorLogin = (<span>To create a discussion post you need to <a href={URLS.login}>Login or Register</a></span>);
 
     if (!IS_AUTHENTICATED) return errorLogin;
 

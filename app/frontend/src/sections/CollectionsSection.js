@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Pagination from '../uikit/Pagination';
 import { shortenText } from '../utils/strings';
-import { FetchDataAndSetState } from '../../../src/api_interface/apiFetching'
+import apiFetch from '../../../src/api_interface/apiFetch'
 import { HOMEPAGE_APIS } from '../utils/constants';
 
 const CollectionsSection = () => {
@@ -9,7 +9,7 @@ const CollectionsSection = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        FetchDataAndSetState(
+        apiFetch(
             HOMEPAGE_APIS.GET_FEATURED_COLLECTIONS_API,
             setFeaturedCollections,
             setLoading,

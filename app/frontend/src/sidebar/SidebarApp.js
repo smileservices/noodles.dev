@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import CategoriesComponent from "./CategoriesComponent";
 import CategoryDetailComponent from "./ CategoryDetailComponent";
 import { toggleSidebarUtil } from '../utils/DOMUtils';
+import {handleClickOutside} from "../../../src/components/utils";
+
 
 const SELECT_CATEGORY = 'SELECT_CATEGORY';
 const MINIMIZE = 'MINIMIZE';
@@ -24,34 +26,6 @@ const reducer = (state, {type, payload}) => {
     }
 }
 
-function useOutsideAlerter(ref) {
-    useEffect(() => {
-        /**
-         * Alert if clicked on outside of element
-         */
-        function handleClickOutside(event) {
-            if (ref.current && !ref.current.contains(event.target)) {
-                const sidebarOpen = document.querySelector('body.sidebar-visible aside.sidebar');
-                const categoryDetailOpen = document.querySelector('.category-detail');
-
-                const mobileSidebarOpen = document.querySelector('body.sidebar-visible-mobile aside.sidebar');
-                const mobileCategoryDetailOpen = document.querySelector('.category-detail');
-                
-                if (sidebarOpen && !categoryDetailOpen || mobileSidebarOpen && !mobileCategoryDetailOpen) {
-                    toggleSidebarUtil();
-                }
-            }
-        }
-
-        // Bind the event listener
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [ref]);
-}
-
 function SidebarApp() {
     /*
     * Get the categories tree
@@ -66,7 +40,16 @@ function SidebarApp() {
     const [state, dispatch] = useReducer(reducer, {...initialState});
     const [selectedCategory, setSelectedCategory] = useState(null);
     const wrapperRef = useRef(null);
-    useOutsideAlerter(wrapperRef);
+    // useOutsideAlerter(wrapperRef);
+    handleClickOutside(wrapperRef, ()=>{
+        const sidebarOpen = document.querySelector('body.sidebar-visible aside.sidebar');
+        const categoryDetailOpen = document.querySelector('.category-detail');
+        const mobileSidebarOpen = document.querySelector('body.sidebar-visible-mobile aside.sidebar');
+        const mobileCategoryDetailOpen = document.querySelector('.category-detail');
+        if (sidebarOpen && !categoryDetailOpen || mobileSidebarOpen && !mobileCategoryDetailOpen) {
+            toggleSidebarUtil();
+        }
+    })
 
     useEffect(() => {
         if (state.expanded) {

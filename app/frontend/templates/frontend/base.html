@@ -28,7 +28,6 @@
     {% endblock %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'icomoon_fonts/style.css' %}">
-    <!-- <link rel="stylesheet" href="{% static 'icomoon_fonts/icomoon/style.css' %}"> -->
 
     {% block extra_css %}{% endblock %}
     {% block extra_top_js %}{% endblock %}
@@ -59,10 +58,22 @@
 {% include 'frontend/footer.html' %}
 
 <script>
-    const NOTIFICATIONS_URL = "{% url 'user-viewset-notifications' %}";
-    const NOTIFICATIONS_MARK_SEEN_URL = "{% url 'user-viewset-notifications-mark-seen' %}";
-    const NOTIFICATIONS_DELETE_URL = "{% url 'user-viewset-notifications-delete' %}";
-    const LOGIN_URL = "{% url 'account_login' %}";
+    const URLS = {
+        'login': "{% url 'account_login' %}",
+        'logout': "{% url 'account_logout' %}",
+        'subscriptions': "{% url 'account_logout' %}",
+        'profile': "{% url 'account_logout' %}",
+        'collections': "{% url 'account_logout' %}",
+        'notifications': {
+            'summary': "{% url 'user-viewset-notifications-summary' %}",
+            'get': "{% url 'user-viewset-notifications' %}",
+            'mark_seen': "{% url 'user-viewset-notifications-mark-seen' %}",
+            'delete': "{% url 'user-viewset-notifications-delete' %}"
+        },
+        'resource': {create: "{% url 'create-resource' %}"},
+        'technology': {create: "{% url 'technology-create' %}"},
+        'user_data': "{% url 'user-data' %}"
+    }
 
     const authenticated_cookie_idx = document.cookie.search('authenticated'); // 1 for authenticated or 0 for not
     const backToTopSection = document.querySelector('.back-to-top');
@@ -74,14 +85,14 @@
         }
         return Boolean(parseInt(document.cookie.substr(authenticated_cookie_idx, 'authenticated=x'.length).split('=')[1]))
     })();
-    const URL_USER_DATA = "{% url 'user-data' %}";
+
     // {#  handle user data; see if user is logged or not based on sessionid cookie; if user is logged, populate user_data key in sessionStorage #}
     if (!IS_AUTHENTICATED) {
         window.sessionStorage.removeItem('user_data');
     }
     if (IS_AUTHENTICATED && window.sessionStorage.getItem('user_data') === null) {
         //hit /account/user/api and populate user_data
-        fetch(URL_USER_DATA, {method: 'GET'}).then(response => {
+        fetch(URLS.user_data, {method: 'GET'}).then(response => {
             if (response.ok) return response.json();
             alert('There was a problem retrieving User Data');
         }).then(data => {
@@ -114,39 +125,6 @@
         document.querySelectorAll('.collapsible .collapse-toggle').forEach(el => el.onclick = evt => {
             evt.preventDefault();
             evt.target.closest('.collapsible').classList.toggle('show');
-        });
-
-        let dropdownsNodes = document.querySelectorAll(".dropdown");
-        let dropdownArray = Array.prototype.slice.call(dropdownsNodes, 0);
-        dropdownArray.forEach(dropdown => {
-            let button = dropdown.querySelector('.dropdown-button');
-            let isSubmenu = dropdown.classList.contains('submenu');
-            let dropdownOpen = () => {
-                if (dropdown.classList.contains('hidden')) dropdown.classList.remove('hidden');
-            }
-            let dropdownClose = () => {
-                if (!dropdown.classList.contains('hidden')) dropdown.classList.add('hidden');
-                // close submenus
-                let submenus = dropdown.querySelectorAll('.dropdown:not(.hidden)');
-                submenus
-                    ? submenus.forEach(dropdown => dropdown.classList.add('hidden'))
-                    : false;
-            }
-            button.onclick = evt => {
-                evt.preventDefault();
-                if (dropdown.classList.contains('hidden')) {
-                    dropdownOpen();
-                    if (!isSubmenu && window.onclick) window.onclick();
-                    dropdown.onclick = ev => ev.stopPropagation();
-                    if (!isSubmenu) setTimeout(() => window.onclick = ev => {
-                        dropdownClose();
-                        window.onclick = null;
-                    }, 100);
-                } else {
-                    dropdownClose();
-                    if (!isSubmenu) window.onclick = null;
-                }
-            }
         });
     });
 
@@ -183,7 +161,7 @@
 </script>
 <script src="{% static 'js/react-bundle.js' %}"></script>
 <script src="{% static 'js/frontend/sidebar-app.js' %}"></script>
-<script src="{% static 'js/notifications.js' %}"></script>
+<script src="{% static 'js/navbar-profile-app.js' %}"></script>
 {% if not hide_navbar_search %}
     <script src="{% static 'js/navbar-search-bar-app.js' %}"></script>
 {% endif %}
