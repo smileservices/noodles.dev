@@ -17,17 +17,7 @@ export const ProcessLogObject = (log_data) => {
 }
 
 export const ProcessActivityLogLine = ({line}) => {
-    let splitted = line.split('--');
-    if (splitted.length === 1) return line;
-    let processed_obj = {
-        date: splitted[0],
-        flag: splitted[1],
-        data: JSON.parse(splitted[2]),
-    }
-    return (<div className={"log-line " + processed_obj.flag} key={processed_obj.date}>
-        <div className="timestamp">{processed_obj.date}</div>
-        <div className="display-data">{ProcessLogObject(processed_obj.data.display)}</div>
-    </div>)
+    return (<div className="log-line">{line}</div>);
 }
 
 export const ProcessActivityLog = (content) => {
