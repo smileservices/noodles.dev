@@ -1,7 +1,7 @@
 import requests
 import json
 from django.shortcuts import render
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -26,7 +26,10 @@ from discussions.views import HasDiscussionViewsetMixin
 
 def detail(request, slug):
     queryset = Technology.objects
-    detail = queryset.prefetch_related('related_technologies', 'studyresourcetechnology_set').get(slug=slug)
+    try:
+        detail = queryset.prefetch_related('related_technologies', 'studyresourcetechnology_set').get(slug=slug)
+    except Technology.DoesNotExist:
+        return Http404()
     resources_ids = [tech['study_resource_id'] for tech in
                      detail.studyresourcetechnology_set.values('study_resource_id').all()]
     data = {

@@ -10,6 +10,7 @@ from technology.models import Technology
 from technology.serializers import TechnologySerializerOption
 from . import serializers_category
 from . import serializers_technology
+from django.http.response import Http404
 from . import models
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
@@ -70,7 +71,10 @@ class TechnologyConceptEditSuggestionViewset(EditSuggestionViewset):
 
 def category_detail(request, slug):
     queryset = models.CategoryConcept.objects
-    detail = queryset.prefetch_related('technology_concepts', 'children', 'related_resources').get(slug=slug)
+    try:
+        detail = queryset.prefetch_related('technology_concepts', 'children', 'related_resources').get(slug=slug)
+    except queryset.model.DoesNotExist:
+        raise Http404()
     data = {
         'detail': detail,
         'technology_concepts': detail.technology_concepts.all(),
@@ -127,7 +131,10 @@ def category_create(request):
 
 def technology_detail(request, slug):
     queryset = models.TechnologyConcept.objects
-    detail = queryset.select_related().get(slug=slug)
+    try:
+        detail = queryset.select_related().get(slug=slug)
+    except queryset.model.DoesNotExist:
+        raise Http404()
     data = {
         'detail': detail,
         'resources': detail.related_resources.filter(status=StudyResource.StatusOptions.APPROVED).all(),

@@ -8,7 +8,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
+from django.shortcuts import get_object_or_404
 from notifications.viewsets import SubscribableVieset
 from core.abstract_viewsets import VotableVieset
 from core.utils import rest_paginate_queryset
@@ -17,7 +17,7 @@ from .models import CollectionResources, Collection
 from discussions.views import HasDiscussionViewsetMixin
 
 def detail(request, id, slug):
-    detail = Collection.objects.get(pk=id)
+    detail = get_object_or_404(Collection, pk=id)
     data = {
         'detail': detail,
         'resources': detail.get_study_resources(),

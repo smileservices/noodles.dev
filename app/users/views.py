@@ -17,7 +17,7 @@ from users.models import CustomUser
 from technology.models import Technology
 from search.helpers import _search_study_resources, _search_technologies, _search_collections
 from django.http.response import JsonResponse
-from django.http.response import HttpResponseForbidden, HttpResponseBadRequest
+from django.http.response import HttpResponseForbidden, HttpResponseBadRequest, Http404
 import json
 from notifications.models import Subscribers
 from notifications.viewsets import HasSubscriptionsViewset
@@ -41,7 +41,10 @@ def user_data(request, *args, **kwargs):
 
 
 def user_profile(request, username):
-    user = CustomUser.objects.get(username=username)
+    try:
+        user = CustomUser.objects.get(username=username)
+    except CustomUser.DoesNotExist:
+        raise Http404()
     data = {
         'profile': user,
         'reviews': user.review_set.filter(visible=True),

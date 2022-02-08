@@ -29,7 +29,7 @@ from core.permissions import EditSuggestionAuthorOrAdminOrReadOnly
 from core.utils import rest_paginate_queryset
 from app.settings import rewards
 from study_collection.models import Collection
-
+from django.http.response import Http404
 
 def list_all(request):
     queryset = StudyResource.objects.all()
@@ -49,7 +49,10 @@ def list_all(request):
 
 def detail(request, id, slug):
     queryset = StudyResource.objects
-    resource = queryset.select_related().get(pk=id)
+    try:
+        resource = queryset.select_related().get(pk=id)
+    except StudyResource.DoesNotExist:
+        return Http404()
     data = {
         'result': resource,
         'collections': resource.collections.filter(is_public=True, status=Collection.StatusOptions.APPROVED).all(),
