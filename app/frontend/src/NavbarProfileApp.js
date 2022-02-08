@@ -12,13 +12,9 @@ function NavbarProfileApp() {
         waiting: false,
         error: false,
         menu_open: false,
+        menu_open_add: false,
     });
     const [notifications, setNotifications] = useState(null);
-
-    const wrapperRef = useRef(null);
-
-
-    handleClickOutside(wrapperRef, ()=>setState({...state, menu_open: false}));
 
     function logout(e) {
         e.preventDefault();
@@ -71,18 +67,16 @@ function NavbarProfileApp() {
 
     return (
         <Fragment>
-            <div className="dropdown" ref={wrapperRef}>
+            <div className="dropdown">
                 <span className="btn secondary dropdown-button"
                       onClick={e => {
-                          if (e.target.className.split(' ').indexOf('modal') > -1) return null;
-                          console.log(state.menu_open)
                           setState({...state, menu_open: state.menu_open === 'add' ? false : 'add'});
                       }}>
                     Add
                 </span>
                 {state.menu_open === 'add' ? dropdownMenuAdd() : ''}
             </div>
-            <div className="dropdown" ref={wrapperRef}>
+            <div className="dropdown">
                     <span className="dropdown-button"
                           onClick={e => {
                               if (e.target.className.split(' ').indexOf('modal') > -1) return null;
