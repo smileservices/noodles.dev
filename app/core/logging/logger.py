@@ -121,7 +121,7 @@ def log_resource_edit_suggestion_operation(instance, operation, request):
 def log_resource_error(message, request, event_type):
     msg_dict = {
         'display': {
-            'event_author': request.username,
+            'event_author': request.user.username,
             'event': events.ERROR,
             'event_type': event_type,
             'url': request.META["PATH_INFO"],
