@@ -296,7 +296,7 @@ class StudyResource(ResourceMixin, VotableMixin):
             "url": self.absolute_url,
             "image": self.image if self.image_file else {},
 
-            "category": self.category.name,
+            "category": self.category.name if self.category else 'uncategorized',
             "tags": [t.name for t in self.tags.all()],
             "technologies": [{"name": t.name, "version": t.version, "url": t.technology.absolute_url} for t in
                              self.get_technologies()],

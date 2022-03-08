@@ -183,7 +183,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         validated_data = super(StudyResourceSerializer, self).run_validation(data)
         # get technologies out of the data
         cleaned_technologies = json.loads(data['technologies'])
-        validated_data['category_id'] = int(data['category'])
+        validated_data['category_id'] = int(data['category']) if 'category' in data else None
         validated_data['tags'] = Tag.objects.validate_tags(json.loads(data['tags']))
         # take screenshot (only for create)
         take_screenshot = 'image_screenshot' in data and json.loads(data['image_screenshot'])
@@ -290,6 +290,7 @@ class StudyResourceIntermediarySerializer(serializers.ModelSerializer):
             return data
         return None
 
+
 class ReviewSerializer(serializers.ModelSerializer):
     queryset = Review.objects
     study_resource = StudyResourceListingMinimalSerializer
@@ -309,3 +310,46 @@ class ResourceReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ['pk', 'author', 'rating', 'thumbs_up', 'thumbs_down', 'text', 'visible',
                   'created_at', 'updated_at', 'thumbs_up_array', 'thumbs_down_array']
+
+
+class StudyResourceAutomatedSerializer(serializers.ModelSerializer):
+    queryset = StudyResource.objects.all()
+    author = UserSerializerMinimal(many=False, read_only=True)
+    tags = TagSerializerOption(many=True, read_only=True)
+    technologies = StudyResourceTechnologySerializer(source='studyresourcetechnology_set', many=True, read_only=True)
+    category_concepts = CategoryConceptSerializerOption(many=True, read_only=True)
+    technology_concepts = TechnologyConceptSerializerOption(many=True, read_only=True)
+    image_file = VersatileImageFieldSerializer(
+        sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image'],
+        required=False,
+    )
+    category = CategorySerializerOption(read_only=True, default=None)
+
+    class Meta:
+        model = StudyResource
+        fields = ['pk', 'name', 'slug', 'url', 'summary', 'price', 'media',
+                  'experience_level', 'author', 'tags', 'category', 'category_concepts', 'technology_concepts',
+                  'technologies', 'publication_date', 'published_by', 'image_file']
+
+    def run_validation(self, data):
+        data_cp = data.copy()
+        if 'slug' not in data:
+            data_cp['slug'] = slugify(data['name'])
+        data_cp['technologies'] = data['technologies']
+        data_cp['category_id'] = data['category'] if 'category' in data else None
+        data_cp['category_concepts'] = data['category_concepts'] if 'category_concepts' in data else []
+        data_cp['technology_concepts'] = data['technology_concepts'] if 'technology_concepts' in data else []
+        data_cp['tags'] = list(Tag.objects.validate_tags(data['tags']))
+        validated_data = super(StudyResourceAutomatedSerializer, self).run_validation(data_cp)
+        validated_data['author'] = data_cp['author']
+        return validated_data
+
+    def handle_m2m_fields(self, instance, m2m_fields):
+        techs = Technology.objects.filter(pk__in=[t['technology_id'] for t in m2m_fields['technologies']])
+        for tech in techs:
+            tech_post_data = list(filter(lambda t: t['technology_id'] == tech.pk, m2m_fields['technologies']))[0]
+            StudyResourceTechnology.objects.create(
+                study_resource=instance,
+                technology=tech,
+                version=tech_post_data['version'],
+            )

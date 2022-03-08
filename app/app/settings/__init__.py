@@ -31,6 +31,8 @@ SECRET_KEY = env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG")
+AUTO_ADD_KEY = env.str("AUTO_ADD_KEY")
+
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
