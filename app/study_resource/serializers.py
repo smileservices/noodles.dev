@@ -335,21 +335,35 @@ class StudyResourceAutomatedSerializer(serializers.ModelSerializer):
         data_cp = data.copy()
         if 'slug' not in data:
             data_cp['slug'] = slugify(data['name'])
-        data_cp['technologies'] = data['technologies']
         data_cp['category_id'] = data['category'] if 'category' in data else None
+        data_cp['technologies'] = json.loads(data_cp['technologies'])
+        if not data_cp['category_id'] and len(data_cp['technologies']):
+            # set category based on technologies
+            tech = Technology.objects.prefetch_related('category').filter(pk__in=data_cp['technologies']).first()
+            data_cp['category_id'] = tech.category.first().pk
         data_cp['category_concepts'] = data['category_concepts'] if 'category_concepts' in data else []
         data_cp['technology_concepts'] = data['technology_concepts'] if 'technology_concepts' in data else []
-        data_cp['tags'] = list(Tag.objects.validate_tags(data['tags']))
         validated_data = super(StudyResourceAutomatedSerializer, self).run_validation(data_cp)
+        validated_data['tags'] = list(Tag.objects.validate_tags(json.loads(data['tags'])))
+        validated_data['technologies'] = data_cp['technologies']
         validated_data['author'] = data_cp['author']
+        validated_data['category_id'] = data_cp['category_id']
         return validated_data
 
+    def create(self, validated_data):
+        # handle technologies and images separately
+        m2m_fields = {
+            'technologies': validated_data.pop('technologies'),
+        }
+        created_instance = super(StudyResourceAutomatedSerializer, self).create(validated_data)
+        self.handle_m2m_fields(created_instance, m2m_fields)
+        return created_instance
+
     def handle_m2m_fields(self, instance, m2m_fields):
-        techs = Technology.objects.filter(pk__in=[t['technology_id'] for t in m2m_fields['technologies']])
+        techs = Technology.objects.filter(pk__in=m2m_fields['technologies']).all()
         for tech in techs:
-            tech_post_data = list(filter(lambda t: t['technology_id'] == tech.pk, m2m_fields['technologies']))[0]
             StudyResourceTechnology.objects.create(
                 study_resource=instance,
                 technology=tech,
-                version=tech_post_data['version'],
+                version=0,
             )
