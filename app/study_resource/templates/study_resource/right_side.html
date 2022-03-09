@@ -60,8 +60,13 @@
     {% endif %}
 
     <div class="card meta-container">
-        <div class="row"><span class="label">Topic</span><span
-                class="tags"><span class="meta">{{ result.category.name_tree }}</span></span></div>
+        <div class="row"><span class="label">Topic</span><span class="tags"><span class="meta">
+            {% if result.category %}
+                {{ result.category.name_tree }}
+            {% else %}
+                uncategorized
+            {% endif %}
+        </span></span></div>
     </div>
 
     <div class="card">

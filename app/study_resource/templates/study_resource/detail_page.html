@@ -36,7 +36,7 @@
         }
     </script>
     <div class="breadcrumbs">
-        <a href="/">Home</a> > Category: {{ result.category.category_tree_urls | safe }}
+        <a href="/">Home</a> > Category: {% if result.category %}{{ result.category.category_tree_urls | safe }}{% else %}uncategorized{% endif %}
     </div>
     <div class="detail-page resource">
         {% include 'study_resource/detail.html' %}
