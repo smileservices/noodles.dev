@@ -8,7 +8,7 @@ import requests
 import logging
 from core import constants
 
-from specific import Youtube
+from study_resource.scrape.specific_sites import FreeCodeCamp, Youtube
 
 logger = logging.getLogger("django")
 
@@ -26,6 +26,10 @@ def scrape_tutorial(url):
         if "youtube.com" in url:
             result = Youtube(url).process_data()
             return result
+        elif "https://www.freecodecamp.org/" in url:
+            result = FreeCodeCamp(url).process_data()
+            return result
+
     except Exception as e:
         response = request("GET", url)
         if response.status_code != 200:
