@@ -195,9 +195,9 @@ LANGUAGES = [
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = env('STATIC_ROOT')
+STATIC_ROOT = os.path.join(BASE_DIR, "STATIC_COL")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
-MEDIA_ROOT = env('MEDIA_ROOT')
+MEDIA_ROOT = os.path.join(BASE_DIR, "MEDIA")
 MEDIA_URL = env('MEDIA_URL')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

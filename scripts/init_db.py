@@ -6,7 +6,7 @@ env = environ.Env()
 environ.Env.read_env("../.env")
 
 config = {
-    "host": env('DB_HOST'),
+    "host": "localhost",
     "database": sys.argv[1],
     "user": sys.argv[2],
     "password": sys.argv[3]

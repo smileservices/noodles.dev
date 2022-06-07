@@ -18,13 +18,13 @@
     "@babel/preset-react": "^7.10.1",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "bootstrap": "^5.0.0-alpha1",
+    "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "bootstrap": "^5.0.0-alpha1",
-    "node-sass": "^4.14.1"
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "diff-match-patch": "^1.0.5",

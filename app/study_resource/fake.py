@@ -15,7 +15,7 @@ from category.models import Category
 
 f = Faker()
 FAKE_IMAGES_PATH = os.path.join(os.getcwd(), 'study_resource', 'fake_images')
-MEDIA_IMAGES_PATH = os.path.join(settings.MEDIA_ROOT, 'tutorials')
+MEDIA_IMAGES_PATH = os.path.join(os.getcwd(),settings.MEDIA_ROOT, 'tutorials')
 
 
 def get_dummy_image():

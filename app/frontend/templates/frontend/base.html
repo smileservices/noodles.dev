@@ -1,11 +1,10 @@
-{% load static %}
-{% load i18n %}
+{% load static %} {% load i18n %}
 
 <html>
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
@@ -14,24 +13,21 @@
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500&display=swap" rel="stylesheet"> -->
-    
+
     <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet"> -->
     {% block meta_tags %}
-        <title>Noodles.com</title>
-        <meta name="description"
-              content="Browse through a community curated collection of tutorials and courses on software development"/>
-        <meta name="robots" content="index, follow"/>
-        <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
-        <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
-    {% endblock %}
+    <title>Noodles.com</title>
+    <meta name="description" content="Browse through a community curated collection of tutorials and courses on software development" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /> {% endblock %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'icomoon_fonts/style.css' %}">
     <!-- <link rel="stylesheet" href="{% static 'icomoon_fonts/icomoon/style.css' %}"> -->
 
-    {% block extra_css %}{% endblock %}
-    {% block extra_top_js %}{% endblock %}
+    {% block extra_css %}{% endblock %} {% block extra_top_js %}{% endblock %}
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-M0SSQCF73S"></script>
     <script>
@@ -46,146 +42,157 @@
         gtag('config', 'G-M0SSQCF73S');
     </script>
 </head>
+
 <body>
 
-{% include "frontend/navbar.html" %}
-{% include "frontend/sidebar.html" %}
-{% block header %}{% endblock %}
+    {% include "frontend/navbar.html" %} {% include "frontend/sidebar.html" %} {% block header %}{% endblock %}
 
-<main>
-    {% block content %}{% endblock %}
-</main>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
-{% include 'frontend/footer.html' %}
+    {% include 'frontend/footer.html' %}
 
-<script>
-    const NOTIFICATIONS_URL = "{% url 'user-viewset-notifications' %}";
-    const NOTIFICATIONS_MARK_SEEN_URL = "{% url 'user-viewset-notifications-mark-seen' %}";
-    const NOTIFICATIONS_DELETE_URL = "{% url 'user-viewset-notifications-delete' %}";
+    <script>
+        const NOTIFICATIONS_URL = "{% url 'user-viewset-notifications' %}";
+        const NOTIFICATIONS_MARK_SEEN_URL = "{% url 'user-viewset-notifications-mark-seen' %}";
+        const NOTIFICATIONS_DELETE_URL = "{% url 'user-viewset-notifications-delete' %}";
 
-    const authenticated_cookie_idx = document.cookie.search('authenticated'); // 1 for authenticated or 0 for not
-    const backToTopSection = document.querySelector('.back-to-top');
-    const IS_AUTHENTICATED = (() => {
-        if (authenticated_cookie_idx === -1) {
-            //this case means that there's an error on the server
-            console.error('Missing "authenticated" cookie! Check the middleware that should create it!');
-            return false;
+        const authenticated_cookie_idx = document.cookie.search('authenticated'); // 1 for authenticated or 0 for not
+        const backToTopSection = document.querySelector('.back-to-top');
+        const IS_AUTHENTICATED = (() => {
+            if (authenticated_cookie_idx === -1) {
+                //this case means that there's an error on the server
+                console.error('Missing "authenticated" cookie! Check the middleware that should create it!');
+                return false;
+            }
+            return Boolean(parseInt(document.cookie.substr(authenticated_cookie_idx, 'authenticated=x'.length).split('=')[1]))
+        })();
+        const URL_USER_DATA = "{% url 'user-data' %}";
+        // {#  handle user data; see if user is logged or not based on sessionid cookie; if user is logged, populate user_data key in sessionStorage #}
+        if (!IS_AUTHENTICATED) {
+            window.sessionStorage.removeItem('user_data');
         }
-        return Boolean(parseInt(document.cookie.substr(authenticated_cookie_idx, 'authenticated=x'.length).split('=')[1]))
-    })();
-    const URL_USER_DATA = "{% url 'user-data' %}";
-    // {#  handle user data; see if user is logged or not based on sessionid cookie; if user is logged, populate user_data key in sessionStorage #}
-    if (!IS_AUTHENTICATED) {
-        window.sessionStorage.removeItem('user_data');
-    }
-    if (IS_AUTHENTICATED && window.sessionStorage.getItem('user_data') === null) {
-        //hit /account/user/api and populate user_data
-        fetch(URL_USER_DATA, {method: 'GET'}).then(response => {
-            if (response.ok) return response.json();
-            alert('There was a problem retrieving User Data');
-        }).then(data => {
-            window.sessionStorage.setItem('user_data', JSON.stringify(data));
+        if (IS_AUTHENTICATED && window.sessionStorage.getItem('user_data') === null) {
+            //hit /account/user/api and populate user_data
+            fetch(URL_USER_DATA, {
+                method: 'GET'
+            }).then(response => {
+                if (response.ok) return response.json();
+                alert('There was a problem retrieving User Data');
+            }).then(data => {
+                window.sessionStorage.setItem('user_data', JSON.stringify(data));
+            })
+        }
+
+        const get_user_data = () => {
+            const user_data_str = window.sessionStorage['user_data'];
+            if (user_data_str === undefined) {
+                console.error('Don\'t use "get_user_data()" before checking "IS_AUTHENTICATED".');
+                return false
+            }
+            return JSON.parse(user_data_str);
+        }
+
+        function toggle_sidebar() {
+            if (innerWidth > 600) {
+                document.querySelector('body').classList.toggle('sidebar-visible');
+            } else {
+                document.querySelector('body').classList.toggle('sidebar-visible-mobile');
+            }
+        }
+
+        backToTopSection.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         })
-    }
 
-    const get_user_data = () => {
-        const user_data_str = window.sessionStorage['user_data'];
-        if (user_data_str === undefined) {
-            console.error('Don\'t use "get_user_data()" before checking "IS_AUTHENTICATED".');
-            return false
-        }
-        return JSON.parse(user_data_str);
-    }
-
-    function toggle_sidebar() {
-        if (innerWidth > 600) {
-            document.querySelector('body').classList.toggle('sidebar-visible');
-        } else {
-            document.querySelector('body').classList.toggle('sidebar-visible-mobile');
-        }
-    }
-
-    backToTopSection.addEventListener('click', () => {
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    })
-
-    window.addEventListener('load', e => {
-        document.querySelectorAll('.collapsible .collapse-toggle').forEach(el => el.onclick = evt => {
-            evt.preventDefault();
-            evt.target.closest('.collapsible').classList.toggle('show');
-        });
-
-        let dropdownsNodes = document.querySelectorAll(".dropdown");
-        let dropdownArray = Array.prototype.slice.call(dropdownsNodes, 0);
-        dropdownArray.forEach(dropdown => {
-            let button = dropdown.querySelector('.dropdown-button');
-            let isSubmenu = dropdown.classList.contains('submenu');
-            let dropdownOpen = () => {
-                if (dropdown.classList.contains('hidden')) dropdown.classList.remove('hidden');
-            }
-            let dropdownClose = () => {
-                if (!dropdown.classList.contains('hidden')) dropdown.classList.add('hidden');
-                // close submenus
-                let submenus = dropdown.querySelectorAll('.dropdown:not(.hidden)');
-                submenus
-                    ? submenus.forEach(dropdown => dropdown.classList.add('hidden'))
-                    : false;
-            }
-            button.onclick = evt => {
+        window.addEventListener('load', e => {
+            document.querySelectorAll('.collapsible .collapse-toggle').forEach(el => el.onclick = evt => {
                 evt.preventDefault();
-                if (dropdown.classList.contains('hidden')) {
-                    dropdownOpen();
-                    if (!isSubmenu && window.onclick) window.onclick();
-                    dropdown.onclick = ev => ev.stopPropagation();
-                    if (!isSubmenu) setTimeout(() => window.onclick = ev => {
+                evt.target.closest('.collapsible').classList.toggle('show');
+            });
+
+            let dropdownsNodes = document.querySelectorAll(".dropdown");
+            let dropdownArray = Array.prototype.slice.call(dropdownsNodes, 0);
+            dropdownArray.forEach(dropdown => {
+                let button = dropdown.querySelector('.dropdown-button');
+                let isSubmenu = dropdown.classList.contains('submenu');
+                let dropdownOpen = () => {
+                    if (dropdown.classList.contains('hidden')) dropdown.classList.remove('hidden');
+                }
+                let dropdownClose = () => {
+                    if (!dropdown.classList.contains('hidden')) dropdown.classList.add('hidden');
+                    // close submenus
+                    let submenus = dropdown.querySelectorAll('.dropdown:not(.hidden)');
+                    submenus
+                        ?
+                        submenus.forEach(dropdown => dropdown.classList.add('hidden')) :
+                        false;
+                }
+                button.onclick = evt => {
+                    evt.preventDefault();
+                    if (dropdown.classList.contains('hidden')) {
+                        dropdownOpen();
+                        if (!isSubmenu && window.onclick) window.onclick();
+                        dropdown.onclick = ev => ev.stopPropagation();
+                        if (!isSubmenu) setTimeout(() => window.onclick = ev => {
+                            dropdownClose();
+                            window.onclick = null;
+                        }, 100);
+                    } else {
                         dropdownClose();
-                        window.onclick = null;
-                    }, 100);
-                } else {
-                    dropdownClose();
-                    if (!isSubmenu) window.onclick = null;
-                }
-            }
-        });
-    });
-
-    const addSearchOverlayObserver = new MutationObserver(function(mutations_list) {
-        mutations_list.forEach(function(mutation) {
-            mutation.addedNodes.forEach(function(added_node) {
-                if (added_node.classList && added_node.classList.contains('search-app-overlay')) {
-                    const footer = document.querySelector('.footer');
-                    const main = document.querySelector('main');
-                    console.log(main);
-                    main.style.display = 'none';
-                    footer.style.display = 'none';
+                        if (!isSubmenu) window.onclick = null;
+                    }
                 }
             });
         });
-    });
 
-    const removeSearchOverlayObserver = new MutationObserver(function(mutations_list) {
-        mutations_list.forEach(function(mutation) {
-            mutation.removedNodes.forEach(function(removed_node) {
-                if (removed_node.classList && removed_node.classList.contains('search-app-overlay')) {
-                    const footer = document.querySelector('.footer');
-                    const main = document.querySelector('main');
-                    console.log(main);
-                    main.style.display = 'block';
-                    footer.style.display = 'flex';
-                }
+        const addSearchOverlayObserver = new MutationObserver(function(mutations_list) {
+            mutations_list.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(added_node) {
+                    if (added_node.classList && added_node.classList.contains('search-app-overlay')) {
+                        const footer = document.querySelector('.footer');
+                        const main = document.querySelector('main');
+                        console.log(main);
+                        main.style.display = 'none';
+                        footer.style.display = 'none';
+                    }
+                });
             });
         });
-    });
 
-    addSearchOverlayObserver.observe(document.querySelector("#search-bar-app"), { subtree: false, childList: true });
-    removeSearchOverlayObserver.observe(document.querySelector("#search-bar-app"), { subtree: false, childList: true });
-</script>
-<script src="{% static 'js/react-bundle.js' %}"></script>
-<script src="{% static 'js/frontend/sidebar-app.js' %}"></script>
-<script src="{% static 'js/notifications.js' %}"></script>
-{% if not hide_navbar_search %}
+        const removeSearchOverlayObserver = new MutationObserver(function(mutations_list) {
+            mutations_list.forEach(function(mutation) {
+                mutation.removedNodes.forEach(function(removed_node) {
+                    if (removed_node.classList && removed_node.classList.contains('search-app-overlay')) {
+                        const footer = document.querySelector('.footer');
+                        const main = document.querySelector('main');
+                        console.log(main);
+                        main.style.display = 'block';
+                        footer.style.display = 'flex';
+                    }
+                });
+            });
+        });
+
+        addSearchOverlayObserver.observe(document.querySelector("#search-bar-app"), {
+            subtree: false,
+            childList: true
+        });
+        removeSearchOverlayObserver.observe(document.querySelector("#search-bar-app"), {
+            subtree: false,
+            childList: true
+        });
+    </script>
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'js/frontend/sidebar-app.js' %}"></script>
+    <script src="{% static 'js/notifications.js' %}"></script>
+    {% if not hide_navbar_search %}
     <script src="{% static 'js/navbar-search-bar-app.js' %}"></script>
-{% endif %}
-{% block extra_js %}{% endblock %}
+    {% endif %} {% block extra_js %}{% endblock %}
 </body>
+
 </html>
