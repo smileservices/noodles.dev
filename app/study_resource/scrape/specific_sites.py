@@ -1,10 +1,7 @@
 import requests
 
 from bs4 import BeautifulSoup
-from selenium import webdriver
-
-DRIVER_PATH = "/web_driver/chromedriver.exe"
-DRIVER = webdriver.Chrome(executable_path=DRIVER_PATH)
+from playwright.sync_api import sync_playwright
 
 
 class Scrape:
@@ -59,11 +56,16 @@ class FreeCodeCamp(Scrape):
         return result
 
     def _get_summary(self) -> str:
-        summary = ""
-        DRIVER.get(self.url)
-        soup = BeautifulSoup(DRIVER.page_source, "lxml")
-        DRIVER.quit()
-        paragraphs = soup.find_all("p")[:3]
-        for paragraph in paragraphs:
-            summary += paragraph.get_text()
-        return summary
+        with sync_playwright() as p:
+            summary = ""
+            browser = p.chromium.launch()
+            page = browser.new_page()
+            page.goto(self.url)
+            paragraphs = page.query_selector_all("p")
+
+            for count, paragraph in enumerate(paragraphs):
+                summary += paragraph.inner_text()
+                if count == 3:
+                    break
+            browser.close()
+            return summary
