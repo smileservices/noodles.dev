@@ -36,6 +36,12 @@ since we are starting fresh, we need to index all data in bulk manually:
 ## Run task queue manager
 `python manage.py run_huey`
 
+## Install playwright
+`pip install playwright`
+
+## Then run the following command to download the necessary files for scraping
+`playwright install`
+
 ## Run the app
 `python manage.py runserver 127.0.0.1:8000`
 
