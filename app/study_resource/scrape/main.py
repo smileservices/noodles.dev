@@ -17,9 +17,9 @@ def scrape_tutorial(url):
     """
     processes a tutorial url and returns a dict
     name, summary, publishing_date, created_by, tags
+    we use special parsers where is needed (youtube, freecodecamp, etc)
     """
     result = {}
-    # todo this is for testing with rest-api. must find a way to mock this properly
     if url == "www.test-url.test":
         return {"scraped": True}
     try:
@@ -29,22 +29,9 @@ def scrape_tutorial(url):
         elif "https://www.freecodecamp.org/" in url:
             result = FreeCodeCamp(url).process_data()
             return result
-
     except Exception as e:
-        response = request("GET", url)
-        if response.status_code != 200:
-            logger.error(f"Could not parse URL {url}")
-            raise Exception(
-                "Could not parse the URL. Please recheck it and try again later."
-            )
-        return {
-            "name": "",
-            "tags": [],
-            "top_img": "",
-            "publishing_date": "",
-            "created_by": [],
-        }
-
+        # if special parsers fail, we revert to using normal Article library
+        logger.error(f"Auto parse for {url} failed: {e}")
     try:
         article = Article(url)
         article.download()
