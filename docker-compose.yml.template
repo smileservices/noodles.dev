@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   noodles-postgresdb:
-    image: postgres:latest
+    image: postgres:13
     ports:
       - "5432:5432"
     container_name: "noodles-postgresdb"
