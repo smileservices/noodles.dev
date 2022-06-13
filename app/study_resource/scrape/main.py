@@ -5,12 +5,10 @@ from requests import request
 from core import utils
 from django.conf import settings
 import requests
-import logging
+from core.logging import logger
 from core import constants
 
 from study_resource.scrape.specific_sites import FreeCodeCamp, Youtube
-
-logger = logging.getLogger("django")
 
 
 def scrape_tutorial(url):
@@ -31,7 +29,7 @@ def scrape_tutorial(url):
             return result
     except Exception as e:
         # if special parsers fail, we revert to using normal Article library
-        logger.error(f"Auto parse for {url} failed: {e}")
+        logger.log_resource_add_error(str(e), url, 'autoparse')
     try:
         article = Article(url)
         article.download()
@@ -39,7 +37,7 @@ def scrape_tutorial(url):
     except Exception as e:
         response = request("GET", url)
         if response.status_code != 200:
-            logger.error(f"Could not parse URL {url}")
+            logger.log_resource_add_error(f"status code {response.status_code}", url, 'autoparse')
             raise Exception("Could not parse the URL. Please recheck it and try again.")
         return {
             "name": "",
@@ -102,9 +100,7 @@ def get_website_screenshot(url):
             temp_file = utils.get_temp_image_file_from_url(response_data["screenshot"])
         return temp_file
     else:
-        logger.error(
-            f"Could not do screenshot for {url} with https://shot.screenshotapi.net/screenshot"
-        )
+        logger.log_resource_add_error(f"https://shot.screenshotapi.net/screenshot::{screenshot_response.status_code}, {screenshot_response.text}", url, 'auto-screenshot')
         raise Exception(
             "Could not process web screenshot through https://shot.screenshotapi.net/screenshot"
         )

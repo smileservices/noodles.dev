@@ -95,6 +95,3 @@ class FreeCodeCamp(Scrape):
 
             summary = summarize(" ".join(paragraphs_list))
             return summary
-
-a = FreeCodeCamp("https://www.freecodecamp.org/news/python-enumerate-what-is-the-enumerate-function-in-python/").process_data()
-print(a)

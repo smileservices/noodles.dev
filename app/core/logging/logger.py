@@ -27,6 +27,7 @@ def failsafe_log_decorator(func):
                     message=f'ERROR: \n'
                             f'{str(e)}\n\n'
                 )
+
     return decorated_func
 
 
@@ -36,6 +37,12 @@ def serialize_for_further_import(instance):
         'model_str': f'{instance.__class__.__module__}.{instance.__class__._meta.object_name}',
         'pk': instance.pk
     }
+
+
+@failsafe_log_decorator
+def error(msg):
+    activity_logger.error(msg)
+
 
 @failsafe_log_decorator
 def log_activity(obj):
@@ -61,6 +68,7 @@ def log_resource_op(instance, request, OP):
         }
     }
     activity_logger.info(json.dumps(msg_dict))
+
 
 @failsafe_log_decorator
 def log_study_resource_create(create_response, request):
@@ -115,6 +123,19 @@ def log_resource_edit_suggestion_operation(instance, operation, request):
         }
     }
     activity_logger.info(json.dumps(msg_dict))
+
+
+@failsafe_log_decorator
+def log_resource_add_error(message, resource_url, event_type):
+    msg_dict = {
+        'display': {
+            'event': events.ERROR,
+            'event_type': event_type,
+            'url': resource_url,
+            'message': message,
+        }
+    }
+    activity_logger.error(json.dumps(msg_dict))
 
 
 @failsafe_log_decorator
@@ -196,7 +217,6 @@ def log_history_record(instance, author_id, edit_published_by_id, operation_type
 
 
 def get_log_user_handler(op):
-
     @failsafe_log_decorator
     def log_user(request, user, **kwargs):
         msg_dict = {
