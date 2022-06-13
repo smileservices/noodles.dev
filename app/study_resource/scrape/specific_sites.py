@@ -61,7 +61,7 @@ class FreeCodeCamp(Scrape):
             result["title"] = page.title()
             result["top_img"] = page.query_selector("picture").query_selector("img").get_attribute("src")
             result["publishing_date"] = page.query_selector("time").inner_text()
-            result["created_by"] = page.query_selector(".author-card-name").query_selector("a").inner_text()
+            result["created_by"] = [page.query_selector(".author-card-name").query_selector("a").inner_text()]
             result["summary"] = page.query_selector_all("p")
             paragraphs = page.query_selector_all("p")
             paragraphs_list = [paragraph.inner_text() for paragraph in paragraphs]
