@@ -293,3 +293,72 @@ class StudyResourceEditSuggestionViewset(EditSuggestionViewset):
     serializer_class = serializers.StudyResourceEditSuggestionSerializer
     queryset = serializers.StudyResourceEditSuggestionSerializer.queryset
     permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
+
+    """------------------------------------------------------------------------>  """
+class InternalStudyResourceEditSuggestionViewset(EditSuggestionViewset):
+    serializer_class = serializers.InternalStudyResourceEditSuggestionSerializer
+    queryset = serializers.InternalStudyResourceEditSuggestionSerializer.queryset
+    permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
+
+class InternalStudyResourceViewset(ResourceWithEditSuggestionVieset):
+    serializer_class = serializers.InternalStudyResourceSerializer
+    queryset = serializers.InternalStudyResourceSerializer.queryset
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = filters.InternalStudyResourceFilterRest
+    search_fields = ['name', 'summary', 'tags__name', 'technologies__name']
+
+    # technologies and tags are saved in the serializer
+    def edit_suggestion_handle_m2m_through_field(self, instance, data, f):
+        # overriding the edit_suggestion method to handle technologies
+        '''
+            handles data of through in this format:
+            [{
+                'pk': {{child pk}},
+                ...extra fields
+            },]
+
+            instance  edit suggestion instance
+            f         tracked field information (the one supplied in the models when setting up edit suggestion)
+        '''
+        m2m_field = getattr(instance, f['name'])
+        through_data = data[f['name']]
+        m2m_objects_id_list = [o['technology_id'] for o in through_data]
+        m2m_objects = [obj for obj in f['model'].objects.filter(pk__in=m2m_objects_id_list)]
+        for idx, m2m_obj in enumerate(m2m_objects):
+            data = through_data[idx]
+            data[f['through']['self_field']] = instance
+            data[f['through']['rel_field']] = m2m_obj
+            if f['name'] == 'technologies':
+                data['name'] = m2m_obj.name
+            del data['technology_id']
+            m2m_field.through.objects.create(**data)
+
+    @action(methods=['GET'], detail=True)
+    def reviews(self, request, *args, **kwargs):
+        queryset = serializers.InternalResourceReviewSerializer.queryset.filter(
+            study_resource=self.kwargs['pk']
+        ).order_by('-created_at')
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = serializers.InternalReviewSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = serializers.InternalReviewSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    
+    @action(methods=['GET'], detail=False)
+    def options(self, request, *args, **kwargs):
+
+        return Response({
+            'price': [{'value': c[0], 'label': c[1]} for c in StudyResource.Price.choices],
+            'media': [{'value': c[0], 'label': c[1]} for c in StudyResource.Media.choices],
+            'experience_level': [{'value': c[0], 'label': c[1]} for c in StudyResource.ExperienceLevel.choices],
+            'category_concepts': [CategoryConceptSerializerOption(c).data for c in CategoryConcept.objects.all()],
+            'technology_concepts': [TechnologyConceptSerializerOption(c).data for c in TechnologyConcept.objects.all()]
+        })
+
+    @action(methods=['GET'], detail=False)
+    def no_reviews(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(reviews_count=0, status=self.serializer_class.Meta.model.StatusOptions.APPROVED)
+        return rest_paginate_queryset(self, queryset)

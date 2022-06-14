@@ -18,6 +18,19 @@ class StudyResourceFilterRest(RestFilterSet):
             'media': ['exact'],
         }
 
+class InternalStudyResourceFilterRest(RestFilterSet):
+    class Meta:
+        model = models.InternalStudyResource
+        fields = {
+            'tags': ['exact'],
+            'technologies': ['exact'],
+            'category': ['exact'],
+            'created_at': ['lt', 'gt'],
+            'price': ['exact'],
+            'media': ['exact'],
+        }
+
+
 
 class StudyResourceFilter(FilterSet):
     contains = CharFilter(label='Contains', method='search')

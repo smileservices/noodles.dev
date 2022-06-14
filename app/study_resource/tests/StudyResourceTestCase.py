@@ -120,3 +120,4 @@ class StudyResourceTestCase(TestCase):
         self.assertEqual(review.thumbs_up, 0)
         self.assertEqual(review.author.positive_score, 0)
         self.assertEqual(other_user.positive_thumbs, 0)
+

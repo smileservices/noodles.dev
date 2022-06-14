@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'captcha',
     'django_edit_suggestion',
     'versatileimagefield',
+    'django_extensions',
     # 'easyaudit',
     'huey.contrib.djhuey',
     'mailer',
@@ -198,10 +199,11 @@ LANGUAGES = [
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = env('STATIC_ROOT')
+STATIC_ROOT = os.path.join(BASE_DIR, "STATIC_ROOT/")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
-MEDIA_ROOT = env('MEDIA_ROOT')
-MEDIA_URL = env('MEDIA_URL')
+MEDIA_ROOT = os.path.join(BASE_DIR, "MEDIA_ROOT/")
+MEDIA_URL = os.path.join(BASE_DIR, "MEDIA_URL/")
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
