@@ -1,7 +1,8 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
 from .views.study_resource import (StudyResourceViewset, StudyResourceEditSuggestionViewset, 
-InternalStudyResourceViewset, InternalStudyResourceEditSuggestionViewset, create, detail, edit, list_all, history)
+InternalStudyResourceViewset, InternalStudyResourceEditSuggestionViewset,
+internal_detail, create, detail, edit, list_all, history)
 from .views.image import StudyImageViewset, InternalStudyImageViewset
 from .views.review import ReviewVieset, InternalReviewVieset
 from .views import auto_add
@@ -24,6 +25,7 @@ urlpatterns = [
     path('history/<slug:slug>', history, name='study-resource-history'),
     path('<int:id>/edit/', edit, name='study-resource-edit'),
     path('<int:id>/<slug:slug>', detail, name='study-resource-detail'),
+    path('<int:id>/<slug:slug>/detail/', internal_detail, name='internal-study-resource-detail'),
     path('create/', create, name='create-resource'),
     path('', list_all, name='list-all-resources')
 ]

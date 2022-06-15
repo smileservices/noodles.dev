@@ -13,6 +13,7 @@ from technology import fake as fake_tech
 # from problem_solution import fake as fake_problem_solution
 from study_collection import fake as fake_collections
 from study_resource import fake as fake_study_resource
+from study_resource import fake_internal as fake_study_resource_internal
 
 from faker import Faker
 
@@ -93,6 +94,7 @@ class Command(BaseCommand):
             self.stdout.write('Cleaning all resources ... ')
             fake_collections.clean()
             fake_study_resource.clean()
+            fake_study_resource_internal.clean()
             clean_tags()
             fake_tech.clean_technologies()
             clean_categories()
@@ -117,12 +119,17 @@ class Command(BaseCommand):
 
         create_tags()
         self.stdout.write(" >> Created tags: done")
-        # resources, reviews, collections
+        # resources, reviews
         fake_study_resource.study_resources_bulk()
         fake_study_resource.study_resources_edits_bulk(100)
         fake_study_resource.reviews_bulk()
+        #study resource internal
+        fake_study_resource_internal.study_resources_bulk()
+        fake_study_resource_internal.study_resources_edits_bulk(100)
+        fake_study_resource_internal.reviews_bulk()
+        #collections
         fake_collections.collections_bulk()
-        self.stdout.write(" >> Created study resources, edit suggestions, reviews, collections: done")
+        self.stdout.write(" >> Created study resources, internal study resource, edit suggestions, reviews, collections: done")
 
         # vote
         fake_tech.bulk_votes(30)

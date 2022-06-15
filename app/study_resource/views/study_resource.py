@@ -14,7 +14,7 @@ from rest_framework import exceptions
 from core.abstract_viewsets import ResourceWithEditSuggestionVieset, EditSuggestionViewset
 from study_resource.scrape.main import scrape_tutorial
 from study_resource import filters
-from study_resource.models import StudyResource, StudyResourceIntermediary
+from study_resource.models import StudyResource, StudyResourceIntermediary, InternalStudyResource
 from study_resource import serializers
 from concepts.serializers_category import CategoryConceptSerializerOption
 from concepts.serializers_technology import TechnologyConceptSerializerOption
@@ -295,6 +295,39 @@ class StudyResourceEditSuggestionViewset(EditSuggestionViewset):
     permission_classes = [EditSuggestionAuthorOrAdminOrReadOnly, ]
 
     """------------------------------------------------------------------------>  """
+def internal_detail(request, id, slug):
+    queryset = InternalStudyResource.objects
+    try:
+        resource = queryset.select_related().get(pk=id)
+    except InternalStudyResource.DoesNotExist:
+        return Http404()
+    data = {
+        'result': resource,
+        'collections': resource.collections.filter(is_public=True, status=Collection.StatusOptions.APPROVED).all(),
+        'MAX_RATING': settings.MAX_RATING,
+        'urls': {
+            'review_api': reverse_lazy('review-viewset-list'),
+            'reviews_list': reverse_lazy('internal-study-resource-viewset-reviews', kwargs={'pk': resource.pk}),
+            'subscribe_url': reverse_lazy('internal-study-resource-viewset-subscribe', kwargs={'pk': resource.pk}),
+            # options
+            'study_resource_options': reverse_lazy('internal-study-resource-viewset-options'),
+            'tag_options_api': reverse_lazy('tags-options-list'),
+            'tech_options_api': reverse_lazy('techs-options-list'),
+            # collections urls
+            'collections_api': reverse_lazy('collection-viewset-list'),
+            'user_collections_list': reverse_lazy('collection-viewset-owned'),
+            'user_collections_with_resource': f"{reverse_lazy('collection-viewset-owned-with-resource')}?pk={resource.pk}",
+            'user_collections_set_resource_to_collections': reverse_lazy(
+                'collection-viewset-set-resource-to-collections'),
+        }
+    }
+    if request.user_agent.is_bot:
+        return render(request, 'internal_study_resource/detail_page_seo.html', data)
+    return render(request, 'internal_study_resource/detail_page.html', data)
+
+
+
+
 class InternalStudyResourceEditSuggestionViewset(EditSuggestionViewset):
     serializer_class = serializers.InternalStudyResourceEditSuggestionSerializer
     queryset = serializers.InternalStudyResourceEditSuggestionSerializer.queryset

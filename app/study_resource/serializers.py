@@ -499,7 +499,7 @@ class InternalStudyResourceImageSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = InternalStudyResourceImage
-        fields = ["internal_study_resource", "mage_file", "image_url", "line"]
+        fields = ["internal_study_resource", "image_file", "image_url", "line"]
 
 class InternalStudyResourceSerializer(EditSuggestionSerializer):
     queryset = InternalStudyResource.objects.all()

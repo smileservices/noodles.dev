@@ -1,0 +1,40 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block meta_tags %}
+    <title>Noodles.com - add resource</title>
+    <meta name="description"
+          content="Add a study resource to the curated collection. You will be rewarded {{ data.reward }} points.
+                    Resources can be reviewed by registered users and they can also add edit suggestions to improve the listing."/>
+{% endblock %}
+
+{% block content %}
+    <script>
+        const STUDY_RESOURCE_API = "{{ urls.study_resource_api }}";
+        const TECH_API = "{{ urls.tech_api }}";
+        const TAGS_OPTIONS_API = "{{ urls.tag_options_api }}";
+        const TECH_OPTIONS_API = "{{ urls.tech_options_api }}";
+        const CATEGORIES_OPTIONS_API = "{{ urls.categories_options_api }}";
+    </script>
+    <div class="create-page">
+        <section class="header">
+            <h1>Add Resource</h1>
+            <div class="explanation">
+                You will be rewarded <span class="blue">{{ data.reward }} points</span>. Resources can be reviewed by registered users
+                and they can also add edit suggestions to improve the listing.
+            </div>
+        </section>
+        <section id="create-app">
+            <div class="waiting-container">
+                <span class="icon-hour-glass spin-stop"> </span>
+                <span class="text">Loading the Create Resource App. It's a one time load.</span>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/react-bundle.js' %}"></script>
+    <script src="{% static 'js/study_resource/study-resource-create.js' %}"></script>
+{% endblock %}

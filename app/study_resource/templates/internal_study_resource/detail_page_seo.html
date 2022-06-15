@@ -1,0 +1,49 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block meta_tags %}
+    <title>{{ result.name }}</title>
+    <meta name="description" content="{{ result.summary }}"/>
+    <meta name="keywords" content="
+
+
+
+
+            {% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.studyresourcetechnologies_set.all %}{{ tech }}, {% endfor %}"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
+{% block content %}
+    <div class="breadcrumbs">
+        <a href="/">Homepage</a> / Resources /
+        {% for cat in result.category.get_ancestors %}
+            <a href="{% url 'search_page' %}?tab=resources&category={{ cat }}">{{ cat }}</a> >
+        {% endfor %}
+        <a href="{% url 'search_page' %}?tab=resources&category={{ result.category.name }}">{{ result.category.name }}</a>
+        / {{ result.name }}
+    </div>
+    <div class="detail-page resource">
+        <div class="column-container detail-container" itemscope itemtype="https://schema.org/Course">
+            <section id="detail" class="card">
+                {% include 'study_resource/detail.html' %}
+                <meta itemprop="name" content="{{ result.name }}"/>
+                <meta itemprop="datePublished" content="{{ result.publication_date }}"/>
+                <meta itemprop="description" content="{{ result.summary }}"/>
+                <meta itemprop="keywords" content="
+                        {% for tag in result.tags.all %}{{ tag }},{% endfor %}{{ result.category.name }},{{ result.media_label }},{{ result.price_label }}"/>
+            </section>
+            <span itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+                <meta itemprop="bestRating" content="5"/>
+                <meta itemprop="worstRating" content="1"/>
+                <meta itemprop="ratingValue" content="{{ result.rating }}"/>
+                <meta itemprop="reviewCount" content="{{ result.reviews_count }}"/>
+                <meta itemprop="ratingCount" content="{{ result.reviews_count }}"/>
+            </span>
+            {% include 'study_resource/reviews.html' with reviews=result.reviews.all %}
+        </div>
+        {% include 'study_resource/right_side.html' %}
+    </div>
+{% endblock %}

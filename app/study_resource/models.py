@@ -441,7 +441,7 @@ class InternalStudyResourceTechnology(models.Model):
 
     @property
     def absolute_url(self):
-        return reverse('internal-tech-detail', kwargs={'slug': self.slug})
+        return reverse('tech-detail', kwargs={'slug': self.slug})
 
 class InternalStudyResource(ResourceMixin, VotableMixin):
     elastic_index = 'internal_study_resources'
@@ -502,6 +502,7 @@ class InternalStudyResource(ResourceMixin, VotableMixin):
             'post_delete': [delete_study_resource_primary_images, ]
         },
         attrs_to_be_copied=['image', ],
+        related_name="internal_study_resource"
     )
     
     def __str__(self):
@@ -687,7 +688,7 @@ class InternalStudyResourceImage(models.Model):
     def sizes(self):
         return build_versatileimagefield_url_set(
             self.image_file,
-            settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['internal_resource_image']
+            settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image']
         )
 
     def save(self, *args, **kwargs):

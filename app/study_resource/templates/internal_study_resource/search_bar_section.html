@@ -1,0 +1,7 @@
+<section class="search-bar">
+    <form action="{% url 'search' %}" method="GET">
+        <input class="form-control" type="text" name="contains" placeholder="Search for a tutorial or course..."
+               required value="{% if filter.data.contains %}{{ filter.data.contains }}{% endif %}" />
+        <button class="btn submit"><span class="icon-search"> </span> Search</button>
+    </form>
+</section>

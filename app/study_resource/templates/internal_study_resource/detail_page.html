@@ -1,0 +1,53 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load star_rating %}
+
+{% block meta_tags %}
+    <title>{{ result.name }}</title>
+    <meta name="description" content="{{ result.summary }}"/>
+    <meta name="keywords" content="{% for tag in result.tags.all %}{{ tag }}, {% endfor %}{% for tech in result.technologies_set.all %}{{ tech }}, {% endfor %}"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
+{% block content %}
+    <script>
+        const MAX_RATING = {{ MAX_RATING }};
+        const RESOURCE_ID = {{ result.id }};
+        const RESOURCE_AUTHOR_ID = {{ result.author.id }};
+        const RESOURCE_EDIT_URL = "{% url 'study-resource-edit' result.id %}";
+        const RESOURCE_API_DELETE = "{% url 'study-resource-viewset-detail' result.id %}";
+
+        const TAGS_OPTIONS_API = "{{ urls.tag_options_api }}";
+        const TECH_OPTIONS_API = "{{ urls.tech_options_api }}";
+
+        const STUDY_RESOURCE_OPTIONS_URL = "{{ urls.study_resource_options }}";
+        const REVIEW_API = "{{ urls.review_api }}";
+        const REVIEWS_LIST = "{{ urls.reviews_list }}";
+
+        const MANAGE_COLLECTIONS_URL = "{% url 'my-collections' %}"
+        const COLLECTIONS_API = "{{ urls.collections_api }}";
+        const USER_COLLECTIONS_LIST = "{{ urls.user_collections_list }}";
+        const USER_COLLECTIONS_WITH_RESOURCE = "{{ urls.user_collections_with_resource }}";
+        const USER_COLLECTIONS_SET_API = "{{ urls.user_collections_set_resource_to_collections }}";
+        const ROUTES = {
+            subscribe_url: "{{ urls.subscribe_url }}",
+        }
+    </script>
+    <div class="breadcrumbs">
+        <a href="/">Home</a> > Category: {% if result.category %}{{ result.category.category_tree_urls | safe }}{% else %}uncategorized{% endif %}
+    </div>
+    <div class="detail-page resource">
+        {% include 'study_resource/detail.html' %}
+        {% include 'study_resource/right_side.html' %}
+        <section id="reviews" class="column-container reviews"></section>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/study_resource/study-resource-detail-reviews.js' %}"></script>
+    <script src="{% static 'js/study_resource/detail-toolbar.js' %}"></script>
+    <script src="{% static 'js/subscribe.js' %}"></script>
+{% endblock %}

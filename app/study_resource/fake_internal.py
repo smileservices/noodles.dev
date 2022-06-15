@@ -1,6 +1,8 @@
 from . import models
 import os
 import shutil
+from random import randrange
+from random import randrange
 from faker import Faker
 from random import randint, choice, choices
 from datetime import date
@@ -50,6 +52,11 @@ def new_study_resource(user):
     )
     sr.image_file.save(image_name, content=File(image_file))
     sr.save()
+
+    for i in range(randrange(6)):
+        image = models.InternalStudyResourceImage(internal_study_resource=sr,line=randrange(100))
+        image.image_file.save(image_name, content=File(image_file))
+        image.save()
     return sr
 
 
@@ -82,7 +89,7 @@ def study_resource_edit_suggestions(resource: models.InternalStudyResource, auth
             edsug.technologies.through.objects.create(
                 technology_id=tech.technology_id,
                 name=tech.name,
-                internal_study_resource=edsug,
+                internal_study_resource=resource,
                 version=tech.version
             )
         except IntegrityError:
@@ -101,7 +108,7 @@ def study_resources_bulk(count=20):
             try:
                 models.InternalStudyResourceTechnology.objects.create(
                     technology=tech,
-                    study_resource=i,
+                    internal_study_resource=i,
                     version=float(f'{randint(0, 5)}.{randint(0, 90)}')
                 )
             except IntegrityError:

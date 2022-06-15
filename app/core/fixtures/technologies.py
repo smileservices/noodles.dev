@@ -218,6 +218,7 @@ def make_technologies_and_categories():
         if serialized.is_valid():
             serialized.save()
         else:
+            print(serialized)
             print(f"Could not create technology {tech['name']}")
     created_techs = {}
     for tech in Technology.objects.all():

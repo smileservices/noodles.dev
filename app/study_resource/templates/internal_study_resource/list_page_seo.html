@@ -1,0 +1,32 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load paginator_tag %}
+
+{% block meta_tags %}
+    <title>Noodles.com List Page</title>
+    <meta name="description"
+          content="Result of searching query"/>
+    <meta name="robots" content="index, nofollow"/>
+    <meta name="googlebot" content="index, nofollow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+    <meta name="bingbot" content="index, nofollow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+{% endblock %}
+
+{% block content %}
+    <div class="breadcrumbs">
+        <a href="/">Homepage</a> / Resources
+    </div>
+    <header class="header">
+        <h1>List All Resources</h1>
+    </header>
+    <section class="search-page">
+        <div class="results column-container">
+            {% for result in results %}
+                {% include 'study_resource/result.html' %}
+            {% endfor %}
+            {% if results.has_other_pages %}
+                {% paginator_tag results 3 %}
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

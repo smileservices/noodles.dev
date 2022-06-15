@@ -1,0 +1,86 @@
+<div class="related column-container" id="related-app">
+
+    {% if result.status != 1 %}
+        <div class="alert alert-warning">
+            Status {{ result.status_label }}
+        </div>
+    {% endif %}
+    <div class="card meta-container">
+        <div class="row"><span class="label">Experience level</span><span
+                class="tags"><span class="meta">{{ result.experience_level_label }}</span></span></div>
+    </div>
+    <div class="card meta-container">
+        <div class="row"><span class="label">Media Type</span><span
+                class="tags"><span class="meta">{{ result.media_label }}</span></span></div>
+    </div>
+    <div class="card meta-container">
+        <div class="row"><span class="label">Price</span><span class="tags"><span
+                class="meta">{{ result.price_label }}</span></span>
+        </div>
+    </div>
+    <div class="card">
+        <div class="header">Tags</div>
+        <div class="tags">
+            {% for tag in result.tags.all %}
+                <a href="{% url 'search_page' %}?tab=resources&tags={{ tag }}"
+                   rel="nofollow noopener"># {{ tag }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if result.category_concepts.count > 0 or result.technology_concepts.count > 0 %}
+        <div class="card">
+            <div class="header">Concepts</div>
+            <div class="tags">
+                {% for concept in result.category_concepts.all %}
+                    <a class="concept" href="{{ concept.absolute_url }}">{{ concept.name_tree }}</a>
+                {% endfor %}
+                {% for concept in result.technology_concepts.all %}
+                    <a class="concept" href="{{ concept.absolute_url }}">{{ concept.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if result.studyresourcetechnology_set.count > 0 %}
+        <div class="card">
+            <div class="header">Technologies</div>
+            <div class="tags">
+                {% for tech in result.studyresourcetechnology_set.all %}
+                    <a class="tech" href="{{ tech.absolute_url }}">
+                        <svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.02696 4.82843L6.06618 2.72059L8.02696 0.612745C8.125 0.502451 8.14951 0.343137 8.10049 0.220588C8.03922 0.0857843 7.90441 0 7.75735 0H0.367647C0.159314 0 0 0.159314 0 0.367647V9.63235C0 9.84069 0.159314 10 0.367647 10C0.57598 10 0.735294 9.84069 0.735294 9.63235V5.44118H7.75735C7.96569 5.44118 8.125 5.26961 8.125 5.07353C8.125 4.98774 8.08824 4.90196 8.02696 4.82843Z"
+                                  fill="#1752EA"/>
+                        </svg>
+                        {{ tech }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="card meta-container">
+        <div class="row"><span class="label">Topic</span><span class="tags"><span class="meta">
+            {% if result.category %}
+                {{ result.category.name_tree }}
+            {% else %}
+                uncategorized
+            {% endif %}
+        </span></span></div>
+    </div>
+
+    <div class="card">
+        <div class="header">Collections</div>
+        <div class="links-container">
+            {% if result.collections.count > 0 %}
+                {% for collection in collections %}
+                    <a href="{{ collection.absolute_url }}">
+                        {{ collection }}
+                    </a>
+                {% endfor %}
+            {% else %}
+                Belongs to no collection
+            {% endif %}
+        </div>
+    </div>
+</div>
