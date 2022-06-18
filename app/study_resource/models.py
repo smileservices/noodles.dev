@@ -135,6 +135,9 @@ class StudyResource(ResourceMixin, VotableMixin):
     url = models.CharField(max_length=256, db_index=True)
     image_file = VersatileImageField(upload_to='tutorials', blank=True, null=True)
     summary = models.TextField(max_length=2048)
+    # internal resource
+    is_internal = models.BooleanField(default=False)
+    content = models.TextField(default='')
     # related fields
     author = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name='resources')
@@ -228,6 +231,12 @@ class StudyResource(ResourceMixin, VotableMixin):
                     "analyzer": "ngram",
                     "search_analyzer": "standard"
                 },
+                "content": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
+                },
                 "created_at": {"type": "date", "format": "date_optional_time"},
                 "publication_date": {"type": "date", "format": "yyyy-MM-dd"},
                 "published_by": {"type": "text"},
@@ -290,6 +299,7 @@ class StudyResource(ResourceMixin, VotableMixin):
             # model fields
             "name": self.name,
             "summary": self.summary,
+            "content": self.content,
             "created_at": self.created_at.replace(microsecond=0).isoformat(),
             "publication_date": self.publication_date.isoformat(),
             "published_by": self.published_by,
