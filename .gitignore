@@ -8,6 +8,8 @@ app/static/js
 app/static/css
 LOGS/*
 MEDIA/*
+MEDIA_ROOT
+STATIC_ROOT
 STATIC_COL/*
 ext/
 *.log
