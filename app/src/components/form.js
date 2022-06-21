@@ -1,9 +1,9 @@
-import React, {useState, useEffect, Fragment} from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import Select from 'react-select';
-import Creatable, {makeCreatableSelect} from 'react-select/creatable';
+import Creatable, { makeCreatableSelect } from 'react-select/creatable';
 import Waiting from "./Waiting";
 
-export const ConfirmComponent = ({buttonText, questionText, handleConfirm}) => {
+export const ConfirmComponent = ({ buttonText, questionText, handleConfirm }) => {
     const [ask, setAsk] = useState(false);
 
     if (ask) return (
@@ -46,13 +46,14 @@ function handleSelectClass(error) {
     }
 }
 
-export function FormElement({data, children, callback, alert, waiting, buttonText, cancel = false}) {
-    if (waiting) return (<Waiting text={waiting}/>);
+export function FormElement({ data, children, callback, alert, waiting, buttonText, cancel = false }) {
+    if (waiting) return (<Waiting text={waiting} />);
     return (
         <form onSubmit={e => {
             e.preventDefault();
             e.stopPropagation();
             callback(data);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }}>
             {children}
             {alert}
@@ -67,14 +68,14 @@ export function FormElement({data, children, callback, alert, waiting, buttonTex
     )
 }
 
-export const Input = ({name, label, inputProps, smallText, error}) => {
+export const Input = ({ name, label, inputProps, smallText, error }) => {
     const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
     const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
     return (
         <div className="form-group">
             {labelOutput}
             <input {...inputProps} id={name} name={name} aria-describedby={name + 'help'}
-                   className={handleInputClass(error)}/>
+                className={handleInputClass(error)} />
             {error
                 ? (<div className="invalid-feedback">{error}</div>)
                 : ''
@@ -83,16 +84,16 @@ export const Input = ({name, label, inputProps, smallText, error}) => {
     )
 }
 
-export const Textarea = ({name, label, inputProps, smallText, error}) => {
+export const Textarea = ({ name, label, inputProps, smallText, error }) => {
     const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
     const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
     return (
         <div className="form-group">
             {labelOutput}
             <textarea id={name} name={name} cols="30" rows="5"
-                      aria-describedby={name + 'help'}
-                      className={handleInputClass(error)}
-                      {...inputProps}
+                aria-describedby={name + 'help'}
+                className={handleInputClass(error)}
+                {...inputProps}
             />
             {error
                 ? (<div className="invalid-feedback">{error}</div>)
@@ -102,13 +103,13 @@ export const Textarea = ({name, label, inputProps, smallText, error}) => {
     )
 }
 
-export const Checkbox = ({name, label, inputProps, smallText, error}) => {
+export const Checkbox = ({ name, label, inputProps, smallText, error }) => {
     const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
     const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
     return (
         <div className="">
             <input type="checkbox" id={name} name={name}
-                   className={error ? 'invalid' : ''} {...inputProps} /> {labelOutput}
+                className={error ? 'invalid' : ''} {...inputProps} /> {labelOutput}
             {error
                 ? (<div className="invalid-feedback">{error}</div>)
                 : ''
@@ -117,7 +118,7 @@ export const Checkbox = ({name, label, inputProps, smallText, error}) => {
     )
 }
 
-export const SelectVanilla = ({name, label, inputProps, smallText, error, Options}) => {
+export const SelectVanilla = ({ name, label, inputProps, smallText, error, Options }) => {
     return (
         <div className="form-group">
             {label
@@ -125,9 +126,9 @@ export const SelectVanilla = ({name, label, inputProps, smallText, error, Option
                 : ''
             }
             <select id={name} name={name}
-                    aria-describedby={name + 'help'}
-                    className={handleInputClass(error)}
-                    {...inputProps}
+                aria-describedby={name + 'help'}
+                className={handleInputClass(error)}
+                {...inputProps}
             >
                 {Options}
             </select>
@@ -144,15 +145,15 @@ export const SelectVanilla = ({name, label, inputProps, smallText, error, Option
     )
 }
 
-export const SelectReact = ({name, label, smallText, smallTextUnder, error, options, value, onChange, props, isLoading, isDisabled}) => {
+export const SelectReact = ({ name, label, smallText, smallTextUnder, error, options, value, onChange, props, isLoading, isDisabled }) => {
     const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
     const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
     return (
         <div className="form-group">
             {labelOutput}
             <Select isLoading={isLoading} isDisabled={isDisabled} options={options} value={value}
-                    className="react-select" classNamePrefix={handleSelectClass(error)}
-                    onChange={onChange} {...props}
+                className="react-select" classNamePrefix={handleSelectClass(error)}
+                onChange={onChange} {...props}
             />
             {smallTextUnder ? smallTextUnder : ''}
             {error
@@ -163,14 +164,14 @@ export const SelectReact = ({name, label, smallText, smallTextUnder, error, opti
     )
 }
 
-export const SelectReactCreatable = ({name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled}) => {
+export const SelectReactCreatable = ({ name, label, smallText, error, options, value, onChange, props, isLoading, isDisabled }) => {
     const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
     const labelOutput = label ? <label htmlFor={name}>{label}{infoIcon}</label> : '';
     return (<div className="form-group">
         {labelOutput}
         <Creatable isLoading={isLoading} isDisabled={isDisabled} options={options} value={value}
-                   className="react-select" classNamePrefix={handleSelectClass(error)}
-                   onChange={onChange} {...props} />
+            className="react-select" classNamePrefix={handleSelectClass(error)}
+            onChange={onChange} {...props} />
         {error
             ? (<div className="invalid-feedback">{error}</div>)
             : ''
@@ -178,7 +179,7 @@ export const SelectReactCreatable = ({name, label, smallText, error, options, va
     </div>)
 }
 
-export function ImageInputComponent({inputProps, data, setValue, disabled, smallText}) {
+export function ImageInputComponent({ inputProps, data, setValue, disabled, smallText }) {
     const infoIcon = smallText ? <span className="icon-info" data-tooltip={smallText}>&#xe90c;</span> : '';
     const [activeTab, setActiveTab] = useState('url');
 
@@ -191,28 +192,28 @@ export function ImageInputComponent({inputProps, data, setValue, disabled, small
                         {activeTab === 'url'
                             ? (<Fragment>
                                 <input id={inputProps.name} name={inputProps.name} aria-describedby={name + 'help'}
-                                       className={handleInputClass(inputProps.error)}
-                                       value={data.url}
-                                       onChange={e => setValue({url: e.target.value})}
-                                       type='text'
-                                       disabled={Boolean(disabled)}
-                                       placeholder="Import from URL"
+                                    className={handleInputClass(inputProps.error)}
+                                    value={data.url}
+                                    onChange={e => setValue({ url: e.target.value })}
+                                    type='text'
+                                    disabled={Boolean(disabled)}
+                                    placeholder="Import from URL"
                                 />
                                 {inputProps.error
                                     ? (<div className="invalid-feedback">{inputProps.error}</div>)
                                     : ''
                                 }
                                 {data.url
-                                    ? (<img src={data.url} alt=""/>)
+                                    ? (<img src={data.url} alt="" />)
                                     : ''
                                 }
                             </Fragment>)
                             : (<Fragment>
                                 <input type="file" disabled={Boolean(disabled)} id={inputProps.name}
-                                       name={inputProps.name}
-                                       onChange={e => setValue({file: e.target.files[0]})}
-                                       aria-describedby={name + 'help'}
-                                       className={handleInputClass(inputProps.error)}
+                                    name={inputProps.name}
+                                    onChange={e => setValue({ file: e.target.files[0] })}
+                                    aria-describedby={name + 'help'}
+                                    className={handleInputClass(inputProps.error)}
                                 />
                                 {inputProps.error
                                     ? (<div className="invalid-feedback">{inputProps.error}</div>)
@@ -229,7 +230,7 @@ export function ImageInputComponent({inputProps, data, setValue, disabled, small
                     </div>
                 </div>
                 {inputProps.originalImage
-                    ? (<img className="selected" src={inputProps.originalImage} alt=""/>)
+                    ? (<img className="selected" src={inputProps.originalImage} alt="" />)
                     : ''}
             </div>
         </div>
