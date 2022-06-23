@@ -137,7 +137,7 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
-    search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
+    search_fields = ['name', 'content','summary', 'published_by', 'tags__name', 'technologies__name']
 
     def create(self, request, *args, **kwargs):
         if request.data['is_internal']:
