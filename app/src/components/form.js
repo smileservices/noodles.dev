@@ -53,6 +53,7 @@ export function FormElement({data, children, callback, alert, waiting, buttonTex
             e.preventDefault();
             e.stopPropagation();
             callback(data);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }}>
             {children}
             {alert}
