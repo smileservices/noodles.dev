@@ -140,6 +140,21 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
     search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
 
     def create(self, request, *args, **kwargs):
+        if request.data['is_internal']:
+            create_response = super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
+            if create_response.status_code == 201:
+                create_notification(StudyResource, create_response.data['pk'], request.user.pk, notification_events.VERB_CREATE)
+                logger.log_study_resource_create(create_response, request)
+                create_response.data['success'] = {
+                        'message': f'<div class="message">Thank you for adding a new resource!</div>'
+                                f'<div class="score-info">'
+                                f'You gained <span className="user-reward">{rewards.RESOURCE_CREATE}</span> points! '
+                                f'Your score is now <span className="user-score">{request.user.positive_score}</span>'
+                                f'</div>',
+                    }
+                return create_response
+            else:
+                raise Exception('Cannot save resource')
         intermediary = StudyResourceIntermediary.objects.filter(url=request.data['url']).get()
         try:
             create_response = super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
