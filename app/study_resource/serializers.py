@@ -164,7 +164,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
 
     class Meta:
         model = StudyResource
-        fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'price', 'media',
+        fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'content', 'is_internal', 'price', 'media',
                   'experience_level', 'author', 'tags', 'category', 'category_concepts', 'technology_concepts',
                   'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by', 'image_file']
 
@@ -327,7 +327,7 @@ class StudyResourceAutomatedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudyResource
-        fields = ['pk', 'name', 'slug', 'url', 'summary', 'price', 'media',
+        fields = ['pk', 'name', 'slug', 'url', 'summary', 'price', 'media','content', 'is_internal'
                   'experience_level', 'author', 'tags', 'category', 'category_concepts', 'technology_concepts',
                   'technologies', 'publication_date', 'published_by', 'image_file']
 
