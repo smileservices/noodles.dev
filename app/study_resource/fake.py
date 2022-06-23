@@ -55,6 +55,32 @@ def new_study_resource(user):
     sr.save()
     return sr
 
+def new_internal_study_resource(user):
+    name = f.text().split('.')[0]
+    categories = Category.objects.all()
+    # get images; move to MEDIA dir; open
+    image_name = choice(os.listdir(FAKE_IMAGES_PATH))
+    image_file_path = os.path.join(FAKE_IMAGES_PATH, image_name)
+    shutil.copy(image_file_path, os.path.join(MEDIA_IMAGES_PATH, image_name))
+    image_file = open(os.path.join(MEDIA_IMAGES_PATH, image_name), 'rb')
+    sr = models.StudyResource(
+        name=name,
+        status=1,
+        slug=slugify(name),
+        publication_date=f.date_between(date(2000, 1, 1), date.today()),
+        published_by=f.name(),
+        is_internal=True,
+        content=f.text(),
+        price=choice(models.StudyResource.Price.choices)[0],
+        media=choice(models.StudyResource.Media.choices)[0],
+        experience_level=choice(models.StudyResource.ExperienceLevel.choices)[0],
+        author=user,
+        category=choice(categories),
+    )
+    sr.image_file.save(image_name, content=File(image_file))
+    sr.save()
+    return sr
+
 
 def new_study_resource_review(study_resource, author):
     review = models.Review(
