@@ -5,7 +5,7 @@ from rest_framework import fields
 from rest_framework.serializers import SerializerMethodField
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from django.conf import settings
-from .models import Technology
+from .models import Technology, TechnologyAttribute
 from users.serializers import UserSerializerMinimal
 from category.serializers import CategorySerializerOption
 from category.models import Category
@@ -191,3 +191,9 @@ class TechnologyMinimal(serializers.ModelSerializer):
     class Meta:
         model = Technology
         fields = ['pk', 'name', 'absolute_url', 'thumbs_up', 'thumbs_down', 'resources_count']
+
+class TechnologyAttributeSerilizer(serializers.ModelSerializer):
+    queryset = TechnologyAttribute.objects.all()
+    class Meta:
+        model = TechnologyAttribute
+        fields = ['technology', 'attribute_type', 'content']
