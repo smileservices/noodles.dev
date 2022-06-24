@@ -196,6 +196,20 @@ class Technology(ResourceMixin, VotableMixin):
         super().save(*args, **kwargs)
 
 
+class TechnologyAttribute(ResourceMixin, VotableMixin):
+    class AttributeType():
+        PROS = (0, 'pros')
+        CONS = (1, 'cons')
+
+    attribute_type = models.Choices(AttributeType)
+    content = models.TextField(max_length=256)
+
+    def total_votes(self):
+        return self.thumbs_up - self.thumbs_down
+
+    class Meta:
+        order_by = "total_votes"
+
 models.signals.post_save.connect(tasks.sync_technology_resources_to_elastic, sender=Technology, weak=False)
 models.signals.post_save.connect(warm_technology_logos, sender=Technology, weak=False)
 # we need to keep the images for the history
