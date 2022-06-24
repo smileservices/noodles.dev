@@ -145,6 +145,7 @@ class Technology(ResourceMixin, VotableMixin):
                 "ecosystem": {"type": "keyword"},
                 "thumbs_up": {"type": "short"},
                 "thumbs_down": {"type": "short"},
+                "technology_attributes": {"type": "nested"},
 
                 "suggest": {
                     "type": "search_as_you_type",
@@ -172,6 +173,7 @@ class Technology(ResourceMixin, VotableMixin):
             "ecosystem": [t.name for t in self.ecosystem.all()],
             "thumbs_up": self.thumbs_up,
             "thumbs_down": self.thumbs_down,
+            "technology_attributes": self.technology_attributes
         }
         return self.elastic_index, data
 
@@ -197,18 +199,19 @@ class Technology(ResourceMixin, VotableMixin):
 
 
 class TechnologyAttribute(ResourceMixin, VotableMixin):
-    class AttributeType():
+    class AttributeType(models.IntegerChoices):
         PROS = (0, 'pros')
         CONS = (1, 'cons')
+        LIM  = (2, 'lim')
+        GOOD_FOR = (3, 'gf')
+        NOT_GOOD_FOR = (4, 'ngf')
 
-    attribute_type = models.Choices(AttributeType)
+    attribute_type = models.IntegerField(default=0, choices=AttributeType.choices, db_index=True)
     content = models.TextField(max_length=256)
+    technology = models.ForeignKey(Technology, related_name='technology_attributes', on_delete=models.CASCADE)
 
     def total_votes(self):
         return self.thumbs_up - self.thumbs_down
-
-    class Meta:
-        order_by = "total_votes"
 
 models.signals.post_save.connect(tasks.sync_technology_resources_to_elastic, sender=Technology, weak=False)
 models.signals.post_save.connect(warm_technology_logos, sender=Technology, weak=False)
