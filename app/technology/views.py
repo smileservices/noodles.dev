@@ -16,7 +16,7 @@ from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdmi
 from study_collection.models import Collection
 from study_resource.models import StudyResource
 from . import filters
-from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyMinimal
+from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyMinimal, TechnologyAttributeSerilizer
 from .models import Technology
 from django.views.decorators.cache import cache_page
 from app.settings import rewards
@@ -175,3 +175,9 @@ class TechViewsetOptions(ModelViewSet):
     queryset = TechnologySerializerOption.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     pagination_class = None
+
+class TechnologyAttributeViewset(ModelViewSet):
+    serializer_class = TechnologyAttributeSerilizer
+    queryset = TechnologyAttributeSerilizer.queryset
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    search_fields = ['technology__name']
