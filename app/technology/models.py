@@ -145,7 +145,6 @@ class Technology(ResourceMixin, VotableMixin):
                 "ecosystem": {"type": "keyword"},
                 "thumbs_up": {"type": "short"},
                 "thumbs_down": {"type": "short"},
-                "technology_attributes": {"type": "nested"},
 
                 "suggest": {
                     "type": "search_as_you_type",
@@ -173,7 +172,6 @@ class Technology(ResourceMixin, VotableMixin):
             "ecosystem": [t.name for t in self.ecosystem.all()],
             "thumbs_up": self.thumbs_up,
             "thumbs_down": self.thumbs_down,
-            "technology_attributes": self.technology_attributes
         }
         return self.elastic_index, data
 
