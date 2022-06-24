@@ -6,6 +6,7 @@ router = DefaultRouter()
 router.register('as-options', views.TechViewsetOptions, basename='techs-options')
 router.register('edit-suggestions', views.TechEditSuggestionViewset, basename='techs-edit-suggestions-viewset')
 router.register('', views.TechViewset, basename='techs-viewset')
+router.register('tech-attributes', views.TechnologyAttributeViewset, basename='tech-attributes-viewset')
 
 urlpatterns = [
     path('create/', views.create, name='technology-create'),
