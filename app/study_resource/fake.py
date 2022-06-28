@@ -12,6 +12,9 @@ from users.models import CustomUser
 from technology.models import Technology
 from tag.models import Tag
 from category.models import Category
+from django.core.files.uploadedfile import SimpleUploadedFile
+from PIL import Image
+from io import BytesIO
 
 f = Faker()
 FAKE_IMAGES_PATH = os.path.join(os.getcwd(), 'study_resource', 'fake_images')
@@ -163,3 +166,9 @@ def reviews_bulk(count=10):
             continue
         only_one_review_per_user_check.append(identificator)
         review.save()
+
+def temporary_image(name):
+    bts = BytesIO()
+    img = Image.new("RGB", (100, 100))
+    img.save(bts, 'jpeg')
+    return SimpleUploadedFile(f"{name}.jpg", bts.getvalue())
