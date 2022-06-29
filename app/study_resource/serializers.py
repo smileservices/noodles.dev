@@ -25,14 +25,14 @@ logger = logging.getLogger('django')
 
 class ImageSerializer(serializers.ModelSerializer):
     queryset = StudyResourceImage.objects
+
     image_file = VersatileImageFieldSerializer(
         sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image'],
-        read_only=True
     )
 
     class Meta:
         model = StudyResourceImage
-        fields = ['pk', 'study_resource', 'image_file', 'image_url']
+        fields = ['pk', 'study_resource', 'image_file', 'image_url', "line"]
 
 
 class StudyResourceTechnologySerializer(serializers.ModelSerializer):
@@ -160,6 +160,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image'],
         required=False,
     )
+    images = ImageSerializer(many=True, read_only=True, required=False)
     category = CategorySerializerOption(read_only=True)
 
     class Meta:
@@ -245,8 +246,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
             )
         if 'images' in m2m_fields:
             for img_data in m2m_fields['images']:
-                image = StudyResourceImage(study_resource=instance, image_url=img_data['image_url'])
-                image.save()
+                StudyResourceImage.objects.create(study_resource=instance, **img_data)
 
 
 class StudyResourceListingSerializer(serializers.ModelSerializer):
