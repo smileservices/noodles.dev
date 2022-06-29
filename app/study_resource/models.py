@@ -337,6 +337,7 @@ class StudyResourceImage(models.Model):
     study_resource = models.ForeignKey(StudyResource, on_delete=models.CASCADE, related_name='images')
     image_file = VersatileImageField(upload_to='tutorials', blank=True, null=True)
     image_url = models.URLField(default='', blank=True, null=True)
+    line = models.IntegerField(default=0)
 
     @property
     def sizes(self):
