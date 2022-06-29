@@ -1,4 +1,5 @@
 import json
+from urllib import response
 
 from django.test import TestCase
 from django.urls import reverse
@@ -19,6 +20,8 @@ from django.template.defaultfilters import slugify
 from random import randint, choice, choices, random
 from category.models import Category
 from datetime import date
+from discussions.fake import populate_discussion
+from discussions.models import Post
 
 """
 An internal study resource is a study resource that has content hosted here
@@ -92,4 +95,14 @@ class InternalStudyResourceTestCase(TestCase):
     def test_api_can_have_discussion(self):
         """test creating a discussion for the internal resource through the api"""
         #todo implement this. we want to test the API functionality
-        raise NotImplementedError
+        resource = new_internal_study_resource(self.users[0])
+        client = APIClient()
+        data = {
+            "content_object":1,
+            "text": f.text(240)
+            }
+        
+        client.force_authenticate(user=self.users[0])
+        response =  client.post(reverse('study-resource-viewset-discussion-posts', kwargs={"pk": resource.pk}), data, format="multipart")
+        print(response.data)
+        self.assertEqual(response.status_code, 201)
