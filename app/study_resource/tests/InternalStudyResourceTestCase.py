@@ -68,11 +68,26 @@ class InternalStudyResourceTestCase(TestCase):
         client = APIClient()
         client.force_authenticate(user=self.users[0])
         response = client.post(reverse('study-resource-viewset-list'), data, format='multipart')
-        print(response.data)
-        self.assertEqual(response.status_code, 201)
+
+        self.assertEqual(response.status_code, 201)  
         self.assertEqual(response.data["is_internal"], True)
         self.assertEqual(response.data["content"], data["content"])
         self.assertEqual(set(list(response.data["image_file"].keys())), set(["small", "large", "medium"]) )
+
+    def test_resource_images(self):
+        resource = new_internal_study_resource(self.users[0])
+        """Test to see if we can add images to a resource"""
+        images = {
+            "image_file": temporary_image("test2"),
+            "line": 5,
+            "study_resource": resource.pk
+        }
+        client = APIClient()
+        client.force_authenticate(user=self.users[0])
+        response = client.post(reverse('resource-image-viewset-list'), images, format='multipart')
+
+        self.assertEqual(set(list(response.data["image_file"].keys())), set(["small", "large", "medium"]) )
+        self.assertEqual(response.status_code, 201)
 
     def test_api_can_have_discussion(self):
         """test creating a discussion for the internal resource through the api"""
