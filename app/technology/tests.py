@@ -1,9 +1,13 @@
 import json
 from rest_framework.test import APITestCase
+from rest_framework.test import force_authenticate
+from rest_framework.test import APIClient
+
 from django.urls import reverse
 from random import choice, choices
 from users.fake import create_bulk_users, create_user_single, CustomUser
 from technology.models import Technology
+from technology.fake import create_technologies
 from category.fake import create_categories
 from category.models import Category
 from category.serializers import CategorySerializerOption
@@ -152,3 +156,18 @@ class TechnologyIntegrationTesting(APITestCase):
         # check if edit author positive score is improved
         edit_author.refresh_from_db()
         self.assertEqual(edit_author.positive_score, rewards.EDIT_SUGGESTION_PUBLISH)
+
+    def test_technology_attributes(self):
+        author = create_user_single()
+        client = APIClient()
+        create_technologies()
+        tech = Technology.objects.first()
+        data = {
+            "technology": tech.pk,
+            "attribute_type": 0,
+            "content": fake.text()
+        }
+
+        client.force_authenticate(user=author)
+        response =  client.post(reverse('tech-attributes-viewset-list'), data, format="multipart")
+        self.assertEqual(response.status_code, 201)
