@@ -25,14 +25,14 @@ logger = logging.getLogger('django')
 
 class ImageSerializer(serializers.ModelSerializer):
     queryset = StudyResourceImage.objects
+
     image_file = VersatileImageFieldSerializer(
         sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image'],
-        read_only=True
     )
 
     class Meta:
         model = StudyResourceImage
-        fields = ['pk', 'study_resource', 'image_file', 'image_url']
+        fields = ['pk', 'study_resource', 'image_file', 'image_url', "line"]
 
 
 class StudyResourceTechnologySerializer(serializers.ModelSerializer):
@@ -160,13 +160,14 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         sizes=settings.VERSATILEIMAGEFIELD_RENDITION_KEY_SETS['resource_image'],
         required=False,
     )
+    images = ImageSerializer(many=True, read_only=True, required=False)
     category = CategorySerializerOption(read_only=True)
 
     class Meta:
         model = StudyResource
-        fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'price', 'media',
+        fields = ['pk', 'rating', 'reviews_count', 'absolute_url', 'name', 'slug', 'url', 'summary', 'content', 'is_internal', 'price', 'media',
                   'experience_level', 'author', 'tags', 'category', 'category_concepts', 'technology_concepts',
-                  'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by', 'image_file']
+                  'technologies', 'created_at', 'updated_at', 'publication_date', 'published_by', 'image_file', 'images']
 
     @staticmethod
     def get_edit_suggestion_serializer():
@@ -186,21 +187,24 @@ class StudyResourceSerializer(EditSuggestionSerializer):
         validated_data['category_id'] = int(data['category']) if 'category' in data else None
         validated_data['tags'] = Tag.objects.validate_tags(json.loads(data['tags']))
         # take screenshot (only for create)
-        take_screenshot = 'image_screenshot' in data and json.loads(data['image_screenshot'])
-        if take_screenshot:
-            try:
-                validated_data['image_file'] = get_website_screenshot(data['url'])
-            except Exception as e:
-                logger.error(f"Error while doing screenshot for {data['url']}: {print(e)}")
-        if 'pk' in data and 'image_file' not in data and not take_screenshot:
-            # populate with parent image file otherwise the edit will set the image_file blank
-            validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']
-        if 'image_url' in data:
-            # handle images from url and uploaded images
-            try:
-                validated_data['image_file'] = utils.get_temp_image_file_from_url(data['image_url'])
-            except Exception as e:
-                raise exceptions.ValidationError({'image_file': e})
+        if not data["is_internal"]:
+            take_screenshot = 'image_screenshot' in data and json.loads(data['image_screenshot'])
+            if take_screenshot:
+                try:
+                    validated_data['image_file'] = get_website_screenshot(data['url'])
+                except Exception as e:
+                    logger.error(f"Error while doing screenshot for {data['url']}: {print(e)}")
+            if 'pk' in data and 'image_file' not in data and not take_screenshot:
+                # populate with parent image file otherwise the edit will set the image_file blank
+                validated_data['image_file'] = self.queryset.values('image_file').get(pk=data['pk'])['image_file']
+            if 'image_url' in data:
+                # handle images from url and uploaded images
+                try:
+                    validated_data['image_file'] = utils.get_temp_image_file_from_url(data['image_url'])
+                except Exception as e:
+                    raise exceptions.ValidationError({'image_file': e})
+        else:
+            validated_data['image_file'] = data["image_file"]
         # validate technologies
         techs = []
         for tech in cleaned_technologies:
@@ -242,8 +246,7 @@ class StudyResourceSerializer(EditSuggestionSerializer):
             )
         if 'images' in m2m_fields:
             for img_data in m2m_fields['images']:
-                image = StudyResourceImage(study_resource=instance, image_url=img_data['image_url'])
-                image.save()
+                StudyResourceImage.objects.create(study_resource=instance, **img_data)
 
 
 class StudyResourceListingSerializer(serializers.ModelSerializer):
@@ -327,7 +330,7 @@ class StudyResourceAutomatedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudyResource
-        fields = ['pk', 'name', 'slug', 'url', 'summary', 'price', 'media',
+        fields = ['pk', 'name', 'slug', 'url', 'summary', 'price', 'media','content', 'is_internal'
                   'experience_level', 'author', 'tags', 'category', 'category_concepts', 'technology_concepts',
                   'technologies', 'publication_date', 'published_by', 'image_file']
 

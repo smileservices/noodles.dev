@@ -137,19 +137,22 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = filters.StudyResourceFilterRest
-    search_fields = ['name', 'summary', 'published_by', 'tags__name', 'technologies__name']
+    search_fields = ['name', 'content','summary', 'published_by', 'tags__name', 'technologies__name']
 
     def create(self, request, *args, **kwargs):
-        intermediary = StudyResourceIntermediary.objects.filter(url=request.data['url']).get()
+        intermediary = None
+        if not request.data['is_internal']:
+            intermediary = StudyResourceIntermediary.objects.filter(url=request.data['url']).get()
         try:
             create_response = super(ResourceWithEditSuggestionVieset, self).create(request, *args, **kwargs)
             if create_response.status_code == 201:
                 create_notification(StudyResource, create_response.data['pk'], request.user.pk, notification_events.VERB_CREATE)
                 logger.log_study_resource_create(create_response, request)
-                # set intermediary status to SAVED
-                intermediary.status = StudyResourceIntermediary.Status.SAVED
-                intermediary.data = json.dumps(request.data)
-                intermediary.save()
+                if intermediary is not None:
+                    # set intermediary status to SAVED and add the data
+                    intermediary.status = StudyResourceIntermediary.Status.SAVED
+                    intermediary.data = json.dumps(request.data)
+                    intermediary.save()
                 create_response.data['success'] = {
                     'message': f'<div class="message">Thank you for adding a new resource!</div>'
                                f'<div class="score-info">'
@@ -161,14 +164,15 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
             else:
                 raise Exception('Cannot save resource')
         except Exception as e:
-            # set intermediary status to ERROR
-            intermediary.status = StudyResourceIntermediary.Status.ERROR
-            intermediary.data = {
-                'data': json.dumps(request.data),
-                'error': print(e)
-            }
-            intermediary.save()
-            logger.log_resource_error(f'saved intermediary :: {intermediary.url} :: {str(e)}', request, events.OP_CREATE)
+            if intermediary is not None:
+                # set intermediary status to ERROR
+                intermediary.status = StudyResourceIntermediary.Status.ERROR
+                intermediary.data = {
+                    'data': json.dumps(request.data),
+                    'error': print(e)
+                }
+                intermediary.save()
+                logger.log_resource_error(f'saved intermediary :: {intermediary.url} :: {str(e)}', request, events.OP_CREATE)
             raise Exception(print(e))
 
     # technologies and tags are saved in the serializer

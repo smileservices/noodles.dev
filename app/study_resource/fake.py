@@ -12,6 +12,9 @@ from users.models import CustomUser
 from technology.models import Technology
 from tag.models import Tag
 from category.models import Category
+from django.core.files.uploadedfile import SimpleUploadedFile
+from PIL import Image
+from io import BytesIO
 
 f = Faker()
 FAKE_IMAGES_PATH = os.path.join(os.getcwd(), 'study_resource', 'fake_images')
@@ -45,6 +48,32 @@ def new_study_resource(user):
         published_by=f.name(),
         url=f'{f.url()}{randint(1000, 9999999)}/{randint(1000, 9999999)}',
         summary=f.text(),
+        price=choice(models.StudyResource.Price.choices)[0],
+        media=choice(models.StudyResource.Media.choices)[0],
+        experience_level=choice(models.StudyResource.ExperienceLevel.choices)[0],
+        author=user,
+        category=choice(categories),
+    )
+    sr.image_file.save(image_name, content=File(image_file))
+    sr.save()
+    return sr
+
+def new_internal_study_resource(user):
+    name = f.text().split('.')[0]
+    categories = Category.objects.all()
+    # get images; move to MEDIA dir; open
+    image_name = choice(os.listdir(FAKE_IMAGES_PATH))
+    image_file_path = os.path.join(FAKE_IMAGES_PATH, image_name)
+    shutil.copy(image_file_path, os.path.join(MEDIA_IMAGES_PATH, image_name))
+    image_file = open(os.path.join(MEDIA_IMAGES_PATH, image_name), 'rb')
+    sr = models.StudyResource(
+        name=name,
+        status=1,
+        slug=slugify(name),
+        publication_date=f.date_between(date(2000, 1, 1), date.today()),
+        published_by=f.name(),
+        is_internal=True,
+        content=f.text(),
         price=choice(models.StudyResource.Price.choices)[0],
         media=choice(models.StudyResource.Media.choices)[0],
         experience_level=choice(models.StudyResource.ExperienceLevel.choices)[0],
@@ -137,3 +166,9 @@ def reviews_bulk(count=10):
             continue
         only_one_review_per_user_check.append(identificator)
         review.save()
+
+def temporary_image(name):
+    bts = BytesIO()
+    img = Image.new("RGB", (100, 100))
+    img.save(bts, 'jpeg')
+    return SimpleUploadedFile(f"{name}.jpg", bts.getvalue())
