@@ -197,6 +197,7 @@ class Technology(ResourceMixin, VotableMixin):
 
 
 class TechnologyAttribute(ResourceMixin, VotableMixin):
+    elastic_index = 'technology_attributes'
     class AttributeType(models.IntegerChoices):
         PROS = (0, 'pros')
         CONS = (1, 'cons')
@@ -211,8 +212,59 @@ class TechnologyAttribute(ResourceMixin, VotableMixin):
     def total_votes(self):
         return self.thumbs_up - self.thumbs_down
 
+    def get_elastic_mapping() -> {}:
+        return {
+            "properties": {
+                "pk": {"type": "integer"},
+                "resource_type": {"type": "keyword"},
+                "status": {"type": "keyword"},
+
+                # model fields
+                "content": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
+                },
+
+                "technology": {"type": "nested"},
+                "attribute_type": {"type": "keyword"},
+                "license": {"type": "keyword"},
+                "featured": {"type": "boolean"},
+                "owner": {"type": "text"},
+                "author": {"type": "nested"},
+                "category": {"type": "keyword"},
+                "ecosystem": {"type": "keyword"},
+                "thumbs_up": {"type": "short"},
+                "thumbs_down": {"type": "short"},
+
+                "suggest": {
+                    "type": "search_as_you_type",
+                }
+            }
+        }
+
+
+    def get_elastic_data(self) -> (str, list):
+        data = {
+            "pk": self.pk,
+            "type": "technology_attribute",
+            "status": self.status_label,
+            "name": self.name,
+            "content": self.content,
+            "author": {
+                "pk": self.author.pk,
+                "username": self.author.username
+            } if self.author else {},
+            "thumbs_up": self.thumbs_up,
+            "thumbs_down": self.thumbs_down,
+        }
+        return self.elastic_index, data
+    
+
 models.signals.post_save.connect(tasks.sync_technology_resources_to_elastic, sender=Technology, weak=False)
 models.signals.post_save.connect(warm_technology_logos, sender=Technology, weak=False)
 # we need to keep the images for the history
 # models.signals.post_delete.connect(delete_technology_images, sender=Technology, weak=False)
 # models.signals.pre_save.connect(remove_old_image, sender=Technology, weak=False)
+
