@@ -164,6 +164,7 @@ class TechnologyIntegrationTesting(APITestCase):
         tech = Technology.objects.first()
         data = {
             "technology": tech.pk,
+            "name": fake.name(),
             "attribute_type": 0,
             "content": fake.text()
         }
