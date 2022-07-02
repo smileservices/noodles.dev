@@ -212,6 +212,10 @@ class TechnologyAttribute(ResourceMixin, VotableMixin):
     def total_votes(self):
         return self.thumbs_up - self.thumbs_down
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name + self.technology.name)
+        return super().save(*args, **kwargs)
+
     def get_elastic_mapping() -> {}:
         return {
             "properties": {
