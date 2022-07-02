@@ -197,4 +197,4 @@ class TechnologyAttributeSerilizer(serializers.ModelSerializer):
     queryset = TechnologyAttribute.objects.all()
     class Meta:
         model = TechnologyAttribute
-        fields = ['pk','technology', 'attribute_type', 'content', 'thumbs_up', 'thumbs_down', 'total_votes']
+        fields = ['pk','technology', 'attribute_type','name', 'content', 'thumbs_up', 'thumbs_down', 'total_votes']
