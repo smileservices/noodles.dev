@@ -82,8 +82,7 @@ class Technology(ResourceMixin, VotableMixin):
     category_concepts = models.ManyToManyField('concepts.CategoryConcept', related_name='related_technologies')
 
     edit_suggestions = EditSuggestion(
-        excluded_fields=(
-        'slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
+        excluded_fields=('slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
         m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category},
                     {'name': 'category_concepts', 'model': 'concepts.CategoryConcept'}],
         change_status_condition=edit_suggestion_change_status_condition,
@@ -203,21 +202,23 @@ class TechnologyAttribute(ResourceMixin, VotableMixin):
     class AttributeType(models.IntegerChoices):
         PROS = (0, 'pros')
         CONS = (1, 'cons')
-        LIM = (2, 'lim')
-        GOOD_FOR = (3, 'gf')
-        NOT_GOOD_FOR = (4, 'ngf')
+        LIM = (2, 'limitations')
+        GOOD_FOR = (3, 'good for')
+        NOT_GOOD_FOR = (4, 'not good for')
 
     attribute_type = models.IntegerField(default=0, choices=AttributeType.choices, db_index=True)
     content = models.TextField(max_length=256)
     technology = models.ForeignKey(Technology, related_name='technology_attributes', on_delete=models.CASCADE)
     edit_suggestions = EditSuggestion(
-        excluded_fields=(
-        'slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
+        excluded_fields=('slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
         bases=(VotableMixin,)
     )
+
+    class Meta:
+        unique_together = ['attribute_type', 'name']
 
     @property
     def attribute_type_label(self):
@@ -231,28 +232,19 @@ class TechnologyAttribute(ResourceMixin, VotableMixin):
         return {
             "properties": {
                 "pk": {"type": "integer"},
-                "resource_type": {"type": "keyword"},
-                "status": {"type": "keyword"},
-
                 # model fields
+                "name": {"type": "keyword"},
                 "content": {
                     "type": "text",
                     "copy_to": "suggest",
                     "analyzer": "ngram",
                     "search_analyzer": "standard"
                 },
-
-                "technology": {"type": "nested"},
                 "attribute_type": {"type": "keyword"},
-                "license": {"type": "keyword"},
-                "featured": {"type": "boolean"},
-                "owner": {"type": "text"},
+                "technology": {"type": "nested"},
                 "author": {"type": "nested"},
-                "category": {"type": "keyword"},
-                "ecosystem": {"type": "keyword"},
                 "thumbs_up": {"type": "short"},
                 "thumbs_down": {"type": "short"},
-
                 "suggest": {
                     "type": "search_as_you_type",
                 }
@@ -266,6 +258,11 @@ class TechnologyAttribute(ResourceMixin, VotableMixin):
             "status": self.status_label,
             "name": self.name,
             "content": self.content,
+            "attribute_type": self.attribute_type,
+            "technology": {
+                'name': self.technology.name,
+                'pk': self.technology.pk,
+            },
             "author": {
                 "pk": self.author.pk,
                 "username": self.author.username
