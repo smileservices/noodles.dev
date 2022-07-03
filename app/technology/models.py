@@ -82,7 +82,8 @@ class Technology(ResourceMixin, VotableMixin):
     category_concepts = models.ManyToManyField('concepts.CategoryConcept', related_name='related_technologies')
 
     edit_suggestions = EditSuggestion(
-        excluded_fields=('slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
+        excluded_fields=(
+        'slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
         m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category},
                     {'name': 'category_concepts', 'model': 'concepts.CategoryConcept'}],
         change_status_condition=edit_suggestion_change_status_condition,
@@ -210,7 +211,8 @@ class TechnologyAttribute(ResourceMixin, VotableMixin):
     content = models.TextField(max_length=256)
     technology = models.ForeignKey(Technology, related_name='technology_attributes', on_delete=models.CASCADE)
     edit_suggestions = EditSuggestion(
-        excluded_fields=('slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
+        excluded_fields=(
+        'slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
         change_status_condition=edit_suggestion_change_status_condition,
         post_publish=post_publish_edit,
         post_reject=post_reject_edit,
@@ -228,7 +230,8 @@ class TechnologyAttribute(ResourceMixin, VotableMixin):
         self.slug = slugify(self.technology.name + self.attribute_type_label + self.name)
         return super().save(*args, **kwargs)
 
-    def get_elastic_mapping(self) -> {}:
+    @staticmethod
+    def get_elastic_mapping() -> {}:
         return {
             "properties": {
                 "pk": {"type": "integer"},

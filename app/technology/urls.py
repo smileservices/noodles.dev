@@ -3,7 +3,6 @@ from django.urls import path, include
 from . import views
 
 router = DefaultRouter()
-router_2 = DefaultRouter()
 router.register('as-options', views.TechViewsetOptions, basename='techs-options')
 router.register('edit-suggestions', views.TechEditSuggestionViewset, basename='techs-edit-suggestions-viewset')
 router.register('tech-attributes', views.TechnologyAttributeViewset, basename='tech-attributes-viewset')

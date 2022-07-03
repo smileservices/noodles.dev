@@ -203,10 +203,9 @@ class StudyResourceViewset(ResourceWithEditSuggestionVieset):
             study_resource=self.kwargs['pk']
         ).order_by('-created_at')
         page = self.paginate_queryset(queryset)
+        serializer = serializers.ReviewSerializer(page, many=True)
         if page is not None:
-            serializer = serializers.ReviewSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-        serializer = serializers.ReviewSerializer(queryset, many=True)
         return Response(serializer.data)
 
     @action(methods=['POST'], detail=False)
