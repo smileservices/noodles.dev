@@ -1,9 +1,13 @@
 import json
 from rest_framework.test import APITestCase
+from rest_framework.test import force_authenticate
+from rest_framework.test import APIClient
+
 from django.urls import reverse
 from random import choice, choices
 from users.fake import create_bulk_users, create_user_single, CustomUser
 from technology.models import Technology
+from technology.fake import create_technologies
 from category.fake import create_categories
 from category.models import Category
 from category.serializers import CategorySerializerOption
@@ -89,7 +93,8 @@ class TechnologyIntegrationTesting(APITestCase):
         )
         self.assertEqual(edit_res.status_code, 200)
         self.assertEqual(edit_res.data['name'], 'edited')
-        self.assertEqual(edit_res.data['category'], CategorySerializerOption([self.categories[2], self.categories[3]], many=True).data)
+        self.assertEqual(edit_res.data['category'],
+                         CategorySerializerOption([self.categories[2], self.categories[3]], many=True).data)
 
     def test_edit_suggestion_create(self):
         author = create_user_single()
@@ -116,7 +121,8 @@ class TechnologyIntegrationTesting(APITestCase):
         self.assertEqual(edit_res.status_code, HTTP_209_EDIT_SUGGESTION_CREATED)
         # check changes
         self.assertEqual(edit_res.data['changes'][0]['new'], 'edited')
-        self.assertEqual(edit_res.data['changes'][1]['new'], ', '.join([self.categories[2].name_tree, self.categories[3].name_tree]))
+        self.assertEqual(edit_res.data['changes'][1]['new'],
+                         ', '.join([self.categories[2].name_tree, self.categories[3].name_tree]))
 
     def test_edit_suggestion_publish(self):
         author = create_user_single()
@@ -143,8 +149,8 @@ class TechnologyIntegrationTesting(APITestCase):
         self.assertEqual(edit_res.status_code, HTTP_209_EDIT_SUGGESTION_CREATED)
         # author publish
         self.client.force_login(user=author)
-        url = reverse(TECHNOLOGY_EDIT_SUGGESTION_ENDPOINT+'-publish', kwargs={'pk': res.data['pk']})
-        res_publish = self.client.post(url, {'edit_suggestion_id': edit_res.data['pk']},format='json')
+        url = reverse(TECHNOLOGY_EDIT_SUGGESTION_ENDPOINT + '-publish', kwargs={'pk': res.data['pk']})
+        res_publish = self.client.post(url, {'edit_suggestion_id': edit_res.data['pk']}, format='json')
         self.assertEqual(res_publish.status_code, 200)
         edited_tech = Technology.objects.get(pk=res.data['pk'])
         self.assertEqual(edited_tech.name, 'edited')
@@ -152,3 +158,24 @@ class TechnologyIntegrationTesting(APITestCase):
         # check if edit author positive score is improved
         edit_author.refresh_from_db()
         self.assertEqual(edit_author.positive_score, rewards.EDIT_SUGGESTION_PUBLISH)
+
+    def test_technology_attributes(self):
+        author = create_user_single()
+        client = APIClient()
+        create_technologies()
+        tech = Technology.objects.first()
+        data = {
+            "technology": tech.pk,
+            "name": 'test attribute',
+            "attribute_type": 0,
+            "content": fake.text()
+        }
+        client.force_authenticate(user=author)
+        response = client.post(reverse('tech-attributes-viewset-list'), data)
+        self.assertEqual(response.status_code, 201)
+        # check the list endpoint
+        response = client.get(reverse('techs-viewset-attributes', kwargs={'pk': tech.pk}))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]['name'], 'test attribute')
+        self.assertEqual(response.data['results'][0]['author']['pk'], author.pk)

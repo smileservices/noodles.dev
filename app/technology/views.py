@@ -1,7 +1,7 @@
 import requests
 import json
 from django.shortcuts import render
-from django.http.response import JsonResponse, Http404
+from django.http.response import JsonResponse, Http404, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -16,13 +16,15 @@ from core.permissions import AuthorOrAdminOrReadOnly, EditSuggestionAuthorOrAdmi
 from study_collection.models import Collection
 from study_resource.models import StudyResource
 from . import filters
-from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyMinimal
+from .serializers import TechnologySerializer, TechnologySerializerOption, TechnologyMinimal, \
+    TechnologyAttributeSerializer
 from .models import Technology
 from django.views.decorators.cache import cache_page
 from app.settings import rewards
 from django.shortcuts import get_object_or_404
 from core.utils import rest_paginate_queryset
 from discussions.views import HasDiscussionViewsetMixin
+
 
 def detail(request, slug):
     queryset = Technology.objects
@@ -157,6 +159,17 @@ class TechViewset(ResourceWithEditSuggestionVieset, HasDiscussionViewsetMixin):
         self.serializer_class = TechnologyMinimal
         return rest_paginate_queryset(self, queryset)
 
+    @action(methods=['GET'], detail=True)
+    def attributes(self, request, *args, **kwargs):
+        queryset = TechnologyAttributeSerializer.queryset.filter(
+            technology=self.kwargs['pk']
+        )
+        page = self.paginate_queryset(queryset)
+        serializer = TechnologyAttributeSerializer(page, many=True)
+        if page is not None:
+            return self.get_paginated_response(serializer.data)
+        return Response(serializer.data)
+
 
 @cache_page(60 * 5)
 def license_options(request):
@@ -175,3 +188,12 @@ class TechViewsetOptions(ModelViewSet):
     queryset = TechnologySerializerOption.queryset
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     pagination_class = None
+
+
+class TechnologyAttributeViewset(ResourceWithEditSuggestionVieset, HasDiscussionViewsetMixin):
+    serializer_class = TechnologyAttributeSerializer
+    queryset = TechnologyAttributeSerializer.queryset.all()
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+
+    def list(self, request, *args, **kwargs):
+        return HttpResponseForbidden()

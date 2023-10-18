@@ -82,7 +82,8 @@ class Technology(ResourceMixin, VotableMixin):
     category_concepts = models.ManyToManyField('concepts.CategoryConcept', related_name='related_technologies')
 
     edit_suggestions = EditSuggestion(
-        excluded_fields=('slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
+        excluded_fields=(
+        'slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
         m2m_fields=[{'name': 'ecosystem', 'model': 'self'}, {'name': 'category', 'model': Category},
                     {'name': 'category_concepts', 'model': 'concepts.CategoryConcept'}],
         change_status_condition=edit_suggestion_change_status_condition,
@@ -194,6 +195,85 @@ class Technology(ResourceMixin, VotableMixin):
             if not self.slug:
                 self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+
+class TechnologyAttribute(ResourceMixin, VotableMixin):
+    elastic_index = 'technology_attributes'
+
+    class AttributeType(models.IntegerChoices):
+        PROS = (0, 'pros')
+        CONS = (1, 'cons')
+        LIM = (2, 'limitations')
+        GOOD_FOR = (3, 'good for')
+        NOT_GOOD_FOR = (4, 'not good for')
+
+    attribute_type = models.IntegerField(default=0, choices=AttributeType.choices, db_index=True)
+    content = models.TextField(max_length=256)
+    technology = models.ForeignKey(Technology, related_name='technology_attributes', on_delete=models.CASCADE)
+    edit_suggestions = EditSuggestion(
+        excluded_fields=(
+        'slug', 'author', 'thumbs_up_array', 'thumbs_down_array', 'created_at', 'updated_at', 'status'),
+        change_status_condition=edit_suggestion_change_status_condition,
+        post_publish=post_publish_edit,
+        post_reject=post_reject_edit,
+        bases=(VotableMixin,)
+    )
+
+    class Meta:
+        unique_together = ['attribute_type', 'name']
+
+    @property
+    def attribute_type_label(self):
+        return self.AttributeType(self.attribute_type).label
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.technology.name + self.attribute_type_label + self.name)
+        return super().save(*args, **kwargs)
+
+    @staticmethod
+    def get_elastic_mapping() -> {}:
+        return {
+            "properties": {
+                "pk": {"type": "integer"},
+                # model fields
+                "name": {"type": "keyword"},
+                "content": {
+                    "type": "text",
+                    "copy_to": "suggest",
+                    "analyzer": "ngram",
+                    "search_analyzer": "standard"
+                },
+                "attribute_type": {"type": "keyword"},
+                "technology": {"type": "nested"},
+                "author": {"type": "nested"},
+                "thumbs_up": {"type": "short"},
+                "thumbs_down": {"type": "short"},
+                "suggest": {
+                    "type": "search_as_you_type",
+                }
+            }
+        }
+
+    def get_elastic_data(self) -> (str, list):
+        data = {
+            "pk": self.pk,
+            "type": "technology_attribute",
+            "status": self.status_label,
+            "name": self.name,
+            "content": self.content,
+            "attribute_type": self.attribute_type,
+            "technology": {
+                'name': self.technology.name,
+                'pk': self.technology.pk,
+            },
+            "author": {
+                "pk": self.author.pk,
+                "username": self.author.username
+            } if self.author else {},
+            "thumbs_up": self.thumbs_up,
+            "thumbs_down": self.thumbs_down,
+        }
+        return self.elastic_index, data
 
 
 models.signals.post_save.connect(tasks.sync_technology_resources_to_elastic, sender=Technology, weak=False)

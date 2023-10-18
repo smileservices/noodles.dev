@@ -5,7 +5,8 @@ from rest_framework import fields
 from rest_framework.serializers import SerializerMethodField
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from django.conf import settings
-from .models import Technology
+from django.db.models.functions import Length
+from .models import Technology, TechnologyAttribute
 from users.serializers import UserSerializerMinimal
 from category.serializers import CategorySerializerOption
 from category.models import Category
@@ -191,3 +192,15 @@ class TechnologyMinimal(serializers.ModelSerializer):
     class Meta:
         model = Technology
         fields = ['pk', 'name', 'absolute_url', 'thumbs_up', 'thumbs_down', 'resources_count']
+
+
+class TechnologyAttributeSerializer(serializers.ModelSerializer):
+    queryset = TechnologyAttribute.objects.order_by('thumbs_up_array')
+    author = UserSerializerMinimal(read_only=True)
+
+    class Meta:
+        model = TechnologyAttribute
+        fields = ['pk', 'author', 'technology', 'attribute_type', 'name', 'content', 'thumbs_up', 'thumbs_down']
+
+    def get_attribute_type(self, obj):
+        return {'value': obj.attribute_type, 'label': obj.attribute_type_label}
